@@ -1,0 +1,69 @@
+/* Map.css */
+.map-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh; /* Ensure container takes full height of the viewport */
+    background-color: #f0f2f5; /* Light background color */
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px; /* Max width for content */
+    margin: 20px auto; /* Centered with margin */
+    gap: 20px; /* Gap between map and controls */
+}
+
+.map-wrapper {
+    flex: 2; /* Allow map to take more space */
+}
+
+.controls {
+    background: #ffffff; /* White background for controls */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px;
+    max-width: 200px; /* Adjust based on your design needs */
+    width: 100%;
+    height: 460px;
+}
+
+.form-group,
+.input-group {
+    margin-bottom: 15px;
+}
+
+textarea {
+    width: 1180px;
+    border: 1px solid #dcdcdc; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 10px; /* Padding inside textarea */
+    font-size: 14px; /* Font size */
+    resize: vertical; /* Allow vertical resizing */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+textarea:focus {
+    border-color: #007bff; /* Blue border on focus */
+    outline: none; /* Remove default outline */
+}
+
+button {
+    background-color: #007bff; /* Primary blue button */
+    color: white;
+    border: none;
+    border-radius: 4px; /* Rounded corners */
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}

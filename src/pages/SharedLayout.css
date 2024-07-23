@@ -1,0 +1,20 @@
+/* SharedLayout.css */
+.shared-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure the layout takes up at least the full height of the viewport */
+    background-color: #f0f2f5; /* Light background color */
+}
+
+main {
+    flex: 1; /* Makes sure that the main content takes up the remaining space */
+    padding: 20px;
+}
+
+footer {
+    margin-top: auto; /* Push the footer to the bottom of the page */
+    background-color: #ffffff; /* Footer background color */
+    border-top: 1px solid #ddd; /* Light border at the top of the footer */
+    padding: 20px;
+    text-align: center;
+}
