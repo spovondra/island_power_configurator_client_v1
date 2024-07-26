@@ -12,7 +12,7 @@ const Map = () => {
 
     const calculatePVGISData = async (lat, lng) => {
         try {
-            const response = await axios.get(`http://localhost:80/api/calculatePVGISData`, {
+            const response = await axios.get(`http://localhost:80/api/map/calculatePVGISData`, {
                 params: {
                     latitude: lat,
                     longitude: lng,
@@ -29,7 +29,7 @@ const Map = () => {
 
     const useOptimalValues = async () => {
         try {
-            const response = await axios.get(`http://localhost:80/api/fetchOptimalValues`, {
+            const response = await axios.get(`http://localhost:80/api/map/fetchOptimalValues`, {
                 params: {
                     latitude,
                     longitude,
