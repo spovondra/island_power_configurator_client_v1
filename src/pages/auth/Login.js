@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../../services/authService';
+import './Login.css'; // Add your CSS styling
 
-function Login({ onLoginSuccess }) {
+function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -11,9 +12,8 @@ function Login({ onLoginSuccess }) {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const isAuthenticated = await authService.login(username, password);
-            if (isAuthenticated) {
-                onLoginSuccess({ username, password });
+            const user = await authService.login(username, password);
+            if (user) {
                 setMessage('Login successful');
                 navigate('/');
             } else {
@@ -25,7 +25,7 @@ function Login({ onLoginSuccess }) {
     };
 
     return (
-        <div>
+        <div className="login-container">
             <h2>Login</h2>
             <form onSubmit={handleLogin}>
                 <input
@@ -33,16 +33,21 @@ function Login({ onLoginSuccess }) {
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    required
                 />
                 <input
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                 />
                 <button type="submit">Login</button>
             </form>
             <p>{message}</p>
+            <button onClick={() => navigate('/register')}>
+                Need an account? Register
+            </button>
         </div>
     );
 }

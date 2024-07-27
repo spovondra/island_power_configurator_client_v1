@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import authService from '../services/authService';
 
-function UserList() {
+const UserList = () => {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const userData = await authService.getAllUsers();
-                setUsers(userData);
+                const data = await authService.getAllUsers();
+                setUsers(data);
             } catch (error) {
-                console.error('Failed to fetch users', error);
+                console.error('Error fetching users', error);
             }
         };
 
@@ -19,7 +19,7 @@ function UserList() {
 
     return (
         <div>
-            <h2>All Users</h2>
+            <h2>User List</h2>
             <ul>
                 {users.map(user => (
                     <li key={user.id}>{user.username}</li>
@@ -27,6 +27,6 @@ function UserList() {
             </ul>
         </div>
     );
-}
+};
 
 export default UserList;

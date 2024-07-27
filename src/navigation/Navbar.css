@@ -1,13 +1,37 @@
-header {
+/* Navbar.css */
+
+.navbar {
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
 }
 
-nav a {
-    margin-right: 10px;
+.navbar a {
+    color: white;
     text-decoration: none;
+    margin: 0 10px;
 }
 
-.active {
-    color: red;
+.navbar-user {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-user span {
+    margin-right: 10px;
+}
+
+.navbar-dropdown {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-dropdown button {
+    margin-left: 10px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
 }
