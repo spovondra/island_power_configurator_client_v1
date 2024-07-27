@@ -3,7 +3,7 @@
 .navbar {
     display: flex;
     justify-content: space-between;
-    padding: 10px 20px;
+    padding: 1rem;
     background-color: #333;
     color: white;
 }
@@ -11,27 +11,45 @@
 .navbar a {
     color: white;
     text-decoration: none;
-    margin: 0 10px;
+    margin-right: 1rem;
 }
 
 .navbar-user {
-    display: flex;
-    align-items: center;
+    position: relative;
+    cursor: pointer;
 }
 
-.navbar-user span {
-    margin-right: 10px;
+.navbar-username {
+    display: flex;
+    align-items: center;
 }
 
 .navbar-dropdown {
-    display: flex;
-    align-items: center;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-dropdown a {
+    color: black;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.5rem;
 }
 
 .navbar-dropdown button {
-    margin-left: 10px;
     background: none;
     border: none;
-    color: white;
+    color: black;
     cursor: pointer;
+}
+
+.navbar-dropdown button:hover {
+    text-decoration: underline;
 }

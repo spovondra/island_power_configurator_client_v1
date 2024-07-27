@@ -17,10 +17,14 @@ const login = async (username, password) => {
             password
         }
     });
-    if (response.data) {
-        localStorage.setItem('user', JSON.stringify({ username, password }));
+
+    if (response.status === 200 && response.data) {
+        const { username, id } = response.data; // Ensure id is extracted correctly
+        localStorage.setItem('user', JSON.stringify({ username, userId: id }));
+        return { username, userId: id }; // Ensure this returns the ID
+    } else {
+        throw new Error('Login failed');
     }
-    return response.data;
 };
 
 const logout = () => {
