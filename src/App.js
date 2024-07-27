@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import Map from './pages/Map';
 import SharedLayout from './pages/SharedLayout';
-import Login from './components/Login';
-import Register from './components/Register';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import UserList from './components/UserList';
 import PrivateRoute from './components/PrivateRoute';
 import authService from './services/authService';
 
@@ -17,47 +18,24 @@ const App = () => {
     };
 
     const handleLogout = () => {
+        authService.logout();
         setAuth(null);
     };
-
-    useEffect(() => {
-        const user = authService.getCurrentUser();
-        if (user) {
-            setAuth(user);
-        }
-    }, []);
 
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<SharedLayout auth={auth} onLogout={handleLogout} />}>
-                    <Route index element={
-                        <PrivateRoute auth={auth}>
-                            <Home />
-                        </PrivateRoute>
-                    } />
-                    <Route path="/" element={
-                        <PrivateRoute auth={auth}>
-                            <Home />
-                        </PrivateRoute>
-                    } />
-                    <Route path="/about" element={
-                        <PrivateRoute auth={auth}>
-                            <About />
-                        </PrivateRoute>
-                    } />
-                    <Route path="/map" element={
-                        <PrivateRoute auth={auth}>
-                            <Map />
-                        </PrivateRoute>
-                    } />
-                </Route>
                 <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="*" element={<Navigate to="/" />} />
+                <Route path="/" element={auth ? <SharedLayout onLogout={handleLogout} /> : <Navigate to="/login" />}>
+                    <Route index element={<Home />} />
+                    <Route path="about" element={<About />} />
+                    <Route path="map" element={<Map />} />
+                    <Route path="users" element={<UserList />} />
+                </Route>
             </Routes>
         </BrowserRouter>
     );
-};
+}
 
 export default App;

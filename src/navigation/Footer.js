@@ -1,9 +1,11 @@
+import React from 'react';
+
 const Footer = () => {
     return (
         <footer>
-            <p>2024 My Website</p>
+            <p>© 2023 Your Company</p>
         </footer>
     );
-}
+};
 
 export default Footer;

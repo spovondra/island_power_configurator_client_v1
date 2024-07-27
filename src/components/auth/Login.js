@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
-import authService from '../services/authService';
+import { useNavigate } from 'react-router-dom';
+import authService from '../../services/authService';
 
 function Login({ onLoginSuccess }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            await authService.login(username, password);
-            localStorage.setItem('user', JSON.stringify({ username, password }));
-            onLoginSuccess({ username, password });
-            setMessage('Login successful');
+            const isAuthenticated = await authService.login(username, password);
+            if (isAuthenticated) {
+                onLoginSuccess({ username, password });
+                setMessage('Login successful');
+                navigate('/');
+            } else {
+                setMessage('Login failed');
+            }
         } catch (error) {
             setMessage('Login failed');
         }

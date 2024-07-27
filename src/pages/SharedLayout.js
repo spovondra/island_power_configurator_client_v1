@@ -1,13 +1,13 @@
 import React from 'react';
-import Navbar from "../navigation/Navbar";
-import Footer from "../navigation/Footer";
-import { Outlet } from "react-router-dom";
-import './SharedLayout.css'; // Importujte vlastní CSS soubor
+import Navbar from '../navigation/Navbar';
+import Footer from '../navigation/Footer';
+import { Outlet } from 'react-router-dom';
+import './SharedLayout.css';
 
-const SharedLayout = () => {
+const SharedLayout = ({ onLogout }) => {
     return (
         <div className="shared-layout">
-            <Navbar />
+            <Navbar onLogout={onLogout} />
             <main>
                 <Outlet />
             </main>

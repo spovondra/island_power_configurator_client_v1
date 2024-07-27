@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import authService from '../services/authService';
+import authService from '../../services/authService'
 
-function Register() {
+const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('USER');
+    const [role, setRole] = useState('');
     const [message, setMessage] = useState('');
 
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
             await authService.register(username, password, role);
-            setMessage('User registered successfully');
+            setMessage('Registration successful');
         } catch (error) {
             setMessage('Registration failed');
         }
@@ -33,15 +33,17 @@ function Register() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <select value={role} onChange={(e) => setRole(e.target.value)}>
-                    <option value="USER">USER</option>
-                    <option value="ADMIN">ADMIN</option>
-                </select>
+                <input
+                    type="text"
+                    placeholder="Role (ADMIN or USER)"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                />
                 <button type="submit">Register</button>
             </form>
             <p>{message}</p>
         </div>
     );
-}
+};
 
 export default Register;
