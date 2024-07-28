@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:80/api/auth/';
 
-const register = (username, password, role, firstName, lastName, email) => {
+const register = (username, password, role, firstName = '', lastName = '', email = '') => {
     return axios.post(`${API_URL}register`, {
         username,
         password,
@@ -51,16 +51,15 @@ const getAllUsers = async () => {
     return response.data;
 };
 
-const updateUser = async (userId, userData) => {
+const deleteUser = async (userId) => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
 
-    const response = await axios.put(`${API_URL}update/${userId}`, userData, {
+    await axios.delete(`${API_URL}delete/${userId}`, {
         headers: {
             Authorization: `Bearer ${user.token}`
         }
     });
-    return response.data;
 };
 
 const getUserById = async (userId) => {
@@ -75,12 +74,25 @@ const getUserById = async (userId) => {
     return response.data;
 };
 
+const updateUser = async (userId, userDetails) => {
+    const user = getCurrentUser();
+    if (!user) throw new Error('No user logged in');
+
+    const response = await axios.put(`${API_URL}update/${userId}`, userDetails, {
+        headers: {
+            Authorization: `Bearer ${user.token}`
+        }
+    });
+    return response.data;
+};
+
 export default {
     register,
     login,
     logout,
     getCurrentUser,
     getAllUsers,
-    updateUser,
-    getUserById
+    deleteUser,
+    getUserById,
+    updateUser
 };
