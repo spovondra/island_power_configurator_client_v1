@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MapComponent from '../components/MapComponent';
+import MapComponent from '../components/MapComponent/MapComponent';
 import axios from 'axios';
 import './Map.css'; // Importujte vlastní CSS soubor pro Map komponentu
 

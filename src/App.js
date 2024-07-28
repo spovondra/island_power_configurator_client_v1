@@ -6,10 +6,10 @@ import About from "./pages/About";
 import Map from "./pages/Map";
 import SharedLayout from "./pages/SharedLayout";
 import Login from "./pages/auth/Login";
-import UserList from "./components/UserList";
+import UserList from "./components/UserList/UserList";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Register from "./pages/auth/Register";
-import UserSettings from "./components/UserSettings";
+import UserSettings from "./components/UserSettings/UserSettings";
 
 const App = () => {
     return (
