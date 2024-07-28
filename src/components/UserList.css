@@ -94,6 +94,10 @@ input[type="radio"] {
     background-color: #dc3545;
 }
 
+.add-user-button {
+    max-width: 25%;
+}
+
 .search-box {
     display: flex;
     align-items: center;
@@ -109,6 +113,7 @@ input[type="radio"] {
 
 .search-box button {
     background-color: #28a745;
+    width: 80px;
 }
 
 fieldset {

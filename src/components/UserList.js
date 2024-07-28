@@ -51,6 +51,7 @@ const UserList = () => {
         lastName: '',
         email: '',
     });
+    const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
     const fetchUsers = async () => {
@@ -109,9 +110,29 @@ const UserList = () => {
         navigate(-1); // Navigate back to the previous page
     };
 
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const filteredUsers = users.filter(user =>
+        user.username.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <div className="container">
             <h2>User List</h2>
+            <div className="actions">
+                <button className="add-user-button" onClick={() => navigate('/register')}>Přidat uživatele</button>
+                <div className="search-box">
+                    <input
+                        type="text"
+                        placeholder="Search by username"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                    />
+                    <button className="search-button">🔍</button>
+                </div>
+            </div>
             {isLoading ? (
                 <p>Loading...</p>
             ) : (
@@ -124,87 +145,107 @@ const UserList = () => {
                             message={error}
                         />
                     )}
-                    <ul>
-                        {users.map(user => (
-                            <li key={user.id}>
-                                {user.username} - {user.role}
-                                <div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Login</th>
+                            <th>Role</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Projects</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {filteredUsers.map(user => (
+                            <tr key={user.id}>
+                                <td>{user.id}</td>
+                                <td>{user.username}</td>
+                                <td>{user.role}</td>
+                                <td>{user.firstName}</td>
+                                <td>{user.lastName}</td>
+                                <td>{user.projects}</td>
+                                <td>
                                     <button onClick={() => handleSelectUser(user)}>Edit</button>
                                     <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
-                                </div>
-                            </li>
+                                </td>
+                            </tr>
                         ))}
-                    </ul>
+                        </tbody>
+                    </table>
                 </>
             )}
             {selectedUser && (
                 <form onSubmit={handleUpdateUser}>
-                    <h3>Edit User</h3>
-                    <div className="form-group">
-                        <label>Username:</label>
-                        <input
-                            type="text"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Password:</label>
-                        <input
-                            type="checkbox"
-                            name="updatePassword"
-                            checked={updatePassword}
-                            onChange={(e) => dispatch({ type: 'TOGGLE_PASSWORD_UPDATE', payload: e.target.checked })}
-                        />
-                        {updatePassword && (
+                    <fieldset>
+                        <legend>Edit User</legend>
+                        <div className="form-group">
+                            <label>Username:</label>
                             <input
-                                type="password"
-                                name="password"
-                                value={formData.password}
+                                type="text"
+                                name="username"
+                                value={formData.username}
                                 onChange={handleInputChange}
                             />
-                        )}
-                    </div>
-                    <div className="form-group">
-                        <label>Role:</label>
-                        <select
-                            name="role"
-                            value={formData.role}
-                            onChange={handleInputChange}
-                        >
-                            <option value="USER">USER</option>
-                            <option value="ADMIN">ADMIN</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label>First Name:</label>
-                        <input
-                            type="text"
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Last Name:</label>
-                        <input
-                            type="text"
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Email:</label>
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <button type="submit">Update User</button>
+                        </div>
+                        <div className="form-group">
+                            <label>Password:</label>
+                            <input
+                                type="checkbox"
+                                name="updatePassword"
+                                checked={updatePassword}
+                                onChange={(e) => dispatch({ type: 'TOGGLE_PASSWORD_UPDATE', payload: e.target.checked })}
+                            />
+                            {updatePassword && (
+                                <input
+                                    type="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleInputChange}
+                                />
+                            )}
+                        </div>
+                        <div className="form-group">
+                            <label>Role:</label>
+                            <select
+                                name="role"
+                                value={formData.role}
+                                onChange={handleInputChange}
+                            >
+                                <option value="USER">USER</option>
+                                <option value="ADMIN">ADMIN</option>
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label>First Name:</label>
+                            <input
+                                type="text"
+                                name="firstName"
+                                value={formData.firstName}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Last Name:</label>
+                            <input
+                                type="text"
+                                name="lastName"
+                                value={formData.lastName}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Email:</label>
+                            <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+                        <button type="submit">Update User</button>
+                    </fieldset>
                 </form>
             )}
         </div>

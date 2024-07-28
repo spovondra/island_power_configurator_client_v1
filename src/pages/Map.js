@@ -76,7 +76,7 @@ const Map = () => {
     return (
         <div className="map-page-container">
             <header>
-                <div className="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div>
                     <h1 className="navbar-brand">Map with PVGIS Data</h1>
                 </div>
             </header>
