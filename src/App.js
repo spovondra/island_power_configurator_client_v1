@@ -6,12 +6,14 @@ import SharedLayout from "./pages/SharedLayout";
 import Login from "./pages/auth/Login";
 import UserList from "./components/UserList";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Register from "./pages/auth/Register";
 
 const App = () => {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
                 <Route path="/" element={<ProtectedRoute><SharedLayout /></ProtectedRoute>}>
                     <Route index element={<Home />} />
                     <Route path="about" element={<About />} />
