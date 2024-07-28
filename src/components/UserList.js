@@ -21,6 +21,8 @@ const userReducer = (state, action) => {
             return { ...state, error: action.payload, isLoading: false, isModalOpen: true };
         case 'SET_SELECTED_USER':
             return { ...state, selectedUser: action.payload };
+        case 'ADD_USER':
+            return { ...state, users: [...state.users, action.payload], selectedUser: null };
         case 'UPDATE_USER':
             return {
                 ...state,
@@ -46,7 +48,7 @@ const UserList = () => {
     const [formData, setFormData] = useState({
         username: '',
         password: '',
-        role: '',
+        role: 'USER',
         firstName: '',
         lastName: '',
         email: '',
@@ -83,6 +85,19 @@ const UserList = () => {
         }
     };
 
+    const handleAddUser = async (e) => {
+        e.preventDefault();
+        const userData = { ...formData };
+        try {
+            const newUser = await authService.register(userData);
+            dispatch({ type: 'ADD_USER', payload: newUser });
+            alert('User added successfully');
+            await fetchUsers();  // Fetch the updated user list
+        } catch (error) {
+            alert('Failed to add user');
+        }
+    };
+
     const handleDeleteUser = async (userId) => {
         try {
             await authService.deleteUser(userId);
@@ -114,6 +129,18 @@ const UserList = () => {
         setSearchQuery(e.target.value);
     };
 
+    const handleAddUserClick = () => {
+        setFormData({
+            username: '',
+            password: '',
+            role: 'USER',
+            firstName: '',
+            lastName: '',
+            email: '',
+        });
+        dispatch({ type: 'SET_SELECTED_USER', payload: null });
+    };
+
     const filteredUsers = users.filter(user =>
         user.username.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -121,18 +148,7 @@ const UserList = () => {
     return (
         <div className="container">
             <h2>User List</h2>
-            <div className="actions">
-                <button className="add-user-button" onClick={() => navigate('/register')}>Přidat uživatele</button>
-                <div className="search-box">
-                    <input
-                        type="text"
-                        placeholder="Search by username"
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                    />
-                    <button className="search-button">🔍</button>
-                </div>
-            </div>
+            <button className="add-user-button" onClick={handleAddUserClick}>Přidat uživatele</button>
             {isLoading ? (
                 <p>Loading...</p>
             ) : (
@@ -145,6 +161,17 @@ const UserList = () => {
                             message={error}
                         />
                     )}
+                    <div className="actions">
+                        <div className="search-box">
+                            <input
+                                type="text"
+                                placeholder="Search by username"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                            />
+                            <button className="search-button">🔍</button>
+                        </div>
+                    </div>
                     <table>
                         <thead>
                         <tr>
@@ -176,10 +203,10 @@ const UserList = () => {
                     </table>
                 </>
             )}
-            {selectedUser && (
-                <form onSubmit={handleUpdateUser}>
+            {selectedUser || formData.username !== '' ? (
+                <form onSubmit={selectedUser ? handleUpdateUser : handleAddUser}>
                     <fieldset>
-                        <legend>Edit User</legend>
+                        <legend>{selectedUser ? 'Edit User' : 'Add User'}</legend>
                         <div className="form-group">
                             <label>Username:</label>
                             <input
@@ -191,13 +218,24 @@ const UserList = () => {
                         </div>
                         <div className="form-group">
                             <label>Password:</label>
-                            <input
-                                type="checkbox"
-                                name="updatePassword"
-                                checked={updatePassword}
-                                onChange={(e) => dispatch({ type: 'TOGGLE_PASSWORD_UPDATE', payload: e.target.checked })}
-                            />
-                            {updatePassword && (
+                            {selectedUser ? (
+                                <>
+                                    <input
+                                        type="checkbox"
+                                        name="updatePassword"
+                                        checked={updatePassword}
+                                        onChange={(e) => dispatch({ type: 'TOGGLE_PASSWORD_UPDATE', payload: e.target.checked })}
+                                    />
+                                    {updatePassword && (
+                                        <input
+                                            type="password"
+                                            name="password"
+                                            value={formData.password}
+                                            onChange={handleInputChange}
+                                        />
+                                    )}
+                                </>
+                            ) : (
                                 <input
                                     type="password"
                                     name="password"
@@ -244,10 +282,10 @@ const UserList = () => {
                                 onChange={handleInputChange}
                             />
                         </div>
-                        <button type="submit">Update User</button>
+                        <button type="submit">{selectedUser ? 'Update User' : 'Add User'}</button>
                     </fieldset>
                 </form>
-            )}
+            ) : null}
         </div>
     );
 };

@@ -95,7 +95,15 @@ input[type="radio"] {
 }
 
 .add-user-button {
-    max-width: 25%;
+    display: block;
+    margin-left: auto;
+    margin-bottom: 20px;
+    background-color: #007bff;
+    color: white;
+}
+
+.add-user-button:hover {
+    background-color: #0056b3;
 }
 
 .search-box {
@@ -114,6 +122,10 @@ input[type="radio"] {
 .search-box button {
     background-color: #28a745;
     width: 80px;
+}
+
+.search-box button:hover {
+    background-color: #218838;
 }
 
 fieldset {
