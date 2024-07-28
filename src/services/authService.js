@@ -19,9 +19,10 @@ const login = async (username, password) => {
     });
 
     if (response.status === 200 && response.data) {
-        const { username, id } = response.data; // Ensure id is extracted correctly
-        localStorage.setItem('user', JSON.stringify({ username, userId: id }));
-        return { username, userId: id }; // Ensure this returns the ID
+        const { username, id, role } = response.data; // Ensure role is extracted correctly
+        // Temporarily store password for debugging
+        localStorage.setItem('user', JSON.stringify({ username, userId: id, roles: role.split(','), password }));
+        return { username, userId: id, roles: role.split(','), password }; // Ensure this returns the ID
     } else {
         throw new Error('Login failed');
     }
@@ -32,12 +33,22 @@ const logout = () => {
 };
 
 const getCurrentUser = () => {
-    return JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
+    // Check if the user object has the password, if not, add it
+    if (user && !user.password) {
+        user.password = JSON.parse(localStorage.getItem('user')).password;
+    }
+    return user;
 };
 
 const getAllUsers = async () => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
+
+    // Log the username and password being used
+    console.log('Username:', user.username);
+    console.log('Password:', user.password);
+
     const response = await axios.get(API_URL + 'getAll', {
         auth: {
             username: user.username,
