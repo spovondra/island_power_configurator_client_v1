@@ -1,17 +1,21 @@
-/* Navbar.css */
-
 .navbar {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 1rem;
     background-color: #333;
-    color: white;
+    color: #fff;
 }
 
-.navbar a {
-    color: white;
+.navbar-links a {
+    color: #fff;
     text-decoration: none;
     margin-right: 1rem;
+    transition: color 0.2s;
+}
+
+.navbar-links a:hover {
+    color: #ddd;
 }
 
 .navbar-user {
@@ -20,36 +24,67 @@
 }
 
 .navbar-username {
-    display: flex;
-    align-items: center;
+    transition: color 0.2s;
+}
+
+.navbar-username:hover {
+    color: #ddd;
 }
 
 .navbar-dropdown {
+    display: none;
     position: absolute;
-    top: 100%;
+    top: 2.5rem;
     right: 0;
-    background-color: white;
-    color: black;
+    background-color: #fff;
+    color: #333;
     border: 1px solid #ccc;
     border-radius: 4px;
-    padding: 0.5rem;
+    padding: 1rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1;
 }
 
-.navbar-dropdown a {
-    color: black;
+.navbar-dropdown.open {
+    display: block;
+}
+
+.navbar-dropdown a,
+.navbar-dropdown button {
+    color: #333;
     text-decoration: none;
     display: block;
     margin-bottom: 0.5rem;
+    transition: color 0.2s;
+}
+
+.navbar-dropdown a:hover,
+.navbar-dropdown button:hover {
+    color: #007bff;
 }
 
 .navbar-dropdown button {
     background: none;
     border: none;
-    color: black;
+    padding: 0;
+    cursor: pointer;
+}
+
+.navbar-dropdown a:last-child,
+.navbar-dropdown button:last-child {
+    margin-bottom: 0;
+}
+
+.navbar-dropdown button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
 }
 
 .navbar-dropdown button:hover {
-    text-decoration: underline;
+    background-color: #0056b3;
 }

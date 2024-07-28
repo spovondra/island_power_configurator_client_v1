@@ -2,16 +2,19 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:80/api/auth/';
 
-const register = (username, password, role) => {
-    return axios.post(API_URL + 'register', {
+const register = (username, password, role, firstName, lastName, email) => {
+    return axios.post(`${API_URL}register`, {
         username,
         password,
-        role
+        role,
+        firstName,
+        lastName,
+        email
     });
 };
 
 const login = async (username, password) => {
-    const response = await axios.post(API_URL + 'login', null, {
+    const response = await axios.post(`${API_URL}login`, null, {
         params: {
             username,
             password
@@ -40,7 +43,31 @@ const getAllUsers = async () => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
 
-    const response = await axios.get(API_URL + 'getAll', {
+    const response = await axios.get(`${API_URL}getAll`, {
+        headers: {
+            Authorization: `Bearer ${user.token}`
+        }
+    });
+    return response.data;
+};
+
+const updateUser = async (userId, userData) => {
+    const user = getCurrentUser();
+    if (!user) throw new Error('No user logged in');
+
+    const response = await axios.put(`${API_URL}update/${userId}`, userData, {
+        headers: {
+            Authorization: `Bearer ${user.token}`
+        }
+    });
+    return response.data;
+};
+
+const getUserById = async (userId) => {
+    const user = getCurrentUser();
+    if (!user) throw new Error('No user logged in');
+
+    const response = await axios.get(`${API_URL}user/${userId}`, {
         headers: {
             Authorization: `Bearer ${user.token}`
         }
@@ -53,5 +80,7 @@ export default {
     login,
     logout,
     getCurrentUser,
-    getAllUsers
+    getAllUsers,
+    updateUser,
+    getUserById
 };
