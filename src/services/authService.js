@@ -11,7 +11,7 @@ const register = (username, password, role) => {
 };
 
 const login = async (username, password) => {
-    const response = await axios.post(API_URL + 'authenticate', null, {
+    const response = await axios.post(API_URL + 'login', null, {
         params: {
             username,
             password
@@ -19,10 +19,9 @@ const login = async (username, password) => {
     });
 
     if (response.status === 200 && response.data) {
-        const { username, id, role } = response.data; // Ensure role is extracted correctly
-        // Temporarily store password for debugging
-        localStorage.setItem('user', JSON.stringify({ username, userId: id, roles: role.split(','), password }));
-        return { username, userId: id, roles: role.split(','), password }; // Ensure this returns the ID
+        const { jwt, userId, role } = response.data;
+        localStorage.setItem('user', JSON.stringify({ username, userId, roles: role.split(','), token: jwt }));
+        return { username, userId, roles: role.split(','), token: jwt };
     } else {
         throw new Error('Login failed');
     }
@@ -34,10 +33,6 @@ const logout = () => {
 
 const getCurrentUser = () => {
     const user = JSON.parse(localStorage.getItem('user'));
-    // Check if the user object has the password, if not, add it
-    if (user && !user.password) {
-        user.password = JSON.parse(localStorage.getItem('user')).password;
-    }
     return user;
 };
 
@@ -45,14 +40,9 @@ const getAllUsers = async () => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
 
-    // Log the username and password being used
-    console.log('Username:', user.username);
-    console.log('Password:', user.password);
-
     const response = await axios.get(API_URL + 'getAll', {
-        auth: {
-            username: user.username,
-            password: user.password
+        headers: {
+            Authorization: `Bearer ${user.token}`
         }
     });
     return response.data;
