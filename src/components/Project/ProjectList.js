@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllProjects, deleteProject, createProject, updateProject } from '../../services/ProjectService';
+import { getUserProjects, deleteProject, createProject, updateProject } from '../../services/ProjectService'; // Adjust imports if needed
 import Modal from '../Modal/Modal';
 import ProjectForm from './ProjectForm';
 
@@ -42,7 +42,7 @@ const ProjectList = () => {
     const fetchProjects = async () => {
         dispatch({ type: 'FETCH_START' });
         try {
-            const data = await getAllProjects();
+            const data = await getUserProjects(); // Fetch projects specific to the logged-in user
             dispatch({ type: 'FETCH_SUCCESS', payload: data });
         } catch (error) {
             dispatch({ type: 'FETCH_FAILURE', payload: error.message });
@@ -97,7 +97,7 @@ const ProjectList = () => {
     };
 
     if (state.loading) return <p>Loading...</p>;
-    if (state.error) return <p>Error: {state.error.message}</p>;
+    if (state.error) return <p>Error: {state.error}</p>;
 
     return (
         <div>

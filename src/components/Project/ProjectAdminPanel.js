@@ -59,7 +59,8 @@ const ProjectAdminPanel = () => {
             accessories: {}
         }
     });
-    const navigate = useNavigate(); // Use navigate if needed
+
+    useNavigate();
 
     const fetchProjects = async () => {
         try {
