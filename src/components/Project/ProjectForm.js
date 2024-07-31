@@ -1,150 +1,106 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getProjectById, createProject, updateProject } from '../../services/ProjectService';
 
-const ProjectForm = () => {
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const [project, setProject] = useState({
-        name: '',
-        location: { latitude: '', longitude: '' },
-        temperature: { min: '', max: '' },
-        solarComponents: {
-            appliances: {},
-            solarPanels: {},
-            controllers: {},
-            batteries: {},
-            inverters: {},
-            accessories: {}
-        }
-    });
-    const [isEdit, setIsEdit] = useState(false);
+const ProjectForm = ({ formData, handleSubmit, onClose }) => {
+    const [localFormData, setLocalFormData] = useState(formData);
 
     useEffect(() => {
-        if (id) {
-            setIsEdit(true);
-            const fetchProject = async () => {
-                try {
-                    const data = await getProjectById(id);
-                    setProject(data);
-                } catch (error) {
-                    console.error('Failed to fetch project', error);
-                }
-            };
-            fetchProject();
-        }
-    }, [id]);
+        setLocalFormData(formData);
+    }, [formData]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const [field, subfield] = name.split('.');
-
-        if (subfield) {
-            setProject(prevProject => ({
-                ...prevProject,
-                [field]: {
-                    ...prevProject[field],
-                    [subfield]: value
-                }
-            }));
-        } else {
-            setProject(prevProject => ({
-                ...prevProject,
-                [name]: value
-            }));
-        }
+        setLocalFormData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
     };
 
-    const handleComponentChange = (e, category, componentId) => {
+    const handleLocationChange = (e) => {
         const { name, value } = e.target;
-        setProject(prevProject => ({
-            ...prevProject,
-            solarComponents: {
-                ...prevProject.solarComponents,
-                [category]: {
-                    ...prevProject.solarComponents[category],
-                    [componentId]: {
-                        ...prevProject.solarComponents[category][componentId],
-                        [name]: value
-                    }
-                }
+        setLocalFormData(prevData => ({
+            ...prevData,
+            location: {
+                ...prevData.location,
+                [name]: value
             }
         }));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            if (isEdit) {
-                await updateProject(id, project);
-            } else {
-                await createProject(project);
+    const handleTemperatureChange = (e) => {
+        const { name, value } = e.target;
+        setLocalFormData(prevData => ({
+            ...prevData,
+            temperature: {
+                ...prevData.temperature,
+                [name]: value
             }
-            navigate('/projects');
-        } catch (error) {
-            console.error('Failed to save project', error);
-        }
+        }));
+    };
+
+    const handleSubmitClick = (e) => {
+        e.preventDefault(); // Prevent the default form submission behavior
+        handleSubmit(localFormData); // Call the handleSubmit prop with the localFormData
     };
 
     return (
-        <form onSubmit={handleSubmit} className="project-form">
-            <input
-                type="text"
-                name="name"
-                value={project.name}
-                onChange={handleChange}
-                placeholder="Project Name"
-                required
-            />
-            <input
-                type="number"
-                name="location.latitude"
-                value={project.location.latitude}
-                onChange={handleChange}
-                placeholder="Latitude"
-                required
-            />
-            <input
-                type="number"
-                name="location.longitude"
-                value={project.location.longitude}
-                onChange={handleChange}
-                placeholder="Longitude"
-                required
-            />
-            <input
-                type="number"
-                name="temperature.min"
-                value={project.temperature.min}
-                onChange={handleChange}
-                placeholder="Min Temperature"
-                required
-            />
-            <input
-                type="number"
-                name="temperature.max"
-                value={project.temperature.max}
-                onChange={handleChange}
-                placeholder="Max Temperature"
-                required
-            />
-            {project.solarComponents && Object.keys(project.solarComponents).map(category => (
-                <div key={category}>
-                    <h3>{category}</h3>
-                    {project.solarComponents[category] && Object.keys(project.solarComponents[category]).map(componentId => (
-                        <div key={componentId}>
-                            <input
-                                type="number"
-                                name="quantity"
-                                value={project.solarComponents[category][componentId].quantity}
-                                onChange={(e) => handleComponentChange(e, category, componentId)}
-                                placeholder={`${category} Quantity`}
-                            />
-                        </div>
-                    ))}
-                </div>
-            ))}
-            <button type="submit">{isEdit ? 'Update' : 'Create'} Project</button>
+        <form onSubmit={handleSubmitClick}>
+            <div>
+                <label htmlFor="name">Name:</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={localFormData.name}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+            <div>
+                <h3>Location</h3>
+                <label htmlFor="latitude">Latitude:</label>
+                <input
+                    type="text"
+                    id="latitude"
+                    name="latitude"
+                    value={localFormData.location.latitude}
+                    onChange={handleLocationChange}
+                    required
+                />
+                <label htmlFor="longitude">Longitude:</label>
+                <input
+                    type="text"
+                    id="longitude"
+                    name="longitude"
+                    value={localFormData.location.longitude}
+                    onChange={handleLocationChange}
+                    required
+                />
+            </div>
+            <div>
+                <h3>Temperature</h3>
+                <label htmlFor="min">Min Temperature:</label>
+                <input
+                    type="text"
+                    id="min"
+                    name="min"
+                    value={localFormData.temperature.min}
+                    onChange={handleTemperatureChange}
+                    required
+                />
+                <label htmlFor="max">Max Temperature:</label>
+                <input
+                    type="text"
+                    id="max"
+                    name="max"
+                    value={localFormData.temperature.max}
+                    onChange={handleTemperatureChange}
+                    required
+                />
+            </div>
+            <div>
+                <button type="submit">Save</button>
+                <button type="button" onClick={onClose}>Cancel</button>
+            </div>
         </form>
     );
 };

@@ -75,10 +75,9 @@ const ProjectAdminPanel = () => {
         fetchProjects();
     }, []);
 
-    const handleUpdateProject = async (e) => {
-        e.preventDefault();
+    const handleUpdateProject = async (formData) => {
         try {
-            const updatedProject = await updateProject(selectedProject.id, formData); // Use named import
+            const updatedProject = await updateProject(selectedProject.id, formData);
             dispatch({ type: 'UPDATE_PROJECT', payload: updatedProject });
             alert('Project updated successfully');
             await fetchProjects();
@@ -87,10 +86,9 @@ const ProjectAdminPanel = () => {
         }
     };
 
-    const handleAddProject = async (e) => {
-        e.preventDefault();
+    const handleAddProject = async (formData) => {
         try {
-            const newProject = await createProject(formData); // Use named import
+            const newProject = await createProject(formData);
             dispatch({ type: 'ADD_PROJECT', payload: newProject });
             alert('Project added successfully');
             await fetchProjects();
