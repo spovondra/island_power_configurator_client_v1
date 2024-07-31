@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
-import {NavLink, useNavigate} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import authService from '../services/authService';
 import './Navbar.css';
 
 const Navbar = () => {
     const user = authService.getCurrentUser();
-    const navigate = useNavigate();
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const handleLogout = () => {
         authService.logout();
-        navigate('/login');
     };
 
     const toggleDropdown = () => {
