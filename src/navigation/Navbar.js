@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import authService from '../services/authService';
 import './Navbar.css';
 
@@ -20,9 +20,11 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <div className="navbar-links">
-                <Link to="/">Home</Link>
-                <Link to="/about">About</Link>
-                <Link to="/map">Map</Link>
+                <NavLink to="/">Home</NavLink>
+                <NavLink to="/about">About</NavLink>
+                <NavLink to="/map">Map</NavLink>
+                <NavLink to="/calculation">Calculation</NavLink>
+                <NavLink to="/projects">Projects</NavLink>
             </div>
             {user && (
                 <div className="navbar-user" onClick={toggleDropdown}>
@@ -30,9 +32,9 @@ const Navbar = () => {
                         {user.username}
                     </span>
                     <div className={`navbar-dropdown ${dropdownOpen ? 'open' : ''}`}>
-                        <Link to="/settings">Settings</Link>
+                        <NavLink to="/settings">Settings</NavLink>
                         {user.roles.includes('ADMIN') && (
-                            <Link to="/users">User List</Link>
+                            <NavLink to="/users">User List</NavLink>
                         )}
                         <button onClick={handleLogout}>Logout</button>
                     </div>
