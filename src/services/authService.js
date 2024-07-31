@@ -1,9 +1,9 @@
-import axios from 'axios';
+import apiClient from './apiClient';
 
 const API_URL = 'http://localhost:80/api/auth/';
 
 const register = (username, password, role, firstName = '', lastName = '', email = '') => {
-    return axios.post(`${API_URL}register`, {
+    return apiClient.post(`${API_URL}register`, {
         username,
         password,
         role,
@@ -14,7 +14,7 @@ const register = (username, password, role, firstName = '', lastName = '', email
 };
 
 const login = async (username, password) => {
-    const response = await axios.post(`${API_URL}login`, null, {
+    const response = await apiClient.post(`${API_URL}login`, null, {
         params: {
             username,
             password
@@ -36,19 +36,16 @@ const logout = () => {
 };
 
 const getCurrentUser = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return user;
+    const user = localStorage.getItem('user');
+    console.log('User from localStorage:', user);
+    return user ? JSON.parse(user) : null;
 };
 
 const getAllUsers = async () => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
 
-    const response = await axios.get(`${API_URL}getAll`, {
-        headers: {
-            Authorization: `Bearer ${user.token}`
-        }
-    });
+    const response = await apiClient.get(`${API_URL}getAll`);
     return response.data;
 };
 
@@ -56,22 +53,14 @@ const deleteUser = async (userId) => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
 
-    await axios.delete(`${API_URL}delete/${userId}`, {
-        headers: {
-            Authorization: `Bearer ${user.token}`
-        }
-    });
+    await apiClient.delete(`${API_URL}delete/${userId}`);
 };
 
 const getUserById = async (userId) => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
 
-    const response = await axios.get(`${API_URL}user/${userId}`, {
-        headers: {
-            Authorization: `Bearer ${user.token}`
-        }
-    });
+    const response = await apiClient.get(`${API_URL}user/${userId}`);
     return response.data;
 };
 
@@ -79,11 +68,7 @@ const updateUser = async (userId, userDetails) => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
 
-    const response = await axios.put(`${API_URL}update/${userId}`, userDetails, {
-        headers: {
-            Authorization: `Bearer ${user.token}`
-        }
-    });
+    const response = await apiClient.put(`${API_URL}update/${userId}`, userDetails);
     return response.data;
 };
 

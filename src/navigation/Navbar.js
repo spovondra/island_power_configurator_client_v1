@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import authService from '../services/authService';
 import './Navbar.css';
 
@@ -32,7 +32,10 @@ const Navbar = () => {
                     <div className={`navbar-dropdown ${dropdownOpen ? 'open' : ''}`}>
                         <NavLink to="/settings">Settings</NavLink>
                         {user.roles.includes('ADMIN') && (
-                            <NavLink to="/users">User List</NavLink>
+                            <>
+                                <NavLink to="/admin/users">User List</NavLink>
+                                <NavLink to="/admin/projects">Project Management</NavLink>
+                            </>
                         )}
                         <button onClick={handleLogout}>Logout</button>
                     </div>

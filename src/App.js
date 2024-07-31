@@ -12,6 +12,8 @@ import UserSettings from "./components/UserSettings/UserSettings";
 import Calculation from "./pages/Calculation";
 import ProjectList from "./components/Project/ProjectList";
 import ProjectForm from "./components/Project/ProjectForm";
+import AuthRoute from "./components/AuthRoute";
+import ProjectAdminPanel from "./components/Project/ProjectAdminPanel";
 
 const App = () => {
     return (
@@ -24,11 +26,18 @@ const App = () => {
                     <Route path="about" element={<About />} />
                     <Route path="map" element={<Map />} />
                     <Route path="settings" element={<UserSettings />} />
-                    <Route path="users" element={<UserList />} />
+                    <Route path="/admin/users" element={
+                            <AuthRoute role="ADMIN">
+                                <UserList />
+                            </AuthRoute>}/>
                     <Route path="calculation" element={<Calculation />} />
                     <Route path="projects" element={<ProjectList />} />
                     <Route path="projects/new" element={<ProjectForm />} />
-                    <Route path="projects/:projectId" element={<ProjectForm />} />
+                    <Route path="projects/edit/:id" element={<ProjectForm />} />
+                    <Route path="/admin/projects" element={
+                            <AuthRoute role="ADMIN">
+                                <ProjectAdminPanel />
+                            </AuthRoute>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
