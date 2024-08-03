@@ -36,9 +36,8 @@ const initialState = {
 
 const ProjectList = () => {
     const [state, dispatch] = useReducer(projectReducer, initialState);
-    const navigate = useNavigate();
+    useNavigate();
 
-    // Fetch projects from API
     const fetchProjects = async () => {
         dispatch({ type: 'FETCH_START' });
         try {

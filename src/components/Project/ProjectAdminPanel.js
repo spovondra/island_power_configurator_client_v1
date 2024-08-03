@@ -67,9 +67,7 @@ const ProjectAdminPanel = () => {
             accessories: []
         }
     });
-
-    const navigate = useNavigate();
-
+    useNavigate();
     const fetchProjects = async () => {
         try {
             const data = await getAllProjects();
@@ -138,29 +136,6 @@ const ProjectAdminPanel = () => {
         });
         dispatch({ type: 'SET_SELECTED_PROJECT', payload: project });
     };
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        const [section, key] = name.split('.');
-
-        if (section === 'site') {
-            setFormData(prevFormData => ({
-                ...prevFormData,
-                site: {
-                    ...prevFormData.site,
-                    [key]: value
-                }
-            }));
-        } else if (section === 'solarComponents') {
-            // Handle nested components if needed
-        } else {
-            setFormData(prevFormData => ({
-                ...prevFormData,
-                [name]: value
-            }));
-        }
-    };
-
     const handleCloseModal = () => {
         dispatch({ type: 'CLOSE_MODAL' });
     };

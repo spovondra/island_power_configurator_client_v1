@@ -1,6 +1,7 @@
 html, body {
     height: 100%;
     margin: 0;
+    font-family: Arial, sans-serif; /* Ensure consistent font */
 }
 
 .wizard-container {
@@ -29,7 +30,7 @@ html, body {
 .wizard-step {
     flex: 1;
     text-align: center;
-    padding: 10px;
+    padding: 8px; /* Reduced padding for compactness */
     background: #f9f9f9;
     border: 1px solid #e0e0e0;
     border-radius: 6px;
@@ -41,15 +42,15 @@ html, body {
 }
 
 .wizard-step.active {
-    background: #007bff; /* Modrá barva */
+    background: #007bff; /* Blue color for active step */
     color: white;
     border-color: #007bff;
 }
 
 .wizard-step.done {
-    background: #28a745; /* Hezčí zelená */
+    background: #007bff; /* Blue color for completed step */
     color: white;
-    border-color: #28a745;
+    border-color: #007bff;
 }
 
 .wizard-content {
@@ -70,8 +71,8 @@ html, body {
 }
 
 .wizard-buttons button {
-    padding: 10px 20px;
-    font-size: 1rem;
+    padding: 8px 16px; /* Reduced padding for compactness */
+    font-size: 0.875rem; /* Reduced font size for compactness */
     border: none;
     border-radius: 6px;
     color: #fff;
@@ -84,40 +85,31 @@ html, body {
     background: #ccc;
     color: #666;
     cursor: not-allowed;
-    transition: none; /* Vypne přechody pro neaktivní tlačítko */
+    transition: none; /* No transition for disabled button */
 }
 
 .wizard-buttons button:disabled:hover {
-    background-color: #dc3545; /* Červená barva pro neaktivní tlačítko */
-    transform: none; /* Žádná animace */
+    background-color: #ccc; /* Maintain disabled color */
+    transform: none; /* No transform on disabled button */
 }
 
 .wizard-buttons button:not(:disabled):hover {
-    background-color: #0056b3; /* Tmavší modrá barva pro aktivní tlačítko */
+    background-color: #0056b3; /* Darker blue for hover */
     transform: scale(1.02);
 }
 
 .wizard-buttons button.next {
-    background-color: #007bff; /* Modrá barva */
+    background-color: #007bff; /* Blue color for next button */
 }
 
 .wizard-buttons button.next:hover {
-    background-color: #0056b3; /* Tmavší modrá barva při hoveru */
+    background-color: #0056b3; /* Darker blue for hover */
 }
 
 .wizard-buttons button.previous {
-    background-color: #6c757d; /* Šedá barva pro neaktivní stav */
+    background-color: #007bff; /* Blue color for previous button */
 }
 
-.wizard-buttons button.previous:not(:disabled) {
-    background-color: #007bff; /* Modrá barva pro aktivní stav */
-}
-
-.wizard-buttons button.previous:disabled {
-    background-color: #6c757d; /* Šedá barva pro neaktivní stav */
-}
-
-.wizard-buttons button.previous:not(:disabled):hover {
-    background-color: #0056b3; /* Tmavší modrá barva při hoveru */
-    transform: scale(1.02);
+.wizard-buttons button.previous:hover {
+    background-color: #0056b3; /* Darker blue for hover */
 }

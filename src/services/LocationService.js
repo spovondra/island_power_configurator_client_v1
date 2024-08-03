@@ -1,11 +1,10 @@
 import axios from 'axios';
-
-const API_BASE_URL = 'http://localhost:80/api/location';
+import { API_LOCATION_URL } from '../config';
 
 const LocationService = {
     calculatePVGISData: (latitude, longitude, angle, aspect) => {
         console.log(`Sending request to calculate PVGIS data with lat: ${latitude}, lng: ${longitude}, angle: ${angle}, aspect: ${aspect}`);
-        return axios.get(`${API_BASE_URL}/calculatePVGISData`, {
+        return axios.get(`${API_LOCATION_URL}/calculatePVGISData`, {
             params: { latitude, longitude, angle, aspect }
         }).then(response => {
             console.log('PVGIS data response:', response.data);
@@ -18,7 +17,7 @@ const LocationService = {
 
     fetchOptimalValues: (latitude, longitude) => {
         console.log(`Sending request to fetch optimal values with lat: ${latitude}, lng: ${longitude}`);
-        return axios.get(`${API_BASE_URL}/fetchOptimalValues`, {
+        return axios.get(`${API_LOCATION_URL}/fetchOptimalValues`, {
             params: { latitude, longitude }
         }).then(response => {
             console.log('Optimal values response:', response.data);
@@ -31,7 +30,7 @@ const LocationService = {
 
     getMinMaxTemperatures: (latitude, longitude) => {
         console.log(`Sending request to get min/max temperatures with lat: ${latitude}, lng: ${longitude}`);
-        return axios.get(`${API_BASE_URL}/min-max-temperatures`, {
+        return axios.get(`${API_LOCATION_URL}/min-max-temperatures`, {
             params: { latitude, longitude }
         }).then(response => {
             console.log('Min/max temperatures response:', response.data);

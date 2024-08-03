@@ -1,9 +1,8 @@
 import apiClient from './apiClient';
-
-const API_URL = 'http://localhost:80/api/auth/';
+import { API_AUTH_URL } from '../config';
 
 const register = (username, password, role, firstName = '', lastName = '', email = '') => {
-    return apiClient.post(`${API_URL}register`, {
+    return apiClient.post(`${API_AUTH_URL}register`, {
         username,
         password,
         role,
@@ -14,7 +13,7 @@ const register = (username, password, role, firstName = '', lastName = '', email
 };
 
 const login = async (username, password) => {
-    const response = await apiClient.post(`${API_URL}login`, null, {
+    const response = await apiClient.post(`${API_AUTH_URL}login`, null, {
         params: {
             username,
             password
@@ -45,7 +44,7 @@ const getAllUsers = async () => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
 
-    const response = await apiClient.get(`${API_URL}getAll`);
+    const response = await apiClient.get(`${API_AUTH_URL}getAll`);
     return response.data;
 };
 
@@ -53,14 +52,14 @@ const deleteUser = async (userId) => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
 
-    await apiClient.delete(`${API_URL}delete/${userId}`);
+    await apiClient.delete(`${API_AUTH_URL}delete/${userId}`);
 };
 
 const getUserById = async (userId) => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
 
-    const response = await apiClient.get(`${API_URL}user/${userId}`);
+    const response = await apiClient.get(`${API_AUTH_URL}user/${userId}`);
     return response.data;
 };
 
@@ -68,11 +67,11 @@ const updateUser = async (userId, userDetails) => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
 
-    const response = await apiClient.put(`${API_URL}update/${userId}`, userDetails);
+    const response = await apiClient.put(`${API_AUTH_URL}update/${userId}`, userDetails);
     return response.data;
 };
 
-export default {
+const authService = {
     register,
     login,
     logout,
@@ -82,3 +81,5 @@ export default {
     getUserById,
     updateUser
 };
+
+export default authService;

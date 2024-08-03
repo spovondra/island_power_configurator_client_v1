@@ -1,13 +1,12 @@
-// services/ProjectService.js
 import apiClient from './apiClient';
+import { API_PROJECT_URL } from '../config';
 
-const API_URL = '/projects';
-const USER_PROJECTS_URL = '/projects/user-projects'; // Adjust this endpoint based on your backend setup
+const USER_PROJECTS_URL = `${API_PROJECT_URL}/user-projects`; // Adjust this endpoint based on your backend setup
 
 // Fetch all projects
 export const getAllProjects = async () => {
     try {
-        const response = await apiClient.get(API_URL);
+        const response = await apiClient.get(API_PROJECT_URL);
         return response.data;
     } catch (error) {
         throw error;
@@ -17,7 +16,7 @@ export const getAllProjects = async () => {
 // Fetch a project by ID
 export const getProjectById = async (projectId) => {
     try {
-        const response = await apiClient.get(`${API_URL}/${projectId}`);
+        const response = await apiClient.get(`${API_PROJECT_URL}/${projectId}`);
         return response.data;
     } catch (error) {
         throw error;
@@ -27,7 +26,7 @@ export const getProjectById = async (projectId) => {
 // Create a new project
 export const createProject = async (project) => {
     try {
-        const response = await apiClient.post(API_URL, project);
+        const response = await apiClient.post(API_PROJECT_URL, project);
         return response.data;
     } catch (error) {
         throw error;
@@ -37,7 +36,7 @@ export const createProject = async (project) => {
 // Update an existing project
 export const updateProject = async (projectId, project) => {
     try {
-        const response = await apiClient.put(`${API_URL}/${projectId}`, project);
+        const response = await apiClient.put(`${API_PROJECT_URL}/${projectId}`, project);
         return response.data;
     } catch (error) {
         throw error;
@@ -47,7 +46,7 @@ export const updateProject = async (projectId, project) => {
 // Delete a project
 export const deleteProject = async (projectId) => {
     try {
-        await apiClient.delete(`${API_URL}/${projectId}`);
+        await apiClient.delete(`${API_PROJECT_URL}/${projectId}`);
     } catch (error) {
         throw error;
     }

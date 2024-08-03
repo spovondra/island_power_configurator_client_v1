@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import Step1 from '../components/wizard/Step1';
-import Step2 from '../components/wizard/Step2';
-import Step3 from '../components/wizard/Step3';
+import Step1Introduction from '../components/wizard/Step1_Introduction';
+import Step2Appliance from '../components/wizard/Step2_Appliance';
+import Step3Location from '../components/wizard/Step3_Location';
 import FinalStep from '../components/wizard/FinalStep';
 import './Wizard.css';
 
 const steps = [
-    { key: 'step1', label: 'Step 1', component: <Step1 /> },
-    { key: 'step2', label: 'Step 2', component: <Step2 /> },
-    { key: 'step3', label: 'Step 3', component: <Step3 /> },
+    { key: 'step1', label: 'Introduction', component: <Step1Introduction /> },
+    { key: 'step2', label: 'Appliance', component: <Step2Appliance /> },
+    { key: 'step3', label: 'Location', component: <Step3Location /> },
     { key: 'finalStep', label: 'Final Step', component: <FinalStep /> },
 ];
 

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import authService from './authService';
-
-const API_URL = 'http://localhost:80/api';
+import { API_URL } from '../config';
 
 const getAuthToken = () => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -27,7 +26,6 @@ apiClient.interceptors.response.use(
     response => response,
     error => {
         if (error.response && error.response.status === 401) {
-            // Unauthorized error, log out the user
             authService.logout();
         }
         return Promise.reject(error);
