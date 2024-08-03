@@ -1,9 +1,9 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import { createProject, deleteProject, getAllProjects, updateProject } from '../../services/ProjectService'; // Named imports
+import { createProject, deleteProject, getAllProjects, updateProject } from '../../services/ProjectService';
 import { useNavigate } from 'react-router-dom';
-import ProjectTable from './ProjectAdminTable'; // Ensure this component exists
-import ProjectForm from './ProjectForm'; // Ensure this component exists
-import Modal from '../Modal/Modal'; // Ensure this component exists
+import ProjectTable from './ProjectAdminTable';
+import ProjectForm from './ProjectForm';
+import Modal from '../Modal/Modal';
 import './ProjectAdminPanel.css';
 
 const initialState = {
@@ -48,23 +48,31 @@ const ProjectAdminPanel = () => {
     const { projects, error, isLoading, isModalOpen, selectedProject, modalContent } = state;
     const [formData, setFormData] = useState({
         name: '',
-        location: { latitude: '', longitude: '' },
-        temperature: { min: '', max: '' },
+        site: {
+            latitude: '',
+            longitude: '',
+            minTemperature: '',
+            maxTemperature: '',
+            panelAngle: '',
+            panelAspect: '',
+            usedOptimalValues: false,
+            monthlyIrradianceList: []
+        },
         solarComponents: {
-            appliances: {},
-            solarPanels: {},
-            controllers: {},
-            batteries: {},
-            inverters: {},
-            accessories: {}
+            appliances: [],
+            solarPanels: [],
+            controllers: [],
+            batteries: [],
+            inverters: [],
+            accessories: []
         }
     });
 
-    useNavigate();
+    const navigate = useNavigate();
 
     const fetchProjects = async () => {
         try {
-            const data = await getAllProjects(); // Use named import
+            const data = await getAllProjects();
             dispatch({ type: 'FETCH_SUCCESS', payload: data });
         } catch (error) {
             dispatch({ type: 'FETCH_ERROR', payload: error.message });
@@ -99,7 +107,7 @@ const ProjectAdminPanel = () => {
 
     const handleDeleteProject = async (projectId) => {
         try {
-            await deleteProject(projectId); // Use named import
+            await deleteProject(projectId);
             dispatch({ type: 'DELETE_SUCCESS', payload: projectId });
         } catch (error) {
             dispatch({ type: 'FETCH_ERROR', payload: error.message });
@@ -109,21 +117,23 @@ const ProjectAdminPanel = () => {
     const handleSelectProject = (project) => {
         setFormData({
             name: project.name || '',
-            location: {
-                latitude: project.location?.latitude || '',
-                longitude: project.location?.longitude || ''
-            },
-            temperature: {
-                min: project.temperature?.min || '',
-                max: project.temperature?.max || ''
+            site: {
+                latitude: project.site?.latitude || '',
+                longitude: project.site?.longitude || '',
+                minTemperature: project.site?.minTemperature || '',
+                maxTemperature: project.site?.maxTemperature || '',
+                panelAngle: project.site?.panelAngle || '',
+                panelAspect: project.site?.panelAspect || '',
+                usedOptimalValues: project.site?.usedOptimalValues || false,
+                monthlyIrradianceList: project.site?.monthlyIrradianceList || []
             },
             solarComponents: {
-                appliances: project.solarComponents?.appliances || {},
-                solarPanels: project.solarComponents?.solarPanels || {},
-                controllers: project.solarComponents?.controllers || {},
-                batteries: project.solarComponents?.batteries || {},
-                inverters: project.solarComponents?.inverters || {},
-                accessories: project.solarComponents?.accessories || {}
+                appliances: project.solarComponents?.appliances || [],
+                solarPanels: project.solarComponents?.solarPanels || [],
+                controllers: project.solarComponents?.controllers || [],
+                batteries: project.solarComponents?.batteries || [],
+                inverters: project.solarComponents?.inverters || [],
+                accessories: project.solarComponents?.accessories || []
             }
         });
         dispatch({ type: 'SET_SELECTED_PROJECT', payload: project });
@@ -133,19 +143,11 @@ const ProjectAdminPanel = () => {
         const { name, value } = e.target;
         const [section, key] = name.split('.');
 
-        if (section === 'location') {
+        if (section === 'site') {
             setFormData(prevFormData => ({
                 ...prevFormData,
-                location: {
-                    ...prevFormData.location,
-                    [key]: value
-                }
-            }));
-        } else if (section === 'temperature') {
-            setFormData(prevFormData => ({
-                ...prevFormData,
-                temperature: {
-                    ...prevFormData,
+                site: {
+                    ...prevFormData.site,
                     [key]: value
                 }
             }));
@@ -184,8 +186,8 @@ const ProjectAdminPanel = () => {
                         {modalContent === 'form' ? (
                             <ProjectForm
                                 formData={formData}
-                                handleInputChange={handleInputChange}
                                 handleSubmit={selectedProject ? handleUpdateProject : handleAddProject}
+                                onClose={handleCloseModal}
                             />
                         ) : (
                             <p>{error}</p>

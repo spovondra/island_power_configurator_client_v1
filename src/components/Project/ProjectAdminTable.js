@@ -18,8 +18,8 @@ const ProjectTable = ({ projects, handleSelectProject, handleDeleteProject }) =>
                     <tr key={project.id}>
                         <td>{project.id}</td>
                         <td>{project.name}</td>
-                        <td>{`${project.location.latitude}, ${project.location.longitude}`}</td>
-                        <td>{`${project.temperature.min} to ${project.temperature.max}`}</td>
+                        <td>{`${project.site.latitude}, ${project.site.longitude}`}</td>
+                        <td>{`${project.site.minTemperature} to ${project.site.maxTemperature}`}</td>
                         <td>
                             <button onClick={() => handleSelectProject(project)}>Edit</button>
                             <button onClick={() => handleDeleteProject(project.id)}>Delete</button>
