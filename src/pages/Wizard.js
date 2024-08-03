@@ -1,4 +1,3 @@
-// src/pages/Wizard.js
 import React, { useState } from 'react';
 import Step1 from '../components/wizard/Step1';
 import Step2 from '../components/wizard/Step2';
@@ -30,23 +29,31 @@ const Wizard = () => {
         }
     };
 
+    const handleStepClick = (index) => {
+        setCurrentStepIndex(index);
+    };
+
     return (
         <div className="wizard-container">
             <div className="wizard-steps">
-                <ul className="wizard-steps-list">
+                <div className="wizard-steps-container">
                     {steps.map((step, index) => (
-                        <li key={index} className={currentStepIndex === index ? 'active' : index < currentStepIndex ? 'done' : ''}>
-                            <div>{step.label}</div>
-                        </li>
+                        <div
+                            key={index}
+                            className={`wizard-step ${currentStepIndex === index ? 'active' : index < currentStepIndex ? 'done' : ''}`}
+                            onClick={() => handleStepClick(index)}
+                        >
+                            {step.label}
+                        </div>
                     ))}
-                </ul>
+                </div>
             </div>
             <div className="wizard-content">
                 {steps[currentStepIndex].component}
             </div>
             <div className="wizard-buttons">
-                <button onClick={handleBack} disabled={currentStepIndex === 0}>Back</button>
-                <button onClick={handleNext}>{currentStepIndex === steps.length - 1 ? 'Finish' : 'Next'}</button>
+                <button className="previous" onClick={handleBack} disabled={currentStepIndex === 0}>Back</button>
+                <button className="next" onClick={handleNext}>{currentStepIndex === steps.length - 1 ? 'Finish' : 'Next'}</button>
             </div>
         </div>
     );

@@ -21,62 +21,33 @@ html, body {
     margin-bottom: 15px;
 }
 
-.wizard-steps-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+.wizard-steps-container {
     display: flex;
     justify-content: space-between;
 }
 
-.wizard-steps-list li {
+.wizard-step {
     flex: 1;
     text-align: center;
-    position: relative;
-}
-
-.wizard-steps-list li div {
     padding: 10px;
     background: #f9f9f9;
     border: 1px solid #e0e0e0;
     border-radius: 6px;
     font-size: 0.875rem;
     font-weight: bold;
-    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
     cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
     position: relative;
-    z-index: 1;
 }
 
-.wizard-steps-list li div::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 8px;
-    height: 8px;
-    background-color: #e0e0e0;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    z-index: -1;
-}
-
-.wizard-steps-list li.active div::before {
-    background-color: #007bff;
-}
-
-.wizard-steps-list li.done div::before {
-    background-color: #28a745;
-}
-
-.wizard-steps-list li.active div {
-    background: #007bff;
+.wizard-step.active {
+    background: #007bff; /* Modrá barva */
     color: white;
     border-color: #007bff;
 }
 
-.wizard-steps-list li.done div {
-    background: #28a745;
+.wizard-step.done {
+    background: #28a745; /* Hezčí zelená */
     color: white;
     border-color: #28a745;
 }
@@ -113,27 +84,40 @@ html, body {
     background: #ccc;
     color: #666;
     cursor: not-allowed;
+    transition: none; /* Vypne přechody pro neaktivní tlačítko */
 }
 
-.wizard-buttons button:hover:not(:disabled) {
-    background-color: #0056b3;
+.wizard-buttons button:disabled:hover {
+    background-color: #dc3545; /* Červená barva pro neaktivní tlačítko */
+    transform: none; /* Žádná animace */
+}
+
+.wizard-buttons button:not(:disabled):hover {
+    background-color: #0056b3; /* Tmavší modrá barva pro aktivní tlačítko */
     transform: scale(1.02);
 }
 
 .wizard-buttons button.next {
-    background-color: #28a745;
+    background-color: #007bff; /* Modrá barva */
 }
 
 .wizard-buttons button.next:hover {
-    background-color: #218838;
-    transform: scale(1.02);
+    background-color: #0056b3; /* Tmavší modrá barva při hoveru */
 }
 
 .wizard-buttons button.previous {
-    background-color: #6c757d;
+    background-color: #6c757d; /* Šedá barva pro neaktivní stav */
 }
 
-.wizard-buttons button.previous:hover {
-    background-color: #5a6268;
+.wizard-buttons button.previous:not(:disabled) {
+    background-color: #007bff; /* Modrá barva pro aktivní stav */
+}
+
+.wizard-buttons button.previous:disabled {
+    background-color: #6c757d; /* Šedá barva pro neaktivní stav */
+}
+
+.wizard-buttons button.previous:not(:disabled):hover {
+    background-color: #0056b3; /* Tmavší modrá barva při hoveru */
     transform: scale(1.02);
 }
