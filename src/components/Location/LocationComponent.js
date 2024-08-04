@@ -11,7 +11,7 @@ L.Icon.Default.mergeOptions({
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-shadow.png',
 });
 
-const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, calculatePVGISData, onMapClick, setUseOptimal, revertToOriginalSettings }) => {
+const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, calculatePVGISData, setUseOptimal, revertToOriginalSettings }) => {
     const [position, setPosition] = useState([latitude, longitude]);
 
     useEffect(() => {
