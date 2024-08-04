@@ -33,8 +33,13 @@ const ProjectList = () => {
     };
 
     const handleProjectAction = (project) => {
-        setSelectedProject(project.id); // Set selected project in context
-        navigate('/wizard', { state: { project } }); // Redirect to wizard
+        setSelectedProject(project.id);
+        navigate('/wizard', { state: { project } });
+    };
+
+    const handleCreateNewProject = () => {
+        setSelectedProject(null);
+        navigate('/wizard', { state: { isNewProject: true } });
     };
 
     if (state.loading) return <p>Loading...</p>;
@@ -43,7 +48,7 @@ const ProjectList = () => {
     return (
         <div>
             <h2>Projects</h2>
-            <button onClick={() => handleProjectAction({})}>Create New Project</button>
+            <button onClick={handleCreateNewProject}>Create New Project</button>
             <ul>
                 {state.projects.map(project => (
                     <li key={project.id}>
