@@ -1,8 +1,6 @@
 import apiClient from './apiClient';
 import { API_PROJECT_URL } from '../config';
 
-const USER_PROJECTS_URL = `${API_PROJECT_URL}/user-projects`; // Adjust this endpoint based on your backend setup
-
 // Fetch all projects
 export const getAllProjects = async () => {
     try {
@@ -55,7 +53,7 @@ export const deleteProject = async (projectId) => {
 // Fetch projects specific to the logged-in user
 export const getUserProjects = async () => {
     try {
-        const response = await apiClient.get(USER_PROJECTS_URL);
+        const response = await apiClient.get(`${API_PROJECT_URL}/user-projects`);
         return response.data;
     } catch (error) {
         throw error;

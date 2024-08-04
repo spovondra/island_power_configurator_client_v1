@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import './LocationComponent.css'; // Import your custom CSS file
+import './LocationComponent.css';
 
 // Fixing marker icon issue with React-Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -12,7 +12,7 @@ L.Icon.Default.mergeOptions({
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-shadow.png',
 });
 
-const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, calculatePVGISData }) => {
+const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, calculatePVGISData, onMapClick }) => {
     const [position, setPosition] = useState([latitude, longitude]);
 
     useEffect(() => {
@@ -25,13 +25,14 @@ const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, cal
                 const { lat, lng } = e.latlng;
                 setLatitude(lat.toFixed(3));
                 setLongitude(lng.toFixed(3));
+                if (onMapClick) {
+                    onMapClick(lat, lng); // Call parent callback on map click
+                }
                 calculatePVGISData(lat, lng); // Call this function on map click
             },
         });
 
-        return position === null ? null : (
-            <Marker position={position} />
-        );
+        return position ? <Marker position={position} /> : null;
     };
 
     return (

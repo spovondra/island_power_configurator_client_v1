@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import Step1Introduction from '../components/wizard/Step1_Introduction';
-import Step2Appliance from '../components/wizard/Step2_Appliance';
-import Step3Location from '../components/wizard/Step3_Location';
-import FinalStep from '../components/wizard/FinalStep';
+import { ProjectProvider } from '../context/ProjectContext'; // Uprav cestu podle potřeby
+import Step1Introduction from '../components/Wizard/Step1_Introduction';
+import Step2Appliance from '../components/Wizard/Step2_Appliance';
+import Step3Location from '../components/Wizard/Step3_Location';
+import FinalStep from '../components/Wizard/FinalStep';
 import './Wizard.css';
 
 const steps = [
@@ -34,28 +35,30 @@ const Wizard = () => {
     };
 
     return (
-        <div className="wizard-container">
-            <div className="wizard-steps">
-                <div className="wizard-steps-container">
-                    {steps.map((step, index) => (
-                        <div
-                            key={index}
-                            className={`wizard-step ${currentStepIndex === index ? 'active' : index < currentStepIndex ? 'done' : ''}`}
-                            onClick={() => handleStepClick(index)}
-                        >
-                            {step.label}
-                        </div>
-                    ))}
+        <ProjectProvider>
+            <div className="wizard-container">
+                <div className="wizard-steps">
+                    <div className="wizard-steps-container">
+                        {steps.map((step, index) => (
+                            <div
+                                key={index}
+                                className={`wizard-step ${currentStepIndex === index ? 'active' : index < currentStepIndex ? 'done' : ''}`}
+                                onClick={() => handleStepClick(index)}
+                            >
+                                {step.label}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div className="wizard-content">
+                    {steps[currentStepIndex].component}
+                </div>
+                <div className="wizard-buttons">
+                    <button className="previous" onClick={handleBack} disabled={currentStepIndex === 0}>Back</button>
+                    <button className="next" onClick={handleNext}>{currentStepIndex === steps.length - 1 ? 'Finish' : 'Next'}</button>
                 </div>
             </div>
-            <div className="wizard-content">
-                {steps[currentStepIndex].component}
-            </div>
-            <div className="wizard-buttons">
-                <button className="previous" onClick={handleBack} disabled={currentStepIndex === 0}>Back</button>
-                <button className="next" onClick={handleNext}>{currentStepIndex === steps.length - 1 ? 'Finish' : 'Next'}</button>
-            </div>
-        </div>
+        </ProjectProvider>
     );
 };
 
