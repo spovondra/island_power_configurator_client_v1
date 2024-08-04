@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import LocationComponent from '../components/Location/LocationComponent';
 import LocationService from '../services/LocationService';
-import './Location.css'; // Import your custom CSS file for Location component
 
 const Location = () => {
     const [latitude, setLatitude] = useState(49.744);

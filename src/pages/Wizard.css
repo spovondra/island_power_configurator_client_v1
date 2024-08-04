@@ -6,15 +6,15 @@ html, body {
 .wizard-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     width: 100%;
-    height: 90vh;
+    min-height: 80vh; /* Minimum height to ensure it looks good */
     padding: 20px;
     margin: 10px auto;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+    overflow: hidden; /* Prevent overflow */
 }
 
 .wizard-steps {
@@ -59,13 +59,17 @@ html, body {
     background-color: #fafafa;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     box-sizing: border-box;
-    overflow: hidden;
+    overflow: visible; /* No scrolling within content */
 }
 
 .wizard-buttons {
     display: flex;
     justify-content: space-between;
     gap: 10px; /* Adjusted gap to fit buttons within the container */
+    margin-top: auto; /* Pushes buttons to the bottom */
+    padding-top: 10px;
+    background-color: #f1f1f1;
+    border-top: 1px solid #e0e0e0;
 }
 
 .wizard-buttons button {

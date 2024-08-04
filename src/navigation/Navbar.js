@@ -23,7 +23,6 @@ const Navbar = () => {
                 <NavLink to="/location">Location</NavLink>
                 <NavLink to="/calculation">Calculation</NavLink>
                 <NavLink to="/projects">Projects</NavLink>
-                <NavLink to="/wizard">Start Wizard</NavLink> {/* Link to Wizard page */}
             </div>
             {user && (
                 <div className="navbar-user" onClick={toggleDropdown}>

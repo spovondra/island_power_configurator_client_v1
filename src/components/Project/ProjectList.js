@@ -1,54 +1,25 @@
 import React, { useReducer, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserProjects, deleteProject } from '../../services/ProjectService';
-import { ProjectContext } from '../../context/ProjectContext'; // Ensure this import is correct
-
-const projectReducer = (state, action) => {
-    switch (action.type) {
-        case 'FETCH_START':
-            return { ...state, loading: true };
-        case 'FETCH_SUCCESS':
-            return { ...state, loading: false, projects: action.payload };
-        case 'FETCH_FAILURE':
-            return { ...state, loading: false, error: action.payload };
-        case 'DELETE_PROJECT':
-            return {
-                ...state,
-                projects: state.projects.filter(project => project.id !== action.payload)
-            };
-        default:
-            return state;
-    }
-};
-
-const initialState = {
-    projects: [],
-    loading: false,
-    error: null
-};
+import { ProjectContext } from '../../context/ProjectContext';
+import { projectReducer, initialState } from '../../reducers/projectReducer';
 
 const ProjectList = () => {
     const [state, dispatch] = useReducer(projectReducer, initialState);
-    const context = useContext(ProjectContext);
-
-    if (!context) {
-        throw new Error('ProjectContext must be used within a ProjectProvider');
-    }
-
-    const { setSelectedProject } = context;
+    const { setSelectedProject } = useContext(ProjectContext);
     const navigate = useNavigate();
 
-    const fetchProjects = async () => {
-        dispatch({ type: 'FETCH_START' });
-        try {
-            const data = await getUserProjects();
-            dispatch({ type: 'FETCH_SUCCESS', payload: data });
-        } catch (error) {
-            dispatch({ type: 'FETCH_FAILURE', payload: error.message });
-        }
-    };
-
     useEffect(() => {
+        const fetchProjects = async () => {
+            dispatch({ type: 'FETCH_START' });
+            try {
+                const data = await getUserProjects();
+                dispatch({ type: 'FETCH_SUCCESS', payload: data });
+            } catch (error) {
+                dispatch({ type: 'FETCH_FAILURE', payload: error.message });
+            }
+        };
+
         fetchProjects();
     }, []);
 
