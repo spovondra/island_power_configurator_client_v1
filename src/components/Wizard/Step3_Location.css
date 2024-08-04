@@ -75,10 +75,14 @@ button:hover {
     background-color: #0056b3; /* Darker blue on hover */
 }
 
-#projectSelect {
+.search-block {
+    display: flex;
+    flex-direction: row;
     width: 100%;
-    padding: 10px;
-    border-radius: 4px;
+}
+
+#locationSearch {
     border: 1px solid #dcdcdc;
-    margin-bottom: 10px;
+    border-radius: 4px;
+    padding: 10px 10px;
 }

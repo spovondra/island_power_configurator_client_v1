@@ -12,11 +12,10 @@ const Step3_Location = () => {
     const [angle, setAngle] = useState(35);
     const [aspect, setAspect] = useState(0);
     const [originalSettings, setOriginalSettings] = useState({ angle: 35, aspect: 0 });
-    const [pvgisData, setPVGISData] = useState('');
     const [temperatures, setTemperatures] = useState({ min: 'N/A', max: 'N/A' });
     const [dataFetched, setDataFetched] = useState(false);
     const [useOptimal, setUseOptimal] = useState(false);
-    const [shouldSave, setShouldSave] = useState(false); // Added state to control save action
+    const [shouldSave, setShouldSave] = useState(false); // Control save action
 
     const fetchData = useCallback(async (lat, lng) => {
         try {
@@ -25,7 +24,6 @@ const Step3_Location = () => {
                 LocationService.getMinMaxTemperatures(lat, lng)
             ]);
 
-            setPVGISData(JSON.stringify(pvgisResponse.data, null, 2));
             setTemperatures({
                 min: tempResponse.data.minTemp !== undefined ? Number(tempResponse.data.minTemp).toFixed(2) : 'Error',
                 max: tempResponse.data.maxTemp !== undefined ? Number(tempResponse.data.maxTemp).toFixed(2) : 'Error'
@@ -34,7 +32,6 @@ const Step3_Location = () => {
             setShouldSave(true); // Set flag to true when data is fetched
         } catch (error) {
             console.error('Error fetching data:', error);
-            setPVGISData('Error fetching data');
             setTemperatures({ min: 'Error', max: 'Error' });
             setDataFetched(false);
             setShouldSave(false); // Reset flag on error
@@ -59,11 +56,7 @@ const Step3_Location = () => {
                     maxTemperature: temperatures.max,
                     panelAngle: angle,
                     panelAspect: aspect,
-                    usedOptimalValues: useOptimal,
-                    monthlyIrradianceList: JSON.parse(pvgisData).map(item => ({
-                        month: item.month,
-                        irradiance: item.hi_d
-                    })) || []
+                    usedOptimalValues: useOptimal
                 }
             };
             await updateProject(selectedProject, updatedProjectData);
@@ -73,7 +66,7 @@ const Step3_Location = () => {
             console.error('Error saving location data to project:', error);
             alert('Error saving location data');
         }
-    }, [selectedProject, pvgisData, location, temperatures, angle, aspect, useOptimal]);
+    }, [selectedProject, location, temperatures, angle, aspect, useOptimal]);
 
     const fetchOptimalValues = useCallback(async () => {
         try {
@@ -139,6 +132,12 @@ const Step3_Location = () => {
                         setUseOptimal={setUseOptimal}
                         revertToOriginalSettings={revertToOriginalSettings}
                     />
+                    <div className="search-block">
+                        <div className="form-group">
+                            <input type="text" id="locationSearch" className="form-control" placeholder="Enter location" />
+                        </div>
+                        <button className="btn" onClick={searchLocation}>Search</button>
+                    </div>
                 </div>
                 <div className="controls">
                     <div className="form-group">
@@ -158,21 +157,17 @@ const Step3_Location = () => {
                         <input type="text" id="aspect" className="form-control" value={aspect} readOnly />
                     </div>
                     <div className="form-group">
-                        <button className="btn" onClick={fetchOptimalValues}>Fetch Optimal Values</button>
+                        <label>Min Temperature:</label>
+                        <p>{temperatures.min}</p>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="locationSearch">Location:</label>
-                        <input type="text" id="locationSearch" className="form-control" placeholder="Enter location" />
+                        <label>Max Temperature:</label>
+                        <p>{temperatures.max}</p>
                     </div>
-                    <button className="btn" onClick={searchLocation}>Search</button>
+                    <div className="form-group">
+                        <button className="btn" onClick={fetchOptimalValues}>Fetch Optimal Values</button>
+                    </div>
                 </div>
-            </div>
-            <div className="form-group">
-                <textarea id="pvgisData" className="form-control" rows="15" readOnly value={pvgisData}></textarea>
-            </div>
-            <div className="form-group location-info">
-                <p>Min Temperature: {temperatures.min}</p>
-                <p>Max Temperature: {temperatures.max}</p>
             </div>
         </div>
     );
