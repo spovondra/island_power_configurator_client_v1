@@ -1,9 +1,9 @@
 import React, { createContext, useState } from 'react';
 
-export const ProjectContext = createContext();
+const ProjectContext = createContext();
 
-export const ProjectProvider = ({ children }) => {
-    const [selectedProject, setSelectedProject] = useState('');
+const ProjectProvider = ({ children }) => {
+    const [selectedProject, setSelectedProject] = useState(null);
 
     return (
         <ProjectContext.Provider value={{ selectedProject, setSelectedProject }}>
@@ -11,3 +11,5 @@ export const ProjectProvider = ({ children }) => {
         </ProjectContext.Provider>
     );
 };
+
+export { ProjectContext, ProjectProvider };

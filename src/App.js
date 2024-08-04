@@ -1,6 +1,4 @@
 import React from 'react';
-import "./App.css";
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -17,14 +15,13 @@ import AuthRoute from './components/AuthRoute';
 import ProjectAdminPanel from './components/Project/ProjectAdminPanel';
 import Location from './pages/Location';
 import Wizard from './pages/Wizard'; // Import the Wizard page
-import ProjectSelection from './pages/ProjectSelection'; // Import the ProjectSelection page
 import NotFound from './pages/NotFound'; // Import the NotFound page
 import { ProjectProvider } from './context/ProjectContext'; // Import the ProjectProvider
 
 const App = () => {
     return (
         <BrowserRouter>
-            <ProjectProvider>
+            <ProjectProvider> {/* Wrap with ProjectProvider */}
                 <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
@@ -46,7 +43,6 @@ const App = () => {
                                 <ProjectAdminPanel />
                             </AuthRoute>}/>
                         <Route path="wizard" element={<Wizard />} /> {/* Add route for Wizard */}
-                        <Route path="project-selection" element={<ProjectSelection />} /> {/* Add route for ProjectSelection */}
                     </Route>
                     <Route path="*" element={<NotFound />} /> {/* 404 page route */}
                 </Routes>

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { ProjectProvider, ProjectContext } from '../context/ProjectContext'; // Adjust path if needed
+import { ProjectContext } from '../context/ProjectContext'; // Adjust path if needed
 import Step1Introduction from '../components/Wizard/Step1_Introduction';
 import Step2Appliance from '../components/Wizard/Step2_Appliance';
 import Step3Location from '../components/Wizard/Step3_Location';
@@ -21,7 +21,7 @@ const Wizard = () => {
 
     useEffect(() => {
         if (!selectedProject) {
-            navigate('/project-selection'); // Redirect if no project is selected
+            navigate('/projects'); // Redirect if no project is selected
         }
     }, [selectedProject, navigate]);
 
