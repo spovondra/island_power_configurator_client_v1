@@ -4,7 +4,6 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import './LocationComponent.css';
 
-// Fixing marker icon issue with React-Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-icon.png',
@@ -12,7 +11,7 @@ L.Icon.Default.mergeOptions({
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-shadow.png',
 });
 
-const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, calculatePVGISData, onMapClick }) => {
+const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, calculatePVGISData, onMapClick, setUseOptimal, revertToOriginalSettings }) => {
     const [position, setPosition] = useState([latitude, longitude]);
 
     useEffect(() => {
@@ -25,8 +24,11 @@ const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, cal
                 const { lat, lng } = e.latlng;
                 setLatitude(lat.toFixed(3));
                 setLongitude(lng.toFixed(3));
-                if (onMapClick) {
-                    onMapClick(lat, lng); // Call parent callback on map click
+                if (setUseOptimal) {
+                    setUseOptimal(false);
+                }
+                if (revertToOriginalSettings) {
+                    revertToOriginalSettings();
                 }
                 calculatePVGISData(lat, lng); // Call this function on map click
             },

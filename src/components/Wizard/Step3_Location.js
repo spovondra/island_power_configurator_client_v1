@@ -16,6 +16,7 @@ const Step3_Location = () => {
     const [temperatures, setTemperatures] = useState({ min: 'N/A', max: 'N/A' });
     const [dataFetched, setDataFetched] = useState(false);
     const [useOptimal, setUseOptimal] = useState(false);
+    const [shouldSave, setShouldSave] = useState(false); // Added state to control save action
 
     const fetchData = useCallback(async (lat, lng) => {
         try {
@@ -23,19 +24,56 @@ const Step3_Location = () => {
                 LocationService.calculatePVGISData(lat, lng, angle, aspect),
                 LocationService.getMinMaxTemperatures(lat, lng)
             ]);
+
             setPVGISData(JSON.stringify(pvgisResponse.data, null, 2));
             setTemperatures({
                 min: tempResponse.data.minTemp !== undefined ? Number(tempResponse.data.minTemp).toFixed(2) : 'Error',
                 max: tempResponse.data.maxTemp !== undefined ? Number(tempResponse.data.maxTemp).toFixed(2) : 'Error'
             });
             setDataFetched(true);
+            setShouldSave(true); // Set flag to true when data is fetched
         } catch (error) {
             console.error('Error fetching data:', error);
             setPVGISData('Error fetching data');
             setTemperatures({ min: 'Error', max: 'Error' });
             setDataFetched(false);
+            setShouldSave(false); // Reset flag on error
         }
     }, [angle, aspect]);
+
+    const saveLocationToProject = useCallback(async () => {
+        if (!selectedProject) {
+            alert("Please select a project");
+            return;
+        }
+
+        try {
+            const project = await getProjectById(selectedProject);
+            const updatedProjectData = {
+                ...project,
+                site: {
+                    ...project.site,
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                    minTemperature: temperatures.min,
+                    maxTemperature: temperatures.max,
+                    panelAngle: angle,
+                    panelAspect: aspect,
+                    usedOptimalValues: useOptimal,
+                    monthlyIrradianceList: JSON.parse(pvgisData).map(item => ({
+                        month: item.month,
+                        irradiance: item.hi_d
+                    })) || []
+                }
+            };
+            await updateProject(selectedProject, updatedProjectData);
+            alert('Location data saved successfully');
+            setShouldSave(false); // Reset save flag after successful save
+        } catch (error) {
+            console.error('Error saving location data to project:', error);
+            alert('Error saving location data');
+        }
+    }, [selectedProject, pvgisData, location, temperatures, angle, aspect, useOptimal]);
 
     const fetchOptimalValues = useCallback(async () => {
         try {
@@ -82,51 +120,11 @@ const Step3_Location = () => {
         }
     };
 
-    const saveLocationToProject = useCallback(async () => {
-        if (!selectedProject) {
-            alert("Please select a project");
-            return;
-        }
-
-        try {
-            const project = await getProjectById(selectedProject);
-            const updatedProjectData = {
-                ...project,
-                site: {
-                    ...project.site,
-                    latitude: location.latitude,
-                    longitude: location.longitude,
-                    minTemperature: temperatures.min,
-                    maxTemperature: temperatures.max,
-                    panelAngle: angle,
-                    panelAspect: aspect,
-                    usedOptimalValues: useOptimal,
-                    monthlyIrradianceList: JSON.parse(pvgisData).map(item => ({
-                        month: item.month,
-                        irradiance: item.hi_d
-                    })) || []
-                }
-            };
-            await updateProject(selectedProject, updatedProjectData);
-            alert('Location data saved successfully');
-        } catch (error) {
-            console.error('Error saving location data to project:', error);
-            alert('Error saving location data');
-        }
-    }, [selectedProject, pvgisData, location, temperatures, angle, aspect, useOptimal]);
-
     useEffect(() => {
-        if (dataFetched && temperatures.min !== 'N/A' && temperatures.max !== 'N/A') {
+        if (shouldSave && dataFetched && temperatures.min !== 'N/A' && temperatures.max !== 'N/A') {
             saveLocationToProject();
         }
-    }, [temperatures, saveLocationToProject, dataFetched]);
-
-    const handleMapClick = async (lat, lon) => {
-        setUseOptimal(false);
-        revertToOriginalSettings();
-        console.log('useOptimal set to false and settings reverted'); // Debugging line
-    };
-
+    }, [shouldSave, dataFetched, temperatures, saveLocationToProject]);
 
     return (
         <div className="map-page-container">
@@ -138,7 +136,8 @@ const Step3_Location = () => {
                         setLatitude={lat => setLocation(loc => ({ ...loc, latitude: lat }))}
                         setLongitude={lon => setLocation(loc => ({ ...loc, longitude: lon }))}
                         calculatePVGISData={fetchData}
-                        onMapClick={handleMapClick} // Ensure this prop is correctly used
+                        setUseOptimal={setUseOptimal}
+                        revertToOriginalSettings={revertToOriginalSettings}
                     />
                 </div>
                 <div className="controls">
