@@ -1,5 +1,3 @@
-// Step2_Appliance.js
-
 import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
 import { addOrUpdateAppliance, deleteAppliance, getProjectById } from '../../services/ProjectService';
@@ -9,7 +7,7 @@ const Step2_Appliance = () => {
     const { selectedProject } = useContext(ProjectContext);
 
     const [appliance, setAppliance] = useState({
-        id: '',
+        id: '', // ID for editing appliances
         name: '',
         power: 0,
         quantity: 0,
@@ -18,13 +16,14 @@ const Step2_Appliance = () => {
 
     const [appliances, setAppliances] = useState([]);
     const [editMode, setEditMode] = useState(false);
-    const [selectedApplianceId, setSelectedApplianceId] = useState('');
 
     useEffect(() => {
         const fetchAppliances = async () => {
             if (selectedProject) {
+                console.log('Fetching appliances for project:', selectedProject);
                 try {
                     const project = await getProjectById(selectedProject);
+                    console.log('Fetched project data:', project);
                     setAppliances(project.appliances || []);
                 } catch (error) {
                     console.error('Error fetching project:', error);
@@ -37,12 +36,18 @@ const Step2_Appliance = () => {
 
     const handleSave = useCallback(async (e) => {
         e.preventDefault();
+        console.log('Handling save for appliance:', appliance);
         try {
             if (!selectedProject) {
                 alert("Please select a project");
+                console.warn('No project selected');
                 return;
             }
-            const updatedProject = await addOrUpdateAppliance(selectedProject, appliance);
+            console.log('Saving appliance to project:', selectedProject);
+            await addOrUpdateAppliance(selectedProject, appliance);
+            console.log('Appliance saved successfully');
+            const updatedProject = await getProjectById(selectedProject);
+            console.log('Updated project data:', updatedProject);
             setAppliances(updatedProject.appliances);
             setAppliance({
                 id: '',
@@ -52,27 +57,37 @@ const Step2_Appliance = () => {
                 dailyUsageHours: 0
             });
             setEditMode(false);
-            setSelectedApplianceId('');
-            alert('Appliance data saved successfully');
+            alert('Appliance saved successfully');
         } catch (error) {
             console.error('Error saving appliance:', error);
-            alert('Error saving appliance data');
+            alert('Error saving appliance');
         }
     }, [selectedProject, appliance]);
 
     const handleEdit = (appliance) => {
-        setAppliance(appliance);
+        console.log('Editing appliance:', appliance);
+        setAppliance(appliance); // Set appliance details including ID
         setEditMode(true);
-        setSelectedApplianceId(appliance.id);
     };
 
     const handleDelete = async (applianceId) => {
+        console.log('Attempting to delete appliance with ID:', applianceId);
+        if (!applianceId) {
+            alert("Appliance ID is required for deletion");
+            console.warn('No appliance ID provided for deletion');
+            return;
+        }
+
         try {
             if (!selectedProject) {
                 alert("Please select a project");
+                console.warn('No project selected');
                 return;
             }
+            console.log('Deleting appliance from project:', selectedProject);
+            console.log('Appliance id', applianceId);
             await deleteAppliance(selectedProject, applianceId);
+            console.log('Appliance deleted successfully');
             setAppliances(appliances.filter(appl => appl.id !== applianceId));
             alert('Appliance deleted successfully');
         } catch (error) {
@@ -92,6 +107,7 @@ const Step2_Appliance = () => {
                             id="name"
                             value={appliance.name}
                             onChange={(e) => setAppliance({ ...appliance, name: e.target.value })}
+                            required
                         />
                     </div>
                     <div className="form-group">
@@ -101,6 +117,7 @@ const Step2_Appliance = () => {
                             id="power"
                             value={appliance.power}
                             onChange={(e) => setAppliance({ ...appliance, power: parseFloat(e.target.value) })}
+                            required
                         />
                     </div>
                     <div className="form-group">
@@ -110,6 +127,7 @@ const Step2_Appliance = () => {
                             id="quantity"
                             value={appliance.quantity}
                             onChange={(e) => setAppliance({ ...appliance, quantity: parseInt(e.target.value, 10) })}
+                            required
                         />
                     </div>
                     <div className="form-group">
@@ -119,10 +137,11 @@ const Step2_Appliance = () => {
                             id="dailyUsageHours"
                             value={appliance.dailyUsageHours}
                             onChange={(e) => setAppliance({ ...appliance, dailyUsageHours: parseFloat(e.target.value) })}
+                            required
                         />
                     </div>
                     <button type="submit" className="btn">
-                        {editMode ? 'Update Appliance' : 'Save Appliance'}
+                        {editMode ? 'Update Appliance' : 'Add Appliance'}
                     </button>
                 </form>
             </div>

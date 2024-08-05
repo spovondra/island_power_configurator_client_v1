@@ -21,11 +21,6 @@
     box-sizing: border-box; /* Include padding in width and height calculations */
 }
 
-h2 {
-    text-align: center; /* Center the heading */
-    margin-bottom: 20px; /* Space below heading */
-}
-
 .form-group {
     margin-bottom: 20px; /* Space between form elements */
     width: 100%; /* Ensure full width of container */

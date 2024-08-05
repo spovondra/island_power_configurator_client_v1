@@ -74,19 +74,10 @@ export const addOrUpdateAppliance = async (projectId, appliance) => {
     }
 };
 
-// Remove an appliance from a project
 export const deleteAppliance = async (projectId, applianceId) => {
-    if (!projectId) {
-        throw new Error('Project ID is required');
-    }
-    if (!applianceId) {
-        throw new Error('Appliance ID is required');
-    }
     try {
-        const response = await apiClient.delete(`${API_PROJECT_URL}/${projectId}/appliances/${applianceId}`);
-        return response.data;
+        await apiClient.delete(`${API_PROJECT_URL}/${projectId}/appliances/${applianceId}`);
     } catch (error) {
-        console.error('Error deleting appliance:', error);
         throw error;
     }
 };
