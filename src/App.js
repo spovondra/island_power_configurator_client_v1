@@ -8,7 +8,6 @@ import UserList from './components/UserList/UserList';
 import ProtectedRoute from './components/ProtectedRoute';
 import Register from './pages/auth/Register';
 import UserSettings from './components/UserSettings/UserSettings';
-import Calculation from './pages/Calculation';
 import ProjectList from './components/Project/ProjectList';
 import ProjectForm from './components/Project/ProjectForm';
 import AuthRoute from './components/AuthRoute';
@@ -30,7 +29,6 @@ const App = () => {
                         <Route path="about" element={<About />} />
                         <Route path="location" element={<Location />} />
                         <Route path="settings" element={<UserSettings />} />
-                        <Route path="calculation" element={<Calculation />} />
                         <Route path="projects" element={<ProjectList />} />
                         <Route path="projects/new" element={<ProjectForm />} />
                         <Route path="projects/edit/:id" element={<ProjectForm />} />
