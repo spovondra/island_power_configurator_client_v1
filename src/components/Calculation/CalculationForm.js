@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './CalculationForm.css'; // Import the CSS
 
 const CalculationForm = ({ onSubmit }) => {
     const [formData, setFormData] = useState({
@@ -39,31 +40,73 @@ const CalculationForm = ({ onSubmit }) => {
     };
 
     return (
-        <div>
+        <div className="form-container">
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Power (W):</label>
-                    <input type="number" name="power" value={formData.power} onChange={handleChange} required />
+                <div className="form-group">
+                    <label htmlFor="power">Power (W):</label>
+                    <input
+                        id="power"
+                        type="number"
+                        name="power"
+                        value={formData.power}
+                        onChange={handleChange}
+                        required
+                    />
                 </div>
-                <div>
-                    <label>Hours per day:</label>
-                    <input type="number" name="hoursPerDay" value={formData.hoursPerDay} onChange={handleChange} required />
+                <div className="form-group">
+                    <label htmlFor="hoursPerDay">Hours per day:</label>
+                    <input
+                        id="hoursPerDay"
+                        type="number"
+                        name="hoursPerDay"
+                        value={formData.hoursPerDay}
+                        onChange={handleChange}
+                        required
+                    />
                 </div>
-                <div>
-                    <label>Days per week:</label>
-                    <input type="number" name="daysPerWeek" value={formData.daysPerWeek} onChange={handleChange} required />
+                <div className="form-group">
+                    <label htmlFor="daysPerWeek">Days per week:</label>
+                    <input
+                        id="daysPerWeek"
+                        type="number"
+                        name="daysPerWeek"
+                        value={formData.daysPerWeek}
+                        onChange={handleChange}
+                        required
+                    />
                 </div>
-                <div>
-                    <label>Panel Efficiency (%):</label>
-                    <input type="number" name="panelEfficiency" value={formData.panelEfficiency} onChange={handleChange} required />
+                <div className="form-group">
+                    <label htmlFor="panelEfficiency">Panel Efficiency (%):</label>
+                    <input
+                        id="panelEfficiency"
+                        type="number"
+                        name="panelEfficiency"
+                        value={formData.panelEfficiency}
+                        onChange={handleChange}
+                        required
+                    />
                 </div>
-                <div>
-                    <label>Battery Capacity (Wh):</label>
-                    <input type="number" name="batteryCapacity" value={formData.batteryCapacity} onChange={handleChange} required />
+                <div className="form-group">
+                    <label htmlFor="batteryCapacity">Battery Capacity (Wh):</label>
+                    <input
+                        id="batteryCapacity"
+                        type="number"
+                        name="batteryCapacity"
+                        value={formData.batteryCapacity}
+                        onChange={handleChange}
+                        required
+                    />
                 </div>
-                <div>
-                    <label>Autonomy Days:</label>
-                    <input type="number" name="autonomyDays" value={formData.autonomyDays} onChange={handleChange} required />
+                <div className="form-group">
+                    <label htmlFor="autonomyDays">Autonomy Days:</label>
+                    <input
+                        id="autonomyDays"
+                        type="number"
+                        name="autonomyDays"
+                        value={formData.autonomyDays}
+                        onChange={handleChange}
+                        required
+                    />
                 </div>
                 <button type="submit">Vypočítat</button>
             </form>

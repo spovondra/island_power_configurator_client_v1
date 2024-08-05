@@ -22,6 +22,7 @@ apiClient.interceptors.request.use(config => {
     return config;
 });
 
+/*
 apiClient.interceptors.response.use(
     response => response,
     error => {
@@ -31,5 +32,7 @@ apiClient.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
+ */
 
 export default apiClient;

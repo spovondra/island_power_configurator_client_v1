@@ -59,3 +59,35 @@ export const getUserProjects = async () => {
         throw error;
     }
 };
+
+// Add or update an appliance in a project
+export const addOrUpdateAppliance = async (projectId, appliance) => {
+    if (!projectId) {
+        throw new Error('Project ID is required');
+    }
+    try {
+        const response = await apiClient.post(`${API_PROJECT_URL}/${projectId}/appliances`, appliance);
+        return response.data;
+    } catch (error) {
+        console.error('Error adding/updating appliance:', error);
+        throw error;
+    }
+};
+
+// Remove an appliance from a project
+export const deleteAppliance = async (projectId, applianceId) => {
+    if (!projectId) {
+        throw new Error('Project ID is required');
+    }
+    if (!applianceId) {
+        throw new Error('Appliance ID is required');
+    }
+    try {
+        const response = await apiClient.delete(`${API_PROJECT_URL}/${projectId}/appliances/${applianceId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting appliance:', error);
+        throw error;
+    }
+};
+

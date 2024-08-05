@@ -1,0 +1,57 @@
+/* SolarCalculation.css */
+
+.calculation-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    border-radius: 8px;
+    max-width: 800px; /* Fixed width for the container */
+    width: 100%; /* Ensure full width up to max-width */
+    box-sizing: border-box; /* Include padding in width and height calculations */
+    margin: 0 auto; /* Center the container horizontally */
+}
+
+.calculation-title {
+    text-align: center; /* Center the heading */
+    margin-bottom: 20px; /* Space below heading */
+}
+
+.loading-message {
+    color: #007bff; /* Blue color for loading message */
+    text-align: center; /* Center the loading message */
+    margin-top: 10px;
+}
+
+.error-message {
+    color: #dc3545; /* Red color for error messages */
+    text-align: center; /* Center the error message */
+    margin-top: 10px;
+}
+
+.results-container {
+    margin-top: 20px;
+    width: 60%; /* Ensure full width of the results container */
+}
+
+.results-title {
+    margin-bottom: 15px;
+    font-size: 1.5em; /* Larger font size for results title */
+    font-weight: bold;
+    text-align: center; /* Center the results title */
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between; /* Space between label and value */
+    padding: 10px 0; /* Padding above and below each result item */
+    border-bottom: 1px solid #dee2e6; /* Border between result items */
+}
+
+.result-label {
+    font-weight: bold; /* Bold text for labels */
+}
+
+.result-value {
+    color: #333; /* Dark color for values */
+}

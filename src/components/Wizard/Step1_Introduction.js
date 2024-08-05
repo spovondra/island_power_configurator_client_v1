@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { getProjectById, updateProject, createProject } from '../../services/ProjectService';
 import { ProjectContext } from '../../context/ProjectContext';
 import { useLocation } from 'react-router-dom';
+import './Step1_Introduction.css'; // Import the CSS
 
 const Step1Introduction = () => {
     const { selectedProject, setSelectedProject } = useContext(ProjectContext);
@@ -13,7 +14,6 @@ const Step1Introduction = () => {
     const [newProjectId, setNewProjectId] = useState(null);
     const [isProjectCreated, setIsProjectCreated] = useState(false);
 
-    // Effect to handle creation of new project on typing the first letter
     useEffect(() => {
         if (isNewProject && name && name.length === 1 && !isProjectCreated) {
             const createNewProject = async () => {
@@ -33,18 +33,15 @@ const Step1Introduction = () => {
         }
     }, [name, isNewProject, isProjectCreated, setSelectedProject]);
 
-    // Effect to update project name
     useEffect(() => {
         const saveProjectData = async () => {
             if (!name) return;
 
             try {
                 if (newProjectId) {
-                    // Handle updating the newly created project
                     const updatedProjectData = { name: name };
                     await updateProject(newProjectId, updatedProjectData);
                 } else if (!isNewProject && selectedProject) {
-                    // Handle updating existing project
                     const project = await getProjectById(selectedProject);
                     const updatedProjectData = { ...project, name: name };
                     await updateProject(selectedProject, updatedProjectData);
@@ -59,18 +56,23 @@ const Step1Introduction = () => {
     }, [name, selectedProject, isNewProject, newProjectId]);
 
     return (
-        <div>
-            <h2>Introduction</h2>
-            <label>
-                Project Name:
-                <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                />
-            </label>
-            {error && <p className="error-message">{error}</p>}
+        <div className="step1-wrapper">
+            <div className="step1-container">
+                <h2>Introduction</h2>
+                <div className="form-group">
+                    <label htmlFor="projectName">Project Name:</label>
+                    <input
+                        id="projectName"
+                        type="text"
+                        className="form-control"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                    />
+                </div>
+                {error && <p className="error-message">{error}</p>}
+                <button type="button">Save</button>
+            </div>
         </div>
     );
 };

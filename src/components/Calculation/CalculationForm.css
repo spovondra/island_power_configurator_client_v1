@@ -1,0 +1,62 @@
+/* CalculationForm.css */
+
+.form-container {
+    display: flex;
+    justify-content: center; /* Center the form horizontally */
+    padding: 20px;
+    background-color: #ffffff; /* Background color for the form */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    box-sizing: border-box; /* Include padding in width and height calculations */
+    margin: 0 auto; /* Center the form container */
+    max-height: 57vh; /* Limit height to 57vh */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+}
+
+form {
+    display: flex;
+    flex-direction: column; /* Stack form elements vertically */
+    width: 100%;
+}
+
+.form-group {
+    display: flex; /* Align label and input horizontally */
+    align-items: center; /* Vertically center the items */
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-right: 15px; /* Space between label and input */
+    flex: 1; /* Ensure label takes up space on the left */
+    max-width: 150px; /* Max width for labels */
+}
+
+.form-group input {
+    flex: 2; /* Ensure input takes up remaining space */
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    font-size: 14px;
+    box-sizing: border-box; /* Ensure padding does not affect width */
+}
+
+.form-group input:focus {
+    border-color: #80bdff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+}
+
+button {
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

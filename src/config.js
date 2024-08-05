@@ -1,4 +1,6 @@
-const BASE_URL = 'http://130.61.202.0';
+const BASE_URL = 'http://localhost';
+//const BASE_URL = 'http://130.61.202.0';
+
 const PORT = 8082;
 
 // Export API URLs for different services

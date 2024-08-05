@@ -1,55 +1,140 @@
 /* Step2_Appliance.css */
+
 .appliance-container {
+    display: flex;
+    flex-direction: column;
     padding: 20px;
-    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center; /* Center contents horizontally */
+}
+
+.appliance-form-container {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 40px; /* Space between form and results */
 }
 
 .appliance-form {
-    margin-bottom: 20px;
-}
-
-.appliance-form h3 {
-    margin-bottom: 10px;
-}
-
-.appliance-form input {
-    display: block;
-    margin-bottom: 10px;
-    padding: 10px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 0 auto;
     width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    box-sizing: border-box;
 }
 
-.appliance-form button {
-    padding: 10px 20px;
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: calc(100% - 22px); /* Account for padding */
+    padding: 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.btn {
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
+    padding: 10px 16px;
+    font-size: 16px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
 }
 
-.appliance-form button:hover {
+.btn:hover {
     background-color: #0056b3;
 }
 
-.error-message {
-    color: red;
+.appliance-list-container {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.appliance-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.appliance-table th,
+.appliance-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.appliance-table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.appliance-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.edit-btn {
+    background-color: #28a745;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
     font-size: 14px;
-    margin-top: 10px;
+    cursor: pointer;
+    color: white;
 }
 
-.appliance-list {
-    margin-top: 20px;
+.edit-btn:hover {
+    background-color: #218838;
 }
 
-.appliance-list ul {
-    list-style-type: none;
-    padding: 0;
+.delete-btn {
+    background-color: #dc3545;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    color: white;
 }
 
-.appliance-list li {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+@media (min-width: 768px) {
+    .appliance-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .appliance-form-container {
+        flex: 1;
+        margin-right: 20px;
+    }
+
+    .appliance-list-container {
+        flex: 2;
+    }
 }
