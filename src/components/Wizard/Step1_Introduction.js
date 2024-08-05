@@ -11,16 +11,18 @@ const Step1Introduction = () => {
     const [name, setName] = useState(isNewProject ? '' : project?.name || '');
     const [error, setError] = useState('');
     const [newProjectId, setNewProjectId] = useState(null);
+    const [isProjectCreated, setIsProjectCreated] = useState(false);
 
     // Effect to handle creation of new project on typing the first letter
     useEffect(() => {
-        if (isNewProject && name && name.length === 1) {
+        if (isNewProject && name && name.length === 1 && !isProjectCreated) {
             const createNewProject = async () => {
                 try {
                     const newProjectData = { name: name };
                     const createdProject = await createProject(newProjectData);
                     setNewProjectId(createdProject.id);
                     setSelectedProject(createdProject.id); // Update context with new project ID
+                    setIsProjectCreated(true); // Mark project as created
                 } catch (error) {
                     console.error('Error creating new project:', error);
                     setError('Error creating new project');
@@ -29,7 +31,7 @@ const Step1Introduction = () => {
 
             createNewProject();
         }
-    }, [name, isNewProject, setSelectedProject]);
+    }, [name, isNewProject, isProjectCreated, setSelectedProject]);
 
     // Effect to update project name
     useEffect(() => {
