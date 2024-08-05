@@ -5,7 +5,17 @@ import './FinalStep.css'; // Import the CSS file
 
 const FinalStep = () => {
     const { selectedProject } = useContext(ProjectContext);
-    const [project, setProject] = useState(null);
+    const [project, setProject] = useState({
+        site: {},
+        solarComponents: {
+            solarPanels: {},
+            controllers: {},
+            batteries: {},
+            inverters: {},
+            accessories: {}
+        },
+        appliances: []
+    });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -33,9 +43,9 @@ const FinalStep = () => {
     if (error) return <p>Error: {error}</p>;
     if (!project) return <p>No project data available.</p>;
 
-    // Use optional chaining to safely access nested properties
     const site = project.site || {};
     const solarComponents = project.solarComponents || {};
+    const appliances = project.appliances || [];
 
     return (
         <div className="final-step-container">
@@ -73,17 +83,30 @@ const FinalStep = () => {
             <div className="final-step-section">
                 <h3>Solar Components</h3>
                 {Object.entries(solarComponents).map(([category, components]) => (
-                    <div key={category}>
-                        <h4>{category.charAt(0).toUpperCase() + category.slice(1)}</h4>
-                        <ul className="final-step-list">
-                            {Object.entries(components).map(([id, component]) => (
-                                <li key={id}>
-                                    <strong>ID:</strong> {component.id ?? 'N/A'}, <strong>Quantity:</strong> {component.quantity ?? 'N/A'}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                    category !== 'appliances' && (
+                        <div key={category}>
+                            <h4>{category.charAt(0).toUpperCase() + category.slice(1)}</h4>
+                            <ul className="final-step-list">
+                                {Object.entries(components || {}).map(([id, component]) => (
+                                    <li key={id}>
+                                        <strong>ID:</strong> {component.id ?? 'N/A'}, <strong>Quantity:</strong> {component.quantity ?? 'N/A'}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )
                 ))}
+            </div>
+
+            <div className="final-step-section">
+                <h3>Appliances</h3>
+                <ul className="final-step-list">
+                    {appliances.map((appliance, index) => (
+                        <li key={index}>
+                            <strong>Name:</strong> {appliance.name ?? 'N/A'}, <strong>Power:</strong> {appliance.power ?? 'N/A'}W, <strong>Quantity:</strong> {appliance.quantity ?? 'N/A'}, <strong>Daily Usage:</strong> {appliance.dailyUsageHours ?? 'N/A'} hours
+                        </li>
+                    ))}
+                </ul>
             </div>
         </div>
     );
