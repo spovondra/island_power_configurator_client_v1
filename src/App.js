@@ -9,9 +9,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Register from './pages/auth/Register';
 import UserSettings from './components/UserSettings/UserSettings';
 import ProjectList from './components/Project/ProjectList';
-import ProjectForm from './components/Project/ProjectForm';
+import ProjectForm from './components/ProjectAdmin/ProjectForm';
 import AuthRoute from './components/AuthRoute';
-import ProjectAdminPanel from './components/Project/ProjectAdminPanel';
+import ProjectAdminPanel from './components/ProjectAdmin/ProjectAdminPanel';
 import Location from './pages/Location';
 import Wizard from './pages/Wizard'; // Import the Wizard page
 import NotFound from './pages/NotFound'; // Import the NotFound page

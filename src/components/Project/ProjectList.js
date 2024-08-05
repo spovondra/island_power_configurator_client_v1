@@ -34,11 +34,11 @@ const ProjectList = () => {
 
     const handleProjectAction = (project) => {
         setSelectedProject(project.id);
-        navigate('/wizard', { state: { project } });
+        navigate('/wizard', { state: { isNewProject: false, project } });
     };
 
     const handleCreateNewProject = () => {
-        setSelectedProject(null);
+        setSelectedProject(null); // Ensure the selected project is null for new project creation
         navigate('/wizard', { state: { isNewProject: true } });
     };
 

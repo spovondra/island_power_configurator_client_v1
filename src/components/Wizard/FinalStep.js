@@ -68,7 +68,7 @@ const FinalStep = () => {
 
             <div className="final-step-section">
                 <h3>Solar Components</h3>
-                {Object.entries(solarComponents).map(([category, components]) => (
+                {Object.entries(solarComponents || {}).map(([category, components]) => (
                     <div key={category}>
                         <h4>{category.charAt(0).toUpperCase() + category.slice(1)}</h4>
                         <ul className="final-step-list">

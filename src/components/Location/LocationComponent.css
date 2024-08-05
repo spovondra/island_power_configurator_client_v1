@@ -11,8 +11,7 @@
 
 .map {
     width: 100%;
-    max-width: 1000px; /* Maximum width for the map */
-    height: 540px; /* Fixed height for the map */
+    height: 450px; /* Fixed height for the map */
     border: 1px solid #ddd; /* Light border */
     border-radius: 8px; /* Rounded corners */
 }

@@ -11,15 +11,50 @@
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: space-between;
     width: 100%;
     max-width: 1200px;
     margin: 20px auto;
     gap: 20px;
 }
 
-.map-wrapper {
+.left-column {
     flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-block {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.search-bar {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex: 1;
+}
+
+#locationSearch {
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    padding: 10px;
+    flex: 4; /* Allows input to take available space */
+}
+
+.search-button {
+    justify-content: center;
+    display: flex;
+    flex: 1;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}
+
+.map-wrapper {
+    flex: 1;
     min-width: 0; /* Prevent stretching */
 }
 
@@ -28,7 +63,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    max-width: 300px; /* Adjusted width for a more balanced look */
+    max-width: 250px; /* Adjusted width for a more balanced look */
     width: 100%;
     height: auto; /* Allows height to adjust based on content */
     min-height: 500px; /* Minimum height to ensure it doesn’t shrink too much */
@@ -38,21 +73,6 @@
 .form-group,
 .input-group {
     margin-bottom: 10px;
-}
-
-textarea {
-    width: 100%;
-    border: 1px solid #dcdcdc;
-    border-radius: 8px;
-    padding: 10px;
-    font-size: 14px;
-    resize: vertical;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-textarea:focus {
-    border-color: #007bff;
-    outline: none;
 }
 
 .location-info {
@@ -78,18 +98,4 @@ button {
 
 button:hover {
     background-color: #0056b3;
-}
-
-.search-block {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    gap: 10px; /* Added gap between elements */
-}
-
-#locationSearch {
-    border: 1px solid #dcdcdc;
-    border-radius: 4px;
-    padding: 10px;
-    flex: 1; /* Allows input to take available space */
 }
