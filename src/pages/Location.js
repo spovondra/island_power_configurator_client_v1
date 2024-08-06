@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import LocationComponent from '../components/Location/LocationComponent';
 import LocationService from '../services/LocationService';
 

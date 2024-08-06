@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
 import { getProjectById } from '../../services/ProjectService';
-import './FinalStep.css'; // Import the CSS file
+import './FinalStep.css';
 
 const FinalStep = () => {
     const { selectedProject } = useContext(ProjectContext);

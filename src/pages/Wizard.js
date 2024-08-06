@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { ProjectContext } from '../context/ProjectContext';
 import Step1Introduction from '../components/Wizard/Step1_Introduction';
 import Step2Appliance from '../components/Wizard/Step2_Appliance';
@@ -20,8 +20,7 @@ const steps = [
 const Wizard = () => {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const [projectName, setProjectName] = useState('');
-    const [formData, setFormData] = useState({});
-    const { selectedProject, setSelectedProject } = useContext(ProjectContext);
+    const { selectedProject} = useContext(ProjectContext);
     const navigate = useNavigate();
     const location = useLocation();
     const [isNewProject, setIsNewProject] = useState(false);
@@ -36,7 +35,6 @@ const Wizard = () => {
             const fetchProjectData = async () => {
                 try {
                     const data = await getProjectById(selectedProject);
-                    setFormData(data);
                     setProjectName(data.name || '');
                 } catch (error) {
                     console.error('Error fetching project data:', error);
@@ -64,10 +62,6 @@ const Wizard = () => {
         setCurrentStepIndex(index);
     };
 
-    const handleFormDataChange = (newFormData) => {
-        setFormData(prevData => ({ ...prevData, ...newFormData }));
-    };
-
     const CurrentStepComponent = steps[currentStepIndex].component;
 
     return (
@@ -88,7 +82,6 @@ const Wizard = () => {
             <div className="wizard-content">
                 <CurrentStepComponent
                     projectName={projectName}
-                    onFormDataChange={handleFormDataChange}
                 />
             </div>
             <div className="wizard-buttons">

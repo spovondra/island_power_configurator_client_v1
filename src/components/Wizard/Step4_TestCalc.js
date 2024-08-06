@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CalculationForm from '../../components/Calculation/CalculationForm';
 import { calculateLoad } from '../../services/CalculationService';
-import './Step4_TestCalc.css'; // Correctly referencing the updated CSS file
+import './Step4_TestCalc.css';
 
 const Step4TestCalc = () => {
     const [results, setResults] = useState(null);

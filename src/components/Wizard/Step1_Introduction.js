@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { getProjectById, updateProject, createProject } from '../../services/ProjectService';
 import { ProjectContext } from '../../context/ProjectContext';
 import { useLocation } from 'react-router-dom';
-import './Step1_Introduction.css'; // Import the CSS
+import './Step1_Introduction.css';
 
 const Step1Introduction = () => {
     const { selectedProject, setSelectedProject } = useContext(ProjectContext);
@@ -71,7 +71,6 @@ const Step1Introduction = () => {
                     />
                 </div>
                 {error && <p className="step1-error-message">{error}</p>}
-                <button className="step1-button">Submit</button>
             </div>
         </div>
     );
