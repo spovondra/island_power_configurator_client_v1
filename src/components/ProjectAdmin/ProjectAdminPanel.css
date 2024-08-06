@@ -1,46 +1,47 @@
-/* General Styles for the Admin Panel */
-.project-admin-panel {
-    padding: 20px;
-    margin: 0 auto;
-    max-width: 1200px;
+.project-admin-panel-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
 }
 
-.panel-header {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.project-admin-panel-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 24px;
+    color: #333;
 }
 
-.panel-header h1 {
-    font-size: 2rem;
-    margin: 0;
-}
-
-.add-project-button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    color: #fff;
-    background-color: #007bff;
+.project-add-button {
+    display: block;
+    width: 200px;
+    margin: 1rem auto;
+    padding: 0.5rem;
+    font-size: 16px;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    background-color: #007bff;
+    color: #fff;
+    transition: background-color 0.2s;
 }
 
-.add-project-button:hover {
+.project-add-button:hover {
     background-color: #0056b3;
 }
 
 .project-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-bottom: 1rem;
 }
 
 .project-table th,
 .project-table td {
-    padding: 12px;
+    padding: 0.75rem;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
@@ -49,103 +50,42 @@
     background-color: #f4f4f4;
 }
 
-.project-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+.project-table tr:hover {
+    background-color: #f1f1f1;
 }
 
-.project-table .actions {
-    display: flex;
-    gap: 10px;
-}
-
-.project-table .actions button {
-    padding: 5px 10px;
-    font-size: 0.875rem;
-    color: #fff;
+.project-table-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 14px;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s, transform 0.2s;
 }
 
-.project-table .actions button.edit {
-    background-color: #ffc107;
+.project-table-button:hover {
+    transform: scale(1.05);
 }
 
-.project-table .actions button.edit:hover {
-    background-color: #e0a800;
+.project-table-button-edit {
+    background-color: #28a745;
+    color: #fff;
 }
 
-.project-table .actions button.delete {
+.project-table-button-edit:hover {
+    background-color: #218838;
+}
+
+.project-table-button-delete {
     background-color: #dc3545;
+    color: #fff;
 }
 
-.project-table .actions button.delete:hover {
+.project-table-button-delete:hover {
     background-color: #c82333;
 }
 
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background-color: #fff;
-    border-radius: 5px;
-    padding: 20px;
-    width: 80%;
-    max-width: 600px;
-}
-
-.modal-content h2 {
-    margin-top: 0;
-}
-
-.modal-content .form-group {
-    margin-bottom: 15px;
-}
-
-.modal-content .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.modal-content .form-group input,
-.modal-content .form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.modal-content .form-group button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.modal-content .form-group button:hover {
-    background-color: #0056b3;
-}
-
-.modal-content .close-button {
-    background-color: #dc3545;
-    margin-left: 10px;
-}
-
-.modal-content .close-button:hover {
-    background-color: #c82333;
+.project-admin-panel-error-modal {
+    background-color: #f8d7da;
+    color: #721c24;
 }

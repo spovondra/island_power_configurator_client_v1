@@ -1,7 +1,6 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { createProject, deleteProject, getAllProjects, updateProject } from '../../services/ProjectService';
 import { useNavigate } from 'react-router-dom';
-import ProjectTable from './ProjectAdminTable';
 import ProjectForm from './ProjectForm';
 import Modal from '../Modal/Modal';
 import './ProjectAdminPanel.css';
@@ -67,7 +66,8 @@ const ProjectAdminPanel = () => {
             accessories: []
         }
     });
-    useNavigate();
+    const navigate = useNavigate();
+
     const fetchProjects = async () => {
         try {
             const data = await getAllProjects();
@@ -136,23 +136,44 @@ const ProjectAdminPanel = () => {
         });
         dispatch({ type: 'SET_SELECTED_PROJECT', payload: project });
     };
+
     const handleCloseModal = () => {
         dispatch({ type: 'CLOSE_MODAL' });
     };
 
     return (
-        <div className="container">
+        <div className="project-admin-panel-container">
             <h2>Project Admin Panel</h2>
-            <button className="add-project-button" onClick={() => handleSelectProject({})}>Add New Project</button>
+            <button className="project-add-button" onClick={() => handleSelectProject({})}>Add New Project</button>
             {isLoading ? (
                 <p>Loading...</p>
             ) : (
-                <>
-                    <ProjectTable
-                        projects={projects}
-                        handleSelectProject={handleSelectProject}
-                        handleDeleteProject={handleDeleteProject}
-                    />
+                <div>
+                    <table className="project-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Temperature</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {projects.map(project => (
+                            <tr key={project.id}>
+                                <td>{project.id}</td>
+                                <td>{project.name}</td>
+                                <td>{project.site ? `${project.site.latitude}, ${project.site.longitude}` : 'N/A'}</td>
+                                <td>{project.site ? `${project.site.minTemperature} to ${project.site.maxTemperature}` : 'N/A'}</td>
+                                <td>
+                                    <button className="project-table-button project-table-button-edit" onClick={() => handleSelectProject(project)}>Edit</button>
+                                    <button className="project-table-button project-table-button-delete" onClick={() => handleDeleteProject(project.id)}>Delete</button>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
                     <Modal
                         isOpen={isModalOpen}
                         onClose={handleCloseModal}
@@ -168,7 +189,7 @@ const ProjectAdminPanel = () => {
                             <p>{error}</p>
                         )}
                     </Modal>
-                </>
+                </div>
             )}
         </div>
     );

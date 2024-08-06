@@ -13,14 +13,16 @@ import ProjectForm from './components/ProjectAdmin/ProjectForm';
 import AuthRoute from './components/AuthRoute';
 import ProjectAdminPanel from './components/ProjectAdmin/ProjectAdminPanel';
 import Location from './pages/Location';
-import Wizard from './pages/Wizard'; // Import the Wizard page
-import NotFound from './pages/NotFound'; // Import the NotFound page
-import { ProjectProvider } from './context/ProjectContext'; // Import the ProjectProvider
+import Wizard from './pages/Wizard';
+import NotFound from './pages/NotFound';
+import { ProjectProvider } from './context/ProjectContext';
+
+import "./App.css"
 
 const App = () => {
     return (
         <BrowserRouter>
-            <ProjectProvider> {/* Wrap with ProjectProvider */}
+            <ProjectProvider>
                 <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
@@ -40,9 +42,9 @@ const App = () => {
                             <AuthRoute role="ADMIN">
                                 <ProjectAdminPanel />
                             </AuthRoute>}/>
-                        <Route path="wizard" element={<Wizard />} /> {/* Add route for Wizard */}
+                        <Route path="wizard" element={<Wizard />} />
                     </Route>
-                    <Route path="*" element={<NotFound />} /> {/* 404 page route */}
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </ProjectProvider>
         </BrowserRouter>

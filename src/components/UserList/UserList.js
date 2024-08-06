@@ -150,6 +150,10 @@ const UserList = () => {
         user.username.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    function formatProjects(projects) {
+        return projects.join('\n');
+    }
+
     return (
         <div className="user-list-container">
             <h2 className="user-list-header">User List</h2>
@@ -190,7 +194,7 @@ const UserList = () => {
                                 <td>{user.role}</td>
                                 <td>{user.firstName}</td>
                                 <td>{user.lastName}</td>
-                                <td>{user.projects}</td>
+                                <td className="projects">{formatProjects(user.projects)}</td>
                                 <td>
                                     <button className="user-list-button user-list-button-edit" onClick={() => handleSelectUser(user)}>Edit</button>
                                     <button className="user-list-button user-list-button-delete" onClick={() => handleDeleteUser(user.id)}>Delete</button>

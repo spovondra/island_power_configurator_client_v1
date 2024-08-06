@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import './ProjectForm.css';
 
 // Helper function to initialize empty component categories
 const initializeComponents = () => ({
@@ -75,103 +76,103 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
     };
 
     return (
-        <form onSubmit={handleSubmitClick}>
-            <div>
-                <label htmlFor="name">Project Name:</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={localFormData.name || ''}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
+        <div className="project-form-container">
+            <form onSubmit={handleSubmitClick} className="project-form">
+                <div>
+                    <label htmlFor="name">Project Name:</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={localFormData.name || ''}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
 
-            <div>
-                <h3>Site Information</h3>
-                <label htmlFor="latitude">Latitude:</label>
-                <input
-                    type="number"
-                    id="latitude"
-                    name="latitude"
-                    value={localFormData.site?.latitude || ''}
-                    onChange={handleSiteChange}
-                    required
-                />
-                <label htmlFor="longitude">Longitude:</label>
-                <input
-                    type="number"
-                    id="longitude"
-                    name="longitude"
-                    value={localFormData.site?.longitude || ''}
-                    onChange={handleSiteChange}
-                    required
-                />
-                <label htmlFor="minTemperature">Min Temperature:</label>
-                <input
-                    type="number"
-                    id="minTemperature"
-                    name="minTemperature"
-                    value={localFormData.site?.minTemperature || ''}
-                    onChange={handleSiteChange}
-                />
-                <label htmlFor="maxTemperature">Max Temperature:</label>
-                <input
-                    type="number"
-                    id="maxTemperature"
-                    name="maxTemperature"
-                    value={localFormData.site?.maxTemperature || ''}
-                    onChange={handleSiteChange}
-                />
-                <label htmlFor="panelAngle">Panel Angle:</label>
-                <input
-                    type="number"
-                    id="panelAngle"
-                    name="panelAngle"
-                    value={localFormData.site?.panelAngle || ''}
-                    onChange={handleSiteChange}
-                />
-                <label htmlFor="panelAspect">Panel Aspect:</label>
-                <input
-                    type="number"
-                    id="panelAspect"
-                    name="panelAspect"
-                    value={localFormData.site?.panelAspect || ''}
-                    onChange={handleSiteChange}
-                />
-                <label htmlFor="usedOptimalValues">Used Optimal Values:</label>
-                <input
-                    type="checkbox"
-                    id="usedOptimalValues"
-                    name="usedOptimalValues"
-                    checked={localFormData.site?.usedOptimalValues || false}
-                    onChange={handleSiteChange}
-                />
-            </div>
+                <div>
+                    <h3>Site Information</h3>
+                    <label htmlFor="latitude">Latitude:</label>
+                    <input
+                        type="number"
+                        id="latitude"
+                        name="latitude"
+                        value={localFormData.site?.latitude || ''}
+                        onChange={handleSiteChange}
+                        required
+                    />
+                    <label htmlFor="longitude">Longitude:</label>
+                    <input
+                        type="number"
+                        id="longitude"
+                        name="longitude"
+                        value={localFormData.site?.longitude || ''}
+                        onChange={handleSiteChange}
+                        required
+                    />
+                    <label htmlFor="minTemperature">Min Temperature:</label>
+                    <input
+                        type="number"
+                        id="minTemperature"
+                        name="minTemperature"
+                        value={localFormData.site?.minTemperature || ''}
+                        onChange={handleSiteChange}
+                    />
+                    <label htmlFor="maxTemperature">Max Temperature:</label>
+                    <input
+                        type="number"
+                        id="maxTemperature"
+                        name="maxTemperature"
+                        value={localFormData.site?.maxTemperature || ''}
+                        onChange={handleSiteChange}
+                    />
+                    <label htmlFor="panelAngle">Panel Angle:</label>
+                    <input
+                        type="number"
+                        id="panelAngle"
+                        name="panelAngle"
+                        value={localFormData.site?.panelAngle || ''}
+                        onChange={handleSiteChange}
+                    />
+                    <label htmlFor="panelAspect">Panel Aspect:</label>
+                    <input
+                        type="number"
+                        id="panelAspect"
+                        name="panelAspect"
+                        value={localFormData.site?.panelAspect || ''}
+                        onChange={handleSiteChange}
+                    />
+                    <label htmlFor="usedOptimalValues">Used Optimal Values:</label>
+                    <input
+                        type="checkbox"
+                        id="usedOptimalValues"
+                        name="usedOptimalValues"
+                        checked={localFormData.site?.usedOptimalValues || false}
+                        onChange={handleSiteChange}
+                    />
+                </div>
 
-            <div>
-                <h3>Monthly Irradiance</h3>
-                {/* Here you would add a way to dynamically add/remove months of irradiance */}
-                <p>Details for monthly irradiance will be added here later.</p>
-            </div>
+                <div>
+                    <h3>Monthly Irradiance</h3>
+                    <p>Details for monthly irradiance will be added here later.</p>
+                </div>
 
-            <div>
-                <h3>Solar Components</h3>
-                {Object.keys(localFormData.solarComponents).map(category => (
-                    <div key={category}>
-                        <h4>{category}</h4>
-                        {/* Currently displaying only the category name */}
-                        <p>Component details for {category} will be added here later.</p>
-                    </div>
-                ))}
-            </div>
+                <div>
+                    <h3>Solar Components</h3>
+                    {Object.keys(localFormData.solarComponents).map(category => (
+                        <div key={category}>
+                            <h4>{category}</h4>
+                            <p>Component details for {category} will be added here later.</p>
+                        </div>
+                    ))}
+                </div>
 
-            <div>
-                <button type="submit">Save</button>
-                <button type="button" onClick={onClose}>Cancel</button>
-            </div>
-        </form>
+                <div className="form-actions">
+                    <button type="submit" className="btn-submit">Save</button>
+                    <button type="button" onClick={onClose} className="btn-cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
     );
 };
 

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import CalculationForm from '../../components/Calculation/CalculationForm';
 import { calculateLoad } from '../../services/CalculationService';
-import './Step4_TestCalc.css'; // Updated to use the correct CSS file
+import './Step4_TestCalc.css'; // Correctly referencing the updated CSS file
 
 const Step4TestCalc = () => {
     const [results, setResults] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const handleFormSubmit = async (data: any) => {
+    const handleFormSubmit = async (data) => {
         setLoading(true);
         setError(null);
 
@@ -26,28 +26,29 @@ const Step4TestCalc = () => {
     };
 
     return (
-        <div className="calculation-container">
+        <div className="step4-calc-container">
+            <h1 className="step4-calc-title">Solar Calculation</h1>
             <CalculationForm onSubmit={handleFormSubmit} />
-            {loading && <p className="loading-message">Loading...</p>}
-            {error && <p className="error-message">{error}</p>}
+            {loading && <p className="step4-calc-loading-message">Loading...</p>}
+            {error && <p className="step4-calc-error-message">{error}</p>}
             {results && (
-                <div className="results-container">
-                    <h2 className="results-title">Výsledky</h2>
-                    <div className="result-item">
-                        <span className="result-label">Denní energie:</span>
-                        <span className="result-value">{results.dailyEnergy} Wh</span>
+                <div className="step4-calc-results-container">
+                    <h2 className="step4-calc-results-title">Výsledky</h2>
+                    <div className="step4-calc-result-item">
+                        <span className="step4-calc-result-label">Denní energie:</span>
+                        <span className="step4-calc-result-value">{results.dailyEnergy} Wh</span>
                     </div>
-                    <div className="result-item">
-                        <span className="result-label">Týdenní energie:</span>
-                        <span className="result-value">{results.weeklyEnergy} Wh</span>
+                    <div className="step4-calc-result-item">
+                        <span className="step4-calc-result-label">Týdenní energie:</span>
+                        <span className="step4-calc-result-value">{results.weeklyEnergy} Wh</span>
                     </div>
-                    <div className="result-item">
-                        <span className="result-label">Doporučený výkon panelu:</span>
-                        <span className="result-value">{results.recommendedPanelPower} W</span>
+                    <div className="step4-calc-result-item">
+                        <span className="step4-calc-result-label">Doporučený výkon panelu:</span>
+                        <span className="step4-calc-result-value">{results.recommendedPanelPower} W</span>
                     </div>
-                    <div className="result-item">
-                        <span className="result-label">Počet baterií:</span>
-                        <span className="result-value">{results.numberOfBatteries}</span>
+                    <div className="step4-calc-result-item">
+                        <span className="step4-calc-result-label">Počet baterií:</span>
+                        <span className="step4-calc-result-value">{results.numberOfBatteries}</span>
                     </div>
                 </div>
             )}

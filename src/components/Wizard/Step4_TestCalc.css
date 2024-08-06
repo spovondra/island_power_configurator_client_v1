@@ -1,6 +1,5 @@
-/* SolarCalculation.css */
-
-.calculation-container {
+/* Container for the calculation page */
+.step4-calc-container {
     display: flex;
     flex-direction: column;
     align-items: center; /* Center horizontally */
@@ -10,48 +9,61 @@
     width: 100%; /* Ensure full width up to max-width */
     box-sizing: border-box; /* Include padding in width and height calculations */
     margin: 0 auto; /* Center the container horizontally */
+    padding: 20px; /* Add some padding around the container */
 }
 
-.calculation-title {
+/* Title styling */
+.step4-calc-title {
     text-align: center; /* Center the heading */
     margin-bottom: 20px; /* Space below heading */
+    font-size: 2rem; /* Adjust font size for title */
+    font-weight: bold;
 }
 
-.loading-message {
+/* Loading message styling */
+.step4-calc-loading-message {
     color: #007bff; /* Blue color for loading message */
     text-align: center; /* Center the loading message */
     margin-top: 10px;
+    font-size: 1.2rem; /* Larger font size for visibility */
 }
 
-.error-message {
+/* Error message styling */
+.step4-calc-error-message {
     color: #dc3545; /* Red color for error messages */
     text-align: center; /* Center the error message */
     margin-top: 10px;
+    font-size: 1.2rem; /* Larger font size for visibility */
 }
 
-.results-container {
+/* Results container styling */
+.step4-calc-results-container {
     margin-top: 20px;
     width: 60%; /* Ensure full width of the results container */
 }
 
-.results-title {
+/* Results title styling */
+.step4-calc-results-title {
     margin-bottom: 15px;
-    font-size: 1.5em; /* Larger font size for results title */
+    font-size: 1.5rem; /* Larger font size for results title */
     font-weight: bold;
     text-align: center; /* Center the results title */
 }
 
-.result-item {
+/* Result item styling */
+.step4-calc-result-item {
     display: flex;
     justify-content: space-between; /* Space between label and value */
     padding: 10px 0; /* Padding above and below each result item */
     border-bottom: 1px solid #dee2e6; /* Border between result items */
 }
 
-.result-label {
+/* Result label styling */
+.step4-calc-result-label {
     font-weight: bold; /* Bold text for labels */
 }
 
-.result-value {
+/* Result value styling */
+.step4-calc-result-value {
     color: #333; /* Dark color for values */
 }
