@@ -1,6 +1,4 @@
-/* ProjectForm.css */
-
-/* Styling the container to center it and limit its height */
+/* Container */
 .project-form-container {
     max-width: 800px;
     margin: 0 auto;
@@ -9,15 +7,17 @@
     border-radius: 8px;
     background-color: #fff;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box; /* Zajistí, že padding je součástí šířky */
-    max-height: 80vh; /* Maximální výška formuláře */
-    overflow-y: auto; /* Povolit vertikální scrollování */
+    box-sizing: border-box;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
+/* Div */
 .project-form div {
     margin-bottom: 1.5rem;
 }
 
+/* Headings */
 .project-form h3, .project-form h4 {
     margin: 1rem 0;
     font-size: 20px;
@@ -29,6 +29,7 @@
     color: #555;
 }
 
+/* Labels */
 .project-form label {
     display: block;
     margin-bottom: 0.5rem;
@@ -36,6 +37,7 @@
     color: #333;
 }
 
+/* Inputs */
 .project-form input[type="text"],
 .project-form input[type="number"],
 .project-form input[type="checkbox"] {
@@ -44,7 +46,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
-    box-sizing: border-box; /* Zajistí, že padding je součástí šířky */
+    box-sizing: border-box;
     margin-bottom: 0.5rem;
 }
 
@@ -54,12 +56,14 @@
     margin-bottom: 0;
 }
 
+/* Actions */
 .project-form .form-actions {
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
 }
 
+/* Buttons */
 .project-form button {
     padding: 0.75rem 1.5rem;
     font-size: 16px;
@@ -88,6 +92,7 @@
     background-color: #5a6268;
 }
 
+/* Paragraph */
 .project-form p {
     margin: 0.5rem 0;
     color: #777;

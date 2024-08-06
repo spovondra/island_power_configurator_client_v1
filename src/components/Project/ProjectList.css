@@ -1,55 +1,63 @@
+/* Project List */
 .project-list {
     max-width: 500px;
     margin: 2rem auto;
     padding: 2rem;
-    border: 1px solid #ddd; /* Lighter border for a softer look */
-    border-radius: 8px; /* Rounded corners for a modern touch */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    background-color: #fff; /* White background for clarity */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
 }
 
+/* Header */
 .project-list h2 {
     text-align: center;
     margin-bottom: 1.5rem;
-    font-size: 22px; /* Larger font size for the header */
+    font-size: 22px;
     color: #333;
 }
 
+/* Projects Container */
 .projects-container {
     display: flex;
     flex-direction: column;
-    gap: 1rem; /* Space between project items */
+    gap: 1rem;
 }
 
+/* Project Item */
 .project-item {
     display: flex;
     align-items: center;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 6px;
-    background-color: #f9f9f9; /* Light background for items */
+    background-color: #f9f9f9;
 }
 
+/* Project Name */
 .project-name {
-    flex: 1; /* Allow name to take remaining space */
+    flex: 1;
     font-size: 16px;
     color: #333;
     margin-left: 10px;
 }
 
+/* Button */
 .project-item button {
-    padding: 0.5rem 0.75rem; /* Adjusted padding for buttons */
-    font-size: 14px; /* Slightly smaller font size */
+    padding: 0.5rem 0.75rem;
+    font-size: 14px;
     border: none;
-    border-radius: 4px; /* Rounded corners */
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s; /* Add transform transition for smooth scaling effect */
+    transition: background-color 0.2s, transform 0.2s;
 }
 
+/* Button Hover */
 .project-item button:hover {
-    transform: scale(1.05); /* Slightly enlarge the button on hover */
+    transform: scale(1.05);
 }
 
+/* Create Button */
 .project-item button.create {
     background-color: #007bff;
     color: #fff;
@@ -59,6 +67,7 @@
     background-color: #0056b3;
 }
 
+/* Edit Button */
 .project-item button.edit {
     background-color: #28a745;
     color: #fff;
@@ -68,6 +77,7 @@
     background-color: #218838;
 }
 
+/* Delete Button */
 .project-item button.delete {
     background-color: #dc3545;
     color: #fff;

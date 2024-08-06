@@ -1,17 +1,19 @@
+/* Wizard container */
 .wizard-container {
     display: flex;
     flex-direction: column;
     width: 100%;
-    min-height: 80vh; /* Minimum height to ensure it looks good */
+    min-height: 80vh;
     padding: 20px;
     margin: 10px auto;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-    overflow: hidden; /* Prevent overflow */
+    overflow: hidden;
 }
 
+/* Wizard steps */
 .wizard-steps {
     margin-bottom: 15px;
 }
@@ -21,7 +23,7 @@
     justify-content: space-between;
     border: 1px solid #e0e0e0;
     border-radius: 6px;
-    overflow: hidden; /* Ensure child elements don't overflow */
+    overflow: hidden;
 }
 
 .wizard-step {
@@ -37,7 +39,7 @@
 }
 
 .wizard-step:last-child {
-    border-right: none; /* Remove border from the last step */
+    border-right: none;
 }
 
 .wizard-step.active, .wizard-step.done {
@@ -46,6 +48,7 @@
     border-color: #007bff;
 }
 
+/* Wizard content */
 .wizard-content {
     flex: 1;
     padding: 20px;
@@ -54,14 +57,15 @@
     background-color: #f0f2f5;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     box-sizing: border-box;
-    overflow: visible; /* No scrolling within content */
+    overflow: visible;
 }
 
+/* Wizard buttons */
 .wizard-buttons {
     display: flex;
     justify-content: space-between;
-    gap: 10px; /* Adjusted gap to fit buttons within the container */
-    margin-top: auto; /* Pushes buttons to the bottom */
+    gap: 10px;
+    margin-top: auto;
     padding-top: 10px;
     background-color: #f1f1f1;
     border-top: 1px solid #e0e0e0;
@@ -76,7 +80,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     flex: 1;
-    min-width: 0; /* Allow buttons to shrink if needed */
+    min-width: 0;
 }
 
 .wizard-buttons button:disabled {

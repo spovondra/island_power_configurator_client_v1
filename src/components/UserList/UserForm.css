@@ -1,5 +1,4 @@
-/* UserForm.css */
-
+/* Container */
 .user-form {
     max-width: 600px;
     margin: 1rem auto;
@@ -10,17 +9,20 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Fieldset */
 .user-form fieldset {
     border: none;
     padding: 0;
 }
 
+/* Legend */
 .user-form legend {
     font-size: 18px;
     margin-bottom: 1rem;
     color: #333;
 }
 
+/* Form Group */
 .user-form .form-group {
     margin-bottom: 1rem;
 }
@@ -31,6 +33,7 @@
     margin-bottom: 0.5rem;
 }
 
+/* Inputs and Selects */
 .user-form .form-group input,
 .user-form .form-group select {
     width: 100%;
@@ -46,6 +49,7 @@
     margin-right: 0.5rem;
 }
 
+/* Button */
 .user-form button {
     padding: 0.75rem 1.25rem;
     font-size: 16px;

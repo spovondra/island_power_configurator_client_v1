@@ -1,3 +1,4 @@
+/* Admin Panel Container */
 .project-admin-panel-container {
     max-width: 1000px;
     margin: 2rem auto;
@@ -8,6 +9,7 @@
     background-color: #fff;
 }
 
+/* Header */
 .project-admin-panel-container h2 {
     text-align: center;
     margin-bottom: 1.5rem;
@@ -15,6 +17,7 @@
     color: #333;
 }
 
+/* Add Button */
 .project-add-button {
     display: block;
     width: 200px;
@@ -33,6 +36,7 @@
     background-color: #0056b3;
 }
 
+/* Table */
 .project-table {
     width: 100%;
     border-collapse: collapse;
@@ -54,6 +58,7 @@
     background-color: #f1f1f1;
 }
 
+/* Table Buttons */
 .project-table-button {
     padding: 0.5rem 0.75rem;
     font-size: 14px;
@@ -67,6 +72,7 @@
     transform: scale(1.05);
 }
 
+/* Edit Button */
 .project-table-button-edit {
     background-color: #28a745;
     color: #fff;
@@ -76,6 +82,7 @@
     background-color: #218838;
 }
 
+/* Delete Button */
 .project-table-button-delete {
     background-color: #dc3545;
     color: #fff;
@@ -85,6 +92,7 @@
     background-color: #c82333;
 }
 
+/* Error Modal */
 .project-admin-panel-error-modal {
     background-color: #f8d7da;
     color: #721c24;

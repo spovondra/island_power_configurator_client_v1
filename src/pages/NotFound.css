@@ -5,23 +5,23 @@
     align-items: center;
     padding: 20px;
     text-align: center;
-    background-color: #f8f9fa; /* Light background color */
-    height: 100vh; /* Full viewport height */
-    margin: 0; /* Remove default margin */
+    background-color: #f8f9fa;
+    height: 100vh;
+    margin: 0;
 }
 
 /* Title styling */
 .not-found-title {
-    font-size: 2.5rem; /* Adjusted for visibility */
+    font-size: 2.5rem;
     font-weight: bold;
-    color: #007bff; /* Blue color to match button */
+    color: #007bff;
     margin-bottom: 10px;
 }
 
 /* Message styling */
 .not-found-message {
-    font-size: 1.2rem; /* Slightly larger font for readability */
-    color: #6c757d; /* Gray color for less emphasis */
+    font-size: 1.2rem;
+    color: #6c757d;
     margin-bottom: 20px;
 }
 
@@ -31,7 +31,7 @@
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
-    background-color: #007bff; /* Blue background */
+    background-color: #007bff;
     color: white;
     text-decoration: none;
     font-size: 16px;
@@ -41,5 +41,5 @@
 
 /* Button hover effect */
 .not-found-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
 }

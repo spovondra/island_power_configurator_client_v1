@@ -20,10 +20,8 @@ const Step2_Appliance = () => {
     useEffect(() => {
         const fetchAppliances = async () => {
             if (selectedProject) {
-                console.log('Fetching appliances for project:', selectedProject);
                 try {
                     const project = await getProjectById(selectedProject);
-                    console.log('Fetched project data:', project);
                     setAppliances(project.appliances || []);
                 } catch (error) {
                     console.error('Error fetching project:', error);
@@ -36,18 +34,13 @@ const Step2_Appliance = () => {
 
     const handleSave = useCallback(async (e) => {
         e.preventDefault();
-        console.log('Handling save for appliance:', appliance);
         try {
             if (!selectedProject) {
                 alert("Please select a project");
-                console.warn('No project selected');
                 return;
             }
-            console.log('Saving appliance to project:', selectedProject);
             await addOrUpdateAppliance(selectedProject, appliance);
-            console.log('Appliance saved successfully');
             const updatedProject = await getProjectById(selectedProject);
-            console.log('Updated project data:', updatedProject);
             setAppliances(updatedProject.appliances);
             setAppliance({
                 id: '',
@@ -65,29 +58,22 @@ const Step2_Appliance = () => {
     }, [selectedProject, appliance]);
 
     const handleEdit = (appliance) => {
-        console.log('Editing appliance:', appliance);
-        setAppliance(appliance); // Set appliance details including ID
+        setAppliance(appliance);
         setEditMode(true);
     };
 
     const handleDelete = async (applianceId) => {
-        console.log('Attempting to delete appliance with ID:', applianceId);
         if (!applianceId) {
             alert("Appliance ID is required for deletion");
-            console.warn('No appliance ID provided for deletion');
             return;
         }
 
         try {
             if (!selectedProject) {
                 alert("Please select a project");
-                console.warn('No project selected');
                 return;
             }
-            console.log('Deleting appliance from project:', selectedProject);
-            console.log('Appliance id', applianceId);
             await deleteAppliance(selectedProject, applianceId);
-            console.log('Appliance deleted successfully');
             setAppliances(appliances.filter(appl => appl.id !== applianceId));
             alert('Appliance deleted successfully');
         } catch (error) {
@@ -97,10 +83,10 @@ const Step2_Appliance = () => {
     };
 
     return (
-        <div className="appliance-container">
-            <div className="appliance-form-container">
+        <div className="appliance-page-container">
+            <div className="form-section">
                 <form onSubmit={handleSave} className="appliance-form">
-                    <div className="form-group">
+                    <div className="input-group">
                         <label htmlFor="name">Name:</label>
                         <input
                             type="text"
@@ -110,7 +96,7 @@ const Step2_Appliance = () => {
                             required
                         />
                     </div>
-                    <div className="form-group">
+                    <div className="input-group">
                         <label htmlFor="power">Power (W):</label>
                         <input
                             type="number"
@@ -120,7 +106,7 @@ const Step2_Appliance = () => {
                             required
                         />
                     </div>
-                    <div className="form-group">
+                    <div className="input-group">
                         <label htmlFor="quantity">Quantity:</label>
                         <input
                             type="number"
@@ -130,7 +116,7 @@ const Step2_Appliance = () => {
                             required
                         />
                     </div>
-                    <div className="form-group">
+                    <div className="input-group">
                         <label htmlFor="dailyUsageHours">Daily Usage Hours:</label>
                         <input
                             type="number"
@@ -140,12 +126,12 @@ const Step2_Appliance = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="btn">
+                    <button type="submit" className="action-button">
                         {editMode ? 'Update Appliance' : 'Add Appliance'}
                     </button>
                 </form>
             </div>
-            <div className="appliance-list-container">
+            <div className="appliance-list-section">
                 <table className="appliance-table">
                     <thead>
                     <tr>
@@ -163,15 +149,15 @@ const Step2_Appliance = () => {
                             <td>{appl.power}</td>
                             <td>{appl.quantity}</td>
                             <td>{appl.dailyUsageHours}</td>
-                            <td className="actions">
+                            <td className="button-group">
                                 <button
-                                    className="btn edit-btn"
+                                    className="edit-button"
                                     onClick={() => handleEdit(appl)}
                                 >
                                     Edit
                                 </button>
                                 <button
-                                    className="btn delete-btn"
+                                    className="delete-button"
                                     onClick={() => handleDelete(appl.id)}
                                 >
                                     Delete

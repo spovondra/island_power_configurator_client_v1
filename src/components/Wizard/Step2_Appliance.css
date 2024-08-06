@@ -1,21 +1,22 @@
-/* Step2_Appliance.css */
-
-.appliance-container {
+/* Appliance Page Container */
+.appliance-page-container {
     display: flex;
     flex-direction: column;
     padding: 20px;
     box-sizing: border-box;
     max-width: 1200px;
     margin: 0 auto;
-    align-items: center; /* Center contents horizontally */
+    align-items: center;
 }
 
-.appliance-form-container {
+/* Form Section */
+.form-section {
     width: 100%;
     max-width: 600px;
-    margin-bottom: 40px; /* Space between form and results */
+    margin-bottom: 40px;
 }
 
+/* Appliance Form */
 .appliance-form {
     background: #ffffff;
     border-radius: 8px;
@@ -26,25 +27,27 @@
     box-sizing: border-box;
 }
 
-.form-group {
+/* Input Group */
+.input-group {
     margin-bottom: 15px;
 }
 
-.form-group label {
+.input-group label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-.form-group input {
-    width: calc(100% - 22px); /* Account for padding */
+.input-group input {
+    width: calc(100% - 22px);
     padding: 10px;
     border: 1px solid #dcdcdc;
     border-radius: 4px;
     box-sizing: border-box;
 }
 
-.btn {
+/* Action Button */
+.action-button {
     background-color: #007bff;
     color: white;
     border: none;
@@ -56,15 +59,17 @@
     margin-right: 10px;
 }
 
-.btn:hover {
+.action-button:hover {
     background-color: #0056b3;
 }
 
-.appliance-list-container {
+/* Appliance List Section */
+.appliance-list-section {
     width: 100%;
     max-width: 1200px;
 }
 
+/* Appliance Table */
 .appliance-table {
     width: 100%;
     border-collapse: collapse;
@@ -88,13 +93,15 @@
     background-color: #f1f1f1;
 }
 
-.actions {
+/* Button Group */
+.button-group {
     display: flex;
     justify-content: center;
     gap: 10px;
 }
 
-.edit-btn {
+/* Edit Button */
+.edit-button {
     background-color: #28a745;
     border: none;
     border-radius: 4px;
@@ -104,11 +111,12 @@
     color: white;
 }
 
-.edit-btn:hover {
+.edit-button:hover {
     background-color: #218838;
 }
 
-.delete-btn {
+/* Delete Button */
+.delete-button {
     background-color: #dc3545;
     border: none;
     border-radius: 4px;
@@ -118,23 +126,24 @@
     color: white;
 }
 
-.delete-btn:hover {
+.delete-button:hover {
     background-color: #c82333;
 }
 
+/* Media Query */
 @media (min-width: 768px) {
-    .appliance-container {
+    .appliance-page-container {
         flex-direction: row;
         justify-content: space-between;
         align-items: flex-start;
     }
 
-    .appliance-form-container {
+    .form-section {
         flex: 1;
         margin-right: 20px;
     }
 
-    .appliance-list-container {
+    .appliance-list-section {
         flex: 2;
     }
 }

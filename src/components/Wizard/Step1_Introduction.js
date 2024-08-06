@@ -56,21 +56,22 @@ const Step1Introduction = () => {
     }, [name, selectedProject, isNewProject, newProjectId]);
 
     return (
-        <div className="step1-wrapper">
-            <div className="step1-container">
+        <div className="step1-intro-wrapper">
+            <div className="step1-intro-container">
                 <h2>Introduction</h2>
-                <div className="form-group">
+                <div className="step1-form-group">
                     <label htmlFor="projectName">Project Name:</label>
                     <input
                         id="projectName"
                         type="text"
-                        className="form-control"
+                        className="step1-form-control"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
                     />
                 </div>
-                {error && <p className="error-message">{error}</p>}
+                {error && <p className="step1-error-message">{error}</p>}
+                <button className="step1-button">Submit</button>
             </div>
         </div>
     );

@@ -1,5 +1,4 @@
-/* FinalStep.css */
-
+/* Container */
 .final-step-container {
     padding: 20px;
     max-width: 800px;
@@ -10,6 +9,7 @@
     background-color: #f8f9fa;
 }
 
+/* Header */
 .final-step-header {
     margin-bottom: 20px;
     text-align: center;
@@ -20,6 +20,7 @@
     color: #333;
 }
 
+/* Section */
 .final-step-section {
     margin-bottom: 20px;
 }
@@ -41,6 +42,7 @@
     color: #333;
 }
 
+/* List */
 .final-step-list {
     list-style-type: none;
     padding: 0;
@@ -55,6 +57,7 @@
     background-color: #fff;
 }
 
+/* Buttons */
 .final-step-buttons {
     text-align: center;
     margin-top: 20px;

@@ -1,20 +1,22 @@
-/* SharedLayout.css */
+/* Shared layout container */
 .shared-layout {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Ensure the layout takes up at least the full height of the viewport */
-    background-color: #f0f2f5; /* Light background color */
+    min-height: 100vh;
+    background-color: #f0f2f5;
 }
 
+/* Main content */
 main {
-    flex: 1; /* Makes sure that the main content takes up the remaining space */
+    flex: 1;
     padding: 20px;
 }
 
+/* Footer */
 footer {
-    margin-top: auto; /* Push the footer to the bottom of the page */
-    background-color: #ffffff; /* Footer background color */
-    border-top: 1px solid #ddd; /* Light border at the top of the footer */
+    margin-top: auto;
+    background-color: #ffffff;
+    border-top: 1px solid #ddd;
     padding: 20px;
     text-align: center;
 }

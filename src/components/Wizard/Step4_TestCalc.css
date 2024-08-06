@@ -1,69 +1,69 @@
-/* Container for the calculation page */
+/* Container for the Calculation Page */
 .step4-calc-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center horizontally */
-    justify-content: center; /* Center vertically */
+    align-items: center;
+    justify-content: center;
     border-radius: 8px;
-    max-width: 800px; /* Fixed width for the container */
-    width: 100%; /* Ensure full width up to max-width */
-    box-sizing: border-box; /* Include padding in width and height calculations */
-    margin: 0 auto; /* Center the container horizontally */
-    padding: 20px; /* Add some padding around the container */
+    max-width: 800px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-/* Title styling */
+/* Title Styling */
 .step4-calc-title {
-    text-align: center; /* Center the heading */
-    margin-bottom: 20px; /* Space below heading */
-    font-size: 2rem; /* Adjust font size for title */
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
     font-weight: bold;
 }
 
-/* Loading message styling */
+/* Loading Message Styling */
 .step4-calc-loading-message {
-    color: #007bff; /* Blue color for loading message */
-    text-align: center; /* Center the loading message */
+    color: #007bff;
+    text-align: center;
     margin-top: 10px;
-    font-size: 1.2rem; /* Larger font size for visibility */
+    font-size: 1.2rem;
 }
 
-/* Error message styling */
+/* Error Message Styling */
 .step4-calc-error-message {
-    color: #dc3545; /* Red color for error messages */
-    text-align: center; /* Center the error message */
+    color: #dc3545;
+    text-align: center;
     margin-top: 10px;
-    font-size: 1.2rem; /* Larger font size for visibility */
+    font-size: 1.2rem;
 }
 
-/* Results container styling */
+/* Results Container Styling */
 .step4-calc-results-container {
     margin-top: 20px;
-    width: 60%; /* Ensure full width of the results container */
+    width: 60%;
 }
 
-/* Results title styling */
+/* Results Title Styling */
 .step4-calc-results-title {
     margin-bottom: 15px;
-    font-size: 1.5rem; /* Larger font size for results title */
+    font-size: 1.5rem;
     font-weight: bold;
-    text-align: center; /* Center the results title */
+    text-align: center;
 }
 
-/* Result item styling */
+/* Result Item Styling */
 .step4-calc-result-item {
     display: flex;
-    justify-content: space-between; /* Space between label and value */
-    padding: 10px 0; /* Padding above and below each result item */
-    border-bottom: 1px solid #dee2e6; /* Border between result items */
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #dee2e6;
 }
 
-/* Result label styling */
+/* Result Label Styling */
 .step4-calc-result-label {
-    font-weight: bold; /* Bold text for labels */
+    font-weight: bold;
 }
 
-/* Result value styling */
+/* Result Value Styling */
 .step4-calc-result-value {
-    color: #333; /* Dark color for values */
+    color: #333;
 }

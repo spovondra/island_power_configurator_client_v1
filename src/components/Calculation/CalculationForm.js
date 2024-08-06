@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import './CalculationForm.css'; // Import the CSS
+import { useState } from "react";
+import './CalculationForm.css';
 
 const CalculationForm = ({ onSubmit }) => {
     const [formData, setFormData] = useState({
@@ -40,8 +40,10 @@ const CalculationForm = ({ onSubmit }) => {
     };
 
     return (
+
         <div className="form-container">
             <form onSubmit={handleSubmit}>
+                <h1 className="step4-calc-title">Solar Calculation</h1>
                 <div className="form-group">
                     <label htmlFor="power">Power (W):</label>
                     <input
@@ -108,7 +110,7 @@ const CalculationForm = ({ onSubmit }) => {
                         required
                     />
                 </div>
-                <button type="submit" className="form-submit-button">Vypočítat</button>
+                <button type="submit" className="form-submit-button">Calculate</button>
             </form>
         </div>
     );

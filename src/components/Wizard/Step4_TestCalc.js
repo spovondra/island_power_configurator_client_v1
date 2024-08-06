@@ -27,7 +27,6 @@ const Step4TestCalc = () => {
 
     return (
         <div className="step4-calc-container">
-            <h1 className="step4-calc-title">Solar Calculation</h1>
             <CalculationForm onSubmit={handleFormSubmit} />
             {loading && <p className="step4-calc-loading-message">Loading...</p>}
             {error && <p className="step4-calc-error-message">{error}</p>}

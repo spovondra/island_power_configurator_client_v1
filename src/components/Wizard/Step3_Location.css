@@ -1,3 +1,4 @@
+/* Map Page Container */
 .map-page-container {
     display: flex;
     flex-direction: column;
@@ -5,6 +6,7 @@
     box-sizing: border-box;
 }
 
+/* Content */
 .content {
     display: flex;
     flex-direction: row;
@@ -16,17 +18,20 @@
     gap: 20px;
 }
 
+/* Left Column */
 .left-column {
     flex: 2;
     display: flex;
     flex-direction: column;
 }
 
+/* Search Block */
 .search-block {
     display: flex;
     margin-bottom: 10px;
 }
 
+/* Search Bar */
 .search-bar {
     display: flex;
     flex-direction: row;
@@ -38,41 +43,52 @@
     border: 1px solid #dcdcdc;
     border-radius: 4px;
     padding: 10px;
-    flex: 4; /* Allows input to take available space */
+    flex: 4;
 }
 
+/* Search Button */
 .search-button {
     justify-content: center;
     display: flex;
     flex: 1;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .search-button:hover {
     background-color: #0056b3;
 }
 
+/* Map Wrapper */
 .map-wrapper {
     flex: 1;
-    min-width: 0; /* Prevent stretching */
+    min-width: 0;
 }
 
+/* Controls */
 .controls {
     background: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    max-width: 250px; /* Adjusted width for a more balanced look */
+    max-width: 250px;
     width: 100%;
-    height: auto; /* Allows height to adjust based on content */
-    min-height: 500px; /* Minimum height to ensure it doesn’t shrink too much */
+    min-height: 500px;
     box-sizing: border-box;
 }
 
-.form-group,
-.input-group {
+/* Form Group */
+.form-group {
     margin-bottom: 10px;
 }
 
+/* Location Info */
 .location-info {
     border: 1px solid #dcdcdc;
     border-radius: 8px;
@@ -80,20 +96,4 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
     box-sizing: border-box;
-}
-
-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 16px; /* Adjusted padding for better appearance */
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    min-width: 0; /* Allow button to shrink if needed */
-}
-
-button:hover {
-    background-color: #0056b3;
 }
