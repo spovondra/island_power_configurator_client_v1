@@ -1,15 +1,78 @@
-ul {
-    list-style-type: none;
-    padding: 0;
+.project-list {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 1px solid #ddd; /* Lighter border for a softer look */
+    border-radius: 8px; /* Rounded corners for a modern touch */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    background-color: #fff; /* White background for clarity */
 }
 
-li {
+.project-list h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 22px; /* Larger font size for the header */
+    color: #333;
+}
+
+.projects-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Space between project items */
+}
+
+.project-item {
+    display: flex;
+    align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #ddd;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9; /* Light background for items */
 }
 
-button {
+.project-name {
+    flex: 1; /* Allow name to take remaining space */
+    font-size: 16px;
+    color: #333;
     margin-left: 10px;
-    padding: 5px;
+}
+
+.project-item button {
+    padding: 0.5rem 0.75rem; /* Adjusted padding for buttons */
+    font-size: 14px; /* Slightly smaller font size */
+    border: none;
+    border-radius: 4px; /* Rounded corners */
     cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s; /* Add transform transition for smooth scaling effect */
+}
+
+.project-item button:hover {
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.project-item button.create {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.project-item button.create:hover {
+    background-color: #0056b3;
+}
+
+.project-item button.edit {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.project-item button.edit:hover {
+    background-color: #218838;
+}
+
+.project-item button.delete {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.project-item button.delete:hover {
+    background-color: #c82333;
 }

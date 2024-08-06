@@ -1,8 +1,9 @@
-import React, { useReducer, useEffect, useContext } from 'react';
+import { useReducer, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserProjects, deleteProject } from '../../services/ProjectService';
 import { ProjectContext } from '../../context/ProjectContext';
 import { projectReducer, initialState } from '../../reducers/projectReducer';
+import './ProjectList.css';
 
 const ProjectList = () => {
     const [state, dispatch] = useReducer(projectReducer, initialState);
@@ -46,18 +47,20 @@ const ProjectList = () => {
     if (state.error) return <p>Error: {state.error}</p>;
 
     return (
-        <div>
+        <div className="project-list">
             <h2>Projects</h2>
-            <button onClick={handleCreateNewProject}>Create New Project</button>
-            <ul>
+            <button className="create" onClick={handleCreateNewProject}>Create New Project</button>
+            <div className="projects-container">
                 {state.projects.map(project => (
-                    <li key={project.id}>
-                        {project.name}
-                        <button onClick={() => handleProjectAction(project)}>Edit / Start Wizard</button>
-                        <button onClick={() => handleDelete(project.id)}>Delete</button>
-                    </li>
+                    <div key={project.id} className="project-item">
+                        <span className="project-name">{project.name}</span>
+                        <div className="project-actions">
+                            <button className="edit" onClick={() => handleProjectAction(project)}>Edit / Start Wizard</button>
+                            <button className="delete" onClick={() => handleDelete(project.id)}>Delete</button>
+                        </div>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };

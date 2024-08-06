@@ -71,7 +71,6 @@ const Step1Introduction = () => {
                     />
                 </div>
                 {error && <p className="error-message">{error}</p>}
-                <button type="button">Save</button>
             </div>
         </div>
     );

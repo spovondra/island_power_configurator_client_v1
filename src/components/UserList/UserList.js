@@ -1,10 +1,9 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import authService from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
-import UserTable from './UserTable';
-import UserForm from './UserForm';
 import Modal from '../Modal/Modal';
 import './UserList.css';
+import UserForm from './UserForm';
 
 const initialState = {
     users: [],
@@ -152,24 +151,59 @@ const UserList = () => {
     );
 
     return (
-        <div className="container">
-            <h2>User List</h2>
-            <button className="add-user-button" onClick={handleAddUserClick}>Přidat uživatele</button>
+        <div className="user-list-container">
+            <h2 className="user-list-header">User List</h2>
+            <div className="user-list-controls">
+                <div className="user-list-search-container">
+                    <input
+                        type="text"
+                        placeholder="Search by username"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                        className="user-list-search-input"
+                    />
+                    <button className="user-list-search-button">🔍</button>
+                </div>
+                <button className="user-list-add-button" onClick={handleAddUserClick}>Add User</button>
+            </div>
             {isLoading ? (
                 <p>Loading...</p>
             ) : (
-                <>
-                    <UserTable
-                        users={filteredUsers}
-                        handleSelectUser={handleSelectUser}
-                        handleDeleteUser={handleDeleteUser}
-                        searchQuery={searchQuery}
-                        handleSearchChange={handleSearchChange}
-                    />
+                <div className="user-list-table-container">
+                    <table className="user-list-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Login</th>
+                            <th>Role</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Projects</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {filteredUsers.map(user => (
+                            <tr key={user.id}>
+                                <td>{user.id}</td>
+                                <td>{user.username}</td>
+                                <td>{user.role}</td>
+                                <td>{user.firstName}</td>
+                                <td>{user.lastName}</td>
+                                <td>{user.projects}</td>
+                                <td>
+                                    <button className="user-list-button user-list-button-edit" onClick={() => handleSelectUser(user)}>Edit</button>
+                                    <button className="user-list-button user-list-button-delete" onClick={() => handleDeleteUser(user.id)}>Delete</button>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
                     <Modal
                         isOpen={isModalOpen}
                         onClose={handleCloseModal}
                         title={modalContent === 'form' ? (selectedUser ? 'Edit User' : 'Add User') : 'Error'}
+                        className={modalContent === 'error' ? 'user-list-error-modal' : ''}
                     >
                         {modalContent === 'form' ? (
                             <UserForm
@@ -184,7 +218,7 @@ const UserList = () => {
                             <p>{error}</p>
                         )}
                     </Modal>
-                </>
+                </div>
             )}
         </div>
     );

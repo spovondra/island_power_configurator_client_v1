@@ -108,7 +108,7 @@ const CalculationForm = ({ onSubmit }) => {
                         required
                     />
                 </div>
-                <button type="submit">Vypočítat</button>
+                <button type="submit" className="form-submit-button">Vypočítat</button>
             </form>
         </div>
     );

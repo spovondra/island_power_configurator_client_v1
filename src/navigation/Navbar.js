@@ -19,10 +19,7 @@ const Navbar = () => {
         <nav className="navbar">
             <div className="navbar-links">
                 <NavLink to="/">Home</NavLink>
-                <NavLink to="/about">About</NavLink>
-                <NavLink to="/location">Location</NavLink>
                 <NavLink to="/projects">Projects</NavLink>
-                <NavLink to="/random-adress123">ErrorPage</NavLink>
             </div>
             {user && (
                 <div className="navbar-user" onClick={toggleDropdown}>

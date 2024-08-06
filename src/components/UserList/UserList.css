@@ -1,136 +1,137 @@
-.container {
+.user-list-container {
     max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 1px solid #ddd;
     border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     background-color: #fff;
-    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-table {
+.user-list-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 22px;
+    color: #333;
+}
+
+.user-list-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    gap: 10rem;
+    margin-bottom: 1rem;
+}
+
+.user-list-add-button {
+    padding: 0.5rem 1rem;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 20%;
+    background-color: #007bff;
+    color: #fff;
+    transition: background-color 0.2s;
+}
+
+.user-list-add-button:hover {
+    background-color: #0056b3;
+}
+
+.user-list-search-container {
+    display: flex;
+    align-items: center;
+    width: 60%;
+    max-width: 500px;
+}
+
+.user-list-search-input {
+    flex: 1;
+    padding: 0.5rem;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+}
+
+.user-list-search-button {
+    padding: 0.5rem;
+    font-size: 16px;
+    width: 10%;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    transition: background-color 0.2s;
+}
+
+.user-list-search-button:hover {
+    background-color: #0056b3;
+}
+
+.user-list-table-container {
+    width: 100%;
+}
+
+.user-list-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
 }
 
-th, td {
-    padding: 10px;
+.user-list-table th,
+.user-list-table td {
+    padding: 0.75rem;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
-th {
+.user-list-table th {
     background-color: #f4f4f4;
 }
 
-button {
-    padding: 10px 20px;
-    margin: 5px;
+.user-list-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.user-list-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 14px;
     border: none;
     border-radius: 4px;
-    background-color: #007bff;
-    color: white;
     cursor: pointer;
-    font-size: 14px;
+    transition: background-color 0.2s, transform 0.2s;
 }
 
-button:hover {
-    background-color: #0056b3;
+.user-list-button:hover {
+    transform: scale(1.05);
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-label {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input[type="text"], input[type="email"], input[type="password"], select {
-    padding: 8px;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-input[type="radio"] {
-    margin-right: 5px;
-}
-
-.buttons {
-    display: flex;
-    justify-content: space-between;
-}
-
-.error-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-    border-radius: 8px;
-    z-index: 1000;
-}
-
-.error-modal h2 {
-    margin-top: 0;
-}
-
-.error-modal button {
-    background-color: #dc3545;
-}
-
-.add-user-button {
-    display: block;
-    margin-left: auto;
-    margin-bottom: 20px;
-    background-color: #007bff;
-    color: white;
-}
-
-.add-user-button:hover {
-    background-color: #0056b3;
-}
-
-.search-box {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.search-box input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 10px;
-}
-
-.search-box button {
+.user-list-button-edit {
     background-color: #28a745;
-    width: 80px;
+    color: #fff;
 }
 
-.search-box button:hover {
+.user-list-button-edit:hover {
     background-color: #218838;
 }
 
-fieldset {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 20px;
-    margin-top: 20px;
+.user-list-button-delete {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.user-list-button-delete:hover {
+    background-color: #c82333;
+}
+
+.user-list-error-modal {
+    background-color: #f8d7da;
+    color: #721c24;
 }

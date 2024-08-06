@@ -1,4 +1,5 @@
 import React from 'react';
+import './UserForm.css'; // Import the new CSS file
 
 const UserForm = ({
                       selectedUser,
@@ -9,10 +10,9 @@ const UserForm = ({
                       dispatch,
                   }) => {
     return (
-        <div>
+        <div className="user-form">
             <form onSubmit={handleSubmit}>
                 <fieldset>
-                    <legend>{selectedUser ? 'Edit User' : 'Add User'}</legend>
                     <div className="form-group">
                         <label>Username:</label>
                         <input
