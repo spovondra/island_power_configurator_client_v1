@@ -90,7 +90,7 @@ const Step3_Location = () => {
                     usedOptimalValues: useOptimal,
                     monthlyIrradianceList: JSON.parse(pvgisData).map(item => ({
                         month: item.month,
-                        irradiance: item.hi_d
+                        irradiance: item.HI_d
                     })) || []
                 }
             };
