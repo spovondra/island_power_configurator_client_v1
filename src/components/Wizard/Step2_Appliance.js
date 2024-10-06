@@ -9,9 +9,14 @@ const Step2_Appliance = () => {
     const [appliance, setAppliance] = useState({
         id: '', // ID for editing appliances
         name: '',
-        power: 0,
+        type: 'AC', // Default type; can be AC or DC
         quantity: 0,
-        dailyUsageHours: 0
+        power: 0,
+        hours: 0,
+        days: 7, // Default to 7 days per week
+        peakPower: 0,
+        energy: 0,
+        cost: 0
     });
 
     const [appliances, setAppliances] = useState([]);
@@ -45,9 +50,14 @@ const Step2_Appliance = () => {
             setAppliance({
                 id: '',
                 name: '',
-                power: 0,
+                type: 'AC',
                 quantity: 0,
-                dailyUsageHours: 0
+                power: 0,
+                hours: 0,
+                days: 7,
+                peakPower: 0,
+                energy: 0,
+                cost: 0
             });
             setEditMode(false);
             alert('Appliance saved successfully');
@@ -57,8 +67,8 @@ const Step2_Appliance = () => {
         }
     }, [selectedProject, appliance]);
 
-    const handleEdit = (appliance) => {
-        setAppliance(appliance);
+    const handleEdit = (appl) => {
+        setAppliance(appl);
         setEditMode(true);
     };
 
@@ -97,6 +107,18 @@ const Step2_Appliance = () => {
                         />
                     </div>
                     <div className="input-group">
+                        <label htmlFor="type">Type:</label>
+                        <select
+                            id="type"
+                            value={appliance.type}
+                            onChange={(e) => setAppliance({ ...appliance, type: e.target.value })}
+                            required
+                        >
+                            <option value="AC">AC</option>
+                            <option value="DC">DC</option>
+                        </select>
+                    </div>
+                    <div className="input-group">
                         <label htmlFor="power">Power (W):</label>
                         <input
                             type="number"
@@ -117,13 +139,51 @@ const Step2_Appliance = () => {
                         />
                     </div>
                     <div className="input-group">
-                        <label htmlFor="dailyUsageHours">Daily Usage Hours:</label>
+                        <label htmlFor="hours">Daily Usage Hours:</label>
                         <input
                             type="number"
-                            id="dailyUsageHours"
-                            value={appliance.dailyUsageHours}
-                            onChange={(e) => setAppliance({ ...appliance, dailyUsageHours: parseFloat(e.target.value) })}
+                            id="hours"
+                            value={appliance.hours}
+                            onChange={(e) => setAppliance({ ...appliance, hours: parseFloat(e.target.value) })}
                             required
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label htmlFor="days">Days per Week:</label>
+                        <input
+                            type="number"
+                            id="days"
+                            value={appliance.days}
+                            onChange={(e) => setAppliance({ ...appliance, days: parseFloat(e.target.value) })}
+                            required
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label htmlFor="peakPower">Peak Power (W):</label>
+                        <input
+                            type="number"
+                            id="peakPower"
+                            value={appliance.peakPower}
+                            onChange={(e) => setAppliance({ ...appliance, peakPower: parseFloat(e.target.value) })}
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label htmlFor="energy">Energy Consumption:</label>
+                        <input
+                            type="number"
+                            id="energy"
+                            value={appliance.energy}
+                            onChange={(e) => setAppliance({ ...appliance, energy: parseFloat(e.target.value) })}
+                            disabled
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label htmlFor="cost">Cost:</label>
+                        <input
+                            type="number"
+                            id="cost"
+                            value={appliance.cost}
+                            onChange={(e) => setAppliance({ ...appliance, cost: parseFloat(e.target.value) })}
                         />
                     </div>
                     <button type="submit" className="action-button">
@@ -136,9 +196,14 @@ const Step2_Appliance = () => {
                     <thead>
                     <tr>
                         <th style={{ minWidth: '200px' }}>Name</th>
+                        <th>Type</th>
                         <th>Power (W)</th>
                         <th>Quantity</th>
                         <th>Daily Usage (hours)</th>
+                        <th>Days (per week)</th>
+                        <th>Peak Power (W)</th>
+                        <th>Energy (kWh)</th>
+                        <th>Cost</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -146,9 +211,14 @@ const Step2_Appliance = () => {
                     {appliances.map((appl) => (
                         <tr key={appl.id}>
                             <td>{appl.name}</td>
+                            <td>{appl.type}</td>
                             <td>{appl.power}</td>
                             <td>{appl.quantity}</td>
-                            <td>{appl.dailyUsageHours}</td>
+                            <td>{appl.hours}</td>
+                            <td>{appl.days}</td>
+                            <td>{appl.peakPower}</td>
+                            <td>{appl.energy}</td>
+                            <td>{appl.cost}</td>
                             <td className="button-group">
                                 <button
                                     className="edit-button"

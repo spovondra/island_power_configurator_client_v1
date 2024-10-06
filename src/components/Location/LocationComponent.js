@@ -22,8 +22,8 @@ const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, cal
         useMapEvents({
             click(e) {
                 const { lat, lng } = e.latlng;
-                setLatitude(lat.toFixed(3));
-                setLongitude(lng.toFixed(3));
+                setLatitude(lat.toFixed(6));
+                setLongitude(lng.toFixed(6));
                 if (setUseOptimal) {
                     setUseOptimal(false);
                 }

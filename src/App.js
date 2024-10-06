@@ -18,6 +18,7 @@ import NotFound from './pages/NotFound';
 import { ProjectProvider } from './context/ProjectContext';
 
 import "./App.css"
+import ComponentAdminPanel from "./components/ComponentAdmin/ComponentAdminPanel";
 
 const App = () => {
     return (
@@ -41,6 +42,10 @@ const App = () => {
                         <Route path="/admin/projects" element={
                             <AuthRoute role="ADMIN">
                                 <ProjectAdminPanel />
+                            </AuthRoute>}/>
+                        <Route path="/admin/components" element={
+                            <AuthRoute role="ADMIN">
+                                <ComponentAdminPanel />
                             </AuthRoute>}/>
                         <Route path="wizard" element={<Wizard />} />
                     </Route>

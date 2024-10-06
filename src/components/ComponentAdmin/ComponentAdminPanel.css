@@ -1,0 +1,127 @@
+/* Admin Panel Container */
+.component-admin-panel-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+/* Header */
+.component-admin-panel-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Add Button */
+.component-add-button {
+    display: block;
+    width: 200px;
+    margin: 1rem auto;
+    padding: 0.5rem;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #007bff; /* Primary Color */
+    color: #fff;
+    transition: background-color 0.2s;
+}
+
+.component-add-button:hover {
+    background-color: #0056b3; /* Darker shade for hover */
+}
+
+/* Category Buttons */
+.category-buttons {
+    display: flex;
+    margin-bottom: 1rem; /* Space below the button list */
+    justify-content: center; /* Center buttons horizontally */
+}
+
+.category-button {
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem; /* Margin between buttons */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #fff; /* White background */
+    color: #007bff; /* Text color matches primary color */
+    transition: background-color 0.2s, transform 0.2s; /* Smooth transition for hover */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
+}
+
+.category-button:hover {
+    background-color: #f0f0f0; /* Light gray on hover */
+}
+
+.category-button.active {
+    background-color: #e0e0e0; /* Active state background */
+    font-weight: bold; /* Bold text for active category */
+}
+
+/* Table */
+.component-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.component-table th,
+.component-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.component-table th {
+    background-color: #f4f4f4;
+}
+
+.component-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Table Buttons */
+.component-table-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.component-table-button:hover {
+    transform: scale(1.05);
+}
+
+/* Edit Button */
+.component-table-button-edit {
+    background-color: #28a745; /* Success Color */
+    color: #fff;
+}
+
+.component-table-button-edit:hover {
+    background-color: #218838; /* Darker success color on hover */
+}
+
+/* Delete Button */
+.component-table-button-delete {
+    background-color: #dc3545; /* Danger Color */
+    color: #fff;
+}
+
+.component-table-button-delete:hover {
+    background-color: #c82333; /* Darker danger color on hover */
+}
+
+/* Error Modal */
+.component-admin-panel-error-modal {
+    background-color: #f8d7da; /* Light red background */
+    color: #721c24; /* Dark red text */
+}

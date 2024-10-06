@@ -32,6 +32,7 @@ const Navbar = () => {
                             <>
                                 <NavLink to="/admin/users">User List</NavLink>
                                 <NavLink to="/admin/projects">Project Management</NavLink>
+                                <NavLink to="/admin/components">Component Management</NavLink>
                             </>
                         )}
                         <button onClick={handleLogout}>Logout</button>

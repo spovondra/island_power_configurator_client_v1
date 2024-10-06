@@ -7,7 +7,7 @@ import FinalStep from '../components/Wizard/FinalStep';
 import './Wizard.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getProjectById } from '../services/ProjectService';
-import Step4TestCalc from "../components/Wizard/Step4_TestCalc";
+import Step4TestCalc from "../components/Wizard/Step4_Inverter";
 
 const steps = [
     { key: 'step1', label: 'Introduction', component: Step1Introduction },

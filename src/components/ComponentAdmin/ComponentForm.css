@@ -1,0 +1,80 @@
+/* ComponentForm.css */
+
+/* Container */
+.component-form-container {
+    max-height: 80vh; /* Set a maximum height for scrolling */
+    overflow-y: auto; /* Enables vertical scrolling */
+    padding: 20px;
+    border: 1px solid #ccc; /* Optional styling */
+    border-radius: 8px; /* Optional styling */
+    background-color: #f9f9f9; /* Optional styling */
+}
+
+/* Form */
+.component-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Labels */
+.component-form label {
+    display: block;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+/* Inputs and Selects */
+.component-form input[type="text"],
+.component-form input[type="number"],
+.component-form select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+/* Buttons */
+.component-form button {
+    padding: 0.75rem 1.5rem;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-submit {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.btn-submit:hover {
+    background-color: #218838;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .component-form-container {
+        padding: 1.5rem;
+    }
+}
