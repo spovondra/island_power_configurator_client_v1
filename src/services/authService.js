@@ -1,7 +1,7 @@
 import apiClient from './apiClient';
 import { API_AUTH_URL } from '../config';
 
-const register = (username, password, role, firstName = '', lastName = '', email = '') => {
+const register = async (username, password, role, firstName = '', lastName = '', email = '') => {
     return apiClient.post(`${API_AUTH_URL}register`, {
         username,
         password,
@@ -21,9 +21,9 @@ const login = async (username, password) => {
     });
 
     if (response.status === 200 && response.data) {
-        const { jwt, userId, role } = response.data;
-        localStorage.setItem('user', JSON.stringify({ username, userId, roles: role.split(','), token: jwt }));
-        return { username, userId, roles: role.split(','), token: jwt };
+        const { jwt, refreshToken, userId, role } = response.data;
+        localStorage.setItem('user', JSON.stringify({ username, userId, roles: role.split(','), token: jwt, refreshToken }));
+        return { username, userId, roles: role.split(','), token: jwt, refreshToken };
     } else {
         throw new Error('Login failed');
     }
@@ -36,7 +36,6 @@ const logout = () => {
 
 const getCurrentUser = () => {
     const user = localStorage.getItem('user');
-    console.log('User from localStorage:', user);
     return user ? JSON.parse(user) : null;
 };
 
@@ -71,6 +70,7 @@ const updateUser = async (userId, userDetails) => {
     return response.data;
 };
 
+// Exposing the authentication service functions
 const authService = {
     register,
     login,
