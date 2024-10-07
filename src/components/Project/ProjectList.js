@@ -33,9 +33,9 @@ const ProjectList = () => {
         }
     };
 
-    const handleProjectAction = (project) => {
-        setSelectedProject(project.id);
-        navigate('/wizard', { state: { isNewProject: false, project } });
+    const handleProjectAction = (projectId) => {
+        setSelectedProject(projectId);
+        navigate('/wizard', { state: { isNewProject: false, projectId } });
     };
 
     const handleCreateNewProject = () => {
@@ -55,7 +55,7 @@ const ProjectList = () => {
                     <div key={project.id} className="project-item">
                         <span className="project-name">{project.name}</span>
                         <div className="project-actions">
-                            <button className="edit" onClick={() => handleProjectAction(project)}>Edit / Start Wizard</button>
+                            <button className="edit" onClick={() => handleProjectAction(project.id)}>Edit / Start Wizard</button>
                             <button className="delete" onClick={() => handleDelete(project.id)}>Delete</button>
                         </div>
                     </div>

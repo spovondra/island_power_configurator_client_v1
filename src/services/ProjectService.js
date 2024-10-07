@@ -82,3 +82,42 @@ export const deleteAppliance = async (projectId, applianceId) => {
     }
 };
 
+export const getSuitableInverters = async (projectId, systemVoltage, temperature) => {
+    try {
+        const response = await apiClient.get(`${API_PROJECT_URL}/${projectId}/inverters/suitable`, {
+            params: {
+                systemVoltage: systemVoltage,
+                temperature: temperature
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching suitable inverters:', error);
+        throw error;
+    }
+};
+
+// Update the selectInverter function in services/ProjectService.js
+export const selectInverter = async (projectId, inverterId) => {
+    try {
+        // Send the inverter ID in the URL of the request
+        const response = await apiClient.post(`${API_PROJECT_URL}/${projectId}/inverters/select-inverter/${inverterId}`);
+        console.log('select-inverter:', inverterId);
+        return response.data; // Assumes response includes adjusted AC load and total daily energy
+
+    } catch (error) {
+        console.error('Error selecting inverter:', error);
+        throw error;
+    }
+};
+
+export const getSelectedInverterDetails = async (projectId, inverterId) => {
+    try {
+        const response = await apiClient().get(`${API_PROJECT_URL}/${projectId}/inverters/${inverterId}`);
+        return response.data; // Return the inverter details
+    } catch (error) {
+        console.error('Error fetching inverter details:', error);
+        throw error; // Rethrow the error to handle it in the component
+    }
+};
+

@@ -81,7 +81,6 @@ const Wizard = () => {
             </div>
             <div className="wizard-content">
                 <CurrentStepComponent
-                    projectName={projectName}
                 />
             </div>
             <div className="wizard-buttons">
