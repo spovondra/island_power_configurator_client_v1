@@ -27,7 +27,7 @@ const Step2_Appliance = () => {
             if (selectedProject) {
                 try {
                     const project = await getProjectById(selectedProject);
-                    setAppliances(project.applianceConfiguration.appliances || []); // Access the appliances from the configuration
+                    setAppliances(project.appliances || []);
                 } catch (error) {
                     console.error('Error fetching project:', error);
                 }
@@ -44,22 +44,9 @@ const Step2_Appliance = () => {
                 alert("Please select a project");
                 return;
             }
-
-            // Create or update appliance in the configuration
-            const updatedAppliances = editMode
-                ? appliances.map(appl => (appl.id === appliance.id ? appliance : appl)) // Update existing
-                : [...appliances, { ...appliance, id: Date.now().toString() }]; // Add new appliance
-
-            // Prepare the project update with the new appliance configuration
-            await addOrUpdateAppliance(selectedProject, {
-                ...appliance,
-                applianceConfiguration: {
-                    appliances: updatedAppliances
-                }
-            });
-
+            await addOrUpdateAppliance(selectedProject, appliance);
             const updatedProject = await getProjectById(selectedProject);
-            setAppliances(updatedProject.applianceConfiguration.appliances);
+            setAppliances(updatedProject.appliances);
             setAppliance({
                 id: '',
                 name: '',
@@ -78,7 +65,7 @@ const Step2_Appliance = () => {
             console.error('Error saving appliance:', error);
             alert('Error saving appliance');
         }
-    }, [selectedProject, appliance, appliances, editMode]);
+    }, [selectedProject, appliance]);
 
     const handleEdit = (appl) => {
         setAppliance(appl);
@@ -247,11 +234,7 @@ const Step2_Appliance = () => {
                                 </button>
                             </td>
                         </tr>
-                    )) || (
-                        <tr>
-                            <td colSpan="10" className="no-data">No appliances added.</td>
-                        </tr>
-                    )}
+                    ))}
                     </tbody>
                 </table>
             </div>
