@@ -4,7 +4,7 @@
     flex-direction: column;
     padding: 20px;
     box-sizing: border-box;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     align-items: center;
 }
@@ -13,7 +13,9 @@
 .form-section {
     width: 100%;
     max-width: 600px;
-    margin-bottom: 40px;
+    margin-bottom: 20px; /* Adjusted for more balance with chart */
+    display: flex;
+    flex-direction: column; /* Allow stacking of form and chart */
 }
 
 /* Appliance Form */
@@ -22,7 +24,6 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    margin: 0 auto;
     width: 100%;
     box-sizing: border-box;
 }
@@ -66,7 +67,8 @@
 /* Appliance List Section */
 .appliance-list-section {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
+    margin-bottom: 20px; /* Adjusted for balance */
 }
 
 /* Appliance Table */
@@ -128,6 +130,17 @@
 
 .delete-button:hover {
     background-color: #c82333;
+}
+
+/* Chart Section (now part of the form-section) */
+.chart-section {
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 20px; /* Space between the form and chart */
+    padding: 20px; /* Optional padding for aesthetic */
+    background: #ffffff; /* Background for chart section */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for depth */
 }
 
 /* Media Query */

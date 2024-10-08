@@ -1,6 +1,7 @@
 import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
 import { addOrUpdateAppliance, deleteAppliance, getProjectById } from '../../services/ProjectService';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts'; // Import Recharts components
 import './Step2_Appliance.css';
 
 const Step2_Appliance = () => {
@@ -91,6 +92,23 @@ const Step2_Appliance = () => {
             alert('Error deleting appliance');
         }
     };
+
+    // Prepare data for the chart
+    const chartData = appliances.reduce((acc, appliance) => {
+        const typeIndex = acc.findIndex(item => item.type === appliance.type);
+        if (typeIndex > -1) {
+            acc[typeIndex].totalEnergy += appliance.energy * appliance.quantity;
+        } else {
+            acc.push({
+                type: appliance.type,
+                totalEnergy: appliance.energy * appliance.quantity,
+            });
+        }
+        return acc;
+    }, []);
+
+    // Colors for the pie chart segments
+    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
     return (
         <div className="appliance-page-container">
@@ -191,6 +209,7 @@ const Step2_Appliance = () => {
                     </button>
                 </form>
             </div>
+
             <div className="appliance-list-section">
                 <table className="appliance-table">
                     <thead>
@@ -237,6 +256,31 @@ const Step2_Appliance = () => {
                     ))}
                     </tbody>
                 </table>
+            </div>
+
+            {/* Chart Section */}
+            <div className="chart-section">
+                <h2>Energy Consumption Chart</h2>
+                <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                        <Pie
+                            data={chartData}
+                            dataKey="totalEnergy"
+                            nameKey="type"
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={100}
+                            fill="#8884d8"
+                            label
+                        >
+                            {chartData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                            ))}
+                        </Pie>
+                        <Tooltip />
+                        <Legend />
+                    </PieChart>
+                </ResponsiveContainer>
             </div>
         </div>
     );

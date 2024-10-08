@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
-import { getSuitableInverters, selectInverter } from '../../services/ProjectService';
+import {getProjectById, getSuitableInverters, selectInverter} from '../../services/ProjectService';
 import './Step4_Inverter.css';
 
 const Step4_Inverter = () => {
@@ -10,7 +10,8 @@ const Step4_Inverter = () => {
     const [suitableInverters, setSuitableInverters] = useState([]);
     const [loading, setLoading] = useState(false);
     const [selectedInverterId, setSelectedInverterId] = useState(null);
-    const [energyCalculations, setEnergyCalculations] = useState({ adjustedAcLoad: 0, totalDailyEnergy: 0 });
+    const [energyCalculations, setEnergyCalculations] = useState({ totalAdjustedAcEnergy: 0, totalDailyEnergy: 0 });
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchSuitableInverters = async () => {
@@ -22,6 +23,7 @@ const Step4_Inverter = () => {
                 setSuitableInverters(inverters);
             } catch (error) {
                 console.error('Error fetching suitable inverters:', error);
+                setError('Failed to fetch suitable inverters.'); // Set error state
             } finally {
                 setLoading(false);
             }
@@ -29,6 +31,25 @@ const Step4_Inverter = () => {
 
         fetchSuitableInverters();
     }, [selectedProject, systemVoltage, temperature]);
+
+    useEffect(() => {
+        const fetchProjectDetails = async () => {
+            if (!selectedProject) return;
+
+            try {
+                const project = await getProjectById(selectedProject);
+                setEnergyCalculations({
+                    totalAdjustedAcEnergy: project.configurationModel.totalAdjustedAcEnergy || 0,
+                    totalDailyEnergy: project.configurationModel.totalDailyEnergy || 0,
+                });
+            } catch (error) {
+                console.error('Error fetching project details:', error);
+                setError('Failed to fetch project details.'); // Set error state
+            }
+        };
+
+        fetchProjectDetails();
+    }, [selectedProject]); // Run this effect when selectedProject changes
 
     const handleSystemVoltageChange = (e) => {
         setSystemVoltage(e.target.value);
@@ -40,19 +61,28 @@ const Step4_Inverter = () => {
 
     const handleInverterSelection = async (inverterId) => {
         setSelectedInverterId(inverterId);
+        setLoading(true); // Optional: set loading state while processing
+
         try {
-            // Pass the selected inverter ID to the selectInverter function
-            const calculations = await selectInverter(selectedProject, inverterId);
-            // Assuming the response includes the necessary calculations
-            setEnergyCalculations(calculations);
+            const result = await selectInverter(selectedProject, inverterId);
+            setEnergyCalculations({
+                totalAdjustedAcEnergy: result.totalAdjustedAcEnergy || 0,
+                totalDailyEnergy: result.totalDailyEnergy || 0,
+            });
+            console.log('Inverter selection updated:', result);
         } catch (error) {
             console.error('Error selecting inverter:', error);
+            setError('Failed to update inverter selection.'); // Set error state
+        } finally {
+            setLoading(false); // Optional: reset loading state after processing
         }
     };
+
 
     return (
         <div className="inverter-page-container">
             <h2>Select Inverter Configuration</h2>
+            {error && <p className="error-message">{error}</p>} {/* Display error message */}
             <div className="selection-section">
                 <div className="input-group">
                     <label htmlFor="systemVoltage">System Voltage:</label>
@@ -114,8 +144,8 @@ const Step4_Inverter = () => {
             </div>
             <div className="energy-calculations">
                 <h4>Energy Calculations:</h4>
-                <p>Adjusted AC Load: {energyCalculations.adjustedAcLoad || 'Not calculated'}</p>
-                <p>Total Daily Energy: {energyCalculations.totalDailyEnergy || 'Not calculated'}</p>
+                <p>Adjusted AC Load: {energyCalculations.totalAdjustedAcEnergy.toFixed(2) || 'Not calculated'}</p>
+                <p>Total Daily Energy: {energyCalculations.totalDailyEnergy.toFixed(2) || 'Not calculated'}</p>
             </div>
         </div>
     );

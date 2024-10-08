@@ -4,6 +4,7 @@ import LocationService from '../../services/LocationService';
 import { ProjectContext } from '../../context/ProjectContext';
 import { getProjectById, updateProject } from '../../services/ProjectService';
 import './Step3_Location.css';
+import {Bar, BarChart, CartesianGrid, LabelList, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 
 const Step3_Location = () => {
     const { selectedProject } = useContext(ProjectContext);
@@ -11,7 +12,7 @@ const Step3_Location = () => {
     const [location, setLocation] = useState({ latitude: 49.744, longitude: 15.339 });
     const [angle, setAngle] = useState(35);
     const [aspect, setAspect] = useState(0);
-    const [pvgisData, setPVGISData] = useState('');
+    const [pvgisData, setPVGISData] = useState([]); // Changed to an empty array
     const [temperatures, setTemperatures] = useState({ min: 'N/A', max: 'N/A' });
     const [dataFetched, setDataFetched] = useState(false);
     const [useOptimal, setUseOptimal] = useState(false);
@@ -35,7 +36,7 @@ const Step3_Location = () => {
                         max: site.maxTemperature || 'N/A'
                     });
                     setUseOptimal(site.usedOptimalValues || false);
-                    setPVGISData(JSON.stringify(site.monthlyIrradianceList || []));
+                    setPVGISData(site.monthlyIrradianceList || []); // Ensure this is set as an array
                     setDataFetched(true);
                 } catch (error) {
                     console.error('Error loading project data:', error);
@@ -53,7 +54,7 @@ const Step3_Location = () => {
                 LocationService.getMinMaxTemperatures(lat, lng)
             ]);
 
-            setPVGISData(JSON.stringify(pvgisResponse.data, null, 2));
+            setPVGISData(pvgisResponse.data); // Ensure this is set as an array
             setTemperatures({
                 min: tempResponse.data.minTemp ? Number(tempResponse.data.minTemp).toFixed(2) : 'Error',
                 max: tempResponse.data.maxTemp ? Number(tempResponse.data.maxTemp).toFixed(2) : 'Error'
@@ -88,7 +89,7 @@ const Step3_Location = () => {
                     panelAngle: angle,
                     panelAspect: aspect,
                     usedOptimalValues: useOptimal,
-                    monthlyIrradianceList: JSON.parse(pvgisData).map(item => ({
+                    monthlyIrradianceList: pvgisData.map(item => ({
                         month: item.month,
                         irradiance: item.HI_d
                     })) || []
@@ -181,13 +182,19 @@ const Step3_Location = () => {
         }
     };
 
+    const chartData = pvgisData.map(item => ({
+        month: item.month,
+        irradiance: item.HI_d // assuming irradiance data has a "HI_d" field
+    }));
+
     return (
         <div className="map-page-container">
             <div className="content">
                 <div className="left-column">
                     <div className="search-block">
                         <div className="search-bar">
-                            <input type="text" id="locationSearch" className="form-control" placeholder="Enter location" />
+                            <input type="text" id="locationSearch" className="form-control"
+                                   placeholder="Enter location"/>
                             <button className="search-button" onClick={searchLocation}>Search</button>
                         </div>
                     </div>
@@ -195,8 +202,8 @@ const Step3_Location = () => {
                         <LocationComponent
                             latitude={location.latitude}
                             longitude={location.longitude}
-                            setLatitude={lat => setLocation(loc => ({ ...loc, latitude: lat }))}
-                            setLongitude={lon => setLocation(loc => ({ ...loc, longitude: lon }))}
+                            setLatitude={lat => setLocation(loc => ({...loc, latitude: lat}))}
+                            setLongitude={lon => setLocation(loc => ({...loc, longitude: lon}))}
                             calculatePVGISData={fetchData}
                             setUseOptimal={setUseOptimal}
                             // No revertToOriginalSettings needed
@@ -245,18 +252,30 @@ const Step3_Location = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Min Temperature:</label>
-                        <p>{temperatures.min}</p>
+                        <button className="optimal-button" onClick={fetchOptimalValues}>Get Optimal Values</button>
                     </div>
-                    <div className="form-group">
-                        <label>Max Temperature:</label>
-                        <p>{temperatures.max}</p>
-                    </div>
-                    <div className="form-group">
-                        <button className="btn" onClick={fetchOptimalValues}>Fetch Optimal Values</button>
+                    <div className="temperature-data">
+                        <h4>Temperature Data:</h4>
+                        <p>Min Temperature: {temperatures.min}°C</p>
+                        <p>Max Temperature: {temperatures.max}°C</p>
                     </div>
                 </div>
             </div>
+            {dataFetched && (
+                <div className="chart-container">
+                    <h4>Monthly Irradiance</h4>
+                    <ResponsiveContainer width={1200} height={300}>
+                        <BarChart data={chartData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="month" />
+                            <YAxis />
+                            <Tooltip />
+                            <Bar dataKey="irradiance" fill="#8884d8" />
+                            <LabelList dataKey="irradiance" position="top" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            )}
         </div>
     );
 };
