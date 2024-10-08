@@ -61,20 +61,33 @@ const Step3_Location = () => {
             const processedData = await processLocationData(selectedProject, location.latitude, location.longitude, angle, aspect, useOptimal);
             console.log('Processed Data:', processedData);
 
-            const { minTemperature, maxTemperature, monthlyIrradianceList } = processedData;
+            const { minTemperature, maxTemperature, monthlyIrradianceList, panelAngle: newAngle, panelAspect: newAspect } = processedData;
 
+            // Set temperatures
             setTemperatures({
                 min: minTemperature ? Number(minTemperature).toFixed(2) : 'Error',
                 max: maxTemperature ? Number(maxTemperature).toFixed(2) : 'Error',
             });
-            setPVGISData(monthlyIrradianceList || []); // Update monthly irradiance data
+
+            // Update monthly irradiance data
+            setPVGISData(monthlyIrradianceList || []);
             setDataFetched(true);
+
+            // Update angle and aspect from processed data
+            if (newAngle !== undefined) {
+                setAngle(newAngle); // Update angle from processed data
+            }
+            if (newAspect !== undefined) {
+                setAspect(newAspect); // Update aspect from processed data
+            }
+            console.log()
+
         } catch (error) {
             console.error('Error processing location data:', error);
             setTemperatures({ min: 'Error', max: 'Error' });
             setDataFetched(false);
         }
-    }, [selectedProject, location, angle, aspect, useOptimal]);
+    }, [selectedProject, location.latitude, location.longitude, angle, aspect, useOptimal]);
 
     const searchLocation = async () => {
         const locationQuery = document.getElementById('locationSearch').value;
@@ -104,6 +117,12 @@ const Step3_Location = () => {
     const handleOptimalValuesToggle = () => {
         setUseOptimal(prev => !prev); // Toggle checkbox state
         setHasUserInteracted(true); // Set interaction flag
+
+        // Set angle and aspect based on whether optimal values are being used
+        if (useOptimal) { // If the checkbox was previously unchecked
+            setAngle(35);   // Set angle to 35
+            setAspect(0);   // Set aspect to 0
+        }
     };
 
     const handleLatitudeChange = (event) => {
@@ -239,7 +258,7 @@ const Step3_Location = () => {
             </div>
             <div className="chart-container">
                 <h3>Monthly Irradiance</h3>
-                <ResponsiveContainer width={500} height={300}>
+                <ResponsiveContainer width={1200} height={300}>
                     <BarChart data={chartData}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
