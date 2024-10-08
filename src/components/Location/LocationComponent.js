@@ -11,7 +11,7 @@ const customIcon = L.icon({
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-shadow.png',
 });
 
-const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, calculatePVGISData, setUseOptimal, revertToOriginalSettings }) => {
+const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, setUseOptimal }) => {
     const [position, setPosition] = useState([latitude, longitude]);
 
     useEffect(() => {
@@ -24,13 +24,10 @@ const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, cal
                 const { lat, lng } = e.latlng;
                 setLatitude(lat.toFixed(6));
                 setLongitude(lng.toFixed(6));
+
                 if (setUseOptimal) {
                     setUseOptimal(false);
                 }
-                if (revertToOriginalSettings) {
-                    revertToOriginalSettings();
-                }
-                calculatePVGISData(lat, lng); // Call this function on map click
             },
         });
 

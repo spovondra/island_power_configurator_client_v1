@@ -11,9 +11,6 @@ const Home = () => {
                 </Link>
                 <div className="old-version">
                     <h2>Old Version</h2>
-                    <Link to="/location" className="old-version-link">
-                        Location.js
-                    </Link>
                     <Link to="/random-adress123" className="old-version-link">
                         ErrorPage testing
                     </Link>

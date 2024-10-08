@@ -12,7 +12,6 @@ import ProjectList from './components/Project/ProjectList';
 import ProjectForm from './components/ProjectAdmin/ProjectForm';
 import AuthRoute from './components/AuthRoute';
 import ProjectAdminPanel from './components/ProjectAdmin/ProjectAdminPanel';
-import Location from './pages/Location';
 import Wizard from './pages/Wizard';
 import NotFound from './pages/NotFound';
 import { ProjectProvider } from './context/ProjectContext';
@@ -30,7 +29,6 @@ const App = () => {
                     <Route path="/" element={<ProtectedRoute><SharedLayout /></ProtectedRoute>}>
                         <Route index element={<Home />} />
                         <Route path="about" element={<About />} />
-                        <Route path="location" element={<Location />} />
                         <Route path="settings" element={<UserSettings />} />
                         <Route path="projects" element={<ProjectList />} />
                         <Route path="projects/new" element={<ProjectForm />} />

@@ -121,3 +121,26 @@ export const getSelectedInverterDetails = async (projectId, inverterId) => {
     }
 };
 
+// Process location data and store it in the project
+export const processLocationData = async (projectId, latitude, longitude, angle, aspect, useOptimalValues) => {
+    try {
+        const url = `${API_PROJECT_URL}/${projectId}/location/process?latitude=${latitude}&longitude=${longitude}&angle=${angle}&aspect=${aspect}&useOptimalValues=${useOptimalValues}`;
+        const response = await apiClient.post(url);
+        return response.data; // Returns processed site data
+    } catch (error) {
+        console.error('Error processing location data:', error);
+        throw error;
+    }
+};
+
+// Load processed site data for the project
+export const loadSiteData = async (projectId) => {
+    try {
+        const response = await apiClient.get(`${API_PROJECT_URL}/${projectId}/location/sites`);
+        return response.data; // Returns the site data
+    } catch (error) {
+        console.error('Error loading site data:', error);
+        throw error;
+    }
+};
+
