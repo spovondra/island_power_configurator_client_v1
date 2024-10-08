@@ -1,6 +1,7 @@
 import React, { useContext, useState, useCallback, useEffect } from 'react';
 import LocationComponent from '../Location/LocationComponent';
 import { ProjectContext } from '../../context/ProjectContext';
+import LocationService from '../../services/LocationService';
 import { processLocationData, loadSiteData } from '../../services/ProjectService';
 import './Step3_Location.css';
 import { Bar, BarChart, CartesianGrid, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
@@ -75,6 +76,31 @@ const Step3_Location = () => {
         }
     }, [selectedProject, location, angle, aspect, useOptimal]);
 
+    const searchLocation = async () => {
+        const locationQuery = document.getElementById('locationSearch').value;
+        if (!locationQuery.trim()) {
+            alert("Please enter a location");
+            return;
+        }
+
+        try {
+            const response = await LocationService.searchLocation(locationQuery);
+            if (response.data.length > 0) {
+                const { lat, lon } = response.data[0];
+                const formattedLat = parseFloat(lat).toFixed(3);
+                const formattedLon = parseFloat(lon).toFixed(3);
+                setLocation({ latitude: formattedLat, longitude: formattedLon });
+
+                await handleProcessLocationData(); // Fetch the data after setting the location
+            } else {
+                alert("Location not found");
+            }
+        } catch (error) {
+            console.error('Error searching location:', error);
+            alert("Error fetching location data");
+        }
+    };
+
     const handleOptimalValuesToggle = () => {
         setUseOptimal(prev => !prev); // Toggle checkbox state
         setHasUserInteracted(true); // Set interaction flag
@@ -132,7 +158,7 @@ const Step3_Location = () => {
                     <div className="search-block">
                         <div className="search-bar">
                             <input type="text" id="locationSearch" className="form-control" placeholder="Enter location" />
-                            <button className="search-button" onClick={handleProcessLocationData}>Search</button>
+                            <button className="search-button" onClick={searchLocation}>Search</button>
                         </div>
                     </div>
                     <div className="map-wrapper">
@@ -196,38 +222,35 @@ const Step3_Location = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={useOptimal}
-                                onChange={handleOptimalValuesToggle}
-                            />
-                            Use Optimal Values
-                        </label>
+                        <label htmlFor="useOptimal">Use Optimal Values:</label>
+                        <input
+                            type="checkbox"
+                            id="useOptimal"
+                            checked={useOptimal}
+                            onChange={handleOptimalValuesToggle}
+                        />
                     </div>
-                    <div className="temperature-data">
-                        <h4>Temperature Data:</h4>
-                        <p>Min Temperature: {temperatures.min}°C</p>
-                        <p>Max Temperature: {temperatures.max}°C</p>
+                    <div className="form-group">
+                        <h3>Temperature Range:</h3>
+                        <p>Min: {temperatures.min} °C</p>
+                        <p>Max: {temperatures.max} °C</p>
                     </div>
                 </div>
             </div>
-            {dataFetched && (
-                <div className="chart-container">
-                    <h4>Monthly Irradiance</h4>
-                    <ResponsiveContainer width={600} height={300}>
-                        <BarChart data={chartData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="month" label={{ value: 'Month', position: 'bottom' }} />
-                            <YAxis label={{ value: 'Irradiance (kWh/m²)', angle: -90, position: 'insideLeft' }} />
-                            <Tooltip />
-                            <Bar dataKey="irradiance" fill="#8884d8">
-                                <LabelList dataKey="irradiance" position="top" />
-                            </Bar>
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
-            )}
+            <div className="chart-container">
+                <h3>Monthly Irradiance</h3>
+                <ResponsiveContainer width={500} height={300}>
+                    <BarChart data={chartData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
+                        <YAxis label={{ value: 'Irradiance (kWh/m²)', angle: -90, position: 'insideLeft' }} />
+                        <Tooltip />
+                        <Bar dataKey="irradiance" fill="#8884d8">
+                            <LabelList dataKey="irradiance" position="top" />
+                        </Bar>
+                    </BarChart>
+                </ResponsiveContainer>
+            </div>
         </div>
     );
 };
