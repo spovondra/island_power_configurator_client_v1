@@ -4,7 +4,7 @@ import { ProjectContext } from '../../context/ProjectContext';
 import LocationService from '../../services/LocationService';
 import { processLocationData, loadSiteData } from '../../services/ProjectService';
 import './Step3_Location.css';
-import { Bar, BarChart, CartesianGrid, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, LabelList, Tooltip, XAxis, YAxis } from 'recharts';
 
 const Step3_Location = () => {
     const { selectedProject } = useContext(ProjectContext);
@@ -258,17 +258,16 @@ const Step3_Location = () => {
             </div>
             <div className="chart-container">
                 <h3>Monthly Irradiance</h3>
-                <ResponsiveContainer width={1200} height={300}>
-                    <BarChart data={chartData}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
-                        <YAxis label={{ value: 'Irradiance (kWh/m²)', angle: -90, position: 'insideLeft' }} />
-                        <Tooltip />
-                        <Bar dataKey="irradiance" fill="#8884d8">
-                            <LabelList dataKey="irradiance" position="top" />
-                        </Bar>
-                    </BarChart>
-                </ResponsiveContainer>
+                <BarChart width={1200} height={300} data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
+                    <YAxis label={{ value: 'Irradiance (kWh/m²)', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey="irradiance" fill="#8884d8">
+                        <LabelList dataKey="irradiance" position="top" />
+                    </Bar>
+                </BarChart>
+
             </div>
         </div>
     );
