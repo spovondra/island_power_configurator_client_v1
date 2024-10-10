@@ -9,6 +9,8 @@ const customIcon = L.icon({
     iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-icon.png',
     iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-icon.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-shadow.png',
+    iconAnchor: [12, 41],
+    popupAnchor: [0, -41],
 });
 
 const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, setUseOptimal }) => {
@@ -24,6 +26,7 @@ const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, set
                 const { lat, lng } = e.latlng;
                 setLatitude(lat.toFixed(6));
                 setLongitude(lng.toFixed(6));
+                setPosition([lat, lng]); // Update position immediately on click
 
                 if (setUseOptimal) {
                     setUseOptimal(false);
