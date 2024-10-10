@@ -8,12 +8,15 @@ import './Wizard.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getProjectById } from '../services/ProjectService';
 import Step4TestCalc from "../components/Wizard/Step4_Inverter";
+import Step6_SolarPanels from "../components/Wizard/Step6_SolarPanels";
 
 const steps = [
     { key: 'step1', label: 'Introduction', component: Step1Introduction },
     { key: 'step2', label: 'Appliance', component: Step2Appliance },
     { key: 'step3', label: 'Location', component: Step3Location },
-    { key: 'step4', label: 'Calculation Test', component: Step4TestCalc },
+    { key: 'step4', label: 'Inverter', component: Step4TestCalc },
+    { key: 'step5', label: 'Batteries', component: FinalStep },
+    { key: 'step6', label: 'Solar Panels', component: Step6_SolarPanels },
     { key: 'finalStep', label: 'Final Step', component: FinalStep },
 ];
 

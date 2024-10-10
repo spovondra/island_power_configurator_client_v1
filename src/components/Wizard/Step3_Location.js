@@ -40,7 +40,7 @@ const Step3_Location = () => {
                         min: siteData.minTemperature ? Number(siteData.minTemperature).toFixed(2) : 'N/A',
                         max: siteData.maxTemperature ? Number(siteData.maxTemperature).toFixed(2) : 'N/A',
                     });
-                    setPVGISData(siteData.monthlyIrradianceList || []); // Set irradiance data
+                    setPVGISData(siteData.monthlyDataList || []); // Set irradiance data
                     setDataFetched(true); // Set fetched data to true after loading site data
                 } catch (error) {
                     console.error('Error loading site data:', error);
@@ -61,7 +61,7 @@ const Step3_Location = () => {
             const processedData = await processLocationData(selectedProject, location.latitude, location.longitude, angle, aspect, useOptimal);
             console.log('Processed Data:', processedData);
 
-            const { minTemperature, maxTemperature, monthlyIrradianceList, panelAngle: newAngle, panelAspect: newAspect } = processedData;
+            const { minTemperature, maxTemperature, monthlyDataList, panelAngle: newAngle, panelAspect: newAspect } = processedData;
 
             // Set temperatures
             setTemperatures({
@@ -70,7 +70,7 @@ const Step3_Location = () => {
             });
 
             // Update monthly irradiance data
-            setPVGISData(monthlyIrradianceList || []);
+            setPVGISData(monthlyDataList || []);
             setDataFetched(true);
 
             // Update angle and aspect from processed data
@@ -164,10 +164,11 @@ const Step3_Location = () => {
         }
     }, [location, angle, aspect, useOptimal, hasUserInteracted]);
 
-    // Data for the chart using the structure of monthlyIrradianceList
+    // Data for the chart using the structure of monthlyDataList
     const chartData = pvgisData.map(item => ({
         month: item.month,         // Month number (1-12)
-        irradiance: item.irradiance // Corresponding irradiance value
+        irradiance: item.irradiance, // Corresponding irradiance value
+        ambientTemperature: item.ambientTemperature
     }));
 
     return (
@@ -176,7 +177,8 @@ const Step3_Location = () => {
                 <div className="left-column">
                     <div className="search-block">
                         <div className="search-bar">
-                            <input type="text" id="locationSearch" className="form-control" placeholder="Enter location" />
+                            <input type="text" id="locationSearch" className="form-control"
+                                   placeholder="Enter location"/>
                             <button className="search-button" onClick={searchLocation}>Search</button>
                         </div>
                     </div>
@@ -185,11 +187,11 @@ const Step3_Location = () => {
                             latitude={location.latitude}
                             longitude={location.longitude}
                             setLatitude={lat => {
-                                setLocation(loc => ({ ...loc, latitude: lat }));
+                                setLocation(loc => ({...loc, latitude: lat}));
                                 setHasUserInteracted(true); // Set interaction flag
                             }}
                             setLongitude={lon => {
-                                setLocation(loc => ({ ...loc, longitude: lon }));
+                                setLocation(loc => ({...loc, longitude: lon}));
                                 setHasUserInteracted(true); // Set interaction flag
                             }}
                         />
@@ -256,18 +258,31 @@ const Step3_Location = () => {
                     </div>
                 </div>
             </div>
-            <div className="chart-container">
-                <h3>Monthly Irradiance</h3>
-                <BarChart width={1200} height={300} data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Irradiance (kWh/m²)', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Bar dataKey="irradiance" fill="#8884d8">
-                        <LabelList dataKey="irradiance" position="top" />
-                    </Bar>
-                </BarChart>
-
+            <div className="chart-flex-container">
+                <div className="chart-container">
+                    <h3>Monthly Irradiance</h3>
+                    <BarChart width={600} height={300} data={chartData}>
+                        <CartesianGrid strokeDasharray="3 3"/>
+                        <XAxis dataKey="month" label={{value: 'Month', position: 'insideBottom', offset: -5}}/>
+                        <YAxis label={{value: 'Irradiance (kWh/m²)', angle: -90, position: 'insideLeft'}}/>
+                        <Tooltip/>
+                        <Bar dataKey="irradiance" fill="#8884d8">
+                            <LabelList dataKey="irradiance" position="top"/>
+                        </Bar>
+                    </BarChart>
+                </div>
+                <div className="chart-container">
+                    <h3>Monthly Avg Ambient Temperature</h3>
+                    <BarChart width={600} height={300} data={chartData}>
+                        <CartesianGrid strokeDasharray="3 3"/>
+                        <XAxis dataKey="month" label={{value: 'Month', position: 'insideBottom', offset: -5}}/>
+                        <YAxis label={{value: 'Temperature (°C)', angle: -90, position: 'insideLeft'}}/>
+                        <Tooltip/>
+                        <Bar dataKey="ambientTemperature" fill="#8884d8">
+                            <LabelList dataKey="ambientTemperature" position="top"/> {/* Corrected dataKey for LabelList */}
+                        </Bar>
+                    </BarChart>
+                </div>
             </div>
         </div>
     );
