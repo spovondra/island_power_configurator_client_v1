@@ -144,3 +144,30 @@ export const loadSiteData = async (projectId) => {
     }
 };
 
+// Fetch all batteries for a project
+export const getBatteries = async (projectId, technology) => {
+    try {
+        const response = await apiClient.get(`${API_PROJECT_URL}/${projectId}/batteries/suitable?technology=${technology}`);
+        return response.data; // Return battery data
+    } catch (error) {
+        console.error('Error fetching batteries:', error);
+        throw error;
+    }
+};
+
+// Send battery configuration request to the backend
+export const calculateBatteryConfiguration = async (projectId, params) => {
+    try {
+        // Include temperature and autonomyDays in the request params
+        const { batteryId, temperature, autonomyDays } = params;
+        const response = await apiClient.post(
+            `${API_PROJECT_URL}/${projectId}/batteries/calculate?batteryId=${batteryId}&temperature=${temperature}&autonomousDays=${autonomyDays}`,
+            {}
+        );
+        return response.data; // Return configuration results
+    } catch (error) {
+        console.error('Error calculating battery configuration:', error);
+        throw error;
+    }
+};
+

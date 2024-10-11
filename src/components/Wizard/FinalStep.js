@@ -8,6 +8,8 @@ import {
     YAxis,
     Tooltip,
     Legend,
+    CartesianGrid,
+    LabelList,
     PieChart,
     Pie,
     Cell,
@@ -27,6 +29,7 @@ const FinalStep = () => {
         },
         appliances: [],
     });
+    const [pvgisData, setPVGISData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -36,35 +39,39 @@ const FinalStep = () => {
                 try {
                     const data = await getProjectById(selectedProject);
                     setProject(data);
+                    if (data.site && data.site.monthlyDataList) {
+                        setPVGISData(data.site.monthlyDataList);
+                    }
                 } catch (err) {
                     setError('Failed to fetch project details.');
                 } finally {
                     setLoading(false);
                 }
-            } else {
-                setError('No project ID provided.');
-                setLoading(false);
             }
         };
-
         fetchProject();
     }, [selectedProject]);
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
-    if (!project) return <p>No project data available.</p>;
+    if (error) return <p>{error}</p>;
 
     const site = project.site || {};
     const appliances = project.appliances || [];
     const configuration = project.configurationModel || {};
 
     // Prepare data for charts
+    const chartData = pvgisData.map(item => ({
+        month: item.month,
+        irradiance: item.irradiance,
+        ambientTemperature: item.ambientTemperature,
+    }));
+
     const monthlyIrradiance = (site.monthlyIrradianceList ?? []).map(irr => ({
         month: `Month ${irr.month}`,
         irradiance: irr.irradiance,
     }));
 
-    // Preparing data for Total Energy Consumption Pie Chart
+    // Total Energy Consumption Pie Chart Data
     const totalEnergyData = [
         {
             name: 'Total AC Energy',
@@ -78,11 +85,9 @@ const FinalStep = () => {
 
     return (
         <div className="final-step-container">
-            <div className="final-step-header">
-                <h2>Project Summary</h2>
-            </div>
+            <h2>Final System Overview</h2>
 
-            {/* Display Project Information */}
+            {/* Project Information */}
             <div className="final-step-section">
                 <h3>Project Information</h3>
                 <p><strong>Project ID:</strong> {project.id || 'N/A'}</p>
@@ -90,7 +95,7 @@ const FinalStep = () => {
                 <p><strong>User ID:</strong> {project.userId || 'N/A'}</p>
             </div>
 
-            {/* Display Site Information */}
+            {/* Site Information */}
             <div className="final-step-section">
                 <h3>Site Details</h3>
                 <p><strong>Latitude:</strong> {site.latitude || 'N/A'}</p>
@@ -102,24 +107,35 @@ const FinalStep = () => {
                 <p><strong>Used Optimal Values:</strong> {site.usedOptimalValues ? 'Yes' : 'No'}</p>
             </div>
 
-            {/* Monthly Irradiance Bar Chart under Site Details */}
-            <div className="final-step-section graph-container">
-                <h3>Monthly Irradiance</h3>
-                <BarChart
-                    width={600}
-                    height={300}
-                    data={monthlyIrradiance}
-                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                >
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="irradiance" fill="#82ca9d" />
-                </BarChart>
+            {/* Monthly Irradiance & Ambient Temperature Bar Charts */}
+            <div className="chart-flex-container">
+                <div className="chart-container">
+                    <h3>Monthly Irradiance</h3>
+                    <BarChart width={600} height={300} data={chartData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
+                        <YAxis label={{ value: 'Irradiance (kWh/m²)', angle: -90, position: 'insideLeft' }} />
+                        <Tooltip />
+                        <Bar dataKey="irradiance" fill="#8884d8">
+                            <LabelList dataKey="irradiance" position="top" />
+                        </Bar>
+                    </BarChart>
+                </div>
+                <div className="chart-container">
+                    <h3>Monthly Avg Ambient Temperature</h3>
+                    <BarChart width={600} height={300} data={chartData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
+                        <YAxis label={{ value: 'Temperature (°C)', angle: -90, position: 'insideLeft' }} />
+                        <Tooltip />
+                        <Bar dataKey="ambientTemperature" fill="#82ca9d">
+                            <LabelList dataKey="ambientTemperature" position="top" />
+                        </Bar>
+                    </BarChart>
+                </div>
             </div>
 
-            {/* Display Appliances */}
+            {/* Appliances Information */}
             <div className="final-step-section">
                 <h3>Appliances</h3>
                 <ul className="final-step-list">
@@ -139,7 +155,7 @@ const FinalStep = () => {
                 </ul>
             </div>
 
-            {/* Total Energy Consumption Pie Chart under Appliances */}
+            {/* Total Energy Consumption Pie Chart */}
             <div className="final-step-section graph-container">
                 <h3>Total Energy Consumption</h3>
                 <PieChart width={400} height={400}>
@@ -161,7 +177,7 @@ const FinalStep = () => {
                 </PieChart>
             </div>
 
-            {/* Display Configuration Model */}
+            {/* Configuration Model */}
             <div className="final-step-section">
                 <h3>Configuration Model</h3>
                 <p><strong>Total AC Energy:</strong> {configuration.totalAcEnergy || 'N/A'} Wh</p>
