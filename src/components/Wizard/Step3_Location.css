@@ -110,6 +110,6 @@
 .chart-flex-container {
     display: flex;
     justify-content: space-between; /* Space between the charts */
-    width: 100%; /* Take full width of parent */
+    width: 80%; /* Take full width of parent */
 }
 
