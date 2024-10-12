@@ -111,13 +111,14 @@ export const selectInverter = async (projectId, inverterId) => {
     }
 };
 
-export const getSelectedInverterDetails = async (projectId, inverterId) => {
+// Fetch the ProjectInverter details
+export const getProjectInverter = async (projectId) => {
     try {
-        const response = await apiClient().get(`${API_PROJECT_URL}/${projectId}/inverters/${inverterId}`);
+        const response = await apiClient.get(`${API_PROJECT_URL}/${projectId}/inverters/`);
         return response.data; // Return the inverter details
     } catch (error) {
-        console.error('Error fetching inverter details:', error);
-        throw error; // Rethrow the error to handle it in the component
+        console.error('Error fetching project inverter:', error);
+        throw error;
     }
 };
 

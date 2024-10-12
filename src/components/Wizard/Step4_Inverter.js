@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
-import {getProjectById, getSuitableInverters, selectInverter} from '../../services/ProjectService';
+import { getSuitableInverters, selectInverter, getProjectInverter } from '../../services/ProjectService'; // Import the new method
 import './Step4_Inverter.css';
 
 const Step4_Inverter = () => {
@@ -23,7 +23,7 @@ const Step4_Inverter = () => {
                 setSuitableInverters(inverters);
             } catch (error) {
                 console.error('Error fetching suitable inverters:', error);
-                setError('Failed to fetch suitable inverters.'); // Set error state
+                setError('Failed to fetch suitable inverters.');
             } finally {
                 setLoading(false);
             }
@@ -33,23 +33,23 @@ const Step4_Inverter = () => {
     }, [selectedProject, systemVoltage, temperature]);
 
     useEffect(() => {
-        const fetchProjectDetails = async () => {
+        const fetchProjectInverterDetails = async () => {
             if (!selectedProject) return;
 
             try {
-                const project = await getProjectById(selectedProject);
+                const projectInverter = await getProjectInverter(selectedProject); // Use the new method to get inverter details
                 setEnergyCalculations({
-                    totalAdjustedAcEnergy: project.configurationModel.totalAdjustedAcEnergy || 0,
-                    totalDailyEnergy: project.configurationModel.totalDailyEnergy || 0,
+                    totalAdjustedAcEnergy: projectInverter.totalAdjustedAcEnergy || 0,
+                    totalDailyEnergy: projectInverter.totalDailyEnergy || 0,
                 });
             } catch (error) {
-                console.error('Error fetching project details:', error);
-                setError('Failed to fetch project details.'); // Set error state
+                console.error('Error fetching project inverter details:', error);
+                setError('Failed to fetch project inverter details.');
             }
         };
 
-        fetchProjectDetails();
-    }, [selectedProject]); // Run this effect when selectedProject changes
+        fetchProjectInverterDetails();
+    }, [selectedProject]);
 
     const handleSystemVoltageChange = (e) => {
         setSystemVoltage(e.target.value);
@@ -61,7 +61,7 @@ const Step4_Inverter = () => {
 
     const handleInverterSelection = async (inverterId) => {
         setSelectedInverterId(inverterId);
-        setLoading(true); // Optional: set loading state while processing
+        setLoading(true);
 
         try {
             const result = await selectInverter(selectedProject, inverterId);
@@ -72,17 +72,16 @@ const Step4_Inverter = () => {
             console.log('Inverter selection updated:', result);
         } catch (error) {
             console.error('Error selecting inverter:', error);
-            setError('Failed to update inverter selection.'); // Set error state
+            setError('Failed to update inverter selection.');
         } finally {
-            setLoading(false); // Optional: reset loading state after processing
+            setLoading(false);
         }
     };
-
 
     return (
         <div className="inverter-page-container">
             <h2>Select Inverter Configuration</h2>
-            {error && <p className="error-message">{error}</p>} {/* Display error message */}
+            {error && <p className="error-message">{error}</p>}
             <div className="selection-section">
                 <div className="input-group">
                     <label htmlFor="systemVoltage">System Voltage:</label>

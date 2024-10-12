@@ -5,9 +5,9 @@ import "./Step5_Batteries.css";
 
 const Step5_Batteries = () => {
     const { selectedProject } = useContext(ProjectContext);
-    const [batteryType, setBatteryType] = useState('Li-ion');
-    const [temperature, setTemperature] = useState(25);
-    const [autonomyDays, setAutonomyDays] = useState(1);
+    const [batteryType, setBatteryType] = useState('Li-ion'); // Default battery type
+    const [temperature, setTemperature] = useState(25); // Default temperature
+    const [autonomyDays, setAutonomyDays] = useState(1); // Initial value, will be updated from GET response
     const [selectedBattery, setSelectedBattery] = useState(null);
     const [batteries, setBatteries] = useState([]);
     const [config, setConfig] = useState({
@@ -43,7 +43,11 @@ const Step5_Batteries = () => {
             try {
                 const projectBattery = await getProjectBattery(selectedProject);
                 if (projectBattery) {
-                    setSelectedBattery(projectBattery.batteryId); // Set the selected battery from the project
+                    // Automatically set values based on the retrieved data
+                    setSelectedBattery(projectBattery.batteryId); // Set the selected battery
+                    setBatteryType(projectBattery.type || 'Li-ion'); // Set battery type
+                    setTemperature(projectBattery.temperature || 25); // Set temperature
+                    setAutonomyDays(projectBattery.batteryAutonomy || 1); // Set autonomy days
                     setConfig({
                         batteryCapacityDod: projectBattery.batteryCapacityDod,
                         parallelBatteries: projectBattery.parallelBatteries,
@@ -61,7 +65,7 @@ const Step5_Batteries = () => {
         fetchBatteryConfig();
     }, [selectedProject]);
 
-    // Handle battery selection and perform calculations (POST request happens only here)
+    // Handle battery selection and perform calculations (POST request happens only when the user selects a new battery)
     const handleBatterySelect = async (batteryId) => {
         setSelectedBattery(batteryId);
 
