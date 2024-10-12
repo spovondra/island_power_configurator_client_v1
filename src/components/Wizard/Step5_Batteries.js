@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
-import { getBatteries, calculateBatteryConfiguration } from '../../services/ProjectService';
-import "./Step5_Batteries.css"
+import { getBatteries, selectBattery } from '../../services/ProjectService';
+import "./Step5_Batteries.css";
 
 const Step5_Batteries = () => {
     const { selectedProject } = useContext(ProjectContext);
     const [batteryType, setBatteryType] = useState('Li-ion');
     const [temperature, setTemperature] = useState(25);
     const [autonomyDays, setAutonomyDays] = useState(1);
-    const [selectedBattery, setSelectedBattery] = useState(null); // Changed to single selection
+    const [selectedBattery, setSelectedBattery] = useState(null);
     const [batteries, setBatteries] = useState([]);
     const [config, setConfig] = useState(null);
 
@@ -19,6 +19,13 @@ const Step5_Batteries = () => {
             try {
                 const batteryData = await getBatteries(selectedProject, batteryType);
                 setBatteries(batteryData);
+                // Reset selectedBattery if there are no batteries
+                if (batteryData.length === 0) {
+                    setSelectedBattery(null);
+                } else {
+                    // Clear the config since we are just fetching batteries
+                    setConfig(null);
+                }
             } catch (error) {
                 console.error('Error fetching batteries:', error);
             }
@@ -36,20 +43,22 @@ const Step5_Batteries = () => {
 
             // Prepare parameters for calculation
             const params = {
-                batteryId: selectedBattery, // Use the selected battery ID for calculation
+                batteryId: selectedBattery,
                 autonomyDays: autonomyDays,
                 temperature: temperature
             };
 
             try {
-                const result = await calculateBatteryConfiguration(selectedProject, params);
+                const result = await selectBattery(selectedProject, params);
                 setConfig(result);
             } catch (error) {
                 console.error('Error calculating configuration:', error);
             }
         };
 
-        handleCalculate(); // Call calculate when selectedBattery changes
+        if (selectedBattery) {
+            handleCalculate(); // Call calculate only when a battery is selected
+        }
     }, [selectedBattery, autonomyDays, temperature, selectedProject]);
 
     const handleBatterySelect = (batteryId) => {
@@ -118,11 +127,12 @@ const Step5_Batteries = () => {
             {config && (
                 <div>
                     <h3>Calculated Configuration</h3>
+                    <p>Battery Capacity DOD: {config.batteryCapacityDod} Ah</p>
                     <p>Parallel Batteries: {config.parallelBatteries}</p>
                     <p>Series Batteries: {config.seriesBatteries}</p>
                     <p>Required Capacity: {config.requiredCapacity} Ah</p>
-                    <p>Battery Capacity DOD: {config.batteryCapacityDOD} Ah</p>
-                    <p>Operational Voltage: {config.operationalVoltage} V</p>
+                    <p>Total battery available capacity: {config.totalAvailableCapacity} Ah</p>
+                    <p>Operational Days: {config.operationalDays} days</p>
                 </div>
             )}
         </div>

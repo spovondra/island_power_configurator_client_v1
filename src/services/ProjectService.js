@@ -156,12 +156,12 @@ export const getBatteries = async (projectId, technology) => {
 };
 
 // Send battery configuration request to the backend
-export const calculateBatteryConfiguration = async (projectId, params) => {
+export const selectBattery = async (projectId, params) => {
     try {
         // Include temperature and autonomyDays in the request params
         const { batteryId, temperature, autonomyDays } = params;
         const response = await apiClient.post(
-            `${API_PROJECT_URL}/${projectId}/batteries/calculate?batteryId=${batteryId}&temperature=${temperature}&autonomousDays=${autonomyDays}`,
+            `${API_PROJECT_URL}/${projectId}/batteries/select-battery/${batteryId}?temperature=${temperature}&autonomyDays=${autonomyDays}`,
             {}
         );
         return response.data; // Return configuration results
@@ -170,4 +170,3 @@ export const calculateBatteryConfiguration = async (projectId, params) => {
         throw error;
     }
 };
-
