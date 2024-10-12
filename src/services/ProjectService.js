@@ -170,3 +170,14 @@ export const selectBattery = async (projectId, params) => {
         throw error;
     }
 };
+
+export const getProjectBattery = async (projectId) => {
+    try {
+        const response = await apiClient.get(`${API_PROJECT_URL}/${projectId}/batteries/`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching project battery:', error);
+        throw error;
+    }
+};
+
