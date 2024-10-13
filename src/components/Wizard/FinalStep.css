@@ -2,62 +2,52 @@
 .final-step-container {
     padding: 20px;
     max-width: 800px;
-    margin: auto;
+    margin: 20px auto;
     font-family: Arial, sans-serif;
-    border: 1px solid #ddd;
+    border: 1px solid #e3e3e3;
     border-radius: 8px;
-    background-color: #f8f9fa;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Header */
 .final-step-header {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     text-align: center;
 }
 
 .final-step-header h2 {
-    font-size: 2em;
     color: #333;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
 }
 
 /* Section */
 .final-step-section {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .final-step-section h3 {
-    font-size: 1.5em;
+    font-size: 1.8em;
     color: #444;
+    margin-bottom: 15px;
     border-bottom: 2px solid #ddd;
     padding-bottom: 5px;
 }
 
 .final-step-section p {
-    font-size: 1em;
-    margin-bottom: 10px;
+    font-size: 1.1em;
     color: #555;
+    margin-bottom: 15px;
 }
 
 .final-step-section strong {
     color: #333;
-}
-
-/* Graph Container */
-.graph-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center align the graphs */
-    margin: 20px 0;
-}
-
-.graph {
-    width: 100%; /* Ensure the graph takes the full width */
-    max-width: 600px; /* Limit the max width */
-    height: 300px; /* Set a height for the graph */
-    margin: 10px 0; /* Space between graphs */
-    border: 1px solid #ddd; /* Optional border for the graph */
-    border-radius: 8px; /* Rounded corners for the graph */
-    background-color: #fff; /* Background color for the graph */
 }
 
 /* List */
@@ -68,30 +58,36 @@
 }
 
 .final-step-list li {
-    margin-bottom: 10px;
-    padding: 10px;
+    margin-bottom: 15px;
+    padding: 2px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 6px;
     background-color: #fff;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
-/* Buttons */
-.final-step-buttons {
-    text-align: center;
-    margin-top: 20px;
+.final-step-list li:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.final-step-buttons button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 1em;
-    cursor: pointer;
-    margin: 5px;
+/* Graph Container */
+.chart-flex-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 60px;
+    margin-bottom: 30px;
 }
 
-.final-step-buttons button:hover {
-    background-color: #0056b3;
+.chart-container {
+    flex: 1;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Pie Chart Customization */
+.recharts-pie-label-text {
+    font-size: 14px;
+    font-weight: bold;
 }

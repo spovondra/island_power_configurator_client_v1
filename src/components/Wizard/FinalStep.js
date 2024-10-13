@@ -7,7 +7,6 @@ import {
     XAxis,
     YAxis,
     Tooltip,
-    Legend,
     CartesianGrid,
     LabelList,
     PieChart,
@@ -18,17 +17,7 @@ import './FinalStep.css';
 
 const FinalStep = () => {
     const { selectedProject } = useContext(ProjectContext);
-    const [project, setProject] = useState({
-        site: {},
-        solarComponents: {
-            solarPanels: {},
-            controllers: {},
-            batteries: {},
-            inverters: {},
-            accessories: {},
-        },
-        appliances: [],
-    });
+    const [project, setProject] = useState(null);
     const [pvgisData, setPVGISData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -55,33 +44,26 @@ const FinalStep = () => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
 
-    const site = project.site || {};
-    const appliances = project.appliances || [];
-    const configuration = project.configurationModel || {};
+    const site = project?.site || {};
+    const appliances = project?.appliances || [];
+    const configuration = project?.configurationModel || {};
 
-    // Prepare data for charts
+    const totalEnergyData = [
+        {
+            name: 'Total AC Energy',
+            value: configuration?.projectAppliance?.totalAcEnergy || 0,
+        },
+        {
+            name: 'Total DC Energy',
+            value: configuration?.projectAppliance?.totalDcEnergy || 0,
+        },
+    ];
+
     const chartData = pvgisData.map(item => ({
         month: item.month,
         irradiance: item.irradiance,
         ambientTemperature: item.ambientTemperature,
     }));
-
-    const monthlyIrradiance = (site.monthlyIrradianceList ?? []).map(irr => ({
-        month: `Month ${irr.month}`,
-        irradiance: irr.irradiance,
-    }));
-
-    // Total Energy Consumption Pie Chart Data
-    const totalEnergyData = [
-        {
-            name: 'Total AC Energy',
-            value: configuration.totalAcEnergy,
-        },
-        {
-            name: 'Total DC Energy',
-            value: configuration.totalDcEnergy,
-        },
-    ];
 
     return (
         <div className="final-step-container">
@@ -90,28 +72,32 @@ const FinalStep = () => {
             {/* Project Information */}
             <div className="final-step-section">
                 <h3>Project Information</h3>
-                <p><strong>Project ID:</strong> {project.id || 'N/A'}</p>
-                <p><strong>Project Name:</strong> {project.name || 'N/A'}</p>
-                <p><strong>User ID:</strong> {project.userId || 'N/A'}</p>
+                <ul>
+                    <li><strong>Project ID:</strong> {project?.id || 'N/A'}</li>
+                    <li><strong>Project Name:</strong> {project?.name || 'N/A'}</li>
+                    <li><strong>User ID:</strong> {project?.userId || 'N/A'}</li>
+                </ul>
             </div>
 
             {/* Site Information */}
             <div className="final-step-section">
                 <h3>Site Details</h3>
-                <p><strong>Latitude:</strong> {site.latitude || 'N/A'}</p>
-                <p><strong>Longitude:</strong> {site.longitude || 'N/A'}</p>
-                <p><strong>Min Temperature:</strong> {site.minTemperature || 'N/A'}</p>
-                <p><strong>Max Temperature:</strong> {site.maxTemperature || 'N/A'}</p>
-                <p><strong>Panel Angle:</strong> {site.panelAngle || 'N/A'}°</p>
-                <p><strong>Panel Aspect:</strong> {site.panelAspect || 'N/A'}</p>
-                <p><strong>Used Optimal Values:</strong> {site.usedOptimalValues ? 'Yes' : 'No'}</p>
+                <ul>
+                    <li><strong>Latitude:</strong> {site.latitude || 'N/A'}</li>
+                    <li><strong>Longitude:</strong> {site.longitude || 'N/A'}</li>
+                    <li><strong>Min Temperature:</strong> {site.minTemperature || 'N/A'} °C</li>
+                    <li><strong>Max Temperature:</strong> {site.maxTemperature || 'N/A'} °C</li>
+                    <li><strong>Panel Angle:</strong> {site.panelAngle || 'N/A'}°</li>
+                    <li><strong>Panel Aspect:</strong> {site.panelAspect || 'N/A'}</li>
+                    <li><strong>Used Optimal Values:</strong> {site.usedOptimalValues ? 'Yes' : 'No'}</li>
+                </ul>
             </div>
 
-            {/* Monthly Irradiance & Ambient Temperature Bar Charts */}
+            {/* Monthly Irradiance & Ambient Temperature Charts */}
             <div className="chart-flex-container">
                 <div className="chart-container">
                     <h3>Monthly Irradiance</h3>
-                    <BarChart width={600} height={300} data={chartData}>
+                    <BarChart width={400} height={250} data={chartData}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
                         <YAxis label={{ value: 'Irradiance (kWh/m²)', angle: -90, position: 'insideLeft' }} />
@@ -123,7 +109,7 @@ const FinalStep = () => {
                 </div>
                 <div className="chart-container">
                     <h3>Monthly Avg Ambient Temperature</h3>
-                    <BarChart width={600} height={300} data={chartData}>
+                    <BarChart width={400} height={250} data={chartData}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
                         <YAxis label={{ value: 'Temperature (°C)', angle: -90, position: 'insideLeft' }} />
@@ -142,14 +128,16 @@ const FinalStep = () => {
                     {appliances.map(appliance => (
                         <li key={appliance.id}>
                             <strong>{appliance.name}</strong>:
-                            <p>Type: {appliance.type}</p>
-                            <p>Quantity: {appliance.quantity}</p>
-                            <p>Power: {appliance.power} W</p>
-                            <p>Hours per Day: {appliance.hours}</p>
-                            <p>Days per Week: {appliance.days}</p>
-                            <p>Peak Power: {appliance.peakPower} W</p>
-                            <p>Energy: {appliance.energy} Wh</p>
-                            <p>Cost: {appliance.cost} CZK</p>
+                            <ul>
+                                <li>Type: {appliance.type}</li>
+                                <li>Quantity: {appliance.quantity}</li>
+                                <li>Power: {appliance.power} W</li>
+                                <li>Hours per Day: {appliance.hours}</li>
+                                <li>Days per Week: {appliance.days}</li>
+                                <li>Peak Power: {appliance.peakPower} W</li>
+                                <li>Energy: {appliance.energy} Wh</li>
+                                <li>Cost: {appliance.cost} CZK</li>
+                            </ul>
                         </li>
                     ))}
                 </ul>
@@ -180,16 +168,45 @@ const FinalStep = () => {
             {/* Configuration Model */}
             <div className="final-step-section">
                 <h3>Configuration Model</h3>
-                <p><strong>Total AC Energy:</strong> {configuration.totalAcEnergy || 'N/A'} Wh</p>
-                <p><strong>Total DC Energy:</strong> {configuration.totalDcEnergy || 'N/A'} Wh</p>
-                <p><strong>System Voltage:</strong> {configuration.systemVoltage || 'N/A'} V</p>
-                <p><strong>Recommended System Voltage:</strong> {configuration.recommendedSystemVoltage || 'N/A'} V</p>
-                <p><strong>Total AC Peak Power:</strong> {configuration.totalAcPeakPower || 'N/A'} W</p>
-                <p><strong>Total DC Peak Power:</strong> {configuration.totalDcPeakPower || 'N/A'} W</p>
-                <p><strong>Inverter ID:</strong> {configuration.inverterId || 'N/A'}</p>
-                <p><strong>Inverter Temperature:</strong> {configuration.inverterTemperature || 'N/A'} °C</p>
-                <p><strong>Total Adjusted AC Energy:</strong> {configuration.totalAdjustedAcEnergy || 'N/A'} Wh</p>
-                <p><strong>Total Daily Energy:</strong> {configuration.totalDailyEnergy || 'N/A'} Wh</p>
+                <ul>
+                    <li><strong>Total AC Energy:</strong> {configuration?.projectAppliance?.totalAcEnergy || 'N/A'} Wh</li>
+                    <li><strong>Total DC Energy:</strong> {configuration?.projectAppliance?.totalDcEnergy || 'N/A'} Wh</li>
+                    <li><strong>System Voltage:</strong> {configuration.systemVoltage || 'N/A'} V</li>
+                    <li><strong>Recommended System Voltage:</strong> {configuration.recommendedSystemVoltage || 'N/A'} V</li>
+                    <li><strong>Total AC Peak Power:</strong> {configuration?.projectAppliance?.totalAcPeakPower || 'N/A'} W</li>
+                    <li><strong>Total DC Peak Power:</strong> {configuration?.projectAppliance?.totalDcPeakPower || 'N/A'} W</li>
+                    <li><strong>Inverter ID:</strong> {configuration?.projectInverter?.inverterId || 'N/A'}</li>
+                    <li><strong>Inverter Temperature:</strong> {configuration?.projectInverter?.inverterTemperature || 'N/A'} °C</li>
+                    <li><strong>Total Adjusted AC Energy:</strong> {configuration?.projectInverter?.totalAdjustedAcEnergy || 'N/A'} Wh</li>
+                    <li><strong>Total Daily Energy:</strong> {configuration?.projectInverter?.totalDailyEnergy || 'N/A'} Wh</li>
+                </ul>
+            </div>
+
+            {/* Solar Panel Configuration */}
+            <div className="final-step-section">
+                <h3>Solar Panel Configuration</h3>
+                <ul>
+                    <li><strong>Solar Panel ID:</strong> {configuration?.projectSolarPanel?.solarPanelId || 'N/A'}</li>
+                    <li><strong>Number of Panels:</strong> {configuration?.projectSolarPanel?.numberOfPanels || 'N/A'}</li>
+                    <li><strong>Total Power Generated:</strong> {configuration?.projectSolarPanel?.totalPowerGenerated || 'N/A'} W</li>
+                    <li><strong>Efficiency Loss:</strong> {configuration?.projectSolarPanel?.efficiencyLoss || 'N/A'}</li>
+                    <li><strong>Estimated Daily Energy Production:</strong> {configuration?.projectSolarPanel?.estimatedDailyEnergyProduction || 'N/A'} Wh</li>
+                    <li><strong>Installation Type:</strong> {configuration?.projectSolarPanel?.installationType || 'N/A'}</li>
+                </ul>
+            </div>
+
+            {/* Battery Configuration */}
+            <div className="final-step-section">
+                <h3>Battery Configuration</h3>
+                <ul>
+                    <li><strong>Battery ID:</strong> {configuration?.projectBattery?.batteryId || 'N/A'}</li>
+                    <li><strong>Battery Type:</strong> {configuration?.projectBattery?.type || 'N/A'}</li>
+                    <li><strong>Temperature:</strong> {configuration?.projectBattery?.temperature || 'N/A'} °C</li>
+                    <li><strong>Battery Capacity (DOD):</strong> {configuration?.projectBattery?.batteryCapacityDod || 'N/A'} Wh</li>
+                    <li><strong>Parallel Batteries:</strong> {configuration?.projectBattery?.parallelBatteries || 'N/A'}</li>
+                    <li><strong>Series Batteries:</strong> {configuration?.projectBattery?.seriesBatteries || 'N/A'}</li>
+                    <li><strong>Total Available Capacity:</strong> {configuration?.projectBattery?.totalAvailableCapacity || 'N/A'} Wh</li>
+                </ul>
             </div>
         </div>
     );
