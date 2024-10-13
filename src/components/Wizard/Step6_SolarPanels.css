@@ -1,64 +1,83 @@
-/* Container */
-.step4-container {
+.solar-panel-configurator {
+    width: 80%;
+    margin: 0 auto;
+    font-family: 'Arial', sans-serif;
+}
+
+.config-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.solar-panel-selection, .installation-type, .constants-input, .calculated-config {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.solar-panel-options {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.month-selection {
+    display: flex;
+    justify-content: center;
     align-items: center;
-    box-sizing: border-box;
-    width: 100%;
-}
-
-/* Content */
-.content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 1200px;
-    margin: 20px auto;
-    gap: 20px;
-}
-
-/* Left Column */
-.left-column {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Form Group */
-.form-group {
     margin-bottom: 20px;
 }
 
-/* Calculate Button */
-.calculate-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 16px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.calculate-button:hover {
-    background-color: #0056b3;
-}
-
-/* Right Column (Graphs) */
-.right-column {
-    flex: 3;
+.month-checkboxes {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    gap: 5px;
 }
 
-/* Graph Container */
-.graph-container {
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    box-sizing: border-box;
+.month-checkbox {
+    padding: 5px;
+}
+
+.constants-input label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.constants-input input {
+    margin-left: 10px;
+}
+
+.charts-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.monthly-data-table {
+    margin: 30px auto;
+    width: 100%;
+    max-width: 1000px;
+    border-collapse: collapse;
+}
+
+.monthly-data-table th, .monthly-data-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.confirm-button {
+    display: block;
+    margin: 20px auto;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.confirm-button:hover {
+    background-color: #45a049;
 }

@@ -4,7 +4,6 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import './LocationComponent.css';
 
-// Define a custom icon using L.icon
 const customIcon = L.icon({
     iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-icon.png',
     iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-icon.png',
@@ -26,7 +25,7 @@ const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, set
                 const { lat, lng } = e.latlng;
                 setLatitude(lat.toFixed(6));
                 setLongitude(lng.toFixed(6));
-                setPosition([lat, lng]); // Update position immediately on click
+                setPosition([lat, lng]);
 
                 if (setUseOptimal) {
                     setUseOptimal(false);

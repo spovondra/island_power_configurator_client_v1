@@ -182,3 +182,32 @@ export const getProjectBattery = async (projectId) => {
     }
 };
 
+export const getSolarPanels = async (projectId) => {
+    try {
+        const response = await apiClient.get(`${API_PROJECT_URL}/${projectId}/solar-panels/suitable`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching solar panels:', error);
+        throw error;
+    }
+};
+
+export const selectSolarPanel = async (projectId, requestBody) => {
+    try {
+        const response = await apiClient.post(`${API_PROJECT_URL}/${projectId}/solar-panels/select`, requestBody);
+        return response.data;
+    } catch (error) {
+        console.error('Error selecting solar panel:', error);
+        throw error;
+    }
+};
+
+export const getProjectSolarPanel = async (projectId) => {
+    try {
+        const response = await apiClient.get(`${API_PROJECT_URL}/${projectId}/solar-panels`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching project solar panel configuration:', error);
+        throw error;
+    }
+};

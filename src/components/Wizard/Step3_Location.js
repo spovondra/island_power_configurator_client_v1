@@ -80,7 +80,6 @@ const Step3_Location = () => {
             if (newAspect !== undefined) {
                 setAspect(newAspect); // Update aspect from processed data
             }
-            console.log()
 
         } catch (error) {
             console.error('Error processing location data:', error);
@@ -102,9 +101,11 @@ const Step3_Location = () => {
                 const { lat, lon } = response.data[0];
                 const formattedLat = parseFloat(lat).toFixed(3);
                 const formattedLon = parseFloat(lon).toFixed(3);
-                setLocation({ latitude: formattedLat, longitude: formattedLon });
 
-                await handleProcessLocationData(); // Fetch the data after setting the location
+                // Nastavení nových souřadnic
+                setLocation({ latitude: formattedLat, longitude: formattedLon });
+                setHasUserInteracted(true); // Flag for calling handleProcessLocationData
+
             } else {
                 alert("Location not found");
             }
@@ -118,10 +119,9 @@ const Step3_Location = () => {
         setUseOptimal(prev => !prev); // Toggle checkbox state
         setHasUserInteracted(true); // Set interaction flag
 
-        // Set angle and aspect based on whether optimal values are being used
-        if (useOptimal) { // If the checkbox was previously unchecked
-            setAngle(35);   // Set angle to 35
-            setAspect(0);   // Set aspect to 0
+        if (useOptimal) {
+            setAngle(35);
+            setAspect(0);
         }
     };
 
@@ -145,7 +145,7 @@ const Step3_Location = () => {
         const newAngle = parseFloat(event.target.value);
         if (!isNaN(newAngle)) {
             setAngle(newAngle);
-            setHasUserInteracted(true); // Set interaction flag
+            setHasUserInteracted(true);
         }
     };
 
@@ -153,21 +153,20 @@ const Step3_Location = () => {
         const newAspect = parseFloat(event.target.value);
         if (!isNaN(newAspect)) {
             setAspect(newAspect);
-            setHasUserInteracted(true); // Set interaction flag
+            setHasUserInteracted(true);
         }
     };
 
-    // Trigger data processing when user interacts with the inputs or the map
+    // Call data processing when user interacts with inputs or map
     useEffect(() => {
         if (hasUserInteracted) {
             handleProcessLocationData();
         }
     }, [location, angle, aspect, useOptimal, hasUserInteracted]);
 
-    // Data for the chart using the structure of monthlyDataList
     const chartData = pvgisData.map(item => ({
-        month: item.month,         // Month number (1-12)
-        irradiance: item.irradiance, // Corresponding irradiance value
+        month: item.month,
+        irradiance: item.irradiance,
         ambientTemperature: item.ambientTemperature
     }));
 
@@ -177,8 +176,7 @@ const Step3_Location = () => {
                 <div className="left-column">
                     <div className="search-block">
                         <div className="search-bar">
-                            <input type="text" id="locationSearch" className="form-control"
-                                   placeholder="Enter location"/>
+                            <input type="text" id="locationSearch" className="form-control" placeholder="Enter location" />
                             <button className="search-button" onClick={searchLocation}>Search</button>
                         </div>
                     </div>
@@ -187,12 +185,12 @@ const Step3_Location = () => {
                             latitude={location.latitude}
                             longitude={location.longitude}
                             setLatitude={lat => {
-                                setLocation(loc => ({...loc, latitude: lat}));
-                                setHasUserInteracted(true); // Set interaction flag
+                                setLocation(loc => ({ ...loc, latitude: lat }));
+                                setHasUserInteracted(true);
                             }}
                             setLongitude={lon => {
-                                setLocation(loc => ({...loc, longitude: lon}));
-                                setHasUserInteracted(true); // Set interaction flag
+                                setLocation(loc => ({ ...loc, longitude: lon }));
+                                setHasUserInteracted(true);
                             }}
                         />
                     </div>
@@ -206,7 +204,7 @@ const Step3_Location = () => {
                             className="form-control"
                             value={location.latitude}
                             onChange={handleLatitudeChange}
-                            onBlur={handleProcessLocationData} // Trigger on blur
+                            onBlur={handleProcessLocationData}
                         />
                     </div>
                     <div className="form-group">
@@ -217,7 +215,7 @@ const Step3_Location = () => {
                             className="form-control"
                             value={location.longitude}
                             onChange={handleLongitudeChange}
-                            onBlur={handleProcessLocationData} // Trigger on blur
+                            onBlur={handleProcessLocationData}
                         />
                     </div>
                     <div className="form-group">
@@ -228,7 +226,7 @@ const Step3_Location = () => {
                             className="form-control"
                             value={angle}
                             onChange={handleAngleChange}
-                            onBlur={handleProcessLocationData} // Trigger on blur
+                            onBlur={handleProcessLocationData}
                         />
                     </div>
                     <div className="form-group">
@@ -239,7 +237,7 @@ const Step3_Location = () => {
                             className="form-control"
                             value={aspect}
                             onChange={handleAspectChange}
-                            onBlur={handleProcessLocationData} // Trigger on blur
+                            onBlur={handleProcessLocationData}
                         />
                     </div>
                     <div className="form-group">
@@ -262,24 +260,24 @@ const Step3_Location = () => {
                 <div className="chart-container">
                     <h3>Monthly Irradiance</h3>
                     <BarChart width={600} height={300} data={chartData}>
-                        <CartesianGrid strokeDasharray="3 3"/>
-                        <XAxis dataKey="month" label={{value: 'Month', position: 'insideBottom', offset: -5}}/>
-                        <YAxis label={{value: 'Irradiance (kWh/m²)', angle: -90, position: 'insideLeft'}}/>
-                        <Tooltip/>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
+                        <YAxis label={{ value: 'Irradiance (kWh/m²)', angle: -90, position: 'insideLeft' }} />
+                        <Tooltip />
                         <Bar dataKey="irradiance" fill="#8884d8">
-                            <LabelList dataKey="irradiance" position="top"/>
+                            <LabelList dataKey="irradiance" position="top" />
                         </Bar>
                     </BarChart>
                 </div>
                 <div className="chart-container">
                     <h3>Monthly Avg Ambient Temperature</h3>
                     <BarChart width={600} height={300} data={chartData}>
-                        <CartesianGrid strokeDasharray="3 3"/>
-                        <XAxis dataKey="month" label={{value: 'Month', position: 'insideBottom', offset: -5}}/>
-                        <YAxis label={{value: 'Temperature (°C)', angle: -90, position: 'insideLeft'}}/>
-                        <Tooltip/>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
+                        <YAxis label={{ value: 'Temperature (°C)', angle: -90, position: 'insideLeft' }} />
+                        <Tooltip />
                         <Bar dataKey="ambientTemperature" fill="#8884d8">
-                            <LabelList dataKey="ambientTemperature" position="top"/> {/* Corrected dataKey for LabelList */}
+                            <LabelList dataKey="ambientTemperature" position="top" />
                         </Bar>
                     </BarChart>
                 </div>

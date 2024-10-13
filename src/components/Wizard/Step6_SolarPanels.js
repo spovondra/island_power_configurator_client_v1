@@ -1,231 +1,287 @@
-import React, { useState, useEffect } from 'react';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import axios from 'axios';
-import './Step6_SolarPanels.css'; // Import the CSS file for styling
+import React, { useEffect, useState, useContext } from 'react';
+import { ProjectContext } from '../../context/ProjectContext';
+import { getSolarPanels, selectSolarPanel, getProjectSolarPanel } from '../../services/ProjectService';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LineChart, Line, Legend } from 'recharts';
+import './Step6_SolarPanels.css';
 
-const DEFAULT_PANEL_OVERSIZE_COEFFICIENT = 1.2;
-const DEFAULT_BATTERY_EFFICIENCY = 0.95;
-const DEFAULT_CABLE_EFFICIENCY = 0.98;
-const DEFAULT_PANEL_TEMP = 25; // Standard Test Condition
-
-function Step6SolarPanels({ energyData, systemVoltage, onSelect, onNext }) {
-    const [selectedPanel, setSelectedPanel] = useState('panel1');
-    const [panelData, setPanelData] = useState(null);
-    const [calculations, setCalculations] = useState([]);
-    const [numPanelsData, setNumPanelsData] = useState([]);
-    const [selectedMonths, setSelectedMonths] = useState([]);
+const Step6_SolarPanels = () => {
+    const { selectedProject } = useContext(ProjectContext);
+    const [selectedPanel, setSelectedPanel] = useState(null);
+    const [solarPanels, setSolarPanels] = useState([]);
+    const [numberOfPanels, setNumberOfPanels] = useState(0);
+    const [panelOversizeCoefficient, setPanelOversizeCoefficient] = useState(1.2);
+    const [batteryEfficiency, setBatteryEfficiency] = useState(0.95);
+    const [cableEfficiency, setCableEfficiency] = useState(0.98);
+    const [selectedMonths, setSelectedMonths] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     const [installationType, setInstallationType] = useState('ground');
-
-    // User-defined constants
-    const [panelOversizeCoefficient, setPanelOversizeCoefficient] = useState(DEFAULT_PANEL_OVERSIZE_COEFFICIENT);
-    const [batteryEfficiency, setBatteryEfficiency] = useState(DEFAULT_BATTERY_EFFICIENCY);
-    const [cableEfficiency, setCableEfficiency] = useState(DEFAULT_CABLE_EFFICIENCY);
-    const [panelTemp, setPanelTemp] = useState(DEFAULT_PANEL_TEMP);
+    const [manufacturerTolerance, setManufacturerTolerance] = useState(0.98);
+    const [agingLoss, setAgingLoss] = useState(0.95);
+    const [dirtLoss, setDirtLoss] = useState(0.97);
+    const [config, setConfig] = useState({
+        totalPowerGenerated: 0,
+        efficiencyLoss: 0,
+        estimatedDailyEnergyProduction: 0,
+        monthlyData: []
+    });
 
     useEffect(() => {
-        // Fetch panels data (assumed to be coming from an API or local JSON)
-        const fetchData = async () => {
+        if (!selectedProject) return;
+
+        const fetchSolarPanels = async () => {
             try {
-                const response = await axios.get('/api/panels'); // Update with your actual API endpoint
-                setPanelData(response.data);
+                const panelData = await getSolarPanels(selectedProject);
+                setSolarPanels(panelData);
             } catch (error) {
-                console.error('Error fetching panel data:', error);
+                console.error('Error fetching solar panels:', error);
             }
         };
-        fetchData();
-    }, []);
 
+        const fetchPanelConfig = async () => {
+            try {
+                const projectPanel = await getProjectSolarPanel(selectedProject);
+                if (projectPanel) {
+                    setSelectedPanel(projectPanel.solarPanelId);
+                    setNumberOfPanels(projectPanel.numberOfPanels);
+                    setPanelOversizeCoefficient(projectPanel.panelOversizeCoefficient || 1.2);
+                    setBatteryEfficiency(projectPanel.batteryEfficiency || 0.95);
+                    setCableEfficiency(projectPanel.cableEfficiency || 0.98);
+                    setInstallationType(projectPanel.installationType || 'ground');
+                    setManufacturerTolerance(projectPanel.manufacturerTolerance || 0.98);
+                    setAgingLoss(projectPanel.agingLoss || 0.95);
+                    setDirtLoss(projectPanel.dirtLoss || 0.97);
+                    setConfig(projectPanel);
+                }
+            } catch (error) {
+                console.error('Error fetching project solar panel configuration:', error);
+            }
+        };
+
+        fetchSolarPanels();
+        fetchPanelConfig();
+    }, [selectedProject]);
+
+    // Automatically trigger recalculation whenever a parameter changes
     useEffect(() => {
-        if (energyData && systemVoltage && panelData) {
-            calculatePanelRequirements();
-        } else {
-            console.error('Missing energy data or system voltage');
+        if (selectedPanel) {
+            sendUpdatedConfiguration(selectedPanel);
         }
-    }, [energyData, systemVoltage, panelData, selectedMonths, installationType, panelOversizeCoefficient, batteryEfficiency, cableEfficiency]);
+    }, [
+        selectedPanel,
+        panelOversizeCoefficient,
+        batteryEfficiency,
+        cableEfficiency,
+        selectedMonths,
+        installationType,
+        manufacturerTolerance,
+        agingLoss,
+        dirtLoss
+    ]);
 
-    const calculatePanelRequirements = () => {
-        // Ensure energy data and system voltage are correctly available
-        const totalDailyEnergy = (energyData?.totalDailyEnergyAC || 0) + (energyData?.totalDailyEnergyDC || 0);
-        const systemVoltageNum = parseFloat(systemVoltage);
+    const handlePanelSelect = (panelId) => {
+        setSelectedPanel(panelId);
+    };
 
-        if (isNaN(systemVoltageNum)) {
-            console.error('Invalid system voltage:', systemVoltage);
-            return;
+    const sendUpdatedConfiguration = async (panelId) => {
+        const postData = {
+            solarPanelId: panelId,
+            panelOversizeCoefficient,
+            batteryEfficiency,
+            cableEfficiency,
+            selectedMonths,
+            installationType,
+            manufacturerTolerance,
+            agingLoss,
+            dirtLoss
+        };
+
+        // Log the data that will be sent to the server for debugging
+        console.log("Sending POST with data:", postData);
+
+        try {
+            const result = await selectSolarPanel(selectedProject, postData);
+            setConfig(result);
+        } catch (error) {
+            console.error('Error selecting solar panel:', error);
         }
-
-        // Example logic to calculate panel requirements
-        const calculationsArray = selectedMonths.map(month => {
-            const psh = panelData.peakSunHours[month];
-            const E_required = totalDailyEnergy / (batteryEfficiency * cableEfficiency);
-            const P_required = (E_required / psh) * panelOversizeCoefficient;
-
-            const η_efficiency = calculateEfficiency(panelData, installationType, month);
-            const P_derated = panelData.pRated * η_efficiency;
-            const numPanels = Math.ceil(P_required / P_derated);
-
-            return {
-                month,
-                psh,
-                E_required,
-                P_required,
-                η_efficiency,
-                P_derated,
-                numPanels
-            };
-        });
-
-        setCalculations(calculationsArray);
-        setNumPanelsData(calculationsArray.map(calc => calc.numPanels));
     };
 
-    const calculateEfficiency = (panelData, installationType, month) => {
-        const tempCoefficient = panelData.tempCoefficientPMax;
-        const ambientTemp = panelData.ambientTemperatures[month] || 25; // Default to 25°C
-        const installTempOffset = installationType === 'ground' ? 0 : 5; // Example logic
-
-        return (100 + (ambientTemp + installTempOffset - panelTemp) * tempCoefficient) / 100;
+    const handleMonthChange = (month) => {
+        setSelectedMonths((prev) => prev.includes(month) ? prev.filter((m) => m !== month) : [...prev, month]);
     };
 
-    const handleConfirm = () => {
-        onSelect('panelData', panelData);
-        onSelect('numPanels', Math.max(...numPanelsData));
-        onNext();
-    };
+    const formatValue = (value, decimals = 2) => (value !== undefined && value !== null ? value.toFixed(decimals) : 'N/A');
+
+    const chartData = config.monthlyData.map((data) => ({
+        month: data.month,
+        psh: data.psh,
+        E_daily_solar: data.estimatedDailySolarEnergy
+    }));
 
     return (
-        <div className="step6-solar-panels">
-            <h2>Step 6: Solar Panels Selection</h2>
+        <div className="solar-panel-configurator">
+            <h2 className="config-title">Solar Panel Configurator</h2>
 
-            {/* Panel Selection */}
-            <div>
-                <h3>Select Panel</h3>
-                {panelData && Object.keys(panelData.panels).map((panelKey) => (
-                    <label key={panelKey}>
-                        <input
-                            type="radio"
-                            name="panel"
-                            value={panelKey}
-                            checked={selectedPanel === panelKey}
-                            onChange={() => setSelectedPanel(panelKey)}
-                        />
-                        {` ${panelKey.charAt(0).toUpperCase() + panelKey.slice(1)} - Pmax: ${panelData.panels[panelKey].pRated}W`}
-                    </label>
-                ))}
+            <div className="solar-panel-selection">
+                <h3>Select Solar Panel</h3>
+                <div className="solar-panel-options">
+                    {solarPanels.length === 0 ? (
+                        <p>No suitable solar panels available</p>
+                    ) : (
+                        solarPanels.map((panel) => (
+                            <label key={panel.id} className="panel-option">
+                                <input
+                                    type="radio"
+                                    name="solarPanel"
+                                    checked={selectedPanel === panel.id}
+                                    onChange={() => handlePanelSelect(panel.id)}
+                                />
+                                {`${panel.name} - Pmax: ${panel.pRated}W`}
+                            </label>
+                        ))
+                    )}
+                </div>
             </div>
 
-            {/* Month Selection */}
-            <div>
+            <div className="month-selection">
                 <h3>Select Months</h3>
-                {panelData && Object.keys(panelData.peakSunHours).map(month => (
-                    <label key={month}>
-                        <input
-                            type="checkbox"
-                            checked={selectedMonths.includes(month)}
-                            onChange={() => setSelectedMonths(
-                                prev => prev.includes(month) ? prev.filter(m => m !== month) : [...prev, month]
-                            )}
-                        />
-                        {` ${month.charAt(0).toUpperCase() + month.slice(1)}`}
-                    </label>
-                ))}
+                <div className="month-checkboxes">
+                    {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
+                        <label key={month} className="month-checkbox">
+                            <input
+                                type="checkbox"
+                                checked={selectedMonths.includes(month)}
+                                onChange={() => handleMonthChange(month)}
+                            />
+                            {month}
+                        </label>
+                    ))}
+                </div>
             </div>
 
-            {/* Installation Type Selection */}
-            <div>
+            <div className="installation-type">
                 <h3>Installation Type</h3>
-                <select value={installationType} onChange={e => setInstallationType(e.target.value)}>
-                    <option value="ground">Ground Installation</option>
-                    <option value="roof">Roof Installation</option>
-                    <option value="angle">Angle Installation</option>
+                <select value={installationType} onChange={(e) => setInstallationType(e.target.value)}>
+                    <option value="ground">Ground Mounted</option>
+                    <option value="roof_angle">Roof Mounted (Angle >20°)</option>
+                    <option value="parallel_greater_150mm">Parallel Mounted (Gap >150mm)</option>
+                    <option value="parallel_less_150mm">Parallel Mounted (Gap 150mm)</option>
                 </select>
             </div>
 
-            {/* Constants Setup */}
-            <div className="constants-setup">
+            <div className="constants-input">
                 <h3>Set Constants</h3>
-                <div>
-                    <label>Panel Oversize Coefficient:
-                        <input type="number" value={panelOversizeCoefficient} onChange={e => setPanelOversizeCoefficient(parseFloat(e.target.value))} />
-                    </label>
-                </div>
-                <div>
-                    <label>Battery Efficiency:
-                        <input type="number" value={batteryEfficiency} onChange={e => setBatteryEfficiency(parseFloat(e.target.value))} />
-                    </label>
-                </div>
-                <div>
-                    <label>Cable Efficiency:
-                        <input type="number" value={cableEfficiency} onChange={e => setCableEfficiency(parseFloat(e.target.value))} />
-                    </label>
-                </div>
-                <div>
-                    <label>Panel Temperature (°C):
-                        <input type="number" value={panelTemp} onChange={e => setPanelTemp(parseFloat(e.target.value))} />
-                    </label>
-                </div>
+                <label>
+                    Panel Oversize Coefficient:
+                    <input
+                        type="number"
+                        value={panelOversizeCoefficient}
+                        onChange={(e) => setPanelOversizeCoefficient(parseFloat(e.target.value))} />
+                </label>
+                <label>
+                    Battery Efficiency:
+                    <input
+                        type="number"
+                        value={batteryEfficiency}
+                        onChange={(e) => setBatteryEfficiency(parseFloat(e.target.value))} />
+                </label>
+                <label>
+                    Cable Efficiency:
+                    <input
+                        type="number"
+                        value={cableEfficiency}
+                        onChange={(e) => setCableEfficiency(parseFloat(e.target.value))} />
+                </label>
+                <label>
+                    Manufacturer Tolerance:
+                    <input
+                        type="number"
+                        value={manufacturerTolerance}
+                        onChange={(e) => setManufacturerTolerance(parseFloat(e.target.value))} />
+                </label>
+                <label>
+                    Aging Loss:
+                    <input
+                        type="number"
+                        value={agingLoss}
+                        onChange={(e) => setAgingLoss(parseFloat(e.target.value))} />
+                </label>
+                <label>
+                    Dirt Loss:
+                    <input
+                        type="number"
+                        value={dirtLoss}
+                        onChange={(e) => setDirtLoss(parseFloat(e.target.value))} />
+                </label>
             </div>
 
-            {/* Display calculations */}
-            <h3>Calculations</h3>
-            <table>
-                <thead>
-                <tr>
-                    <th>Month</th>
-                    <th>PSH</th>
-                    <th>Energy Required</th>
-                    <th>Power Required</th>
-                    <th>Efficiency</th>
-                    <th>Derated Power</th>
-                    <th>Num Panels</th>
-                </tr>
-                </thead>
-                <tbody>
-                {calculations.map((calc, index) => (
-                    <tr key={index}>
-                        <td>{calc.month}</td>
-                        <td>{calc.psh}</td>
-                        <td>{calc.E_required}</td>
-                        <td>{calc.P_required}</td>
-                        <td>{calc.η_efficiency}</td>
-                        <td>{calc.P_derated}</td>
-                        <td>{calc.numPanels}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+            <div className="calculated-config">
+                <h3>Calculated Configuration</h3>
+                <p>Total Power Generated: {formatValue(config.totalPowerGenerated)} W</p>
+                <p>Efficiency Loss: {formatValue(config.efficiencyLoss * 100)}%</p>
+                <p>Estimated Daily Energy Production: {formatValue(config.estimatedDailyEnergyProduction)} Wh</p>
+            </div>
 
-            {/* Graphs */}
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ flex: 1, marginRight: '10px' }}>
+            <div className="charts-container">
+                <div>
                     <h3>PSH Graph</h3>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={calculations} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                            <XAxis dataKey="month" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            <Bar dataKey="psh" fill="#82ca9d" />
-                        </BarChart>
-                    </ResponsiveContainer>
+                    <BarChart data={chartData} width={600} height={300}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip />
+                        <Bar dataKey="psh" fill="#82ca9d" />
+                    </BarChart>
                 </div>
-                <div style={{ flex: 1, marginLeft: '10px' }}>
-                    <h3>Daily Solar Energy Graph</h3>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <LineChart data={calculations} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                            <XAxis dataKey="month" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            <Line type="monotone" dataKey="P_required" stroke="#ff7300" />
-                            <Line type="monotone" dataKey="P_derated" stroke="#387908" />
-                        </LineChart>
-                    </ResponsiveContainer>
+                <div>
+                    <h3>E_daily_solar Graph</h3>
+                    <LineChart data={chartData} width={600} height={300}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Line type="monotone" dataKey="E_daily_solar" stroke="#ff7300" dot={{ r: 4 }} />
+                    </LineChart>
                 </div>
             </div>
 
-            <button onClick={handleConfirm}>Confirm and Continue</button>
+            <h3>Monthly Data</h3>
+            {config.monthlyData.length > 0 ? (
+                <table className="monthly-data-table">
+                    <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>PSH</th>
+                        <th>Ambient Temperature (°C)</th>
+                        <th>Required Energy (Wh)</th>
+                        <th>Required Power (W)</th>
+                        <th>Efficiency</th>
+                        <th>Derated Power (W)</th>
+                        <th>Num Panels</th>
+                        <th>Estimated Daily Solar Energy (Wh)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {config.monthlyData.map((data) => (
+                        <tr key={data.month}>
+                            <td>{data.month}</td>
+                            <td>{formatValue(data.psh)}</td>
+                            <td>{formatValue(data.ambientTemperature)}</td>
+                            <td>{formatValue(data.requiredEnergy)}</td>
+                            <td>{formatValue(data.requiredPower)}</td>
+                            <td>{formatValue(data.efficiency)}</td>
+                            <td>{formatValue(data.deratedPower)}</td>
+                            <td>{data.numPanels}</td>
+                            <td>{formatValue(data.estimatedDailySolarEnergy)}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            ) : (
+                <p>No monthly data available.</p>
+            )}
         </div>
     );
-}
+};
 
-export default Step6SolarPanels;
+export default Step6_SolarPanels;

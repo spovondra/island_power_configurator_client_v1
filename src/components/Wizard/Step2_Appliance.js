@@ -97,11 +97,11 @@ const Step2_Appliance = () => {
     const chartData = appliances.reduce((acc, appliance) => {
         const typeIndex = acc.findIndex(item => item.type === appliance.type);
         if (typeIndex > -1) {
-            acc[typeIndex].totalEnergy += appliance.energy * appliance.quantity;
+            acc[typeIndex].totalEnergy += appliance.energy;
         } else {
             acc.push({
                 type: appliance.type,
-                totalEnergy: appliance.energy * appliance.quantity,
+                totalEnergy: appliance.energy,
             });
         }
         return acc;
