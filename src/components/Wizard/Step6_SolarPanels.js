@@ -12,7 +12,7 @@ const Step6_SolarPanels = () => {
     const [panelOversizeCoefficient, setPanelOversizeCoefficient] = useState(1.2);
     const [batteryEfficiency, setBatteryEfficiency] = useState(0.95);
     const [cableEfficiency, setCableEfficiency] = useState(0.98);
-    const [selectedMonths, setSelectedMonths] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+    const [selectedMonths, setSelectedMonths] = useState([]);
     const [installationType, setInstallationType] = useState('ground');
     const [manufacturerTolerance, setManufacturerTolerance] = useState(0.98);
     const [agingLoss, setAgingLoss] = useState(0.95);
@@ -24,6 +24,10 @@ const Step6_SolarPanels = () => {
         monthlyData: []
     });
 
+    const [initialLoad, setInitialLoad] = useState(true); // To track if the component is being loaded initially
+    const [hasChanged, setHasChanged] = useState(false); // To track if the user has made changes
+
+    // Fetch solar panels and current configuration when component is mounted
     useEffect(() => {
         if (!selectedProject) return;
 
@@ -40,12 +44,18 @@ const Step6_SolarPanels = () => {
             try {
                 const projectPanel = await getProjectSolarPanel(selectedProject);
                 if (projectPanel) {
+                    // Set all fetched configuration values into state
                     setSelectedPanel(projectPanel.solarPanelId);
                     setNumberOfPanels(projectPanel.numberOfPanels);
                     setPanelOversizeCoefficient(projectPanel.panelOversizeCoefficient || 1.2);
                     setBatteryEfficiency(projectPanel.batteryEfficiency || 0.95);
                     setCableEfficiency(projectPanel.cableEfficiency || 0.98);
                     setInstallationType(projectPanel.installationType || 'ground');
+
+                    // Set the selected months from monthlyData
+                    const months = projectPanel.monthlyData.map((data) => data.month);
+                    setSelectedMonths(months);
+
                     setManufacturerTolerance(projectPanel.manufacturerTolerance || 0.98);
                     setAgingLoss(projectPanel.agingLoss || 0.95);
                     setDirtLoss(projectPanel.dirtLoss || 0.97);
@@ -53,6 +63,8 @@ const Step6_SolarPanels = () => {
                 }
             } catch (error) {
                 console.error('Error fetching project solar panel configuration:', error);
+            } finally {
+                setInitialLoad(false); // Mark the initial load as complete
             }
         };
 
@@ -60,10 +72,10 @@ const Step6_SolarPanels = () => {
         fetchPanelConfig();
     }, [selectedProject]);
 
-    // Automatically trigger recalculation whenever a parameter changes
+    // Only trigger POST request after the initial load
     useEffect(() => {
-        if (selectedPanel) {
-            sendUpdatedConfiguration(selectedPanel);
+        if (!initialLoad && hasChanged) {
+            sendUpdatedConfiguration();
         }
     }, [
         selectedPanel,
@@ -77,13 +89,10 @@ const Step6_SolarPanels = () => {
         dirtLoss
     ]);
 
-    const handlePanelSelect = (panelId) => {
-        setSelectedPanel(panelId);
-    };
-
-    const sendUpdatedConfiguration = async (panelId) => {
+    // Trigger POST request when user changes the configuration
+    const sendUpdatedConfiguration = async () => {
         const postData = {
-            solarPanelId: panelId,
+            solarPanelId: selectedPanel,
             panelOversizeCoefficient,
             batteryEfficiency,
             cableEfficiency,
@@ -99,14 +108,35 @@ const Step6_SolarPanels = () => {
 
         try {
             const result = await selectSolarPanel(selectedProject, postData);
-            setConfig(result);
+            setConfig(result); // Immediately set the config to the result from POST
         } catch (error) {
             console.error('Error selecting solar panel:', error);
         }
     };
 
+    // Handle user selecting a panel
+    const handlePanelSelect = (panelId) => {
+        setHasChanged(true);
+        setSelectedPanel(panelId);
+    };
+
+    // Handle month selection change
     const handleMonthChange = (month) => {
+        setHasChanged(true);
         setSelectedMonths((prev) => prev.includes(month) ? prev.filter((m) => m !== month) : [...prev, month]);
+    };
+
+    // Handle installation type change
+    const handleInstallationTypeChange = (e) => {
+        setHasChanged(true);
+        setInstallationType(e.target.value);
+    };
+
+    // Update efficiency settings and prevent negative values, step in increments of 0.1
+    const handleEfficiencyChange = (setter, value) => {
+        setHasChanged(true);
+        const newValue = Math.max(0, parseFloat(value)); // Prevent negative values
+        setter(parseFloat(newValue.toFixed(1))); // Ensure value is updated in steps of 0.1
     };
 
     const formatValue = (value, decimals = 2) => (value !== undefined && value !== null ? value.toFixed(decimals) : 'N/A');
@@ -160,7 +190,7 @@ const Step6_SolarPanels = () => {
 
             <div className="installation-type">
                 <h3>Installation Type</h3>
-                <select value={installationType} onChange={(e) => setInstallationType(e.target.value)}>
+                <select value={installationType} onChange={handleInstallationTypeChange}>
                     <option value="ground">Ground Mounted</option>
                     <option value="roof_angle">Roof Mounted (Angle >20°)</option>
                     <option value="parallel_greater_150mm">Parallel Mounted (Gap >150mm)</option>
@@ -174,43 +204,55 @@ const Step6_SolarPanels = () => {
                     Panel Oversize Coefficient:
                     <input
                         type="number"
+                        step="0.1"
                         value={panelOversizeCoefficient}
-                        onChange={(e) => setPanelOversizeCoefficient(parseFloat(e.target.value))} />
+                        onChange={(e) => handleEfficiencyChange(setPanelOversizeCoefficient, e.target.value)}
+                    />
                 </label>
                 <label>
                     Battery Efficiency:
                     <input
                         type="number"
+                        step="0.1"
                         value={batteryEfficiency}
-                        onChange={(e) => setBatteryEfficiency(parseFloat(e.target.value))} />
+                        onChange={(e) => handleEfficiencyChange(setBatteryEfficiency, e.target.value)}
+                    />
                 </label>
                 <label>
                     Cable Efficiency:
                     <input
                         type="number"
+                        step="0.1"
                         value={cableEfficiency}
-                        onChange={(e) => setCableEfficiency(parseFloat(e.target.value))} />
+                        onChange={(e) => handleEfficiencyChange(setCableEfficiency, e.target.value)}
+                    />
                 </label>
                 <label>
                     Manufacturer Tolerance:
                     <input
                         type="number"
+                        step="0.1"
                         value={manufacturerTolerance}
-                        onChange={(e) => setManufacturerTolerance(parseFloat(e.target.value))} />
+                        onChange={(e) => handleEfficiencyChange(setManufacturerTolerance, e.target.value)}
+                    />
                 </label>
                 <label>
                     Aging Loss:
                     <input
                         type="number"
+                        step="0.1"
                         value={agingLoss}
-                        onChange={(e) => setAgingLoss(parseFloat(e.target.value))} />
+                        onChange={(e) => handleEfficiencyChange(setAgingLoss, e.target.value)}
+                    />
                 </label>
                 <label>
                     Dirt Loss:
                     <input
                         type="number"
+                        step="0.1"
                         value={dirtLoss}
-                        onChange={(e) => setDirtLoss(parseFloat(e.target.value))} />
+                        onChange={(e) => handleEfficiencyChange(setDirtLoss, e.target.value)}
+                    />
                 </label>
             </div>
 

@@ -211,3 +211,39 @@ export const getProjectSolarPanel = async (projectId) => {
         throw error;
     }
 };
+// Fetch suitable controllers based on regulator type (PWM or MPPT)
+export const getSuitableControllers = async (projectId, regulatorType) => {
+    try {
+        const response = await apiClient.get(`${API_PROJECT_URL}/${projectId}/controller/suitable`, {
+            params: { regulatorType },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching suitable controllers:', error);
+        throw error;
+    }
+};
+
+// Select a controller for the project using the controller ID as a query parameter
+export const selectController = async (projectId, controllerId) => {
+    try {
+        const response = await apiClient.post(`${API_PROJECT_URL}/${projectId}/controller/select`, null, {
+            params: { controllerId },  // Sending controllerId as a query parameter
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error selecting controller:', error);
+        throw error;
+    }
+};
+
+// Fetch the current controller configuration for the project
+export const getProjectController = async (projectId) => {
+    try {
+        const response = await apiClient.get(`${API_PROJECT_URL}/${projectId}/controller`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching project controller configuration:', error);
+        throw error;
+    }
+};
