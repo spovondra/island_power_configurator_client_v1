@@ -70,22 +70,6 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Graph Container */
-.chart-flex-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 60px;
-    margin-bottom: 30px;
-}
-
-.chart-container {
-    flex: 1;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-}
-
 /* Pie Chart Customization */
 .recharts-pie-label-text {
     font-size: 14px;
