@@ -15,7 +15,11 @@ const Step7_Controller = () => {
         parallelModules: 0,
         valid: false,
         adjustedVoc: 0,
-        adjustedVmp: 0
+        adjustedVmp: 0,
+        maxModulesInSeries: 0,
+        minModulesInSeries: 0,
+        panelsInSeries: 0,
+        panelsInParallel: 0,
     });
     const [initialLoad, setInitialLoad] = useState(true);
     const [hasChanged, setHasChanged] = useState(false);
@@ -43,8 +47,12 @@ const Step7_Controller = () => {
                         seriesModules: projectController.seriesModules,
                         parallelModules: projectController.parallelModules,
                         valid: projectController.valid,
-                        adjustedVoc: projectController.adjustedVoc || 0,
-                        adjustedVmp: projectController.adjustedVmp || 0,
+                        adjustedVoc: projectController.adjustedOpenCircuitVoltage || 0,
+                        adjustedVmp: projectController.adjustedVoltageAtMaxPower || 0,
+                        maxModulesInSeries: projectController.maxModulesInSerial || 0,
+                        minModulesInSeries: projectController.minModulesInSerial || 0,
+                        panelsInSeries: projectController.seriesModules || 0,
+                        panelsInParallel: projectController.parallelModules || 0,
                     });
                 }
             } catch (error) {
@@ -141,10 +149,13 @@ const Step7_Controller = () => {
                 <p><b>Current Rating:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.currentRating : 'N/A'} A</p>
 
                 <h3>Results</h3>
+                {console.log("Controller Config:", controllerConfig)}
                 <p><b>Adjusted Open-Circuit Voltage (Voc adjusted) [V]:</b> {controllerConfig.adjustedOpenCircuitVoltage}</p>
                 <p><b>Adjusted Voltage at Maximum Power (Vmp adjusted) [V]:</b> {controllerConfig.adjustedVoltageAtMaxPower}</p>
-                <p><b>Series Modules:</b> {controllerConfig.seriesModules}</p>
-                <p><b>Parallel Modules:</b> {controllerConfig.parallelModules}</p>
+                <p><b>Maximum Number of Modules in Serial:</b> {controllerConfig.maxModulesInSerial}</p>
+                <p><b>Minimum Number of Modules in Serial:</b> {controllerConfig.minModulesInSerial}</p>
+                <p><b>Panels in Series:</b> {controllerConfig.seriesModules}</p>
+                <p><b>Panels in Parallel:</b> {controllerConfig.parallelModules}</p>
                 <p><b>Valid Configuration:</b> {controllerConfig.valid ? 'Yes' : 'No'}</p>
             </div>
         </div>
