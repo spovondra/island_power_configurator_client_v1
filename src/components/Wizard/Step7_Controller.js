@@ -141,8 +141,8 @@ const Step7_Controller = () => {
                 <p><b>Current Rating:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.currentRating : 'N/A'} A</p>
 
                 <h3>Results</h3>
-                <p><b>Adjusted Open-Circuit Voltage (Voc adjusted) [V]:</b> {controllerConfig.adjustedVoc ? controllerConfig.adjustedVoc.toFixed(2) : 'N/A'}</p>
-                <p><b>Adjusted Voltage at Maximum Power (Vmp adjusted) [V]:</b> {controllerConfig.adjustedVmp ? controllerConfig.adjustedVmp.toFixed(2) : 'N/A'}</p>
+                <p><b>Adjusted Open-Circuit Voltage (Voc adjusted) [V]:</b> {controllerConfig.adjustedOpenCircuitVoltage}</p>
+                <p><b>Adjusted Voltage at Maximum Power (Vmp adjusted) [V]:</b> {controllerConfig.adjustedVoltageAtMaxPower}</p>
                 <p><b>Series Modules:</b> {controllerConfig.seriesModules}</p>
                 <p><b>Parallel Modules:</b> {controllerConfig.parallelModules}</p>
                 <p><b>Valid Configuration:</b> {controllerConfig.valid ? 'Yes' : 'No'}</p>
