@@ -131,7 +131,9 @@
     "min_modules_in_series": "Minimální počet modulů v sérii",
     "panels_in_series": "Panely v sérii",
     "panels_in_parallel": "Panely paralelně",
-    "valid_configuration": "Platná konfigurace"
+    "valid_configuration": "Platná konfigurace",
+    "valid": "Ano,",
+    "invalid": "Ne"
   },
   "final_step": {
     "fetch_error": "Chyba při načítání údajů o projektu.",

@@ -131,7 +131,9 @@
     "min_modules_in_series": "Minimum Number of Modules in Series",
     "panels_in_series": "Panels in Series",
     "panels_in_parallel": "Panels in Parallel",
-    "valid_configuration": "Valid Configuration"
+    "valid_configuration": "Valid Configuration",
+    "valid": "Yes,",
+    "invalid": "No"
   },
   "final_step": {
     "fetch_error": "Failed to fetch project details.",

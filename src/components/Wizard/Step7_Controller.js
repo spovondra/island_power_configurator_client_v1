@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
 import { getSuitableControllers, selectController, getProjectController } from '../../services/ProjectService';
 import { useTranslation } from 'react-i18next'; // Import translation hook
-import './Step7_Controller.css';
+import './Step7_Controller.css'; // Import CSS styles
 
 const Step7_Controller = () => {
     const { t } = useTranslation('wizard'); // Use translation for the wizard namespace
@@ -94,10 +94,10 @@ const Step7_Controller = () => {
     };
 
     return (
-        <div className="controller-configurator">
-            <h2 className="config-title">{t('step7.controller_configurator')}</h2>
+        <div className="step7-controller-configurator">
+            <h2 className="step7-config-title">{t('step7.controller_configurator')}</h2>
 
-            <div className="regulator-type-selection">
+            <div className="step7-regulator-type-selection">
                 <h3>{t('step7.select_regulator_type')}</h3>
                 <label>
                     <input
@@ -121,14 +121,14 @@ const Step7_Controller = () => {
                 </label>
             </div>
 
-            <div className="controller-selection">
+            <div className="step7-controller-selection">
                 <h3>{t('step7.select_controller')}</h3>
-                <div className="controller-options">
+                <div className="step7-controller-options">
                     {controllers.length === 0 ? (
                         <p>{t('step7.no_suitable_controllers')}</p>
                     ) : (
                         controllers.map((controller) => (
-                            <label key={controller.id} className="controller-option">
+                            <label key={controller.id} className="step7-controller-option">
                                 <input
                                     type="radio"
                                     name="controller"
@@ -142,13 +142,23 @@ const Step7_Controller = () => {
                 </div>
             </div>
 
-            <div className="calculated-config">
+            <div className="step7-calculated-config">
                 <h3>{t('step7.selected_regulator_details')}</h3>
-                <p><b>{t('step7.name')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.name : 'N/A'}</p>
-                <p><b>{t('step7.rated_power')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.ratedPower : 'N/A'} W</p>
-                <p><b>{t('step7.max_voltage')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.maxVoltage : 'N/A'} V</p>
-                <p><b>{t('step7.min_voltage')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.minVoltage : 'N/A'} V</p>
-                <p><b>{t('step7.current_rating')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.currentRating : 'N/A'} A</p>
+                <p>
+                    <b>{t('step7.name')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.name : 'N/A'}
+                </p>
+                <p>
+                    <b>{t('step7.rated_power')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.ratedPower : 'N/A'} W
+                </p>
+                <p>
+                    <b>{t('step7.max_voltage')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.maxVoltage : 'N/A'} V
+                </p>
+                <p>
+                    <b>{t('step7.min_voltage')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.minVoltage : 'N/A'} V
+                </p>
+                <p>
+                    <b>{t('step7.current_rating')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.currentRating : 'N/A'} A
+                </p>
 
                 <h3>{t('step7.results')}</h3>
                 <p><b>{t('step7.adjusted_voc')}:</b> {controllerConfig.adjustedVoc}</p>
@@ -157,7 +167,9 @@ const Step7_Controller = () => {
                 <p><b>{t('step7.min_modules_in_series')}:</b> {controllerConfig.minModulesInSeries}</p>
                 <p><b>{t('step7.panels_in_series')}:</b> {controllerConfig.panelsInSeries}</p>
                 <p><b>{t('step7.panels_in_parallel')}:</b> {controllerConfig.panelsInParallel}</p>
-                <p><b>{t('step7.valid_configuration')}:</b> {controllerConfig.valid ? 'Yes' : 'No'}</p>
+                <p>
+                    <b>{t('step7.valid_configuration')}:</b> {controllerConfig.valid ? t('step7.valid') : t('step7.invalid')}
+                </p>
             </div>
         </div>
     );

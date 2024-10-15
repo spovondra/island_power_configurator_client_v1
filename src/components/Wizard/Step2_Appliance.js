@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
 import { addOrUpdateAppliance, deleteAppliance, getProjectById } from '../../services/ProjectService';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -111,10 +111,10 @@ const Step2_Appliance = () => {
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
     return (
-        <div className="appliance-page-container">
-            <div className="form-section">
-                <form onSubmit={handleSave} className="appliance-form">
-                    <div className="input-group">
+        <div className="step2-appliance-page-container">
+            <div className="step2-form-section">
+                <form onSubmit={handleSave} className="step2-appliance-form">
+                    <div className="step2-input-group">
                         <label htmlFor="name">{t('step2.name_label')}:</label>
                         <input
                             type="text"
@@ -124,7 +124,7 @@ const Step2_Appliance = () => {
                             required
                         />
                     </div>
-                    <div className="input-group">
+                    <div className="step2-input-group">
                         <label htmlFor="type">{t('step2.type_label')}:</label>
                         <select
                             id="type"
@@ -136,7 +136,7 @@ const Step2_Appliance = () => {
                             <option value="DC">DC</option>
                         </select>
                     </div>
-                    <div className="input-group">
+                    <div className="step2-input-group">
                         <label htmlFor="power">{t('step2.power_label')}:</label>
                         <input
                             type="number"
@@ -146,7 +146,7 @@ const Step2_Appliance = () => {
                             required
                         />
                     </div>
-                    <div className="input-group">
+                    <div className="step2-input-group">
                         <label htmlFor="quantity">{t('step2.quantity_label')}:</label>
                         <input
                             type="number"
@@ -156,7 +156,7 @@ const Step2_Appliance = () => {
                             required
                         />
                     </div>
-                    <div className="input-group">
+                    <div className="step2-input-group">
                         <label htmlFor="hours">{t('step2.hours_label')}:</label>
                         <input
                             type="number"
@@ -166,7 +166,7 @@ const Step2_Appliance = () => {
                             required
                         />
                     </div>
-                    <div className="input-group">
+                    <div className="step2-input-group">
                         <label htmlFor="days">{t('step2.days_label')}:</label>
                         <input
                             type="number"
@@ -176,7 +176,7 @@ const Step2_Appliance = () => {
                             required
                         />
                     </div>
-                    <div className="input-group">
+                    <div className="step2-input-group">
                         <label htmlFor="peakPower">{t('step2.peak_power_label')}:</label>
                         <input
                             type="number"
@@ -185,7 +185,7 @@ const Step2_Appliance = () => {
                             onChange={(e) => setAppliance({ ...appliance, peakPower: parseFloat(e.target.value) })}
                         />
                     </div>
-                    <div className="input-group">
+                    <div className="step2-input-group">
                         <label htmlFor="energy">{t('step2.energy_label')}:</label>
                         <input
                             type="number"
@@ -195,7 +195,7 @@ const Step2_Appliance = () => {
                             disabled
                         />
                     </div>
-                    <div className="input-group">
+                    <div className="step2-input-group">
                         <label htmlFor="cost">{t('step2.cost_label')}:</label>
                         <input
                             type="number"
@@ -204,14 +204,14 @@ const Step2_Appliance = () => {
                             onChange={(e) => setAppliance({ ...appliance, cost: parseFloat(e.target.value) })}
                         />
                     </div>
-                    <button type="submit" className="action-button">
+                    <button type="submit" className="step2-action-button">
                         {editMode ? t('step2.edit_button') : t('step2.save_button')}
                     </button>
                 </form>
             </div>
 
-            <div className="appliance-list-section">
-                <table className="appliance-table">
+            <div className="step2-appliance-list-section">
+                <table className="step2-appliance-table">
                     <thead>
                     <tr>
                         <th style={{ minWidth: '200px' }}>{t('step2.name_label')}</th>
@@ -238,15 +238,15 @@ const Step2_Appliance = () => {
                             <td>{appl.peakPower}</td>
                             <td>{appl.energy}</td>
                             <td>{appl.cost}</td>
-                            <td className="button-group">
+                            <td className="step2-button-group">
                                 <button
-                                    className="edit-button"
+                                    className="step2-edit-button"
                                     onClick={() => handleEdit(appl)}
                                 >
                                     {t('step2.edit_button')}
                                 </button>
                                 <button
-                                    className="delete-button"
+                                    className="step2-delete-button"
                                     onClick={() => handleDelete(appl.id)}
                                 >
                                     {t('step2.delete_button')}

@@ -85,21 +85,21 @@ const Step5_Batteries = () => {
     };
 
     return (
-        <div>
+        <div className="step5-batteries-page-container">
             <h2>{t('step5.battery_configurator')}</h2> {/* Translated title */}
 
-            <div>
+            <div className="step5-battery-type-section">
                 <label>{t('step5.battery_type')}</label>
-                <select value={batteryType} onChange={(e) => setBatteryType(e.target.value)}>
+                <select value={batteryType} onChange={(e) => setBatteryType(e.target.value)} className="step5-select">
                     <option value="Li-ion">Li-ion</option>
                     <option value="LiFePO4">LiFePO4</option>
                     <option value="Lead Acid">Lead Acid</option>
                 </select>
             </div>
 
-            <div>
+            <div className="step5-temperature-section">
                 <label>{t('step5.select_temperature')}</label>
-                <select value={temperature} onChange={(e) => setTemperature(parseInt(e.target.value))}>
+                <select value={temperature} onChange={(e) => setTemperature(parseInt(e.target.value))} className="step5-select">
                     <option value={-30}>-30°C</option>
                     <option value={-20}>-20°C</option>
                     <option value={-10}>-10°C</option>
@@ -112,23 +112,24 @@ const Step5_Batteries = () => {
                 </select>
             </div>
 
-            <div>
+            <div className="step5-autonomy-section">
                 <label>{t('step5.autonomy_days')}</label>
                 <input
                     type="number"
                     value={autonomyDays}
                     min="1"
                     onChange={(e) => setAutonomyDays(parseInt(e.target.value))}
+                    className="step5-input"
                 />
             </div>
 
-            <div>
+            <div className="step5-select-battery-section">
                 <h3>{t('step5.select_battery')}</h3>
                 {batteries.length === 0 ? (
                     <p>{t('step5.no_batteries_available')}</p>
                 ) : (
                     batteries.map((battery) => (
-                        <div key={battery.id}>
+                        <div key={battery.id} className="step5-battery-option">
                             <label>
                                 <input
                                     type="radio"
@@ -144,7 +145,7 @@ const Step5_Batteries = () => {
             </div>
 
             {config && (
-                <div>
+                <div className="step5-calculated-configuration">
                     <h3>{t('step5.calculated_configuration')}</h3>
                     <p>{t('step5.battery_capacity_dod')}: {config.batteryCapacityDod} Ah</p>
                     <p>{t('step5.parallel_batteries')}: {config.parallelBatteries}</p>

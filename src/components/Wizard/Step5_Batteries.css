@@ -1,0 +1,94 @@
+/* Step 5 Batteries Page Container */
+.step5-batteries-page-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+}
+
+/* Battery Type Section */
+.step5-battery-type-section,
+.step5-temperature-section,
+.step5-autonomy-section,
+.step5-select-battery-section {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+}
+
+/* Labels */
+.step5-battery-type-section label,
+.step5-temperature-section label,
+.step5-autonomy-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Select & Input Fields */
+.step5-select,
+.step5-input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Battery Option Section */
+.step5-battery-option {
+    margin-bottom: 10px;
+}
+
+/* Calculated Configuration Section */
+.step5-calculated-configuration {
+    width: 100%;
+    max-width: 600px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* H3 Headings */
+.step5-calculated-configuration h3 {
+    margin-top: 0;
+}
+
+/* General Button Styles */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px; /* Spacing between button and inputs */
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .step5-batteries-page-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .step5-battery-type-section,
+    .step5-temperature-section,
+    .step5-autonomy-section,
+    .step5-select-battery-section {
+        flex: 1;
+        margin-right: 20px;
+    }
+}

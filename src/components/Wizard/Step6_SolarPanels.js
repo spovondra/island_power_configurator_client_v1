@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
 import { getSolarPanels, selectSolarPanel, getProjectSolarPanel } from '../../services/ProjectService';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LineChart, Line, Legend } from 'recharts';
@@ -150,17 +150,17 @@ const Step6_SolarPanels = () => {
     }));
 
     return (
-        <div className="solar-panel-configurator">
-            <h2 className="config-title">{t('step6.solar_panel_configurator')}</h2>
+        <div className="step6-solar-panel-configurator">
+            <h2 className="step6-config-title">{t('step6.solar_panel_configurator')}</h2>
 
-            <div className="solar-panel-selection">
+            <div className="step6-solar-panel-selection">
                 <h3>{t('step6.select_solar_panel')}</h3>
-                <div className="solar-panel-options">
+                <div className="step6-solar-panel-options">
                     {solarPanels.length === 0 ? (
                         <p>{t('step6.no_solar_panels_available')}</p>
                     ) : (
                         solarPanels.map((panel) => (
-                            <label key={panel.id} className="panel-option">
+                            <label key={panel.id} className="step6-panel-option">
                                 <input
                                     type="radio"
                                     name="solarPanel"
@@ -174,11 +174,11 @@ const Step6_SolarPanels = () => {
                 </div>
             </div>
 
-            <div className="month-selection">
+            <div className="step6-month-selection">
                 <h3>{t('step6.select_months')}</h3>
-                <div className="month-checkboxes">
+                <div className="step6-month-checkboxes">
                     {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
-                        <label key={month} className="month-checkbox">
+                        <label key={month} className="step6-month-checkbox">
                             <input
                                 type="checkbox"
                                 checked={selectedMonths.includes(month)}
@@ -190,7 +190,7 @@ const Step6_SolarPanels = () => {
                 </div>
             </div>
 
-            <div className="installation-type">
+            <div className="step6-installation-type">
                 <h3>{t('step6.installation_type')}</h3>
                 <select value={installationType} onChange={handleInstallationTypeChange}>
                     <option value="ground">{t('step6.ground_mounted')}</option>
@@ -200,7 +200,7 @@ const Step6_SolarPanels = () => {
                 </select>
             </div>
 
-            <div className="constants-input">
+            <div className="step6-constants-input">
                 <h3>{t('step6.set_constants')}</h3>
                 <label>
                     {t('step6.panel_oversize_coefficient')}:
@@ -218,15 +218,6 @@ const Step6_SolarPanels = () => {
                         step="0.1"
                         value={batteryEfficiency}
                         onChange={(e) => handleEfficiencyChange(setBatteryEfficiency, e.target.value)}
-                    />
-                </label>
-                <label>
-                    {t('step6.cable_efficiency')}:
-                    <input
-                        type="number"
-                        step="0.1"
-                        value={cableEfficiency}
-                        onChange={(e) => handleEfficiencyChange(setCableEfficiency, e.target.value)}
                     />
                 </label>
                 <label>
@@ -258,14 +249,14 @@ const Step6_SolarPanels = () => {
                 </label>
             </div>
 
-            <div className="calculated-config">
+            <div className="step6-calculated-config">
                 <h3>{t('step6.calculated_configuration')}</h3>
                 <p>{t('step6.total_power_generated')}: {formatValue(config.totalPowerGenerated)} W</p>
                 <p>{t('step6.efficiency_loss')}: {formatValue(config.efficiencyLoss * 100)}%</p>
                 <p>{t('step6.estimated_daily_energy_production')}: {formatValue(config.estimatedDailyEnergyProduction)} Wh</p>
             </div>
 
-            <div className="charts-container">
+            <div className="step6-charts-container">
                 <div>
                     <h3>{t('step6.psh_graph')}</h3>
                     <BarChart data={chartData} width={600} height={300}>
@@ -291,7 +282,7 @@ const Step6_SolarPanels = () => {
 
             <h3>{t('step6.monthly_data')}</h3>
             {config.monthlyData.length > 0 ? (
-                <table className="monthly-data-table">
+                <table className="step6-monthly-data-table">
                     <thead>
                     <tr>
                         <th>{t('step6.month')}</th>

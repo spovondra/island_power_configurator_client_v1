@@ -1,30 +1,88 @@
-.controller-configurator {
-    padding: 20px;
+/* Controller Configurator Styles */
+.step7-controller-configurator {
+    width: 80%;
+    margin: 0 auto;
+    font-family: 'Arial', sans-serif;
 }
 
-.config-title {
+/* Title Styles */
+.step7-config-title {
+    text-align: center;
+    margin-bottom: 20px;
     font-size: 24px;
+    font-weight: bold;
+}
+
+/* Regulator Type Selection */
+.step7-regulator-type-selection {
     margin-bottom: 20px;
 }
 
-.regulator-type-selection,
-.controller-selection {
-    margin-bottom: 20px;
-}
-
-.controller-options {
-    display: flex;
-    flex-direction: column;
-}
-
-.controller-option {
+.step7-regulator-type-selection h3 {
     margin-bottom: 10px;
 }
 
-.calculated-config {
-    margin-top: 30px;
+.step7-regulator-type-selection label {
+    margin-right: 15px;
 }
 
-.calculated-config p {
-    margin-bottom: 8px;
+/* Controller Selection */
+.step7-controller-selection {
+    margin-bottom: 20px;
+}
+
+.step7-controller-selection h3 {
+    margin-bottom: 10px;
+}
+
+.step7-controller-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Controller Option Label */
+.step7-controller-option {
+    display: flex;
+    align-items: center;
+}
+
+/* Calculated Configuration */
+.step7-calculated-config {
+    margin-top: 30px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+
+.step7-calculated-config h3 {
+    margin-bottom: 10px;
+}
+
+/* General Styles for Paragraphs */
+.step7-calculated-config p {
+    margin: 5px 0;
+}
+
+/* Validation Message */
+.step7-valid-message {
+    font-weight: bold;
+    color: green; /* Change this to red for invalid */
+}
+
+.step7-invalid-message {
+    font-weight: bold;
+    color: red;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .step7-controller-configurator {
+        width: 95%;
+    }
+
+    .step7-controller-options {
+        flex-direction: column;
+    }
 }

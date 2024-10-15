@@ -81,11 +81,11 @@ const Step4_Inverter = () => {
     };
 
     return (
-        <div className="inverter-page-container">
+        <div className="step4-inverter-page-container">
             <h2>{t('step4.select_inverter_configuration')}</h2>
             {error && <p className="error-message">{error}</p>}
-            <div className="selection-section">
-                <div className="input-group">
+            <div className="step4-selection-section">
+                <div className="step4-input-group">
                     <label htmlFor="systemVoltage">{t('step4.system_voltage_label')}</label>
                     <select
                         id="systemVoltage"
@@ -97,7 +97,7 @@ const Step4_Inverter = () => {
                         <option value="48">48V</option>
                     </select>
                 </div>
-                <div className="input-group">
+                <div className="step4-input-group">
                     <label htmlFor="temperature">{t('step4.select_temperature_label')}</label>
                     <select
                         id="temperature"
@@ -110,12 +110,12 @@ const Step4_Inverter = () => {
                     </select>
                 </div>
             </div>
-            <div className="inverter-list-section">
+            <div className="step4-inverter-list-section">
                 <h3>{t('step4.suitable_inverters')}</h3>
                 {loading ? (
                     <p>{t('step4.loading')}</p>
                 ) : (
-                    <table className="inverter-table">
+                    <table className="step4-inverter-table">
                         <thead>
                         <tr>
                             <th>{t('step4.name')}</th>
@@ -135,7 +135,9 @@ const Step4_Inverter = () => {
                                 <td>{inverter.efficiency}</td>
                                 <td>{inverter.voltage}</td>
                                 <td>
-                                    <button onClick={() => handleInverterSelection(inverter.id)}>
+                                    <button
+                                        className="step4-select-button"
+                                        onClick={() => handleInverterSelection(inverter.id)}>
                                         {t('step4.select')}
                                     </button>
                                 </td>
@@ -145,7 +147,7 @@ const Step4_Inverter = () => {
                     </table>
                 )}
             </div>
-            <div className="energy-calculations">
+            <div className="step4-energy-calculations">
                 <h4>{t('step4.energy_calculations')}</h4>
                 <p>{t('step4.adjusted_ac_load')}: {energyCalculations.totalAdjustedAcEnergy.toFixed(2) || t('step4.not_calculated')}</p>
                 <p>{t('step4.total_daily_energy')}: {energyCalculations.totalDailyEnergy.toFixed(2) || t('step4.not_calculated')}</p>
