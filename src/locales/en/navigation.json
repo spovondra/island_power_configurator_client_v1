@@ -1,0 +1,11 @@
+{
+  "navbar": {
+    "home": "Home",
+    "projects": "Projects",
+    "settings": "Settings",
+    "userList": "User List",
+    "projectManagement": "Project Management",
+    "componentManagement": "Component Management",
+    "logout": "Logout"
+    }
+}

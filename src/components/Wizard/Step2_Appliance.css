@@ -1,5 +1,5 @@
 /* Appliance Page Container */
-.appliance-page-container {
+.step2-appliance-page-container {
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -10,7 +10,7 @@
 }
 
 /* Form Section */
-.form-section {
+.step2-form-section {
     width: 100%;
     max-width: 600px;
     margin-bottom: 20px; /* Adjusted for more balance with chart */
@@ -19,7 +19,7 @@
 }
 
 /* Appliance Form */
-.appliance-form {
+.step2-appliance-form {
     background: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -29,17 +29,17 @@
 }
 
 /* Input Group */
-.input-group {
+.step2-input-group {
     margin-bottom: 15px;
 }
 
-.input-group label {
+.step2-input-group label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-.input-group input {
+.step2-input-group input {
     width: calc(100% - 22px);
     padding: 10px;
     border: 1px solid #dcdcdc;
@@ -48,7 +48,7 @@
 }
 
 /* Action Button */
-.action-button {
+.step2-action-button {
     background-color: #007bff;
     color: white;
     border: none;
@@ -60,50 +60,50 @@
     margin-right: 10px;
 }
 
-.action-button:hover {
+.step2-action-button:hover {
     background-color: #0056b3;
 }
 
 /* Appliance List Section */
-.appliance-list-section {
+.step2-appliance-list-section {
     width: 100%;
     max-width: 1400px;
     margin-bottom: 20px; /* Adjusted for balance */
 }
 
 /* Appliance Table */
-.appliance-table {
+.step2-appliance-table {
     width: 100%;
     border-collapse: collapse;
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.appliance-table th,
-.appliance-table td {
+.step2-appliance-table th,
+.step2-appliance-table td {
     padding: 12px;
     text-align: center;
     border-bottom: 1px solid #dcdcdc;
 }
 
-.appliance-table th {
+.step2-appliance-table th {
     background-color: #f8f9fa;
     font-weight: bold;
 }
 
-.appliance-table tr:hover {
+.step2-appliance-table tr:hover {
     background-color: #f1f1f1;
 }
 
 /* Button Group */
-.button-group {
+.step2-button-group {
     display: flex;
     justify-content: center;
     gap: 10px;
 }
 
 /* Edit Button */
-.edit-button {
+.step2-edit-button {
     background-color: #28a745;
     border: none;
     border-radius: 4px;
@@ -113,12 +113,12 @@
     color: white;
 }
 
-.edit-button:hover {
+.step2-edit-button:hover {
     background-color: #218838;
 }
 
 /* Delete Button */
-.delete-button {
+.step2-delete-button {
     background-color: #dc3545;
     border: none;
     border-radius: 4px;
@@ -128,12 +128,12 @@
     color: white;
 }
 
-.delete-button:hover {
+.step2-delete-button:hover {
     background-color: #c82333;
 }
 
-/* Chart Section (now part of the form-section) */
-.chart-section {
+/* Chart Section */
+.step2-chart-section {
     width: 100%;
     max-width: 1200px;
     margin-top: 20px; /* Space between the form and chart */
@@ -145,18 +145,18 @@
 
 /* Media Query */
 @media (min-width: 768px) {
-    .appliance-page-container {
+    .step2-appliance-page-container {
         flex-direction: row;
         justify-content: space-between;
         align-items: flex-start;
     }
 
-    .form-section {
+    .step2-form-section {
         flex: 1;
         margin-right: 20px;
     }
 
-    .appliance-list-section {
+    .step2-appliance-list-section {
         flex: 2;
     }
 }

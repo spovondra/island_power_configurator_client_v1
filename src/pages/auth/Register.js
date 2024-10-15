@@ -2,43 +2,45 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../../services/authService';
 import './Register.css';
+import { useTranslation } from 'react-i18next'; // Import translation hook
 
 function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const { t } = useTranslation('auth'); // Use 'auth' namespace
     const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
             await authService.register(username, password, 'USER'); // Default role can be USER or provide a role selection
-            setMessage('Registration successful, please login.');
+            setMessage(t('register.register_success'));
             navigate('/login');
         } catch (error) {
-            setMessage('Registration failed');
+            setMessage(t('register.register_failed'));
         }
     };
 
     return (
         <div className="register-container">
-            <h2>Register</h2>
+            <h2>{t('register.title')}</h2>
             <form onSubmit={handleRegister}>
                 <input
                     type="text"
-                    placeholder="Username"
+                    placeholder={t('register.username_placeholder')}
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required
                 />
                 <input
                     type="password"
-                    placeholder="Password"
+                    placeholder={t('register.password_placeholder')}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                <button type="submit">Register</button>
+                <button type="submit">{t('register.register_button')}</button>
             </form>
             <p>{message}</p>
         </div>

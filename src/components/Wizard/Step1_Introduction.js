@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import { getProjectById, updateProject, createProject } from '../../services/ProjectService';
 import { ProjectContext } from '../../context/ProjectContext';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; // Import translation hook
 import './Step1_Introduction.css';
 
 const Step1Introduction = () => {
+    const { t } = useTranslation('wizard'); // Use the 'wizard' namespace for translations
     const { selectedProject, setSelectedProject } = useContext(ProjectContext);
     const location = useLocation();
     const { project, isNewProject } = location.state || {};
@@ -25,13 +27,13 @@ const Step1Introduction = () => {
                     setIsProjectCreated(true); // Mark project as created
                 } catch (error) {
                     console.error('Error creating new project:', error);
-                    setError('Error creating new project');
+                    setError(t('step1.error_message')); // Use translated error message
                 }
             };
 
             createNewProject();
         }
-    }, [name, isNewProject, isProjectCreated, setSelectedProject]);
+    }, [name, isNewProject, isProjectCreated, setSelectedProject, t]);
 
     useEffect(() => {
         const saveProjectData = async () => {
@@ -48,19 +50,19 @@ const Step1Introduction = () => {
                 }
             } catch (error) {
                 console.error('Error saving project data:', error);
-                setError('Error saving project data');
+                setError(t('step1.error_message')); // Use translated error message
             }
         };
 
         saveProjectData();
-    }, [name, selectedProject, isNewProject, newProjectId]);
+    }, [name, selectedProject, isNewProject, newProjectId, t]);
 
     return (
         <div className="step1-intro-wrapper">
             <div className="step1-intro-container">
-                <h2>Introduction</h2>
+                <h2>{t('step1.title')}</h2>
                 <div className="step1-form-group">
-                    <label htmlFor="projectName">Project Name:</label>
+                    <label htmlFor="projectName">{t('step1.project_name_label')}</label>
                     <input
                         id="projectName"
                         type="text"

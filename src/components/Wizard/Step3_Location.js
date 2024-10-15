@@ -5,9 +5,11 @@ import LocationService from '../../services/LocationService';
 import { processLocationData, loadSiteData } from '../../services/ProjectService';
 import './Step3_Location.css';
 import { Bar, BarChart, CartesianGrid, LabelList, Tooltip, XAxis, YAxis } from 'recharts';
+import { useTranslation } from 'react-i18next'; // Import translation hook
 
 const Step3_Location = () => {
     const { selectedProject } = useContext(ProjectContext);
+    const { t } = useTranslation('wizard'); // Use translation hook for 'wizard' namespace
 
     const [location, setLocation] = useState({ latitude: 49.744, longitude: 15.339 });
     const [angle, setAngle] = useState(35);
@@ -53,7 +55,7 @@ const Step3_Location = () => {
 
     const handleProcessLocationData = useCallback(async () => {
         if (!selectedProject) {
-            alert('Please select a project');
+            alert(t('step3.select_project_alert')); // Translated alert message
             return;
         }
 
@@ -86,12 +88,12 @@ const Step3_Location = () => {
             setTemperatures({ min: 'Error', max: 'Error' });
             setDataFetched(false);
         }
-    }, [selectedProject, location.latitude, location.longitude, angle, aspect, useOptimal]);
+    }, [selectedProject, location.latitude, location.longitude, angle, aspect, useOptimal, t]);
 
     const searchLocation = async () => {
         const locationQuery = document.getElementById('locationSearch').value;
         if (!locationQuery.trim()) {
-            alert("Please enter a location");
+            alert(t('step3.empty_query_alert')); // Translated alert message
             return;
         }
 
@@ -102,16 +104,16 @@ const Step3_Location = () => {
                 const formattedLat = parseFloat(lat).toFixed(3);
                 const formattedLon = parseFloat(lon).toFixed(3);
 
-                // Nastavení nových souřadnic
+                // Set new coordinates
                 setLocation({ latitude: formattedLat, longitude: formattedLon });
                 setHasUserInteracted(true); // Flag for calling handleProcessLocationData
 
             } else {
-                alert("Location not found");
+                alert(t('step3.location_not_found')); // Translated alert message
             }
         } catch (error) {
             console.error('Error searching location:', error);
-            alert("Error fetching location data");
+            alert(t('step3.fetch_error_alert')); // Translated alert message
         }
     };
 
@@ -176,8 +178,8 @@ const Step3_Location = () => {
                 <div className="left-column">
                     <div className="search-block">
                         <div className="search-bar">
-                            <input type="text" id="locationSearch" className="form-control" placeholder="Enter location" />
-                            <button className="search-button" onClick={searchLocation}>Search</button>
+                            <input type="text" id="locationSearch" className="form-control" placeholder={t('step3.location_placeholder')} />
+                            <button className="search-button" onClick={searchLocation}>{t('step3.search_button')}</button>
                         </div>
                     </div>
                     <div className="map-wrapper">
@@ -197,7 +199,7 @@ const Step3_Location = () => {
                 </div>
                 <div className="controls">
                     <div className="form-group">
-                        <label htmlFor="latitude">Latitude:</label>
+                        <label htmlFor="latitude">{t('step3.latitude_label')}</label>
                         <input
                             type="text"
                             id="latitude"
@@ -208,7 +210,7 @@ const Step3_Location = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="longitude">Longitude:</label>
+                        <label htmlFor="longitude">{t('step3.longitude_label')}</label>
                         <input
                             type="text"
                             id="longitude"
@@ -219,7 +221,7 @@ const Step3_Location = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="angle">Angle:</label>
+                        <label htmlFor="angle">{t('step3.angle_label')}</label>
                         <input
                             type="text"
                             id="angle"
@@ -230,7 +232,7 @@ const Step3_Location = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="aspect">Aspect:</label>
+                        <label htmlFor="aspect">{t('step3.aspect_label')}</label>
                         <input
                             type="text"
                             id="aspect"
@@ -241,7 +243,7 @@ const Step3_Location = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="useOptimal">Use Optimal Values:</label>
+                        <label htmlFor="useOptimal">{t('step3.use_optimal_label')}</label>
                         <input
                             type="checkbox"
                             id="useOptimal"
@@ -250,19 +252,19 @@ const Step3_Location = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <h3>Temperature Range:</h3>
-                        <p>Min: {temperatures.min} °C</p>
-                        <p>Max: {temperatures.max} °C</p>
+                        <h3>{t('step3.temperature_range_label')}</h3>
+                        <p>{t('step3.min_temperature_label')}: {temperatures.min} °C</p>
+                        <p>{t('step3.max_temperature_label')}: {temperatures.max} °C</p>
                     </div>
                 </div>
             </div>
             <div className="chart-flex-container">
                 <div className="chart-container">
-                    <h3>Monthly Irradiance</h3>
+                    <h3>{t('step3.monthly_irradiance_label')}</h3>
                     <BarChart width={600} height={300} data={chartData}>
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
-                        <YAxis label={{ value: 'Irradiance (kWh/m²)', angle: -90, position: 'insideLeft' }} />
+                        <XAxis dataKey="month" label={{ value: t('step3.month_label'), position: 'insideBottom', offset: -5 }} />
+                        <YAxis label={{ value: t('step3.irradiance_label'), angle: -90, position: 'insideLeft' }} />
                         <Tooltip />
                         <Bar dataKey="irradiance" fill="#8884d8">
                             <LabelList dataKey="irradiance" position="top" />
@@ -270,11 +272,11 @@ const Step3_Location = () => {
                     </BarChart>
                 </div>
                 <div className="chart-container">
-                    <h3>Monthly Avg Ambient Temperature</h3>
+                    <h3>{t('step3.avg_ambient_temp_label')}</h3>
                     <BarChart width={600} height={300} data={chartData}>
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
-                        <YAxis label={{ value: 'Temperature (°C)', angle: -90, position: 'insideLeft' }} />
+                        <XAxis dataKey="month" label={{ value: t('step3.month_label'), position: 'insideBottom', offset: -5 }} />
+                        <YAxis label={{ value: t('step3.temperature_label'), angle: -90, position: 'insideLeft' }} />
                         <Tooltip />
                         <Bar dataKey="ambientTemperature" fill="#8884d8">
                             <LabelList dataKey="ambientTemperature" position="top" />

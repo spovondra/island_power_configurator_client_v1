@@ -1,20 +1,22 @@
 import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
 import { addOrUpdateAppliance, deleteAppliance, getProjectById } from '../../services/ProjectService';
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts'; // Import Recharts components
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useTranslation } from 'react-i18next'; // Import translation hook
 import './Step2_Appliance.css';
 
 const Step2_Appliance = () => {
+    const { t } = useTranslation('wizard'); // Use the 'wizard' namespace for translations
     const { selectedProject } = useContext(ProjectContext);
 
     const [appliance, setAppliance] = useState({
-        id: '', // ID for editing appliances
+        id: '',
         name: '',
-        type: 'AC', // Default type; can be AC or DC
+        type: 'AC',
         quantity: 0,
         power: 0,
         hours: 0,
-        days: 7, // Default to 7 days per week
+        days: 7,
         peakPower: 0,
         energy: 0,
         cost: 0
@@ -30,19 +32,19 @@ const Step2_Appliance = () => {
                     const project = await getProjectById(selectedProject);
                     setAppliances(project.appliances || []);
                 } catch (error) {
-                    console.error('Error fetching project:', error);
+                    console.error(t('step2.error_message'), error);
                 }
             }
         };
 
         fetchAppliances();
-    }, [selectedProject]);
+    }, [selectedProject, t]);
 
     const handleSave = useCallback(async (e) => {
         e.preventDefault();
         try {
             if (!selectedProject) {
-                alert("Please select a project");
+                alert(t('step2.error_message'));
                 return;
             }
             await addOrUpdateAppliance(selectedProject, appliance);
@@ -61,12 +63,12 @@ const Step2_Appliance = () => {
                 cost: 0
             });
             setEditMode(false);
-            alert('Appliance saved successfully');
+            alert(t('step2.save_button'));
         } catch (error) {
-            console.error('Error saving appliance:', error);
-            alert('Error saving appliance');
+            console.error(t('step2.error_message'), error);
+            alert(t('step2.error_message'));
         }
-    }, [selectedProject, appliance]);
+    }, [selectedProject, appliance, t]);
 
     const handleEdit = (appl) => {
         setAppliance(appl);
@@ -75,25 +77,24 @@ const Step2_Appliance = () => {
 
     const handleDelete = async (applianceId) => {
         if (!applianceId) {
-            alert("Appliance ID is required for deletion");
+            alert(t('step2.error_message'));
             return;
         }
 
         try {
             if (!selectedProject) {
-                alert("Please select a project");
+                alert(t('step2.error_message'));
                 return;
             }
             await deleteAppliance(selectedProject, applianceId);
             setAppliances(appliances.filter(appl => appl.id !== applianceId));
-            alert('Appliance deleted successfully');
+            alert(t('step2.delete_button'));
         } catch (error) {
-            console.error('Error deleting appliance:', error);
-            alert('Error deleting appliance');
+            console.error(t('step2.error_message'), error);
+            alert(t('step2.error_message'));
         }
     };
 
-    // Prepare data for the chart
     const chartData = appliances.reduce((acc, appliance) => {
         const typeIndex = acc.findIndex(item => item.type === appliance.type);
         if (typeIndex > -1) {
@@ -107,7 +108,6 @@ const Step2_Appliance = () => {
         return acc;
     }, []);
 
-    // Colors for the pie chart segments
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
     return (
@@ -115,7 +115,7 @@ const Step2_Appliance = () => {
             <div className="form-section">
                 <form onSubmit={handleSave} className="appliance-form">
                     <div className="input-group">
-                        <label htmlFor="name">Name:</label>
+                        <label htmlFor="name">{t('step2.name_label')}:</label>
                         <input
                             type="text"
                             id="name"
@@ -125,7 +125,7 @@ const Step2_Appliance = () => {
                         />
                     </div>
                     <div className="input-group">
-                        <label htmlFor="type">Type:</label>
+                        <label htmlFor="type">{t('step2.type_label')}:</label>
                         <select
                             id="type"
                             value={appliance.type}
@@ -137,7 +137,7 @@ const Step2_Appliance = () => {
                         </select>
                     </div>
                     <div className="input-group">
-                        <label htmlFor="power">Power (W):</label>
+                        <label htmlFor="power">{t('step2.power_label')}:</label>
                         <input
                             type="number"
                             id="power"
@@ -147,7 +147,7 @@ const Step2_Appliance = () => {
                         />
                     </div>
                     <div className="input-group">
-                        <label htmlFor="quantity">Quantity:</label>
+                        <label htmlFor="quantity">{t('step2.quantity_label')}:</label>
                         <input
                             type="number"
                             id="quantity"
@@ -157,7 +157,7 @@ const Step2_Appliance = () => {
                         />
                     </div>
                     <div className="input-group">
-                        <label htmlFor="hours">Daily Usage Hours:</label>
+                        <label htmlFor="hours">{t('step2.hours_label')}:</label>
                         <input
                             type="number"
                             id="hours"
@@ -167,7 +167,7 @@ const Step2_Appliance = () => {
                         />
                     </div>
                     <div className="input-group">
-                        <label htmlFor="days">Days per Week:</label>
+                        <label htmlFor="days">{t('step2.days_label')}:</label>
                         <input
                             type="number"
                             id="days"
@@ -177,7 +177,7 @@ const Step2_Appliance = () => {
                         />
                     </div>
                     <div className="input-group">
-                        <label htmlFor="peakPower">Peak Power (W):</label>
+                        <label htmlFor="peakPower">{t('step2.peak_power_label')}:</label>
                         <input
                             type="number"
                             id="peakPower"
@@ -186,7 +186,7 @@ const Step2_Appliance = () => {
                         />
                     </div>
                     <div className="input-group">
-                        <label htmlFor="energy">Energy Consumption:</label>
+                        <label htmlFor="energy">{t('step2.energy_label')}:</label>
                         <input
                             type="number"
                             id="energy"
@@ -196,7 +196,7 @@ const Step2_Appliance = () => {
                         />
                     </div>
                     <div className="input-group">
-                        <label htmlFor="cost">Cost:</label>
+                        <label htmlFor="cost">{t('step2.cost_label')}:</label>
                         <input
                             type="number"
                             id="cost"
@@ -205,7 +205,7 @@ const Step2_Appliance = () => {
                         />
                     </div>
                     <button type="submit" className="action-button">
-                        {editMode ? 'Update Appliance' : 'Add Appliance'}
+                        {editMode ? t('step2.edit_button') : t('step2.save_button')}
                     </button>
                 </form>
             </div>
@@ -214,16 +214,16 @@ const Step2_Appliance = () => {
                 <table className="appliance-table">
                     <thead>
                     <tr>
-                        <th style={{ minWidth: '200px' }}>Name</th>
-                        <th>Type</th>
-                        <th>Power (W)</th>
-                        <th>Quantity</th>
-                        <th>Daily Usage (hours)</th>
-                        <th>Days (per week)</th>
-                        <th>Peak Power (W)</th>
-                        <th>Energy (kWh)</th>
-                        <th>Cost</th>
-                        <th>Actions</th>
+                        <th style={{ minWidth: '200px' }}>{t('step2.name_label')}</th>
+                        <th>{t('step2.type_label')}</th>
+                        <th>{t('step2.power_label')}</th>
+                        <th>{t('step2.quantity_label')}</th>
+                        <th>{t('step2.hours_label')}</th>
+                        <th>{t('step2.days_label')}</th>
+                        <th>{t('step2.peak_power_label')}</th>
+                        <th>{t('step2.energy_label')}</th>
+                        <th>{t('step2.cost_label')}</th>
+                        <th>{t('step2.actions')}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -243,13 +243,13 @@ const Step2_Appliance = () => {
                                     className="edit-button"
                                     onClick={() => handleEdit(appl)}
                                 >
-                                    Edit
+                                    {t('step2.edit_button')}
                                 </button>
                                 <button
                                     className="delete-button"
                                     onClick={() => handleDelete(appl.id)}
                                 >
-                                    Delete
+                                    {t('step2.delete_button')}
                                 </button>
                             </td>
                         </tr>
@@ -258,9 +258,8 @@ const Step2_Appliance = () => {
                 </table>
             </div>
 
-            {/* Chart Section */}
             <div className="chart-section">
-                <h2>Energy Consumption Chart</h2>
+                <h2>{t('step2.energy_chart_title')}</h2>
                 <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
                         <Pie

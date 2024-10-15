@@ -1,9 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
 import { getBatteries, selectBattery, getProjectBattery } from '../../services/ProjectService';
+import { useTranslation } from 'react-i18next'; // Import translation hook
 import "./Step5_Batteries.css";
 
 const Step5_Batteries = () => {
+    const { t } = useTranslation('wizard'); // Use translation for the wizard namespace
     const { selectedProject } = useContext(ProjectContext);
     const [batteryType, setBatteryType] = useState('Li-ion'); // Default battery type
     const [temperature, setTemperature] = useState(25); // Default temperature
@@ -84,10 +86,10 @@ const Step5_Batteries = () => {
 
     return (
         <div>
-            <h2>Battery Configurator</h2>
+            <h2>{t('step5.battery_configurator')}</h2> {/* Translated title */}
 
             <div>
-                <label>Battery Type</label>
+                <label>{t('step5.battery_type')}</label>
                 <select value={batteryType} onChange={(e) => setBatteryType(e.target.value)}>
                     <option value="Li-ion">Li-ion</option>
                     <option value="LiFePO4">LiFePO4</option>
@@ -96,22 +98,22 @@ const Step5_Batteries = () => {
             </div>
 
             <div>
-                <label>Select Temperature</label>
+                <label>{t('step5.select_temperature')}</label>
                 <select value={temperature} onChange={(e) => setTemperature(parseInt(e.target.value))}>
+                    <option value={-30}>-30°C</option>
+                    <option value={-20}>-20°C</option>
+                    <option value={-10}>-10°C</option>
                     <option value={0}>0°C</option>
                     <option value={10}>10°C</option>
                     <option value={20}>20°C</option>
                     <option value={25}>25°C</option>
                     <option value={30}>30°C</option>
                     <option value={40}>40°C</option>
-                    <option value={-30}>-30°C</option>
-                    <option value={-20}>-20°C</option>
-                    <option value={-10}>-10°C</option>
                 </select>
             </div>
 
             <div>
-                <label>Autonomy Days</label>
+                <label>{t('step5.autonomy_days')}</label>
                 <input
                     type="number"
                     value={autonomyDays}
@@ -121,9 +123,9 @@ const Step5_Batteries = () => {
             </div>
 
             <div>
-                <h3>Select Battery</h3>
+                <h3>{t('step5.select_battery')}</h3>
                 {batteries.length === 0 ? (
-                    <p>No suitable batteries available</p>
+                    <p>{t('step5.no_batteries_available')}</p>
                 ) : (
                     batteries.map((battery) => (
                         <div key={battery.id}>
@@ -143,13 +145,13 @@ const Step5_Batteries = () => {
 
             {config && (
                 <div>
-                    <h3>Calculated Configuration</h3>
-                    <p>Battery Capacity DOD: {config.batteryCapacityDod} Ah</p>
-                    <p>Parallel Batteries: {config.parallelBatteries}</p>
-                    <p>Series Batteries: {config.seriesBatteries}</p>
-                    <p>Required Capacity: {config.requiredBatteryCapacity} Ah</p>
-                    <p>Total battery available capacity: {config.totalAvailableCapacity} Ah</p>
-                    <p>Operational Days: {config.operationalDays} days</p>
+                    <h3>{t('step5.calculated_configuration')}</h3>
+                    <p>{t('step5.battery_capacity_dod')}: {config.batteryCapacityDod} Ah</p>
+                    <p>{t('step5.parallel_batteries')}: {config.parallelBatteries}</p>
+                    <p>{t('step5.series_batteries')}: {config.seriesBatteries}</p>
+                    <p>{t('step5.required_capacity')}: {config.requiredBatteryCapacity} Ah</p>
+                    <p>{t('step5.total_available_capacity')}: {config.totalAvailableCapacity} Ah</p>
+                    <p>{t('step5.operational_days')}: {config.operationalDays} days</p>
                 </div>
             )}
         </div>

@@ -13,9 +13,11 @@ import {
     Pie,
     Cell,
 } from 'recharts';
+import { useTranslation } from 'react-i18next'; // Import translation hook
 import './FinalStep.css';
 
 const FinalStep = () => {
+    const { t } = useTranslation('wizard'); // Use translation for the wizard namespace
     const { selectedProject } = useContext(ProjectContext);
     const [project, setProject] = useState(null);
     const [pvgisData, setPVGISData] = useState([]);
@@ -32,16 +34,16 @@ const FinalStep = () => {
                         setPVGISData(data.site.monthlyDataList);
                     }
                 } catch (err) {
-                    setError('Failed to fetch project details.');
+                    setError(t('final_step.fetch_error')); // Use translation for error message
                 } finally {
                     setLoading(false);
                 }
             }
         };
         fetchProject();
-    }, [selectedProject]);
+    }, [selectedProject, t]);
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <p>{t('final_step.loading')}</p>; // Use translation for loading text
     if (error) return <p>{error}</p>;
 
     const site = project?.site || {};
@@ -50,11 +52,11 @@ const FinalStep = () => {
 
     const totalEnergyData = [
         {
-            name: 'Total AC Energy',
+            name: t('final_step.total_ac_energy'), // Use translation for total AC energy
             value: configuration?.projectAppliance?.totalAcEnergy || 0,
         },
         {
-            name: 'Total DC Energy',
+            name: t('final_step.total_dc_energy'), // Use translation for total DC energy
             value: configuration?.projectAppliance?.totalDcEnergy || 0,
         },
     ];
@@ -67,36 +69,36 @@ const FinalStep = () => {
 
     return (
         <div className="final-step-container">
-            <h2>Final System Overview</h2>
+            <h2>{t('final_step.final_system_overview')}</h2>
 
             {/* Project Information */}
             <div className="final-step-section">
-                <h3>Project Information</h3>
+                <h3>{t('final_step.project_information')}</h3>
                 <ul>
-                    <li><strong>Project ID:</strong> {project?.id || 'N/A'}</li>
-                    <li><strong>Project Name:</strong> {project?.name || 'N/A'}</li>
-                    <li><strong>User ID:</strong> {project?.userId || 'N/A'}</li>
+                    <li><strong>{t('final_step.project_id')}:</strong> {project?.id || 'N/A'}</li>
+                    <li><strong>{t('final_step.project_name')}:</strong> {project?.name || 'N/A'}</li>
+                    <li><strong>{t('final_step.user_id')}:</strong> {project?.userId || 'N/A'}</li>
                 </ul>
             </div>
 
             {/* Site Information */}
             <div className="final-step-section">
-                <h3>Site Details</h3>
+                <h3>{t('final_step.site_details')}</h3>
                 <ul>
-                    <li><strong>Latitude:</strong> {site.latitude || 'N/A'}</li>
-                    <li><strong>Longitude:</strong> {site.longitude || 'N/A'}</li>
-                    <li><strong>Min Temperature:</strong> {site.minTemperature || 'N/A'} °C</li>
-                    <li><strong>Max Temperature:</strong> {site.maxTemperature || 'N/A'} °C</li>
-                    <li><strong>Panel Angle:</strong> {site.panelAngle || 'N/A'}°</li>
-                    <li><strong>Panel Aspect:</strong> {site.panelAspect || 'N/A'}</li>
-                    <li><strong>Used Optimal Values:</strong> {site.usedOptimalValues ? 'Yes' : 'No'}</li>
+                    <li><strong>{t('final_step.latitude')}:</strong> {site.latitude || 'N/A'}</li>
+                    <li><strong>{t('final_step.longitude')}:</strong> {site.longitude || 'N/A'}</li>
+                    <li><strong>{t('final_step.min_temperature')}:</strong> {site.minTemperature || 'N/A'} °C</li>
+                    <li><strong>{t('final_step.max_temperature')}:</strong> {site.maxTemperature || 'N/A'} °C</li>
+                    <li><strong>{t('final_step.panel_angle')}:</strong> {site.panelAngle || 'N/A'}°</li>
+                    <li><strong>{t('final_step.panel_aspect')}:</strong> {site.panelAspect || 'N/A'}</li>
+                    <li><strong>{t('final_step.used_optimal_values')}:</strong> {site.usedOptimalValues ? t('final_step.yes') : t('final_step.no')}</li>
                 </ul>
             </div>
 
             {/* Monthly Irradiance & Ambient Temperature Charts */}
             <div className="chart-flex-container">
                 <div className="chart-container">
-                    <h3>Monthly Irradiance</h3>
+                    <h3>{t('final_step.monthly_irradiance')}</h3>
                     <BarChart width={400} height={250} data={chartData}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
@@ -108,7 +110,7 @@ const FinalStep = () => {
                     </BarChart>
                 </div>
                 <div className="chart-container">
-                    <h3>Monthly Avg Ambient Temperature</h3>
+                    <h3>{t('final_step.monthly_avg_temperature')}</h3>
                     <BarChart width={400} height={250} data={chartData}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
@@ -123,20 +125,20 @@ const FinalStep = () => {
 
             {/* Appliances Information */}
             <div className="final-step-section">
-                <h3>Appliances</h3>
+                <h3>{t('final_step.appliances')}</h3>
                 <ul className="final-step-list">
                     {appliances.map(appliance => (
                         <li key={appliance.id}>
                             <strong>{appliance.name}</strong>:
                             <ul>
-                                <li>Type: {appliance.type}</li>
-                                <li>Quantity: {appliance.quantity}</li>
-                                <li>Power: {appliance.power} W</li>
-                                <li>Hours per Day: {appliance.hours}</li>
-                                <li>Days per Week: {appliance.days}</li>
-                                <li>Peak Power: {appliance.peakPower} W</li>
-                                <li>Energy: {appliance.energy} Wh</li>
-                                <li>Cost: {appliance.cost} CZK</li>
+                                <li>{t('final_step.type')}: {appliance.type}</li>
+                                <li>{t('final_step.quantity')}: {appliance.quantity}</li>
+                                <li>{t('final_step.power')}: {appliance.power} W</li>
+                                <li>{t('final_step.hours_per_day')}: {appliance.hours}</li>
+                                <li>{t('final_step.days_per_week')}: {appliance.days}</li>
+                                <li>{t('final_step.peak_power')}: {appliance.peakPower} W</li>
+                                <li>{t('final_step.energy')}: {appliance.energy} Wh</li>
+                                <li>{t('final_step.cost')}: {appliance.cost} CZK</li>
                             </ul>
                         </li>
                     ))}
@@ -145,7 +147,7 @@ const FinalStep = () => {
 
             {/* Total Energy Consumption Pie Chart */}
             <div className="final-step-section graph-container">
-                <h3>Total Energy Consumption</h3>
+                <h3>{t('final_step.total_energy_consumption')}</h3>
                 <PieChart width={400} height={400}>
                     <Pie
                         data={totalEnergyData}
@@ -167,45 +169,45 @@ const FinalStep = () => {
 
             {/* Configuration Model */}
             <div className="final-step-section">
-                <h3>Configuration Model</h3>
+                <h3>{t('final_step.configuration_model')}</h3>
                 <ul>
-                    <li><strong>Total AC Energy:</strong> {configuration?.projectAppliance?.totalAcEnergy || 'N/A'} Wh</li>
-                    <li><strong>Total DC Energy:</strong> {configuration?.projectAppliance?.totalDcEnergy || 'N/A'} Wh</li>
-                    <li><strong>System Voltage:</strong> {configuration.systemVoltage || 'N/A'} V</li>
-                    <li><strong>Recommended System Voltage:</strong> {configuration.recommendedSystemVoltage || 'N/A'} V</li>
-                    <li><strong>Total AC Peak Power:</strong> {configuration?.projectAppliance?.totalAcPeakPower || 'N/A'} W</li>
-                    <li><strong>Total DC Peak Power:</strong> {configuration?.projectAppliance?.totalDcPeakPower || 'N/A'} W</li>
-                    <li><strong>Inverter ID:</strong> {configuration?.projectInverter?.inverterId || 'N/A'}</li>
-                    <li><strong>Inverter Temperature:</strong> {configuration?.projectInverter?.inverterTemperature || 'N/A'} °C</li>
-                    <li><strong>Total Adjusted AC Energy:</strong> {configuration?.projectInverter?.totalAdjustedAcEnergy || 'N/A'} Wh</li>
-                    <li><strong>Total Daily Energy:</strong> {configuration?.projectInverter?.totalDailyEnergy || 'N/A'} Wh</li>
+                    <li><strong>{t('final_step.total_ac_energy')}:</strong> {configuration?.projectAppliance?.totalAcEnergy || 'N/A'} Wh</li>
+                    <li><strong>{t('final_step.total_dc_energy')}:</strong> {configuration?.projectAppliance?.totalDcEnergy || 'N/A'} Wh</li>
+                    <li><strong>{t('final_step.system_voltage')}:</strong> {configuration.systemVoltage || 'N/A'} V</li>
+                    <li><strong>{t('final_step.recommended_system_voltage')}:</strong> {configuration.recommendedSystemVoltage || 'N/A'} V</li>
+                    <li><strong>{t('final_step.total_ac_peak_power')}:</strong> {configuration?.projectAppliance?.totalAcPeakPower || 'N/A'} W</li>
+                    <li><strong>{t('final_step.total_dc_peak_power')}:</strong> {configuration?.projectAppliance?.totalDcPeakPower || 'N/A'} W</li>
+                    <li><strong>{t('final_step.inverter_id')}:</strong> {configuration?.projectInverter?.inverterId || 'N/A'}</li>
+                    <li><strong>{t('final_step.inverter_temperature')}:</strong> {configuration?.projectInverter?.inverterTemperature || 'N/A'} °C</li>
+                    <li><strong>{t('final_step.total_adjusted_ac_energy')}:</strong> {configuration?.projectInverter?.totalAdjustedAcEnergy || 'N/A'} Wh</li>
+                    <li><strong>{t('final_step.total_daily_energy')}:</strong> {configuration?.projectInverter?.totalDailyEnergy || 'N/A'} Wh</li>
                 </ul>
             </div>
 
             {/* Solar Panel Configuration */}
             <div className="final-step-section">
-                <h3>Solar Panel Configuration</h3>
+                <h3>{t('final_step.solar_panel_configuration')}</h3>
                 <ul>
-                    <li><strong>Solar Panel ID:</strong> {configuration?.projectSolarPanel?.solarPanelId || 'N/A'}</li>
-                    <li><strong>Number of Panels:</strong> {configuration?.projectSolarPanel?.numberOfPanels || 'N/A'}</li>
-                    <li><strong>Total Power Generated:</strong> {configuration?.projectSolarPanel?.totalPowerGenerated || 'N/A'} W</li>
-                    <li><strong>Efficiency Loss:</strong> {configuration?.projectSolarPanel?.efficiencyLoss || 'N/A'}</li>
-                    <li><strong>Estimated Daily Energy Production:</strong> {configuration?.projectSolarPanel?.estimatedDailyEnergyProduction || 'N/A'} Wh</li>
-                    <li><strong>Installation Type:</strong> {configuration?.projectSolarPanel?.installationType || 'N/A'}</li>
+                    <li><strong>{t('final_step.solar_panel_id')}:</strong> {configuration?.projectSolarPanel?.solarPanelId || 'N/A'}</li>
+                    <li><strong>{t('final_step.number_of_panels')}:</strong> {configuration?.projectSolarPanel?.numberOfPanels || 'N/A'}</li>
+                    <li><strong>{t('final_step.total_power_generated')}:</strong> {configuration?.projectSolarPanel?.totalPowerGenerated || 'N/A'} W</li>
+                    <li><strong>{t('final_step.efficiency_loss')}:</strong> {configuration?.projectSolarPanel?.efficiencyLoss || 'N/A'}</li>
+                    <li><strong>{t('final_step.estimated_daily_energy_production')}:</strong> {configuration?.projectSolarPanel?.estimatedDailyEnergyProduction || 'N/A'} Wh</li>
+                    <li><strong>{t('final_step.installation_type')}:</strong> {configuration?.projectSolarPanel?.installationType || 'N/A'}</li>
                 </ul>
             </div>
 
             {/* Battery Configuration */}
             <div className="final-step-section">
-                <h3>Battery Configuration</h3>
+                <h3>{t('final_step.battery_configuration')}</h3>
                 <ul>
-                    <li><strong>Battery ID:</strong> {configuration?.projectBattery?.batteryId || 'N/A'}</li>
-                    <li><strong>Battery Type:</strong> {configuration?.projectBattery?.type || 'N/A'}</li>
-                    <li><strong>Temperature:</strong> {configuration?.projectBattery?.temperature || 'N/A'} °C</li>
-                    <li><strong>Battery Capacity (DOD):</strong> {configuration?.projectBattery?.batteryCapacityDod || 'N/A'} Wh</li>
-                    <li><strong>Parallel Batteries:</strong> {configuration?.projectBattery?.parallelBatteries || 'N/A'}</li>
-                    <li><strong>Series Batteries:</strong> {configuration?.projectBattery?.seriesBatteries || 'N/A'}</li>
-                    <li><strong>Total Available Capacity:</strong> {configuration?.projectBattery?.totalAvailableCapacity || 'N/A'} Wh</li>
+                    <li><strong>{t('final_step.battery_id')}:</strong> {configuration?.projectBattery?.batteryId || 'N/A'}</li>
+                    <li><strong>{t('final_step.battery_type')}:</strong> {configuration?.projectBattery?.type || 'N/A'}</li>
+                    <li><strong>{t('final_step.temperature')}:</strong> {configuration?.projectBattery?.temperature || 'N/A'} °C</li>
+                    <li><strong>{t('final_step.battery_capacity')}:</strong> {configuration?.projectBattery?.batteryCapacityDod || 'N/A'} Wh</li>
+                    <li><strong>{t('final_step.parallel_batteries')}:</strong> {configuration?.projectBattery?.parallelBatteries || 'N/A'}</li>
+                    <li><strong>{t('final_step.series_batteries')}:</strong> {configuration?.projectBattery?.seriesBatteries || 'N/A'}</li>
+                    <li><strong>{t('final_step.total_available_capacity')}:</strong> {configuration?.projectBattery?.totalAvailableCapacity || 'N/A'} Wh</li>
                 </ul>
             </div>
         </div>

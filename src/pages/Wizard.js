@@ -11,25 +11,27 @@ import Step4TestCalc from "../components/Wizard/Step4_Inverter";
 import Step6_SolarPanels from "../components/Wizard/Step6_SolarPanels";
 import Step5_Batteries from "../components/Wizard/Step5_Batteries";
 import Step7_Controller from "../components/Wizard/Step7_Controller";
-
-const steps = [
-    { key: 'step1', label: 'Introduction', component: Step1Introduction },
-    { key: 'step2', label: 'Appliance', component: Step2Appliance },
-    { key: 'step3', label: 'Location', component: Step3Location },
-    { key: 'step4', label: 'Inverter', component: Step4TestCalc },
-    { key: 'step5', label: 'Batteries', component: Step5_Batteries },
-    { key: 'step6', label: 'Solar Panels', component: Step6_SolarPanels },
-    { key: 'step7', label: 'Controller', component: Step7_Controller},
-    { key: 'finalStep', label: 'Final Step', component: FinalStep },
-];
+import { useTranslation } from 'react-i18next';  // Import useTranslation
 
 const Wizard = () => {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const [projectName, setProjectName] = useState('');
-    const { selectedProject} = useContext(ProjectContext);
+    const { selectedProject } = useContext(ProjectContext);
     const navigate = useNavigate();
     const location = useLocation();
     const [isNewProject, setIsNewProject] = useState(false);
+    const { t } = useTranslation();  // Initialize translation hook
+
+    const steps = [
+        { key: 'step1', label: t('wizard.introduction'), component: Step1Introduction },
+        { key: 'step2', label: t('wizard.appliance'), component: Step2Appliance },
+        { key: 'step3', label: t('wizard.location'), component: Step3Location },
+        { key: 'step4', label: t('wizard.inverter'), component: Step4TestCalc },
+        { key: 'step5', label: t('wizard.batteries'), component: Step5_Batteries },
+        { key: 'step6', label: t('wizard.solar_panels'), component: Step6_SolarPanels },
+        { key: 'step7', label: t('wizard.controller'), component: Step7_Controller },
+        { key: 'finalStep', label: t('wizard.final_step'), component: FinalStep },
+    ];
 
     useEffect(() => {
         if (location.state && location.state.isNewProject) {
@@ -86,13 +88,14 @@ const Wizard = () => {
                 </div>
             </div>
             <div className="wizard-content">
-                <CurrentStepComponent
-                />
+                <CurrentStepComponent />
             </div>
             <div className="wizard-buttons">
-                <button className="previous" onClick={handleBack} disabled={currentStepIndex === 0}>Back</button>
+                <button className="previous" onClick={handleBack} disabled={currentStepIndex === 0}>
+                    {t('wizard.back')}
+                </button>
                 <button className="next" onClick={handleNext}>
-                    {currentStepIndex === steps.length - 1 ? 'Finish' : 'Next'}
+                    {currentStepIndex === steps.length - 1 ? t('wizard.finish') : t('wizard.next')}
                 </button>
             </div>
         </div>

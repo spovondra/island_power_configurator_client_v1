@@ -20,6 +20,39 @@
     color: #ddd;
 }
 
+/* Language Switcher Styling */
+.navbar-language-switcher {
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+}
+
+.navbar-language-switcher button {
+    background: none;
+    border: none;
+    color: #fff;
+    margin-left: 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0;
+}
+
+.navbar-language-switcher button.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.navbar-language-switcher span {
+    color: #fff;
+    margin: 0 3px;
+}
+
+/* Navbar User Container */
+.navbar-user-container {
+    display: flex;
+    align-items: center;
+}
+
 /* Navbar User Styling */
 .navbar-user {
     position: relative;

@@ -1,0 +1,30 @@
+{
+  "about": {
+    "title": "O nás",
+    "description": "Toto je stránka o nás."
+  },
+  "home": {
+    "welcome": "Vítejte v IslandPower Konfigurátoru",
+    "go_to_projects": "Přejít na Projekty",
+    "old_version": "Starší verze",
+    "error_page_testing": "Testování chybové stránky (chyba 404)"
+  },
+  "notFound": {
+    "title": "404 - Stránka nenalezena",
+    "message": "Stránka, kterou hledáte, neexistuje.",
+    "go_home": "Přejít na domovskou stránku"
+  },
+  "wizard": {
+    "introduction": "Úvod",
+    "appliance": "Spotřebiče",
+    "location": "Lokalita",
+    "inverter": "Měnič",
+    "batteries": "Akumulátory",
+    "solar_panels": "Solární panely",
+    "controller": "Regulátor",
+    "final_step": "Shrnutí",
+    "back": "Zpět",
+    "next": "Další",
+    "finish": "Dokončit"
+  }
+}

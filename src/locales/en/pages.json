@@ -1,0 +1,30 @@
+{
+  "about": {
+    "title": "About Us",
+    "description": "This is the about page."
+  },
+  "home": {
+    "welcome": "Welcome to the IslandPower Configurator",
+    "go_to_projects": "Go to Projects",
+    "old_version": "Old Version",
+    "error_page_testing": "ErrorPage testing (error 404)"
+  },
+  "notFound": {
+    "title": "404 - Page Not Found",
+    "message": "The page you are looking for does not exist.",
+    "go_home": "Go to Home"
+  },
+  "wizard": {
+    "introduction": "Introduction",
+    "appliance": "Appliance",
+    "location": "Location",
+    "inverter": "Inverter",
+    "batteries": "Batteries",
+    "solar_panels": "Solar Panels",
+    "controller": "Controller",
+    "final_step": "Final Step",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Finish"
+  }
+}

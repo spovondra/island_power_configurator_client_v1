@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
 import { getSuitableControllers, selectController, getProjectController } from '../../services/ProjectService';
+import { useTranslation } from 'react-i18next'; // Import translation hook
 import './Step7_Controller.css';
 
 const Step7_Controller = () => {
+    const { t } = useTranslation('wizard'); // Use translation for the wizard namespace
     const { selectedProject } = useContext(ProjectContext);
     const [selectedController, setSelectedController] = useState(null);
     const [controllers, setControllers] = useState([]);
@@ -93,10 +95,10 @@ const Step7_Controller = () => {
 
     return (
         <div className="controller-configurator">
-            <h2 className="config-title">Controller Configurator</h2>
+            <h2 className="config-title">{t('step7.controller_configurator')}</h2>
 
             <div className="regulator-type-selection">
-                <h3>Select Regulator Type</h3>
+                <h3>{t('step7.select_regulator_type')}</h3>
                 <label>
                     <input
                         type="radio"
@@ -105,7 +107,7 @@ const Step7_Controller = () => {
                         checked={regulatorType === 'PWM'}
                         onChange={() => handleRegulatorTypeChange('PWM')}
                     />
-                    PWM
+                    {t('step7.pwm')}
                 </label>
                 <label>
                     <input
@@ -115,15 +117,15 @@ const Step7_Controller = () => {
                         checked={regulatorType === 'MPPT'}
                         onChange={() => handleRegulatorTypeChange('MPPT')}
                     />
-                    MPPT
+                    {t('step7.mppt')}
                 </label>
             </div>
 
             <div className="controller-selection">
-                <h3>Select Controller</h3>
+                <h3>{t('step7.select_controller')}</h3>
                 <div className="controller-options">
                     {controllers.length === 0 ? (
-                        <p>No suitable controllers available</p>
+                        <p>{t('step7.no_suitable_controllers')}</p>
                     ) : (
                         controllers.map((controller) => (
                             <label key={controller.id} className="controller-option">
@@ -141,22 +143,21 @@ const Step7_Controller = () => {
             </div>
 
             <div className="calculated-config">
-                <h3>Selected Regulator Details</h3>
-                <p><b>Name:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.name : 'N/A'}</p>
-                <p><b>Rated Power:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.ratedPower : 'N/A'} W</p>
-                <p><b>Max Voltage:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.maxVoltage : 'N/A'} V</p>
-                <p><b>Min Voltage:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.minVoltage : 'N/A'} V</p>
-                <p><b>Current Rating:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.currentRating : 'N/A'} A</p>
+                <h3>{t('step7.selected_regulator_details')}</h3>
+                <p><b>{t('step7.name')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.name : 'N/A'}</p>
+                <p><b>{t('step7.rated_power')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.ratedPower : 'N/A'} W</p>
+                <p><b>{t('step7.max_voltage')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.maxVoltage : 'N/A'} V</p>
+                <p><b>{t('step7.min_voltage')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.minVoltage : 'N/A'} V</p>
+                <p><b>{t('step7.current_rating')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.currentRating : 'N/A'} A</p>
 
-                <h3>Results</h3>
-                {console.log("Controller Config:", controllerConfig)}
-                <p><b>Adjusted Open-Circuit Voltage (Voc adjusted) [V]:</b> {controllerConfig.adjustedOpenCircuitVoltage}</p>
-                <p><b>Adjusted Voltage at Maximum Power (Vmp adjusted) [V]:</b> {controllerConfig.adjustedVoltageAtMaxPower}</p>
-                <p><b>Maximum Number of Modules in Serial:</b> {controllerConfig.maxModulesInSerial}</p>
-                <p><b>Minimum Number of Modules in Serial:</b> {controllerConfig.minModulesInSerial}</p>
-                <p><b>Panels in Series:</b> {controllerConfig.seriesModules}</p>
-                <p><b>Panels in Parallel:</b> {controllerConfig.parallelModules}</p>
-                <p><b>Valid Configuration:</b> {controllerConfig.valid ? 'Yes' : 'No'}</p>
+                <h3>{t('step7.results')}</h3>
+                <p><b>{t('step7.adjusted_voc')}:</b> {controllerConfig.adjustedVoc}</p>
+                <p><b>{t('step7.adjusted_vmp')}:</b> {controllerConfig.adjustedVmp}</p>
+                <p><b>{t('step7.max_modules_in_series')}:</b> {controllerConfig.maxModulesInSeries}</p>
+                <p><b>{t('step7.min_modules_in_series')}:</b> {controllerConfig.minModulesInSeries}</p>
+                <p><b>{t('step7.panels_in_series')}:</b> {controllerConfig.panelsInSeries}</p>
+                <p><b>{t('step7.panels_in_parallel')}:</b> {controllerConfig.panelsInParallel}</p>
+                <p><b>{t('step7.valid_configuration')}:</b> {controllerConfig.valid ? 'Yes' : 'No'}</p>
             </div>
         </div>
     );

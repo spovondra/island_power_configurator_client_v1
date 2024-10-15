@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next'; // Import translation hook
 import { ProjectContext } from '../../context/ProjectContext';
-import { getSuitableInverters, selectInverter, getProjectInverter } from '../../services/ProjectService'; // Import the new method
+import { getSuitableInverters, selectInverter, getProjectInverter } from '../../services/ProjectService';
 import './Step4_Inverter.css';
 
 const Step4_Inverter = () => {
+    const { t } = useTranslation('wizard'); // Initialize translation function
     const { selectedProject } = useContext(ProjectContext);
     const [systemVoltage, setSystemVoltage] = useState('48'); // Default voltage
     const [temperature, setTemperature] = useState('25'); // Default temperature
@@ -23,33 +25,33 @@ const Step4_Inverter = () => {
                 setSuitableInverters(inverters);
             } catch (error) {
                 console.error('Error fetching suitable inverters:', error);
-                setError('Failed to fetch suitable inverters.');
+                setError(t('step4.error_message')); // Use translation for error message
             } finally {
                 setLoading(false);
             }
         };
 
         fetchSuitableInverters();
-    }, [selectedProject, systemVoltage, temperature]);
+    }, [selectedProject, systemVoltage, temperature, t]);
 
     useEffect(() => {
         const fetchProjectInverterDetails = async () => {
             if (!selectedProject) return;
 
             try {
-                const projectInverter = await getProjectInverter(selectedProject); // Use the new method to get inverter details
+                const projectInverter = await getProjectInverter(selectedProject);
                 setEnergyCalculations({
                     totalAdjustedAcEnergy: projectInverter.totalAdjustedAcEnergy || 0,
                     totalDailyEnergy: projectInverter.totalDailyEnergy || 0,
                 });
             } catch (error) {
                 console.error('Error fetching project inverter details:', error);
-                setError('Failed to fetch project inverter details.');
+                setError(t('step4.error_message')); // Use translation for error message
             }
         };
 
         fetchProjectInverterDetails();
-    }, [selectedProject]);
+    }, [selectedProject, t]);
 
     const handleSystemVoltageChange = (e) => {
         setSystemVoltage(e.target.value);
@@ -72,7 +74,7 @@ const Step4_Inverter = () => {
             console.log('Inverter selection updated:', result);
         } catch (error) {
             console.error('Error selecting inverter:', error);
-            setError('Failed to update inverter selection.');
+            setError(t('step4.error_message')); // Use translation for error message
         } finally {
             setLoading(false);
         }
@@ -80,11 +82,11 @@ const Step4_Inverter = () => {
 
     return (
         <div className="inverter-page-container">
-            <h2>Select Inverter Configuration</h2>
+            <h2>{t('step4.select_inverter_configuration')}</h2>
             {error && <p className="error-message">{error}</p>}
             <div className="selection-section">
                 <div className="input-group">
-                    <label htmlFor="systemVoltage">System Voltage:</label>
+                    <label htmlFor="systemVoltage">{t('step4.system_voltage_label')}</label>
                     <select
                         id="systemVoltage"
                         value={systemVoltage}
@@ -96,7 +98,7 @@ const Step4_Inverter = () => {
                     </select>
                 </div>
                 <div className="input-group">
-                    <label htmlFor="temperature">Select Temperature:</label>
+                    <label htmlFor="temperature">{t('step4.select_temperature_label')}</label>
                     <select
                         id="temperature"
                         value={temperature}
@@ -109,19 +111,19 @@ const Step4_Inverter = () => {
                 </div>
             </div>
             <div className="inverter-list-section">
-                <h3>Suitable Inverters:</h3>
+                <h3>{t('step4.suitable_inverters')}</h3>
                 {loading ? (
-                    <p>Loading...</p>
+                    <p>{t('step4.loading')}</p>
                 ) : (
                     <table className="inverter-table">
                         <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Continuous Power ({temperature}°C)</th>
-                            <th>Max Power</th>
-                            <th>Efficiency</th>
-                            <th>Voltage</th>
-                            <th>Select</th>
+                            <th>{t('step4.name')}</th>
+                            <th>{t('step4.continuous_power')} ({temperature}°C)</th>
+                            <th>{t('step4.max_power')}</th>
+                            <th>{t('step4.efficiency')}</th>
+                            <th>{t('step4.voltage')}</th>
+                            <th>{t('step4.select')}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -133,7 +135,9 @@ const Step4_Inverter = () => {
                                 <td>{inverter.efficiency}</td>
                                 <td>{inverter.voltage}</td>
                                 <td>
-                                    <button onClick={() => handleInverterSelection(inverter.id)}>Select</button>
+                                    <button onClick={() => handleInverterSelection(inverter.id)}>
+                                        {t('step4.select')}
+                                    </button>
                                 </td>
                             </tr>
                         ))}
@@ -142,9 +146,9 @@ const Step4_Inverter = () => {
                 )}
             </div>
             <div className="energy-calculations">
-                <h4>Energy Calculations:</h4>
-                <p>Adjusted AC Load: {energyCalculations.totalAdjustedAcEnergy.toFixed(2) || 'Not calculated'}</p>
-                <p>Total Daily Energy: {energyCalculations.totalDailyEnergy.toFixed(2) || 'Not calculated'}</p>
+                <h4>{t('step4.energy_calculations')}</h4>
+                <p>{t('step4.adjusted_ac_load')}: {energyCalculations.totalAdjustedAcEnergy.toFixed(2) || t('step4.not_calculated')}</p>
+                <p>{t('step4.total_daily_energy')}: {energyCalculations.totalDailyEnergy.toFixed(2) || t('step4.not_calculated')}</p>
             </div>
         </div>
     );

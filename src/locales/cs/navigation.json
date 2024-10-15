@@ -1,0 +1,11 @@
+{
+  "navbar": {
+    "home": "Domů",
+    "projects": "Projekty",
+    "settings": "Nastavení",
+    "userList": "Seznam uživatelů",
+    "projectManagement": "Správa projektů",
+    "componentManagement": "Správa komponent",
+    "logout": "Odhlásit se"
+  }
+}

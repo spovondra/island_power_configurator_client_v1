@@ -2,9 +2,11 @@ import React, { useEffect, useState, useContext } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
 import { getSolarPanels, selectSolarPanel, getProjectSolarPanel } from '../../services/ProjectService';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LineChart, Line, Legend } from 'recharts';
+import { useTranslation } from 'react-i18next'; // Import translation hook
 import './Step6_SolarPanels.css';
 
 const Step6_SolarPanels = () => {
+    const { t } = useTranslation('wizard'); // Use translation for the wizard namespace
     const { selectedProject } = useContext(ProjectContext);
     const [selectedPanel, setSelectedPanel] = useState(null);
     const [solarPanels, setSolarPanels] = useState([]);
@@ -149,13 +151,13 @@ const Step6_SolarPanels = () => {
 
     return (
         <div className="solar-panel-configurator">
-            <h2 className="config-title">Solar Panel Configurator</h2>
+            <h2 className="config-title">{t('step6.solar_panel_configurator')}</h2>
 
             <div className="solar-panel-selection">
-                <h3>Select Solar Panel</h3>
+                <h3>{t('step6.select_solar_panel')}</h3>
                 <div className="solar-panel-options">
                     {solarPanels.length === 0 ? (
-                        <p>No suitable solar panels available</p>
+                        <p>{t('step6.no_solar_panels_available')}</p>
                     ) : (
                         solarPanels.map((panel) => (
                             <label key={panel.id} className="panel-option">
@@ -173,7 +175,7 @@ const Step6_SolarPanels = () => {
             </div>
 
             <div className="month-selection">
-                <h3>Select Months</h3>
+                <h3>{t('step6.select_months')}</h3>
                 <div className="month-checkboxes">
                     {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
                         <label key={month} className="month-checkbox">
@@ -189,19 +191,19 @@ const Step6_SolarPanels = () => {
             </div>
 
             <div className="installation-type">
-                <h3>Installation Type</h3>
+                <h3>{t('step6.installation_type')}</h3>
                 <select value={installationType} onChange={handleInstallationTypeChange}>
-                    <option value="ground">Ground Mounted</option>
-                    <option value="roof_angle">Roof Mounted (Angle >20°)</option>
-                    <option value="parallel_greater_150mm">Parallel Mounted (Gap >150mm)</option>
-                    <option value="parallel_less_150mm">Parallel Mounted (Gap 150mm)</option>
+                    <option value="ground">{t('step6.ground_mounted')}</option>
+                    <option value="roof_angle">{t('step6.roof_mounted')}</option>
+                    <option value="parallel_greater_150mm">{t('step6.parallel_mounted_greater_150mm')}</option>
+                    <option value="parallel_less_150mm">{t('step6.parallel_mounted_less_150mm')}</option>
                 </select>
             </div>
 
             <div className="constants-input">
-                <h3>Set Constants</h3>
+                <h3>{t('step6.set_constants')}</h3>
                 <label>
-                    Panel Oversize Coefficient:
+                    {t('step6.panel_oversize_coefficient')}:
                     <input
                         type="number"
                         step="0.1"
@@ -210,7 +212,7 @@ const Step6_SolarPanels = () => {
                     />
                 </label>
                 <label>
-                    Battery Efficiency:
+                    {t('step6.battery_efficiency')}:
                     <input
                         type="number"
                         step="0.1"
@@ -219,7 +221,7 @@ const Step6_SolarPanels = () => {
                     />
                 </label>
                 <label>
-                    Cable Efficiency:
+                    {t('step6.cable_efficiency')}:
                     <input
                         type="number"
                         step="0.1"
@@ -228,7 +230,7 @@ const Step6_SolarPanels = () => {
                     />
                 </label>
                 <label>
-                    Manufacturer Tolerance:
+                    {t('step6.manufacturer_tolerance')}:
                     <input
                         type="number"
                         step="0.1"
@@ -237,7 +239,7 @@ const Step6_SolarPanels = () => {
                     />
                 </label>
                 <label>
-                    Aging Loss:
+                    {t('step6.aging_loss')}:
                     <input
                         type="number"
                         step="0.1"
@@ -246,7 +248,7 @@ const Step6_SolarPanels = () => {
                     />
                 </label>
                 <label>
-                    Dirt Loss:
+                    {t('step6.dirt_loss')}:
                     <input
                         type="number"
                         step="0.1"
@@ -257,15 +259,15 @@ const Step6_SolarPanels = () => {
             </div>
 
             <div className="calculated-config">
-                <h3>Calculated Configuration</h3>
-                <p>Total Power Generated: {formatValue(config.totalPowerGenerated)} W</p>
-                <p>Efficiency Loss: {formatValue(config.efficiencyLoss * 100)}%</p>
-                <p>Estimated Daily Energy Production: {formatValue(config.estimatedDailyEnergyProduction)} Wh</p>
+                <h3>{t('step6.calculated_configuration')}</h3>
+                <p>{t('step6.total_power_generated')}: {formatValue(config.totalPowerGenerated)} W</p>
+                <p>{t('step6.efficiency_loss')}: {formatValue(config.efficiencyLoss * 100)}%</p>
+                <p>{t('step6.estimated_daily_energy_production')}: {formatValue(config.estimatedDailyEnergyProduction)} Wh</p>
             </div>
 
             <div className="charts-container">
                 <div>
-                    <h3>PSH Graph</h3>
+                    <h3>{t('step6.psh_graph')}</h3>
                     <BarChart data={chartData} width={600} height={300}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="month" />
@@ -275,7 +277,7 @@ const Step6_SolarPanels = () => {
                     </BarChart>
                 </div>
                 <div>
-                    <h3>E_daily_solar Graph</h3>
+                    <h3>{t('step6.e_daily_solar_graph')}</h3>
                     <LineChart data={chartData} width={600} height={300}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="month" />
@@ -287,20 +289,20 @@ const Step6_SolarPanels = () => {
                 </div>
             </div>
 
-            <h3>Monthly Data</h3>
+            <h3>{t('step6.monthly_data')}</h3>
             {config.monthlyData.length > 0 ? (
                 <table className="monthly-data-table">
                     <thead>
                     <tr>
-                        <th>Month</th>
-                        <th>PSH</th>
-                        <th>Ambient Temperature (°C)</th>
-                        <th>Required Energy (Wh)</th>
-                        <th>Required Power (W)</th>
-                        <th>Efficiency</th>
-                        <th>Derated Power (W)</th>
-                        <th>Num Panels</th>
-                        <th>Estimated Daily Solar Energy (Wh)</th>
+                        <th>{t('step6.month')}</th>
+                        <th>{t('step6.psh')}</th>
+                        <th>{t('step6.ambient_temperature')}</th>
+                        <th>{t('step6.required_energy')}</th>
+                        <th>{t('step6.required_power')}</th>
+                        <th>{t('step6.efficiency')}</th>
+                        <th>{t('step6.derated_power')}</th>
+                        <th>{t('step6.num_panels')}</th>
+                        <th>{t('step6.estimated_daily_solar_energy')}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -320,7 +322,7 @@ const Step6_SolarPanels = () => {
                     </tbody>
                 </table>
             ) : (
-                <p>No monthly data available.</p>
+                <p>{t('step6.no_monthly_data_available')}</p>
             )}
         </div>
     );
