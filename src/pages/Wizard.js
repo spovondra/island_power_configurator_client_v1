@@ -23,7 +23,7 @@ const Wizard = () => {
     const { t } = useTranslation();
 
     useEffect(() => {
-        if (selectedProject && currentStepIndex > 0) {  // Load project data from step 2 onwards
+        if (selectedProject) {  // Load project data
             loadProject(selectedProject);
         }
     }, [selectedProject]);
@@ -31,22 +31,25 @@ const Wizard = () => {
     const loadProject = async (projectId) => {
         try {
             const project = await getProjectById(projectId);
-            setLastCompletedStep(project.lastCompletedStep || 0);  // Set last completed step
-            console.log("Loaded lastCompletedStep:", project.lastCompletedStep || 0);  // Log lastCompletedStep
-            setCurrentStepIndex(project.lastCompletedStep || 1);  // Set current step (start from step 2)
+            const completedStep = project.lastCompletedStep || 0;
+
+            setLastCompletedStep(completedStep);  // Set last completed step
+            console.log("Loaded lastCompletedStep:", completedStep);  // Log lastCompletedStep
+
+            // If the lastCompletedStep is 0 or 1, start from step 1
+            setCurrentStepIndex(completedStep > 1 ? completedStep : 0);
             setProjectLoaded(true);
         } catch (error) {
             console.error('Error loading project:', error);
         }
     };
 
-    // When a step is completed (performs POST)
+    // When a step is completed, we only update the last completed step and don't move forward
     const handleStepComplete = async (stepIndex) => {
         try {
             await completeStep(selectedProject, stepIndex);  // Send POST to backend
             setLastCompletedStep(stepIndex);  // Update the last completed step
             console.log("Step completed. Updated lastCompletedStep:", stepIndex);  // Log step completion
-            setCurrentStepIndex(stepIndex + 1);  // Move to the next step
         } catch (error) {
             console.error('Error completing step:', error);
         }

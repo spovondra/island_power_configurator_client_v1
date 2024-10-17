@@ -9,13 +9,33 @@ const Step1Introduction = () => {
     const { t } = useTranslation('wizard'); // Use the 'wizard' namespace for translations
     const { selectedProject, setSelectedProject } = useContext(ProjectContext);
     const location = useLocation();
-    const { project, isNewProject } = location.state || {};
+    const { project, isNewProject } = location.state || {}; // Get project and isNewProject from location state
 
-    const [name, setName] = useState(isNewProject ? '' : project?.name || '');
+    const [name, setName] = useState('');
     const [error, setError] = useState('');
     const [newProjectId, setNewProjectId] = useState(null);
     const [isProjectCreated, setIsProjectCreated] = useState(false);
 
+    // Load project name if it exists
+    useEffect(() => {
+        if (!isNewProject && selectedProject) {
+            const loadProjectName = async () => {
+                try {
+                    const existingProject = await getProjectById(selectedProject);
+                    setName(existingProject.name); // Set the project name from the existing project
+                } catch (error) {
+                    console.error('Error loading project:', error);
+                    setError(t('step1.error_message')); // Use translated error message
+                }
+            };
+
+            loadProjectName();
+        } else if (isNewProject && project) {
+            setName(project.name || ''); // Handle the case where a new project might be partially filled
+        }
+    }, [isNewProject, selectedProject, project, t]);
+
+    // Automatically create a new project when the name is entered for the first time
     useEffect(() => {
         if (isNewProject && name && name.length === 1 && !isProjectCreated) {
             const createNewProject = async () => {
@@ -35,6 +55,7 @@ const Step1Introduction = () => {
         }
     }, [name, isNewProject, isProjectCreated, setSelectedProject, t]);
 
+    // Save the project name when it's updated
     useEffect(() => {
         const saveProjectData = async () => {
             if (!name) return;
