@@ -2,14 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { getProjectById, updateProject, createProject } from '../../services/ProjectService';
 import { ProjectContext } from '../../context/ProjectContext';
 import { useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next'; // Import translation hook
+import { useTranslation } from 'react-i18next';
 import './Step1_Introduction.css';
 
-const Step1Introduction = () => {
-    const { t } = useTranslation('wizard'); // Use the 'wizard' namespace for translations
+const Step1Introduction = ({ onComplete }) => { // Add onComplete prop
+    const { t } = useTranslation('wizard');
     const { selectedProject, setSelectedProject } = useContext(ProjectContext);
     const location = useLocation();
-    const { project, isNewProject } = location.state || {}; // Get project and isNewProject from location state
+    const { project, isNewProject } = location.state || {};
 
     const [name, setName] = useState('');
     const [error, setError] = useState('');
@@ -22,32 +22,31 @@ const Step1Introduction = () => {
             const loadProjectName = async () => {
                 try {
                     const existingProject = await getProjectById(selectedProject);
-                    setName(existingProject.name); // Set the project name from the existing project
+                    setName(existingProject.name);
                 } catch (error) {
                     console.error('Error loading project:', error);
-                    setError(t('step1.error_message')); // Use translated error message
+                    setError(t('step1.error_message'));
                 }
             };
-
             loadProjectName();
         } else if (isNewProject && project) {
-            setName(project.name || ''); // Handle the case where a new project might be partially filled
+            setName(project.name || '');
         }
     }, [isNewProject, selectedProject, project, t]);
 
     // Automatically create a new project when the name is entered for the first time
     useEffect(() => {
-        if (isNewProject && name && name.length === 1 && !isProjectCreated) {
+        if (isNewProject && name.length >= 1 && !isProjectCreated) {
             const createNewProject = async () => {
                 try {
                     const newProjectData = { name: name };
                     const createdProject = await createProject(newProjectData);
                     setNewProjectId(createdProject.id);
-                    setSelectedProject(createdProject.id); // Update context with new project ID
-                    setIsProjectCreated(true); // Mark project as created
+                    setSelectedProject(createdProject.id);
+                    setIsProjectCreated(true);
                 } catch (error) {
                     console.error('Error creating new project:', error);
-                    setError(t('step1.error_message')); // Use translated error message
+                    setError(t('step1.error_message'));
                 }
             };
 
@@ -71,7 +70,7 @@ const Step1Introduction = () => {
                 }
             } catch (error) {
                 console.error('Error saving project data:', error);
-                setError(t('step1.error_message')); // Use translated error message
+                setError(t('step1.error_message'));
             }
         };
 

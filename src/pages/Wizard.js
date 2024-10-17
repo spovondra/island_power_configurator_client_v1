@@ -67,7 +67,7 @@ const Wizard = () => {
             if (currentStepIndex <= lastCompletedStep) {
                 setCurrentStepIndex((prevIndex) => prevIndex + 1);
             }
-        } else {
+        } else if (currentStepIndex < lastCompletedStep) {
             setCurrentStepIndex((prevIndex) => prevIndex + 1);
         }
     };
@@ -79,9 +79,9 @@ const Wizard = () => {
         }
     };
 
-    // Clicking a step: if we're editing, we must stick to completed steps
+    // Clicking a step: disable click unless the step is completed or we're in view mode
     const handleStepClick = (index) => {
-        if (index === 0 || !editMode || index <= lastCompletedStep) {
+        if (index <= lastCompletedStep) {
             setCurrentStepIndex(index);
         }
     };
@@ -91,7 +91,7 @@ const Wizard = () => {
     };
 
     const steps = [
-        { key: 'step1', label: t('wizard.introduction'), component: Step1Introduction },  // Step 1 is always available
+        { key: 'step1', label: t('wizard.introduction'), component: Step1Introduction, onComplete: () => handleStepComplete(1) },  // Step 1 now properly calls handleStepComplete
         { key: 'step2', label: t('wizard.appliance'), component: Step2Appliance, onComplete: () => handleStepComplete(2), enableEditMode },
         { key: 'step3', label: t('wizard.location'), component: Step3Location, onComplete: () => handleStepComplete(3), enableEditMode },
         { key: 'step4', label: t('wizard.inverter'), component: Step4TestCalc, onComplete: () => handleStepComplete(4), enableEditMode },
@@ -121,7 +121,7 @@ const Wizard = () => {
                                                 ? 'enabled'  // If the step is after the current but available
                                                 : 'disabled'  // If the step is unavailable
                                     }`}
-                                    onClick={() => handleStepClick(index)}
+                                    onClick={() => handleStepClick(index)}  // Disable click if step is unavailable
                                 >
                                     {step.label}
                                 </div>
@@ -136,7 +136,7 @@ const Wizard = () => {
                             {t('wizard.back')}
                         </button>
                         <button className="next" onClick={handleNext}
-                                disabled={currentStepIndex > lastCompletedStep && editMode}>
+                                disabled={currentStepIndex >= lastCompletedStep || currentStepIndex === steps.length - 1}>
                             {currentStepIndex === steps.length - 1 ? t('wizard.finish') : t('wizard.next')}
                         </button>
                     </div>
