@@ -4,7 +4,7 @@ import { getBatteries, selectBattery, getProjectBattery } from '../../services/P
 import { useTranslation } from 'react-i18next'; // Import translation hook
 import "./Step5_Batteries.css";
 
-const Step5_Batteries = () => {
+const Step5_Batteries = ({ onComplete }) => {  // Přidáno onComplete prop
     const { t } = useTranslation('wizard'); // Use translation for the wizard namespace
     const { selectedProject } = useContext(ProjectContext);
     const [batteryType, setBatteryType] = useState('Li-ion'); // Default battery type
@@ -79,6 +79,11 @@ const Step5_Batteries = () => {
                 temperature
             });
             setConfig(result); // Update the configuration after the battery is selected
+
+            // Inform the parent component (Wizard) that this step is complete
+            if (onComplete) {
+                onComplete();
+            }
         } catch (error) {
             console.error('Error selecting battery:', error);
         }

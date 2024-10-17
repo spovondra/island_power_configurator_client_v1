@@ -5,7 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LineChart, Line, L
 import { useTranslation } from 'react-i18next'; // Import translation hook
 import './Step6_SolarPanels.css';
 
-const Step6_SolarPanels = () => {
+const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
     const { t } = useTranslation('wizard'); // Use translation for the wizard namespace
     const { selectedProject } = useContext(ProjectContext);
     const [selectedPanel, setSelectedPanel] = useState(null);
@@ -111,6 +111,11 @@ const Step6_SolarPanels = () => {
         try {
             const result = await selectSolarPanel(selectedProject, postData);
             setConfig(result); // Immediately set the config to the result from POST
+
+            // Call the onComplete prop to notify that this step is done
+            if (onComplete) {
+                onComplete();
+            }
         } catch (error) {
             console.error('Error selecting solar panel:', error);
         }

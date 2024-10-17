@@ -4,7 +4,7 @@ import { ProjectContext } from '../../context/ProjectContext';
 import { getSuitableInverters, selectInverter, getProjectInverter } from '../../services/ProjectService';
 import './Step4_Inverter.css';
 
-const Step4_Inverter = () => {
+const Step4_Inverter = ({ onComplete }) => {  // Přidáno onComplete prop
     const { t } = useTranslation('wizard'); // Initialize translation function
     const { selectedProject } = useContext(ProjectContext);
     const [systemVoltage, setSystemVoltage] = useState('48'); // Default voltage
@@ -72,6 +72,9 @@ const Step4_Inverter = () => {
                 totalDailyEnergy: result.totalDailyEnergy || 0,
             });
             console.log('Inverter selection updated:', result);
+            if (onComplete) {
+                onComplete();  // Oznámení průvodci, že krok je dokončen
+            }
         } catch (error) {
             console.error('Error selecting inverter:', error);
             setError(t('step4.error_message')); // Use translation for error message

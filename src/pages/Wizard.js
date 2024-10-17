@@ -14,16 +14,16 @@ import Step7_Controller from '../components/Wizard/Step7_Controller';
 import { useTranslation } from 'react-i18next';
 
 const Wizard = () => {
-    const [currentStepIndex, setCurrentStepIndex] = useState(0);  // Aktuální krok
-    const [lastCompletedStep, setLastCompletedStep] = useState(0);  // Poslední dokončený krok
-    const [projectLoaded, setProjectLoaded] = useState(true);  // Stav pro načtení projektu (pro krok 1 není potřeba načítat)
-    const [editMode, setEditMode] = useState(false);  // Zda je mód úprav nebo prohlížení
+    const [currentStepIndex, setCurrentStepIndex] = useState(0);  // Current step
+    const [lastCompletedStep, setLastCompletedStep] = useState(0);  // Last completed step
+    const [projectLoaded, setProjectLoaded] = useState(true);  // Flag for loading project data (not required for step 1)
+    const [editMode, setEditMode] = useState(false);  // Whether in edit mode or view mode
     const { selectedProject } = useContext(ProjectContext);
     const navigate = useNavigate();
     const { t } = useTranslation();
 
     useEffect(() => {
-        if (selectedProject && currentStepIndex > 0) {  // Načíst data projektu od kroku 2 dále
+        if (selectedProject && currentStepIndex > 0) {  // Load project data from step 2 onwards
             loadProject(selectedProject);
         }
     }, [selectedProject]);
@@ -31,29 +31,34 @@ const Wizard = () => {
     const loadProject = async (projectId) => {
         try {
             const project = await getProjectById(projectId);
-            setLastCompletedStep(project.lastCompletedStep || 0);  // Nastavit poslední dokončený krok
-            setCurrentStepIndex(project.lastCompletedStep || 1);  // Nastavit aktuální krok (začíná od kroku 2)
+            setLastCompletedStep(project.lastCompletedStep || 0);  // Set last completed step
+            console.log("Loaded lastCompletedStep:", project.lastCompletedStep || 0);  // Log lastCompletedStep
+            setCurrentStepIndex(project.lastCompletedStep || 1);  // Set current step (start from step 2)
             setProjectLoaded(true);
         } catch (error) {
             console.error('Error loading project:', error);
         }
     };
 
-    // Když je krok dokončen (provádí POST)
+    // When a step is completed (performs POST)
     const handleStepComplete = async (stepIndex) => {
         try {
-            await completeStep(selectedProject, stepIndex);  // Odeslat POST na backend
-            setLastCompletedStep(stepIndex);  // Aktualizovat stav dokončeného kroku
-            setCurrentStepIndex(stepIndex + 1);  // Posunout se na další krok
+            await completeStep(selectedProject, stepIndex);  // Send POST to backend
+            setLastCompletedStep(stepIndex);  // Update the last completed step
+            console.log("Step completed. Updated lastCompletedStep:", stepIndex);  // Log step completion
+            setCurrentStepIndex(stepIndex + 1);  // Move to the next step
         } catch (error) {
             console.error('Error completing step:', error);
         }
     };
 
-    // Přejít na další krok, jen pokud je krok dokončen nebo jsme v módu prohlížení
+    // Move to the next step, only if the step is completed or we're in view mode
     const handleNext = () => {
-        if (currentStepIndex === 0) {
-            // Krok 1: pouze přechod na krok 2 bez POST
+        if (currentStepIndex === steps.length - 1) {
+            // On final step, navigate back to the projects list
+            navigate('/projects');  // Adjust the route as necessary
+        } else if (currentStepIndex === 0) {
+            // Step 1: only proceed to step 2 without POST
             setCurrentStepIndex((prevIndex) => prevIndex + 1);
         } else if (editMode) {
             if (currentStepIndex <= lastCompletedStep) {
@@ -64,14 +69,14 @@ const Wizard = () => {
         }
     };
 
-    // Umožní se vrátit zpět, ale nemůžeme jít zpět do neuloženého kroku (v módu úprav)
+    // Allow going back, but we can't go back to an unsaved step (in edit mode)
     const handleBack = () => {
         if (currentStepIndex > 0) {
             setCurrentStepIndex((prevIndex) => prevIndex - 1);
         }
     };
 
-    // Kliknutí na krok: pokud upravujeme, musíme se držet jen kroků, které byly dokončeny
+    // Clicking a step: if we're editing, we must stick to completed steps
     const handleStepClick = (index) => {
         if (index === 0 || !editMode || index <= lastCompletedStep) {
             setCurrentStepIndex(index);
@@ -79,11 +84,11 @@ const Wizard = () => {
     };
 
     const enableEditMode = () => {
-        setEditMode(true);  // Zapneme mód úprav, když se provede jakákoli změna v projektu
+        setEditMode(true);  // Enable edit mode when any change is made in the project
     };
 
     const steps = [
-        { key: 'step1', label: t('wizard.introduction'), component: Step1Introduction },  // Krok 1 je vždy dostupný
+        { key: 'step1', label: t('wizard.introduction'), component: Step1Introduction },  // Step 1 is always available
         { key: 'step2', label: t('wizard.appliance'), component: Step2Appliance, onComplete: () => handleStepComplete(2), enableEditMode },
         { key: 'step3', label: t('wizard.location'), component: Step3Location, onComplete: () => handleStepComplete(3), enableEditMode },
         { key: 'step4', label: t('wizard.inverter'), component: Step4TestCalc, onComplete: () => handleStepComplete(4), enableEditMode },
@@ -97,7 +102,7 @@ const Wizard = () => {
 
     return (
         <div className="wizard-container">
-            {projectLoaded || currentStepIndex === 0 ? (  // Umožňuje procházet krok 1 bez "Loading"
+            {projectLoaded || currentStepIndex === 0 ? (  // Allow navigating step 1 without "Loading" state
                 <>
                     <div className="wizard-steps">
                         <div className="wizard-steps-container">
@@ -106,12 +111,12 @@ const Wizard = () => {
                                     key={index}
                                     className={`wizard-step 
                                         ${currentStepIndex === index
-                                        ? 'active'  // Pokud je krok aktuálně zvolený
+                                        ? 'active'  // If the step is currently selected
                                         : index < currentStepIndex
-                                            ? 'done'  // Pokud je krok před aktuálním a byl dokončen
+                                            ? 'done'  // If the step is before the current one and was completed
                                             : index <= lastCompletedStep
-                                                ? 'enabled'  // Pokud je krok za aktuálním ale dostupný
-                                                : 'disabled'  // Pokud je krok nedostupný
+                                                ? 'enabled'  // If the step is after the current but available
+                                                : 'disabled'  // If the step is unavailable
                                     }`}
                                     onClick={() => handleStepClick(index)}
                                 >
@@ -121,8 +126,7 @@ const Wizard = () => {
                         </div>
                     </div>
                     <div className="wizard-content">
-                        <CurrentStepComponent onComplete={steps[currentStepIndex].onComplete}
-                                              enableEditMode={enableEditMode}/>
+                        <CurrentStepComponent onComplete={steps[currentStepIndex].onComplete} enableEditMode={enableEditMode} />
                     </div>
                     <div className="wizard-buttons">
                         <button className="previous" onClick={handleBack} disabled={currentStepIndex === 0}>
@@ -135,7 +139,7 @@ const Wizard = () => {
                     </div>
                 </>
             ) : (
-                <div>Loading...</div>  // Načítání se zobrazí jen pro kroky 2 a dále
+                <div>Loading...</div>  // "Loading" only displayed for steps after 1
             )}
         </div>
     );

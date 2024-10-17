@@ -7,7 +7,7 @@ import './Step3_Location.css';
 import { Bar, BarChart, CartesianGrid, LabelList, Tooltip, XAxis, YAxis } from 'recharts';
 import { useTranslation } from 'react-i18next'; // Import translation hook
 
-const Step3_Location = () => {
+const Step3_Location = ({ onComplete }) => {
     const { selectedProject } = useContext(ProjectContext);
     const { t } = useTranslation('wizard'); // Use translation hook for 'wizard' namespace
 
@@ -19,6 +19,7 @@ const Step3_Location = () => {
     const [dataFetched, setDataFetched] = useState(false);
     const [useOptimal, setUseOptimal] = useState(false);
     const [hasUserInteracted, setHasUserInteracted] = useState(false);
+    const [isStepComplete, setIsStepComplete] = useState(false); // Track if the step is complete
 
     // Load site data when the project is selected
     useEffect(() => {
@@ -83,12 +84,16 @@ const Step3_Location = () => {
                 setAspect(newAspect); // Update aspect from processed data
             }
 
+            // Mark step as complete
+            setIsStepComplete(true);
+            onComplete();  // Notify Wizard that the step is complete
+
         } catch (error) {
             console.error('Error processing location data:', error);
             setTemperatures({ min: 'Error', max: 'Error' });
             setDataFetched(false);
         }
-    }, [selectedProject, location.latitude, location.longitude, angle, aspect, useOptimal, t]);
+    }, [selectedProject, location.latitude, location.longitude, angle, aspect, useOptimal, t, onComplete]);
 
     const searchLocation = async () => {
         const locationQuery = document.getElementById('locationSearch').value;
