@@ -18,7 +18,8 @@ const Wizard = () => {
     const [lastCompletedStep, setLastCompletedStep] = useState(0);  // Last completed step
     const [projectLoaded, setProjectLoaded] = useState(true);  // Flag for loading project data (not required for step 1)
     const [editMode, setEditMode] = useState(false);  // Whether in edit mode or view mode
-    const { selectedProject } = useContext(ProjectContext);
+    const [projectName, setProjectName] = useState('');  // Track project name for validation
+    const { selectedProject } = useContext(ProjectContext);  // Get the selected project from context
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -32,8 +33,8 @@ const Wizard = () => {
         try {
             const project = await getProjectById(projectId);
             const completedStep = project.lastCompletedStep || 0;
-
             setLastCompletedStep(completedStep);  // Set last completed step
+            setProjectName(project.name);  // Set the project name for validation
             console.log("Loaded lastCompletedStep:", completedStep);  // Log lastCompletedStep
 
             // If the lastCompletedStep is 0 or 1, start from step 1
@@ -58,11 +59,13 @@ const Wizard = () => {
     // Move to the next step, only if the step is completed or we're in view mode
     const handleNext = () => {
         if (currentStepIndex === steps.length - 1) {
-            // On final step, navigate back to the projects list
+            // On the final step, navigate back to the projects list or a success page
             navigate('/projects');  // Adjust the route as necessary
         } else if (currentStepIndex === 0) {
-            // Step 1: only proceed to step 2 without POST
-            setCurrentStepIndex((prevIndex) => prevIndex + 1);
+            // Step 1: proceed to step 2 if project exists or project name is entered
+            if (selectedProject || projectName.length > 0) {
+                setCurrentStepIndex((prevIndex) => prevIndex + 1);
+            }
         } else if (editMode) {
             if (currentStepIndex <= lastCompletedStep) {
                 setCurrentStepIndex((prevIndex) => prevIndex + 1);
@@ -81,7 +84,7 @@ const Wizard = () => {
 
     // Clicking a step: disable click unless the step is completed or we're in view mode
     const handleStepClick = (index) => {
-        if (index <= lastCompletedStep) {
+        if (index <= lastCompletedStep || (index === 1 && (selectedProject || projectName.length > 0))) {
             setCurrentStepIndex(index);
         }
     };
@@ -98,7 +101,7 @@ const Wizard = () => {
         { key: 'step5', label: t('wizard.batteries'), component: Step5_Batteries, onComplete: () => handleStepComplete(5), enableEditMode },
         { key: 'step6', label: t('wizard.solar_panels'), component: Step6_SolarPanels, onComplete: () => handleStepComplete(6), enableEditMode },
         { key: 'step7', label: t('wizard.controller'), component: Step7_Controller, onComplete: () => handleStepComplete(7), enableEditMode },
-        { key: 'finalStep', label: t('wizard.final_step'), component: FinalStep },
+        { key: 'finalStep', label: t('wizard.final_step'), component: FinalStep },  // No POST on the final step
     ];
 
     const CurrentStepComponent = steps[currentStepIndex].component;
@@ -117,8 +120,8 @@ const Wizard = () => {
                                         ? 'active'  // If the step is currently selected
                                         : index < currentStepIndex
                                             ? 'done'  // If the step is before the current one and was completed
-                                            : index <= lastCompletedStep
-                                                ? 'enabled'  // If the step is after the current but available
+                                            : (index === 1 && (selectedProject || projectName.length > 0)) || index <= lastCompletedStep
+                                                ? 'enabled'  // If the step is after the current but available, or Step 2 is enabled by projectName
                                                 : 'disabled'  // If the step is unavailable
                                     }`}
                                     onClick={() => handleStepClick(index)}  // Disable click if step is unavailable
@@ -136,7 +139,10 @@ const Wizard = () => {
                             {t('wizard.back')}
                         </button>
                         <button className="next" onClick={handleNext}
-                                disabled={currentStepIndex >= lastCompletedStep || currentStepIndex === steps.length - 1}>
+                                disabled={
+                                    (currentStepIndex === 0 && !selectedProject && projectName.length === 0) ||  // Disable Next if no project name or project ID
+                                    (currentStepIndex > lastCompletedStep && editMode) // Disable Next if current step exceeds completed step in edit mode
+                                }>
                             {currentStepIndex === steps.length - 1 ? t('wizard.finish') : t('wizard.next')}
                         </button>
                     </div>
