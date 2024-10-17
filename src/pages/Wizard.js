@@ -104,7 +104,15 @@ const Wizard = () => {
                             {steps.map((step, index) => (
                                 <div
                                     key={index}
-                                    className={`wizard-step ${currentStepIndex === index ? 'active' : index <= lastCompletedStep || index === 0 ? 'done' : 'disabled'}`}
+                                    className={`wizard-step 
+                                        ${currentStepIndex === index
+                                        ? 'active'  // Pokud je krok aktuálně zvolený
+                                        : index < currentStepIndex
+                                            ? 'done'  // Pokud je krok před aktuálním a byl dokončen
+                                            : index <= lastCompletedStep
+                                                ? 'enabled'  // Pokud je krok za aktuálním ale dostupný
+                                                : 'disabled'  // Pokud je krok nedostupný
+                                    }`}
                                     onClick={() => handleStepClick(index)}
                                 >
                                     {step.label}
@@ -113,13 +121,15 @@ const Wizard = () => {
                         </div>
                     </div>
                     <div className="wizard-content">
-                        <CurrentStepComponent onComplete={steps[currentStepIndex].onComplete} enableEditMode={enableEditMode} />
+                        <CurrentStepComponent onComplete={steps[currentStepIndex].onComplete}
+                                              enableEditMode={enableEditMode}/>
                     </div>
                     <div className="wizard-buttons">
                         <button className="previous" onClick={handleBack} disabled={currentStepIndex === 0}>
                             {t('wizard.back')}
                         </button>
-                        <button className="next" onClick={handleNext} disabled={currentStepIndex > lastCompletedStep && editMode}>
+                        <button className="next" onClick={handleNext}
+                                disabled={currentStepIndex > lastCompletedStep && editMode}>
                             {currentStepIndex === steps.length - 1 ? t('wizard.finish') : t('wizard.next')}
                         </button>
                     </div>

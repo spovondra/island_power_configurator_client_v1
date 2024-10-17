@@ -39,16 +39,17 @@
     border: 2px solid transparent; /* Default transparent border */
 }
 
+/* Last child without border-right */
 .wizard-step:last-child {
     border-right: none;
 }
 
-/* Active and completed steps */
+/* Step styles */
 .wizard-step.active {
     background: #0056b3;
     color: white;
-    border-color: #0056b3; /* Thicker border for active step */
-    box-shadow: 0 0 8px rgba(0, 91, 187, 0.5); /* Glow effect to highlight the current step */
+    border-color: #0056b3;
+    box-shadow: 0 0 8px rgba(0, 91, 187, 0.5);
 }
 
 .wizard-step.done {
@@ -57,7 +58,12 @@
     border-color: #007bff;
 }
 
-/* Disabled steps - unfinished steps will be disabled */
+.wizard-step.enabled {
+    background: #68b2ff;
+    color: white;
+    border-color: #77bdff;
+}
+
 .wizard-step.disabled {
     background: #e0e0e0;
     color: #a0a0a0;
@@ -107,11 +113,6 @@
     transition: none;
 }
 
-.wizard-buttons button:disabled:hover {
-    background-color: #ccc;
-    transform: none;
-}
-
 .wizard-buttons button:not(:disabled):hover {
     background-color: #0056b3;
     transform: scale(1.02);
@@ -121,23 +122,6 @@
     background-color: #007bff;
 }
 
-.wizard-buttons button.next:hover {
-    background-color: #0056b3;
-}
-
 .wizard-buttons button.previous {
     background-color: #6c757d;
-}
-
-.wizard-buttons button.previous:not(:disabled) {
-    background-color: #007bff;
-}
-
-.wizard-buttons button.previous:disabled {
-    background-color: #6c757d;
-}
-
-.wizard-buttons button.previous:not(:disabled):hover {
-    background-color: #0056b3;
-    transform: scale(1.02);
 }
