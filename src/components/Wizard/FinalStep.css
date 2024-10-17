@@ -75,3 +75,21 @@
     font-size: 14px;
     font-weight: bold;
 }
+
+/* Hide print button in print version */
+@media print {
+    .print-button {
+        display: none;
+    }
+
+    .final-step-container {
+        padding: 0;
+        margin: 0;
+    }
+
+    .chart-container {
+        width: 100%;
+        height: auto;
+    }
+}
+

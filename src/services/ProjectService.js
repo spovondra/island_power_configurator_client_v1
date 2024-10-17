@@ -21,6 +21,17 @@ export const getProjectById = async (projectId) => {
     }
 };
 
+export const completeStep = async (projectId, step) => {
+    try{
+        await apiClient.post(`${API_PROJECT_URL}/${projectId}/complete-step`, null, {
+            params: { step }
+        });
+    }
+    catch (error) {
+        throw error;
+    }
+};
+
 // Create a new project
 export const createProject = async (project) => {
     try {

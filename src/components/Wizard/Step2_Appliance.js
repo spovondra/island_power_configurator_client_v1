@@ -5,8 +5,8 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recha
 import { useTranslation } from 'react-i18next'; // Import translation hook
 import './Step2_Appliance.css';
 
-const Step2_Appliance = () => {
-    const { t } = useTranslation('wizard'); // Use the 'wizard' namespace for translations
+const Step2_Appliance = ({ onComplete }) => {  // Přidáme onComplete jako prop
+    const { t } = useTranslation('wizard');
     const { selectedProject } = useContext(ProjectContext);
 
     const [appliance, setAppliance] = useState({
@@ -64,11 +64,12 @@ const Step2_Appliance = () => {
             });
             setEditMode(false);
             alert(t('step2.save_button'));
+            onComplete();  // Zavoláme onComplete, když je krok dokončen
         } catch (error) {
             console.error(t('step2.error_message'), error);
             alert(t('step2.error_message'));
         }
-    }, [selectedProject, appliance, t]);
+    }, [selectedProject, appliance, t, onComplete]);
 
     const handleEdit = (appl) => {
         setAppliance(appl);
