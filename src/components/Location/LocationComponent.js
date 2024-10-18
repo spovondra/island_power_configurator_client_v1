@@ -4,6 +4,11 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import './LocationComponent.css';
 
+const bounds = L.latLngBounds(
+    L.latLng(-85, -180),
+    L.latLng(85, 180)
+);
+
 const customIcon = L.icon({
     iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-icon.png',
     iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-icon.png',
@@ -23,6 +28,13 @@ const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, set
         useMapEvents({
             click(e) {
                 const { lat, lng } = e.latlng;
+
+                // Check if clicked position is within bounds
+                if (!bounds.contains([lat, lng])) {
+                    alert('Click is outside the valid map bounds!');
+                    return;
+                }
+
                 setLatitude(lat.toFixed(6));
                 setLongitude(lng.toFixed(6));
                 setPosition([lat, lng]);
@@ -38,7 +50,14 @@ const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, set
 
     return (
         <div className="map-container">
-            <MapContainer center={position} zoom={7} className="map">
+            <MapContainer
+                center={position}
+                zoom={3} // Zoom out a bit to cover more area initially
+                className="map"
+                maxBounds={bounds} // Set global map bounds
+                maxBoundsViscosity={1.0} // Prevent panning outside of bounds
+                minZoom={2} // Prevent too much zoom out
+            >
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="© OpenStreetMap contributors"

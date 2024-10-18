@@ -1,5 +1,5 @@
 /* Map Page Container */
-.map-page-container {
+.step3-map-page-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -7,7 +7,7 @@
 }
 
 /* Content */
-.content {
+.step3-content {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -19,20 +19,20 @@
 }
 
 /* Left Column */
-.left-column {
+.step3-left-column {
     flex: 2;
     display: flex;
     flex-direction: column;
 }
 
 /* Search Block */
-.search-block {
+.step3-search-block {
     display: flex;
     margin-bottom: 10px;
 }
 
 /* Search Bar */
-.search-bar {
+.step3-search-bar {
     display: flex;
     flex-direction: row;
     gap: 10px;
@@ -47,7 +47,7 @@
 }
 
 /* Search Button */
-.search-button {
+.step3-search-button {
     justify-content: center;
     display: flex;
     flex: 1;
@@ -61,18 +61,18 @@
     transition: background-color 0.3s ease;
 }
 
-.search-button:hover {
+.step3-search-button:hover {
     background-color: #0056b3;
 }
 
 /* Map Wrapper */
-.map-wrapper {
+.step3-map-wrapper {
     flex: 1;
     min-width: 0;
 }
 
 /* Controls */
-.controls {
+.step3-controls {
     background: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -84,12 +84,12 @@
 }
 
 /* Form Group */
-.form-group {
+.step3-form-group {
     margin-bottom: 10px;
 }
 
 /* Location Info */
-.location-info {
+.step3-location-info {
     border: 1px solid #dcdcdc;
     border-radius: 8px;
     padding: 10px;
@@ -99,7 +99,7 @@
 }
 
 /* Chart Container */
-.chart-container {
+.step3-chart-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -107,9 +107,8 @@
 }
 
 /* Flex Container for Charts */
-.chart-flex-container {
+.step3-chart-flex-container {
     display: flex;
     justify-content: space-between; /* Space between the charts */
     width: 80%; /* Take full width of parent */
 }
-

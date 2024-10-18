@@ -4,7 +4,7 @@ import { getSuitableControllers, selectController, getProjectController } from '
 import { useTranslation } from 'react-i18next'; // Import translation hook
 import './Step7_Controller.css'; // Import CSS styles
 
-const Step7_Controller = () => {
+const Step7_Controller = ({ onComplete }) => {  // Pass onComplete as a prop
     const { t } = useTranslation('wizard'); // Use translation for the wizard namespace
     const { selectedProject } = useContext(ProjectContext);
     const [selectedController, setSelectedController] = useState(null);
@@ -75,17 +75,26 @@ const Step7_Controller = () => {
     }, [selectedController]);
 
     const sendUpdatedControllerConfig = async () => {
+        if (!selectedController || !regulatorType) {
+            console.error('Missing controllerId or regulatorType', { selectedController, regulatorType });
+            return;
+        }
+
+        console.log('Sending controller config with:', { selectedController, regulatorType });
+
         try {
-            const result = await selectController(selectedProject, selectedController);
+            const result = await selectController(selectedProject, selectedController, regulatorType);
             setControllerConfig(result);
+            onComplete();  // Call onComplete to indicate the step is done
         } catch (error) {
             console.error('Error selecting controller:', error);
         }
     };
 
     const handleControllerSelect = (controllerId) => {
+        console.log('Controller selected:', controllerId);  // Log the selected controllerId
         setHasChanged(true);
-        setSelectedController(controllerId);
+        setSelectedController(controllerId);  // Set selectedController to the selected controllerId
     };
 
     const handleRegulatorTypeChange = (type) => {
@@ -161,12 +170,13 @@ const Step7_Controller = () => {
                 </p>
 
                 <h3>{t('step7.results')}</h3>
-                <p><b>{t('step7.adjusted_voc')}:</b> {controllerConfig.adjustedVoc}</p>
-                <p><b>{t('step7.adjusted_vmp')}:</b> {controllerConfig.adjustedVmp}</p>
-                <p><b>{t('step7.max_modules_in_series')}:</b> {controllerConfig.maxModulesInSeries}</p>
-                <p><b>{t('step7.min_modules_in_series')}:</b> {controllerConfig.minModulesInSeries}</p>
-                <p><b>{t('step7.panels_in_series')}:</b> {controllerConfig.panelsInSeries}</p>
-                <p><b>{t('step7.panels_in_parallel')}:</b> {controllerConfig.panelsInParallel}</p>
+                {console.log(controllerConfig)}
+                <p><b>{t('step7.adjusted_voc')}:</b> {controllerConfig.adjustedOpenCircuitVoltage}</p>
+                <p><b>{t('step7.adjusted_vmp')}:</b> {controllerConfig.adjustedVoltageAtMaxPower}</p>
+                <p><b>{t('step7.max_modules_in_series')}:</b> {controllerConfig.maxModulesInSerial}</p>
+                <p><b>{t('step7.min_modules_in_series')}:</b> {controllerConfig.minModulesInSerial}</p>
+                <p><b>{t('step7.panels_in_series')}:</b> {controllerConfig.seriesModules}</p>
+                <p><b>{t('step7.panels_in_parallel')}:</b> {controllerConfig.parallelModules}</p>
                 <p>
                     <b>{t('step7.valid_configuration')}:</b> {controllerConfig.valid ? t('step7.valid') : t('step7.invalid')}
                 </p>

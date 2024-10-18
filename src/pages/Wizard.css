@@ -114,19 +114,7 @@
     opacity: 0.6; /* Make the button appear more faded */
     border: 1px solid #b0b0b0; /* Optional subtle border for contrast */
     box-shadow: none; /* Remove any shadow or hover effects */
-}
-
-.wizard-buttons button.next:disabled,
-.wizard-buttons button.previous:disabled {
-    background: #d3d3d3; /* Matching the disabled style */
-    color: #888; /* Dimmed text color */
-    border-color: #b0b0b0; /* Optional border for extra clarity */
-}
-
-/* Hover effect for non-disabled buttons */
-.wizard-buttons button:not(:disabled):hover {
-    background-color: #0056b3;
-    transform: scale(1.02);
+    pointer-events: none; /* Ensure the button is unclickable */
 }
 
 /* Button colors for next and previous */
@@ -137,3 +125,4 @@
 .wizard-buttons button.previous {
     background-color: #6c757d;
 }
+

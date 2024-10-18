@@ -53,7 +53,7 @@ const UserSettings = () => {
         <div className="user-settings">
             <h2>User Settings</h2>
             <form onSubmit={handleUpdate}>
-                <div className="form-group">
+                <div className="user-settings form-group">
                     <label htmlFor="username">Username</label>
                     <input
                         type="text"
@@ -62,7 +62,7 @@ const UserSettings = () => {
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </div>
-                <div className="form-group">
+                <div className="user-settings form-group">
                     <label htmlFor="firstName">First Name</label>
                     <input
                         type="text"
@@ -71,7 +71,7 @@ const UserSettings = () => {
                         onChange={(e) => setFirstName(e.target.value)}
                     />
                 </div>
-                <div className="form-group">
+                <div className="user-settings form-group">
                     <label htmlFor="lastName">Last Name</label>
                     <input
                         type="text"
@@ -80,7 +80,7 @@ const UserSettings = () => {
                         onChange={(e) => setLastName(e.target.value)}
                     />
                 </div>
-                <div className="form-group">
+                <div className="user-settings form-group">
                     <label htmlFor="email">Email</label>
                     <input
                         type="email"
@@ -89,7 +89,7 @@ const UserSettings = () => {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
-                <div className="form-group">
+                <div className="user-settings form-group">
                     <label>
                         <input
                             type="checkbox"
@@ -100,7 +100,7 @@ const UserSettings = () => {
                     </label>
                 </div>
                 {updatePassword && (
-                    <div className="form-group">
+                    <div className="user-settings form-group">
                         <label htmlFor="password">Password</label>
                         <input
                             type="password"

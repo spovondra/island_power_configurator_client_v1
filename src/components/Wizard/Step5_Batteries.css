@@ -59,22 +59,6 @@
     margin-top: 0;
 }
 
-/* General Button Styles */
-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 16px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px; /* Spacing between button and inputs */
-}
-
-button:hover {
-    background-color: #0056b3;
-}
 
 /* Responsive Design */
 @media (min-width: 768px) {

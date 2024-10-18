@@ -178,16 +178,16 @@ const Step3_Location = ({ onComplete }) => {
     }));
 
     return (
-        <div className="map-page-container">
-            <div className="content">
-                <div className="left-column">
-                    <div className="search-block">
-                        <div className="search-bar">
+        <div className="step3-map-page-container">
+            <div className="step3-content">
+                <div className="step3-left-column">
+                    <div className="step3-search-block">
+                        <div className="step3-search-bar">
                             <input type="text" id="locationSearch" className="form-control" placeholder={t('step3.location_placeholder')} />
-                            <button className="search-button" onClick={searchLocation}>{t('step3.search_button')}</button>
+                            <button className="step3-search-button" onClick={searchLocation}>{t('step3.search_button')}</button>
                         </div>
                     </div>
-                    <div className="map-wrapper">
+                    <div className="step3-map-wrapper">
                         <LocationComponent
                             latitude={location.latitude}
                             longitude={location.longitude}
@@ -202,8 +202,8 @@ const Step3_Location = ({ onComplete }) => {
                         />
                     </div>
                 </div>
-                <div className="controls">
-                    <div className="form-group">
+                <div className="step3-controls">
+                    <div className="step3-form-group">
                         <label htmlFor="latitude">{t('step3.latitude_label')}</label>
                         <input
                             type="text"
@@ -214,7 +214,7 @@ const Step3_Location = ({ onComplete }) => {
                             onBlur={handleProcessLocationData}
                         />
                     </div>
-                    <div className="form-group">
+                    <div className="step3-form-group">
                         <label htmlFor="longitude">{t('step3.longitude_label')}</label>
                         <input
                             type="text"
@@ -225,7 +225,7 @@ const Step3_Location = ({ onComplete }) => {
                             onBlur={handleProcessLocationData}
                         />
                     </div>
-                    <div className="form-group">
+                    <div className="step3-form-group">
                         <label htmlFor="angle">{t('step3.angle_label')}</label>
                         <input
                             type="text"
@@ -236,7 +236,7 @@ const Step3_Location = ({ onComplete }) => {
                             onBlur={handleProcessLocationData}
                         />
                     </div>
-                    <div className="form-group">
+                    <div className="step3-form-group">
                         <label htmlFor="aspect">{t('step3.aspect_label')}</label>
                         <input
                             type="text"
@@ -247,7 +247,7 @@ const Step3_Location = ({ onComplete }) => {
                             onBlur={handleProcessLocationData}
                         />
                     </div>
-                    <div className="form-group">
+                    <div className="step3-form-group">
                         <label htmlFor="useOptimal">{t('step3.use_optimal_label')}</label>
                         <input
                             type="checkbox"
@@ -256,15 +256,15 @@ const Step3_Location = ({ onComplete }) => {
                             onChange={handleOptimalValuesToggle}
                         />
                     </div>
-                    <div className="form-group">
+                    <div className="step3-form-group">
                         <h3>{t('step3.temperature_range_label')}</h3>
                         <p>{t('step3.min_temperature_label')}: {temperatures.min} °C</p>
                         <p>{t('step3.max_temperature_label')}: {temperatures.max} °C</p>
                     </div>
                 </div>
             </div>
-            <div className="chart-flex-container">
-                <div className="chart-container">
+            <div className="step3-chart-flex-container">
+                <div className="step3-chart-container">
                     <h3>{t('step3.monthly_irradiance_label')}</h3>
                     <BarChart width={600} height={300} data={chartData}>
                         <CartesianGrid strokeDasharray="3 3" />
@@ -276,7 +276,7 @@ const Step3_Location = ({ onComplete }) => {
                         </Bar>
                     </BarChart>
                 </div>
-                <div className="chart-container">
+                <div className="step3-chart-container">
                     <h3>{t('step3.avg_ambient_temp_label')}</h3>
                     <BarChart width={600} height={300} data={chartData}>
                         <CartesianGrid strokeDasharray="3 3" />

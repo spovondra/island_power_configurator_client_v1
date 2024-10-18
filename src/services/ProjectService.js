@@ -235,11 +235,11 @@ export const getSuitableControllers = async (projectId, regulatorType) => {
     }
 };
 
-// Select a controller for the project using the controller ID as a query parameter
-export const selectController = async (projectId, controllerId) => {
+// Select a controller for the project using both controllerId and regulatorType
+export const selectController = async (projectId, controllerId, regulatorType) => {
     try {
         const response = await apiClient.post(`${API_PROJECT_URL}/${projectId}/controller/select`, null, {
-            params: { controllerId },  // Sending controllerId as a query parameter
+            params: { controllerId, regulatorType },  // Sending both controllerId and regulatorType as query parameters
         });
         return response.data;
     } catch (error) {
