@@ -2,7 +2,8 @@ import React, { useEffect, useReducer } from 'react';
 import { getAllComponents, createComponent, updateComponent, deleteComponent, getComponentById } from '../../services/ComponentService';
 import Modal from '../Modal/Modal';
 import './ComponentAdminPanel.css';
-import ComponentForm from "./ComponentForm";
+import ComponentForm from './ComponentForm';
+import { useTranslation } from 'react-i18next'; // Importing the translation hook
 
 const initialState = {
     components: [],
@@ -47,6 +48,7 @@ const componentReducer = (state, action) => {
 const ComponentAdminPanel = () => {
     const [state, dispatch] = useReducer(componentReducer, initialState);
     const { components, selectedCategory, isLoading, isModalOpen, selectedComponent, modalContent, error } = state;
+    const { t } = useTranslation('admin'); // Use the componentAdmin namespace for translations
 
     const fetchComponents = async (category) => {
         try {
@@ -66,7 +68,7 @@ const ComponentAdminPanel = () => {
             const newComponent = await createComponent(selectedCategory, formData);
             dispatch({ type: 'ADD_COMPONENT', payload: newComponent });
         } catch (error) {
-            alert('Failed to add component');
+            alert(t('error_message')); // Use translation for error message
         }
     };
 
@@ -79,7 +81,7 @@ const ComponentAdminPanel = () => {
             const updatedComponent = await updateComponent(selectedCategory, selectedComponent.id, formData);
             dispatch({ type: 'UPDATE_COMPONENT', payload: updatedComponent });
         } catch (error) {
-            alert('Failed to update component');
+            alert(t('error_message')); // Use translation for error message
         }
     };
 
@@ -88,7 +90,7 @@ const ComponentAdminPanel = () => {
             await deleteComponent(selectedCategory, componentId);
             dispatch({ type: 'DELETE_SUCCESS', payload: componentId });
         } catch (error) {
-            alert('Failed to delete component');
+            alert(t('error_message')); // Use translation for error message
         }
     };
 
@@ -108,76 +110,76 @@ const ComponentAdminPanel = () => {
 
     return (
         <div className="component-admin-panel-container">
-            <h2>Component Management</h2>
+            <h2>{t('component.title')}</h2>
 
             <div className="category-buttons">
-                {['appliances', 'solar-panels', 'controllers', 'batteries', 'inverters'].map(category => (
+                {['solar-panels', 'controllers', 'batteries', 'inverters'].map(category => (
                     <button
                         key={category}
                         className={`category-button ${selectedCategory === category ? 'active' : ''}`}
                         onClick={() => handleCategoryChange(category)}
                     >
-                        {category.replace('-', ' ').toUpperCase()}
+                        {t(`component.categories.${category}`)}
                     </button>
                 ))}
             </div>
 
-            <button className="component-add-button" onClick={() => handleSelectComponent({})}>Add New Component</button>
+            <button className="component-add-button" onClick={() => handleSelectComponent({})}>{t('component.add_new_component')}</button>
 
             {isLoading ? (
-                <p>Loading...</p>
+                <p>{t('component.loading')}</p>
             ) : (
                 <table className="component-table">
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Name</th>
+                        <th>{t('component.id')}</th>
+                        <th>{t('component.name')}</th>
                         {selectedCategory === 'solar-panels' && (
                             <>
-                                <th>Manufacturer</th>
-                                <th>Rated Power (W)</th>
-                                <th>Voc (V)</th>
-                                <th>IsC (A)</th>
-                                <th>Vmp (V)</th>
-                                <th>Imp (A)</th>
-                                <th>Temp Coefficient (PMax)</th>
-                                <th>Tolerance (%)</th>
-                                <th>Degradation (1st Year)</th>
-                                <th>Degradation (Years)</th>
-                                <th>Price ($)</th>
+                                <th>{t('component.manufacturer')}</th>
+                                <th>{t('component.rated_power')}</th>
+                                <th>{t('component.voc')}</th>
+                                <th>{t('component.isc')}</th>
+                                <th>{t('component.vmp')}</th>
+                                <th>{t('component.imp')}</th>
+                                <th>{t('component.temp_coefficient')}</th>
+                                <th>{t('component.tolerance')}</th>
+                                <th>{t('component.degradation_first_year')}</th>
+                                <th>{t('component.degradation_years')}</th>
+                                <th>{t('component.price')}</th>
                             </>
                         )}
                         {selectedCategory === 'controllers' && (
                             <>
-                                <th>Rated Power (W)</th>
-                                <th>Current Rating (A)</th>
-                                <th>Max Voltage (V)</th>
-                                <th>Min Voltage (V)</th>
-                                <th>Type</th>
-                                <th>Efficiency (%)</th>
+                                <th>{t('component.rated_power')}</th>
+                                <th>{t('component.current_rating')}</th>
+                                <th>{t('component.max_voltage')}</th>
+                                <th>{t('component.min_voltage')}</th>
+                                <th>{t('component.type')}</th>
+                                <th>{t('component.efficiency')}</th>
                             </>
                         )}
                         {selectedCategory === 'inverters' && (
                             <>
-                                <th>Continuous Power (25°C)</th>
-                                <th>Continuous Power (40°C)</th>
-                                <th>Continuous Power (65°C)</th>
-                                <th>Max Power (W)</th>
-                                <th>Efficiency (%)</th>
-                                <th>Voltage (V)</th>
-                                <th>Price ($)</th>
+                                <th>{t('component.continuous_power_25C')}</th>
+                                <th>{t('component.continuous_power_40C')}</th>
+                                <th>{t('component.continuous_power_65C')}</th>
+                                <th>{t('component.max_power')}</th>
+                                <th>{t('component.efficiency')}</th>
+                                <th>{t('component.max_voltage')}</th>
+                                <th>{t('component.price')}</th>
                             </>
                         )}
                         {selectedCategory === 'batteries' && (
                             <>
-                                <th>Type</th>
-                                <th>Capacity (Ah)</th>
-                                <th>Voltage (V)</th>
-                                <th>DOD (%)</th>
-                                <th>Price ($)</th>
+                                <th>{t('component.battery_type')}</th>
+                                <th>{t('component.capacity')}</th>
+                                <th>{t('component.max_voltage')}</th>
+                                <th>{t('component.dod')}</th>
+                                <th>{t('component.price')}</th>
                             </>
                         )}
-                        <th>Actions</th>
+                        <th>{t('component.actions')}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -231,8 +233,8 @@ const ComponentAdminPanel = () => {
                                 </>
                             )}
                             <td>
-                                <button className="component-table-button-edit" onClick={() => handleSelectComponent(component)}>Edit</button>
-                                <button className="component-table-button-delete" onClick={() => handleDeleteComponent(component.id)}>Delete</button>
+                                <button className="component-table-button-edit" onClick={() => handleSelectComponent(component)}>{t('component.edit_button')}</button>
+                                <button className="component-table-button-delete" onClick={() => handleDeleteComponent(component.id)}>{t('component.delete_button')}</button>
                             </td>
                         </tr>
                     ))}

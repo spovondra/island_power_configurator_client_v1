@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './ComponentForm.css';
+import { useTranslation } from 'react-i18next'; // Importing the translation hook
 
 const ComponentForm = ({ componentData, handleSubmit, onClose, selectedCategory }) => {
+    const { t } = useTranslation('admin'); // Use the admin namespace for translations
     const [formData, setFormData] = useState({
         name: '',
         manufacturer: '',
@@ -55,47 +57,47 @@ const ComponentForm = ({ componentData, handleSubmit, onClose, selectedCategory 
                 return (
                     <>
                         <label>
-                            Manufacturer:
+                            {t('component.manufacturer')}:
                             <input type="text" name="manufacturer" value={formData.manufacturer} onChange={handleChange} required />
                         </label>
                         <label>
-                            Rated Power (W):
+                            {t('component.rated_power')} (W):
                             <input type="number" name="pRated" value={formData.pRated} onChange={handleChange} required />
                         </label>
                         <label>
-                            Open-Circuit Voltage (V):
+                            {t('component.voc')} (V):
                             <input type="number" name="voc" value={formData.voc} onChange={handleChange} required />
                         </label>
                         <label>
-                            Short-Circuit Current (A):
+                            {t('component.isc')} (A):
                             <input type="number" name="isc" value={formData.isc} onChange={handleChange} required />
                         </label>
                         <label>
-                            Voltage at Maximum Power (V):
+                            {t('component.vmp')} (V):
                             <input type="number" name="vmp" value={formData.vmp} onChange={handleChange} required />
                         </label>
                         <label>
-                            Current at Maximum Power (A):
+                            {t('component.imp')} (A):
                             <input type="number" name="imp" value={formData.imp} onChange={handleChange} required />
                         </label>
                         <label>
-                            Temperature Coefficient for Maximum Power:
+                            {t('component.temp_coefficient')}:
                             <input type="number" name="tempCoefficientPMax" value={formData.tempCoefficientPMax} onChange={handleChange} required />
                         </label>
                         <label>
-                            Tolerance (%):
+                            {t('component.tolerance')} (%):
                             <input type="number" name="tolerance" value={formData.tolerance} onChange={handleChange} required />
                         </label>
                         <label>
-                            Degradation First Year (%):
+                            {t('component.degradation_first_year')} (%):
                             <input type="number" name="degradationFirstYear" value={formData.degradationFirstYear} onChange={handleChange} required />
                         </label>
                         <label>
-                            Degradation Years (%):
+                            {t('component.degradation_years')} (%):
                             <input type="number" name="degradationYears" value={formData.degradationYears} onChange={handleChange} required />
                         </label>
                         <label>
-                            Price ($):
+                            {t('component.price')} ($):
                             <input type="number" name="price" value={formData.price} onChange={handleChange} required />
                         </label>
                     </>
@@ -105,31 +107,31 @@ const ComponentForm = ({ componentData, handleSubmit, onClose, selectedCategory 
                 return (
                     <>
                         <label>
-                            Name:
+                            {t('component.name')}:
                             <input type="text" name="name" value={formData.name} onChange={handleChange} required />
                         </label>
                         <label>
-                            Rated Power (W):
+                            {t('component.rated_power')} (W):
                             <input type="number" name="ratedPower" value={formData.ratedPower} onChange={handleChange} required />
                         </label>
                         <label>
-                            Current Rating (A):
+                            {t('component.current_rating')} (A):
                             <input type="number" name="currentRating" value={formData.currentRating} onChange={handleChange} required />
                         </label>
                         <label>
-                            Max Voltage (V):
+                            {t('component.max_voltage')} (V):
                             <input type="number" name="maxVoltage" value={formData.maxVoltage} onChange={handleChange} required />
                         </label>
                         <label>
-                            Min Voltage (V):
+                            {t('component.min_voltage')} (V):
                             <input type="number" name="minVoltage" value={formData.minVoltage} onChange={handleChange} required />
                         </label>
                         <label>
-                            Type:
+                            {t('component.type')}:
                             <input type="text" name="type" value={formData.type} onChange={handleChange} required />
                         </label>
                         <label>
-                            Efficiency (%):
+                            {t('component.efficiency')} (%):
                             <input type="number" name="efficiency" value={formData.efficiency} onChange={handleChange} required />
                         </label>
                     </>
@@ -139,35 +141,35 @@ const ComponentForm = ({ componentData, handleSubmit, onClose, selectedCategory 
                 return (
                     <>
                         <label>
-                            Name:
+                            {t('component.name')}:
                             <input type="text" name="name" value={formData.name} onChange={handleChange} required />
                         </label>
                         <label>
-                            Continuous Power (25°C):
+                            {t('component.continuous_power_25C')}:
                             <input type="number" name="continuousPower25C" value={formData.continuousPower25C} onChange={handleChange} required />
                         </label>
                         <label>
-                            Continuous Power (40°C):
+                            {t('component.continuous_power_40C')}:
                             <input type="number" name="continuousPower40C" value={formData.continuousPower40C} onChange={handleChange} required />
                         </label>
                         <label>
-                            Continuous Power (65°C):
+                            {t('component.continuous_power_65C')}:
                             <input type="number" name="continuousPower65C" value={formData.continuousPower65C} onChange={handleChange} required />
                         </label>
                         <label>
-                            Max Power:
+                            {t('component.max_power')}:
                             <input type="number" name="maxPower" value={formData.maxPower} onChange={handleChange} required />
                         </label>
                         <label>
-                            Efficiency (%):
+                            {t('component.efficiency')} (%):
                             <input type="number" name="efficiency" value={formData.efficiency} onChange={handleChange} required />
                         </label>
                         <label>
-                            Voltage:
+                            {t('component.voltage')}:
                             <input type="number" name="voltage" value={formData.voltage} onChange={handleChange} required />
                         </label>
                         <label>
-                            Price ($):
+                            {t('component.price')} ($):
                             <input type="number" name="price" value={formData.price} onChange={handleChange} required />
                         </label>
                     </>
@@ -177,27 +179,27 @@ const ComponentForm = ({ componentData, handleSubmit, onClose, selectedCategory 
                 return (
                     <>
                         <label>
-                            Name:
+                            {t('component.name')}:
                             <input type="text" name="name" value={formData.name} onChange={handleChange} required />
                         </label>
                         <label>
-                            Type:
+                            {t('component.type')}:
                             <input type="text" name="type" value={formData.type} onChange={handleChange} required />
                         </label>
                         <label>
-                            Capacity (Ah):
+                            {t('component.capacity')} (Ah):
                             <input type="number" name="capacity" value={formData.capacity} onChange={handleChange} required />
                         </label>
                         <label>
-                            Voltage (V):
+                            {t('component.voltage')} (V):
                             <input type="number" name="voltage" value={formData.voltage} onChange={handleChange} required />
                         </label>
                         <label>
-                            Depth of Discharge (%):
+                            {t('component.dod')} (%):
                             <input type="number" name="dod" value={formData.dod} onChange={handleChange} required />
                         </label>
                         <label>
-                            Price ($):
+                            {t('component.price')} ($):
                             <input type="number" name="price" value={formData.price} onChange={handleChange} required />
                         </label>
                     </>
@@ -209,13 +211,13 @@ const ComponentForm = ({ componentData, handleSubmit, onClose, selectedCategory 
     };
 
     return (
-        <div className="component-form-container"> {/* Scrollable container */}
+        <div className="component-form-container">
             <form onSubmit={handleSubmitForm} className="component-form">
-                <h3>{componentData.id ? 'Edit Component' : 'Add New Component'}</h3>
+                <h3>{componentData.id ? t('component.edit_component') : t('component.add_new_component')}</h3>
                 {renderFields()}
                 <div className="form-actions">
-                    <button type="submit">{componentData.id ? 'Update Component' : 'Add Component'}</button>
-                    <button type="button" onClick={onClose}>Cancel</button>
+                    <button type="submit">{componentData.id ? t('component.update_component') : t('component.add_new_component')}</button>
+                    <button type="button" onClick={onClose}>{t('component.cancel')}</button>
                 </div>
             </form>
         </div>

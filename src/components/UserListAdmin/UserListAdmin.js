@@ -2,8 +2,9 @@ import { useEffect, useReducer, useState } from 'react';
 import authService from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../Modal/Modal';
-import './UserList.css';
+import './UserListAdmin.css';
 import UserForm from './UserForm';
+import { useTranslation } from 'react-i18next'; // Import i18next hook
 
 const initialState = {
     users: [],
@@ -45,9 +46,10 @@ const userReducer = (state, action) => {
     }
 };
 
-const UserList = () => {
+const UserListAdmin = () => {
     const [state, dispatch] = useReducer(userReducer, initialState);
     const { users, error, isLoading, isModalOpen, selectedUser, updatePassword, modalContent } = state;
+    const { t } = useTranslation('admin'); // Add translation hook
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -81,10 +83,10 @@ const UserList = () => {
         try {
             const updatedUser = await authService.updateUser(selectedUser.id, userData);
             dispatch({ type: 'UPDATE_USER', payload: updatedUser });
-            alert('User updated successfully');
+            alert(t('userListAdmin.user_updated')); // Use translation
             await fetchUsers();
         } catch (error) {
-            alert('Failed to update user');
+            alert(t('userListAdmin.failed_to_update')); // Use translation
         }
     };
 
@@ -94,10 +96,10 @@ const UserList = () => {
         try {
             const newUser = await authService.register(username, password, role, firstName, lastName, email);
             dispatch({ type: 'ADD_USER', payload: newUser.data });
-            alert('User added successfully');
+            alert(t('userListAdmin.user_added')); // Use translation
             await fetchUsers();
         } catch (error) {
-            alert(`Failed to add user: ${error.response ? error.response.data.message : error.message}`);
+            alert(t('userListAdmin.failed_to_add', { message: error.message })); // Use translation
         }
     };
 
@@ -156,34 +158,36 @@ const UserList = () => {
 
     return (
         <div className="user-list-container">
-            <h2 className="user-list-header">User List</h2>
+            <h2 className="user-list-header">{t('userListAdmin.header')}</h2>
             <div className="user-list-controls">
                 <div className="user-list-search-container">
                     <input
                         type="text"
-                        placeholder="Search by username"
+                        placeholder={t('userListAdmin.search_placeholder')}
                         value={searchQuery}
                         onChange={handleSearchChange}
                         className="user-list-search-input"
                     />
                     <button className="user-list-search-button">🔍</button>
                 </div>
-                <button className="user-list-add-button" onClick={handleAddUserClick}>Add User</button>
+                <button className="user-list-add-button" onClick={handleAddUserClick}>
+                    {t('userListAdmin.add_user')}
+                </button>
             </div>
             {isLoading ? (
-                <p>Loading...</p>
+                <p>{t('userListAdmin.loading')}</p>
             ) : (
                 <div className="user-list-table-container">
                     <table className="user-list-table">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Login</th>
-                            <th>Role</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Projects</th>
-                            <th>Actions</th>
+                            <th>{t('userListAdmin.id')}</th>
+                            <th>{t('userListAdmin.login')}</th>
+                            <th>{t('userListAdmin.role')}</th>
+                            <th>{t('userListAdmin.first_name')}</th>
+                            <th>{t('userListAdmin.last_name')}</th>
+                            <th>{t('userListAdmin.projects')}</th>
+                            <th>{t('userListAdmin.actions')}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -196,8 +200,12 @@ const UserList = () => {
                                 <td>{user.lastName}</td>
                                 <td className="projects">{formatProjects(user.projects)}</td>
                                 <td>
-                                    <button className="user-list-button user-list-button-edit" onClick={() => handleSelectUser(user)}>Edit</button>
-                                    <button className="user-list-button user-list-button-delete" onClick={() => handleDeleteUser(user.id)}>Delete</button>
+                                    <button className="user-list-button user-list-button-edit" onClick={() => handleSelectUser(user)}>
+                                        {t('userListAdmin.edit_button')}
+                                    </button>
+                                    <button className="user-list-button user-list-button-delete" onClick={() => handleDeleteUser(user.id)}>
+                                        {t('userListAdmin.delete_button')}
+                                    </button>
                                 </td>
                             </tr>
                         ))}
@@ -206,7 +214,7 @@ const UserList = () => {
                     <Modal
                         isOpen={isModalOpen}
                         onClose={handleCloseModal}
-                        title={modalContent === 'form' ? (selectedUser ? 'Edit User' : 'Add User') : 'Error'}
+                        title={modalContent === 'form' ? (selectedUser ? t('userListAdmin.edit_user') : t('userListAdmin.add_user_modal')) : t('userListAdmin.error')}
                         className={modalContent === 'error' ? 'user-list-error-modal' : ''}
                     >
                         {modalContent === 'form' ? (
@@ -228,4 +236,4 @@ const UserList = () => {
     );
 };
 
-export default UserList;
+export default UserListAdmin;

@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { getUserProjects, deleteProject } from '../../services/ProjectService';
 import { ProjectContext } from '../../context/ProjectContext';
 import { projectReducer, initialState } from '../../reducers/projectReducer';
+import { useTranslation } from 'react-i18next'; // Import the useTranslation hook
 import './ProjectList.css';
 
 const ProjectList = () => {
     const [state, dispatch] = useReducer(projectReducer, initialState);
     const { setSelectedProject } = useContext(ProjectContext);
     const navigate = useNavigate();
+    const { t } = useTranslation('project'); // Use the projectList namespace
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -29,7 +31,7 @@ const ProjectList = () => {
             await deleteProject(projectId);
             dispatch({ type: 'DELETE_PROJECT', payload: projectId });
         } catch (error) {
-            console.error('Error deleting project:', error);
+            console.error(t('error', { error }));
         }
     };
 
@@ -39,24 +41,24 @@ const ProjectList = () => {
     };
 
     const handleCreateNewProject = () => {
-        setSelectedProject(null); // Ensure the selected project is null for new project creation
+        setSelectedProject(null);
         navigate('/wizard', { state: { isNewProject: true } });
     };
 
-    if (state.loading) return <p>Loading...</p>;
-    if (state.error) return <p>Error: {state.error}</p>;
+    if (state.loading) return <p>{t('loading')}</p>;
+    if (state.error) return <p>{t('error', { error: state.error })}</p>;
 
     return (
         <div className="project-list">
-            <h2>Projects</h2>
-            <button className="create" onClick={handleCreateNewProject}>Create New Project</button>
+            <h2>{t('title')}</h2>
+            <button className="create" onClick={handleCreateNewProject}>{t('create_new_project')}</button>
             <div className="projects-container">
                 {state.projects.map(project => (
                     <div key={project.id} className="project-item">
                         <span className="project-name">{project.name}</span>
                         <div className="project-actions">
-                            <button className="edit" onClick={() => handleProjectAction(project.id)}>Edit</button>
-                            <button className="delete" onClick={() => handleDelete(project.id)}>Delete</button>
+                            <button className="edit" onClick={() => handleProjectAction(project.id)}>{t('edit')}</button>
+                            <button className="delete" onClick={() => handleDelete(project.id)}>{t('delete')}</button>
                         </div>
                     </div>
                 ))}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './ProjectForm.css';
+import { useTranslation } from 'react-i18next'; // Import translation hook
 
-// Helper function to initialize empty component categories
 const initializeComponents = () => ({
     appliances: [],
     solarPanels: [],
@@ -11,6 +11,7 @@ const initializeComponents = () => ({
 });
 
 const ProjectForm = ({ formData, handleSubmit, onClose }) => {
+    const { t } = useTranslation('admin'); // Translation hook
     const [localFormData, setLocalFormData] = useState({
         name: '',
         site: {
@@ -79,7 +80,7 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
         <div className="project-form-container">
             <form onSubmit={handleSubmitClick} className="project-form">
                 <div>
-                    <label htmlFor="name">Project Name:</label>
+                    <label htmlFor="name">{t('projectForm.name')}:</label>
                     <input
                         type="text"
                         id="name"
@@ -91,8 +92,8 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
                 </div>
 
                 <div>
-                    <h3>Site Information</h3>
-                    <label htmlFor="latitude">Latitude:</label>
+                    <h3>{t('projectForm.site_information')}</h3>
+                    <label htmlFor="latitude">{t('projectForm.latitude')}:</label>
                     <input
                         type="number"
                         id="latitude"
@@ -101,7 +102,7 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
                         onChange={handleSiteChange}
                         required
                     />
-                    <label htmlFor="longitude">Longitude:</label>
+                    <label htmlFor="longitude">{t('projectForm.longitude')}:</label>
                     <input
                         type="number"
                         id="longitude"
@@ -110,7 +111,7 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
                         onChange={handleSiteChange}
                         required
                     />
-                    <label htmlFor="minTemperature">Min Temperature:</label>
+                    <label htmlFor="minTemperature">{t('projectForm.min_temperature')}:</label>
                     <input
                         type="number"
                         id="minTemperature"
@@ -118,7 +119,7 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
                         value={localFormData.site?.minTemperature || ''}
                         onChange={handleSiteChange}
                     />
-                    <label htmlFor="maxTemperature">Max Temperature:</label>
+                    <label htmlFor="maxTemperature">{t('projectForm.max_temperature')}:</label>
                     <input
                         type="number"
                         id="maxTemperature"
@@ -126,7 +127,7 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
                         value={localFormData.site?.maxTemperature || ''}
                         onChange={handleSiteChange}
                     />
-                    <label htmlFor="panelAngle">Panel Angle:</label>
+                    <label htmlFor="panelAngle">{t('projectForm.panel_angle')}:</label>
                     <input
                         type="number"
                         id="panelAngle"
@@ -134,7 +135,7 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
                         value={localFormData.site?.panelAngle || ''}
                         onChange={handleSiteChange}
                     />
-                    <label htmlFor="panelAspect">Panel Aspect:</label>
+                    <label htmlFor="panelAspect">{t('projectForm.panel_aspect')}:</label>
                     <input
                         type="number"
                         id="panelAspect"
@@ -142,7 +143,7 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
                         value={localFormData.site?.panelAspect || ''}
                         onChange={handleSiteChange}
                     />
-                    <label htmlFor="usedOptimalValues">Used Optimal Values:</label>
+                    <label htmlFor="usedOptimalValues">{t('projectForm.used_optimal_values')}:</label>
                     <input
                         type="checkbox"
                         id="usedOptimalValues"
@@ -153,12 +154,7 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
                 </div>
 
                 <div>
-                    <h3>Monthly Irradiance</h3>
-                    <p>Details for monthly irradiance will be added here later.</p>
-                </div>
-
-                <div>
-                    <h3>Solar Components</h3>
+                    <h3>{t('projectForm.solar_components')}</h3>
                     {Object.keys(localFormData.solarComponents).map(category => (
                         <div key={category}>
                             <h4>{category}</h4>
@@ -168,8 +164,8 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
                 </div>
 
                 <div className="form-actions">
-                    <button type="submit" className="btn-submit">Save</button>
-                    <button type="button" onClick={onClose} className="btn-cancel">Cancel</button>
+                    <button type="submit" className="btn-submit">{t('projectForm.save')}</button>
+                    <button type="button" onClick={onClose} className="btn-cancel">{t('projectForm.cancel')}</button>
                 </div>
             </form>
         </div>

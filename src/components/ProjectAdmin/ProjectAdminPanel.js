@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ProjectForm from './ProjectForm';
 import Modal from '../Modal/Modal';
 import './ProjectAdminPanel.css';
+import { useTranslation } from 'react-i18next'; // Import translation hook
 
 const initialState = {
     projects: [],
@@ -45,6 +46,7 @@ const projectReducer = (state, action) => {
 const ProjectAdminPanel = () => {
     const [state, dispatch] = useReducer(projectReducer, initialState);
     const { projects, error, isLoading, isModalOpen, selectedProject, modalContent } = state;
+    const { t } = useTranslation('admin'); // Translation hook
     const [formData, setFormData] = useState({
         name: '',
         site: {
@@ -85,10 +87,10 @@ const ProjectAdminPanel = () => {
         try {
             const updatedProject = await updateProject(selectedProject.id, formData);
             dispatch({ type: 'UPDATE_PROJECT', payload: updatedProject });
-            alert('Project updated successfully');
+            alert(t('projectAdminPanel.project_updated'));
             await fetchProjects();
         } catch (error) {
-            alert('Failed to update project');
+            alert(t('projectAdminPanel.failed_to_update'));
         }
     };
 
@@ -96,10 +98,10 @@ const ProjectAdminPanel = () => {
         try {
             const newProject = await createProject(formData);
             dispatch({ type: 'ADD_PROJECT', payload: newProject });
-            alert('Project added successfully');
+            alert(t('projectAdminPanel.project_added'));
             await fetchProjects();
         } catch (error) {
-            alert(`Failed to add project: ${error.message}`);
+            alert(t('projectAdminPanel.failed_to_add'));
         }
     };
 
@@ -143,20 +145,22 @@ const ProjectAdminPanel = () => {
 
     return (
         <div className="project-admin-panel-container">
-            <h2>Project Admin Panel</h2>
-            <button className="project-add-button" onClick={() => handleSelectProject({})}>Add New Project</button>
+            <h2>{t('projectAdminPanel.title')}</h2>
+            <button className="project-add-button" onClick={() => handleSelectProject({})}>
+                {t('projectAdminPanel.add_project')}
+            </button>
             {isLoading ? (
-                <p>Loading...</p>
+                <p>{t('projectAdminPanel.loading')}</p>
             ) : (
                 <div>
                     <table className="project-table">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Location</th>
-                            <th>Temperature</th>
-                            <th>Actions</th>
+                            <th>{t('projectAdminPanel.id')}</th>
+                            <th>{t('projectAdminPanel.name')}</th>
+                            <th>{t('projectAdminPanel.location')}</th>
+                            <th>{t('projectAdminPanel.temperature')}</th>
+                            <th>{t('projectAdminPanel.actions')}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -167,8 +171,12 @@ const ProjectAdminPanel = () => {
                                 <td>{project.site ? `${project.site.latitude}, ${project.site.longitude}` : 'N/A'}</td>
                                 <td>{project.site ? `${project.site.minTemperature} to ${project.site.maxTemperature}` : 'N/A'}</td>
                                 <td>
-                                    <button className="project-table-button project-table-button-edit" onClick={() => handleSelectProject(project)}>Edit</button>
-                                    <button className="project-table-button project-table-button-delete" onClick={() => handleDeleteProject(project.id)}>Delete</button>
+                                    <button className="project-table-button project-table-button-edit" onClick={() => handleSelectProject(project)}>
+                                        {t('projectAdminPanel.edit_button')}
+                                    </button>
+                                    <button className="project-table-button project-table-button-delete" onClick={() => handleDeleteProject(project.id)}>
+                                        {t('projectAdminPanel.delete_button')}
+                                    </button>
                                 </td>
                             </tr>
                         ))}
@@ -177,7 +185,7 @@ const ProjectAdminPanel = () => {
                     <Modal
                         isOpen={isModalOpen}
                         onClose={handleCloseModal}
-                        title={modalContent === 'form' ? (selectedProject ? 'Edit Project' : 'Add Project') : 'Error'}
+                        title={modalContent === 'form' ? (selectedProject ? t('projectAdminPanel.edit_project') : t('projectAdminPanel.add_project_modal')) : t('projectAdminPanel.error')}
                     >
                         {modalContent === 'form' ? (
                             <ProjectForm

@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import SharedLayout from './pages/SharedLayout';
 import Login from './pages/auth/Login';
-import UserList from './components/UserList/UserList';
+import UserListAdmin from './components/UserListAdmin/UserListAdmin';
 import ProtectedRoute from './components/ProtectedRoute';
 import Register from './pages/auth/Register';
 import UserSettings from './components/UserSettings/UserSettings';
@@ -35,7 +35,7 @@ const App = () => {
                         <Route path="projects/edit/:id" element={<ProjectForm />} />
                         <Route path="/admin/users" element={
                             <AuthRoute role="ADMIN">
-                                <UserList />
+                                <UserListAdmin />
                             </AuthRoute>}/>
                         <Route path="/admin/projects" element={
                             <AuthRoute role="ADMIN">

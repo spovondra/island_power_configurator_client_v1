@@ -1,5 +1,6 @@
 import React from 'react';
-import './UserForm.css'; // Import the new CSS file
+import './UserForm.css';
+import { useTranslation } from 'react-i18next'; // Import i18next hook
 
 const UserForm = ({
                       selectedUser,
@@ -9,12 +10,14 @@ const UserForm = ({
                       updatePassword,
                       dispatch,
                   }) => {
+    const { t } = useTranslation('admin'); // Add translation hook
+
     return (
         <div className="user-form">
             <form onSubmit={handleSubmit}>
                 <fieldset>
                     <div className="form-group">
-                        <label>Username:</label>
+                        <label>{t('userForm.username')}:</label>
                         <input
                             type="text"
                             name="username"
@@ -23,7 +26,7 @@ const UserForm = ({
                         />
                     </div>
                     <div className="form-group">
-                        <label>Password:</label>
+                        <label>{t('userForm.password')}:</label>
                         {selectedUser ? (
                             <>
                                 <input
@@ -53,7 +56,7 @@ const UserForm = ({
                         )}
                     </div>
                     <div className="form-group">
-                        <label>Role:</label>
+                        <label>{t('userForm.role')}:</label>
                         <select
                             name="role"
                             value={formData.role}
@@ -64,7 +67,7 @@ const UserForm = ({
                         </select>
                     </div>
                     <div className="form-group">
-                        <label>First Name:</label>
+                        <label>{t('userForm.first_name')}:</label>
                         <input
                             type="text"
                             name="firstName"
@@ -73,7 +76,7 @@ const UserForm = ({
                         />
                     </div>
                     <div className="form-group">
-                        <label>Last Name:</label>
+                        <label>{t('userForm.last_name')}:</label>
                         <input
                             type="text"
                             name="lastName"
@@ -82,7 +85,7 @@ const UserForm = ({
                         />
                     </div>
                     <div className="form-group">
-                        <label>Email:</label>
+                        <label>{t('userForm.email')}:</label>
                         <input
                             type="email"
                             name="email"
@@ -90,7 +93,7 @@ const UserForm = ({
                             onChange={handleInputChange}
                         />
                     </div>
-                    <button type="submit">{selectedUser ? 'Update User' : 'Add User'}</button>
+                    <button type="submit">{selectedUser ? t('userForm.update_user') : t('userForm.add_user')}</button>
                 </fieldset>
             </form>
         </div>

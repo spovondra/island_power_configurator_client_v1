@@ -1,0 +1,8 @@
+{
+  "title": "Projects",
+  "create_new_project": "Create New Project",
+  "loading": "Loading...",
+  "error": "Error: {{error}}",
+  "edit": "Edit",
+  "delete": "Delete"
+}

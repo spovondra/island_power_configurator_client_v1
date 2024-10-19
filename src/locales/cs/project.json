@@ -1,0 +1,8 @@
+{
+  "title": "Projekty",
+  "create_new_project": "Vytvořit nový projekt",
+  "loading": "Načítání...",
+  "error": "Chyba: {{error}}",
+  "edit": "Upravit",
+  "delete": "Smazat"
+}

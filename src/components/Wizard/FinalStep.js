@@ -13,11 +13,11 @@ import {
     Pie,
     Cell,
 } from 'recharts';
-import { useTranslation } from 'react-i18next'; // Import translation hook
+import { useTranslation } from 'react-i18next';
 import './FinalStep.css';
 
 const FinalStep = () => {
-    const { t } = useTranslation('wizard'); // Use translation for the wizard namespace
+    const { t } = useTranslation('wizard');
     const { selectedProject } = useContext(ProjectContext);
     const [project, setProject] = useState(null);
     const [pvgisData, setPVGISData] = useState([]);
@@ -30,11 +30,11 @@ const FinalStep = () => {
                 try {
                     const data = await getProjectById(selectedProject);
                     setProject(data);
-                    if (data.site && data.site.monthlyDataList) {
+                    if (data?.site?.monthlyDataList) {
                         setPVGISData(data.site.monthlyDataList);
                     }
                 } catch (err) {
-                    setError(t('final_step.fetch_error')); // Use translation for error message
+                    setError(t('final_step.fetch_error'));
                 } finally {
                     setLoading(false);
                 }
@@ -43,20 +43,20 @@ const FinalStep = () => {
         fetchProject();
     }, [selectedProject, t]);
 
-    if (loading) return <p>{t('final_step.loading')}</p>; // Use translation for loading text
+    if (loading) return <p>{t('final_step.loading')}</p>;
     if (error) return <p>{error}</p>;
 
-    const site = project?.site || {};
-    const appliances = project?.appliances || [];
-    const configuration = project?.configurationModel || {};
+    const site = project?.site || {};  // Ensure site is at least an empty object
+    const appliances = project?.appliances || [];  // Ensure appliances is at least an empty array
+    const configuration = project?.configurationModel || {};  // Ensure configuration is at least an empty object
 
     const totalEnergyData = [
         {
-            name: t('final_step.total_ac_energy'), // Use translation for total AC energy
+            name: t('final_step.total_ac_energy'),
             value: configuration?.projectAppliance?.totalAcEnergy || 0,
         },
         {
-            name: t('final_step.total_dc_energy'), // Use translation for total DC energy
+            name: t('final_step.total_dc_energy'),
             value: configuration?.projectAppliance?.totalDcEnergy || 0,
         },
     ];

@@ -93,6 +93,18 @@ export const deleteAppliance = async (projectId, applianceId) => {
     }
 };
 
+export const getVoltage = async (projectId) => {
+    try {
+        // API call to fetch system and recommended voltage
+        const response = await apiClient.get(`${API_PROJECT_URL}/${projectId}/inverters/voltage`);
+        return response.data; // Returns systemVoltage and recommendedSystemVoltage
+    } catch (error) {
+        console.error('Error fetching voltages:', error);
+        throw error;
+    }
+};
+
+
 export const getSuitableInverters = async (projectId, systemVoltage, temperature) => {
     try {
         const response = await apiClient.get(`${API_PROJECT_URL}/${projectId}/inverters/suitable`, {

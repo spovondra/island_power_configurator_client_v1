@@ -1,0 +1,11 @@
+{
+  "title": "Nastavení uživatele",
+  "username": "Uživatelské jméno",
+  "first_name": "Křestní jméno",
+  "last_name": "Příjmení",
+  "email": "E-mail",
+  "update_password": "Aktualizovat heslo",
+  "password": "Heslo",
+  "update_button": "Aktualizovat",
+  "loading": "Načítání..."
+}

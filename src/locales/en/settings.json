@@ -1,0 +1,11 @@
+{
+  "title": "User Settings",
+  "username": "Username",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "email": "Email",
+  "update_password": "Update Password",
+  "password": "Password",
+  "update_button": "Update",
+  "loading": "Loading..."
+}

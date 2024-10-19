@@ -53,8 +53,6 @@ const PDFDocument = ({ project, site, appliances, configuration, chartImages }) 
                     <Text>Site Information</Text>
                     <Text style={styles.text}>Latitude: {site.latitude || "N/A"}</Text>
                     <Text style={styles.text}>Longitude: {site.longitude || "N/A"}</Text>
-                    <Text style={styles.text}>Min Temperature: {site.minTemperature || "N/A"} °C</Text>
-                    <Text style={styles.text}>Max Temperature: {site.maxTemperature || "N/A"} °C</Text>
                 </View>
 
                 {/* Appliances Information */}
