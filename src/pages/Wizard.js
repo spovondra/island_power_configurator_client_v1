@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 const Wizard = () => {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);  // Current step
     const [lastCompletedStep, setLastCompletedStep] = useState(0);  // Last completed step
-    const [projectLoaded, setProjectLoaded] = useState(true);  // Flag for loading project data (not required for step 1)
+    const [projectLoaded, setProjectLoaded] = useState(false);  // Flag for loading project data
     const [editMode, setEditMode] = useState(false);  // Whether in edit mode or view mode
     const [projectName, setProjectName] = useState('');  // Track project name for validation
     const { selectedProject } = useContext(ProjectContext);  // Get the selected project from context
@@ -26,8 +26,11 @@ const Wizard = () => {
     useEffect(() => {
         if (selectedProject) {  // Load project data
             loadProject(selectedProject);
+        } else {
+            // Redirect to project list if no project is selected
+            navigate('/projects');
         }
-    }, [selectedProject]);
+    }, [selectedProject, navigate]);
 
     const loadProject = async (projectId) => {
         try {
@@ -35,34 +38,33 @@ const Wizard = () => {
             const completedStep = project.lastCompletedStep || 0;
             setLastCompletedStep(completedStep);  // Set last completed step
             setProjectName(project.name);  // Set the project name for validation
-            console.log("Loaded lastCompletedStep:", completedStep);  // Log lastCompletedStep
+            console.log("Loaded lastCompletedStep:", completedStep);
 
-            // If the lastCompletedStep is 0 or 1, start from step 1
+            // Set current step based on last completed step
             setCurrentStepIndex(completedStep > 1 ? completedStep : 0);
             setProjectLoaded(true);
         } catch (error) {
             console.error('Error loading project:', error);
+            // Handle error (e.g., redirect to project list if project loading fails)
+            navigate('/projects');
         }
     };
 
-    // When a step is completed, we only update the last completed step and don't move forward
+    // Handle step completion
     const handleStepComplete = async (stepIndex) => {
         try {
             await completeStep(selectedProject, stepIndex);  // Send POST to backend
             setLastCompletedStep(stepIndex);  // Update the last completed step
-            console.log("Step completed. Updated lastCompletedStep:", stepIndex);  // Log step completion
         } catch (error) {
             console.error('Error completing step:', error);
         }
     };
 
-    // Move to the next step, only if the step is completed or we're in view mode
+    // Navigate to the next step
     const handleNext = () => {
         if (currentStepIndex === steps.length - 1) {
-            // On the final step, navigate back to the projects list or a success page
-            navigate('/projects');  // Adjust the route as necessary
+            navigate('/projects');  // On the final step, go back to project list
         } else if (currentStepIndex === 0) {
-            // Step 1: proceed to step 2 if project exists or project name is entered
             if (selectedProject || projectName.length > 0) {
                 setCurrentStepIndex((prevIndex) => prevIndex + 1);
             }
@@ -75,14 +77,14 @@ const Wizard = () => {
         }
     };
 
-    // Allow going back, but we can't go back to an unsaved step (in edit mode)
+    // Navigate back to the previous step
     const handleBack = () => {
         if (currentStepIndex > 0) {
             setCurrentStepIndex((prevIndex) => prevIndex - 1);
         }
     };
 
-    // Clicking a step: disable click unless the step is completed or we're in view mode
+    // Handle clicking on a step
     const handleStepClick = (index) => {
         if (index <= lastCompletedStep || (index === 1 && (selectedProject || projectName.length > 0))) {
             setCurrentStepIndex(index);
@@ -90,25 +92,25 @@ const Wizard = () => {
     };
 
     const enableEditMode = () => {
-        setEditMode(true);  // Enable edit mode when any change is made in the project
+        setEditMode(true);  // Enable edit mode
     };
 
     const steps = [
-        { key: 'step1', label: t('wizard.introduction'), component: Step1Introduction, onComplete: () => handleStepComplete(1) },  // Step 1 now properly calls handleStepComplete
+        { key: 'step1', label: t('wizard.introduction'), component: Step1Introduction, onComplete: () => handleStepComplete(1) },
         { key: 'step2', label: t('wizard.appliance'), component: Step2Appliance, onComplete: () => handleStepComplete(2), enableEditMode },
         { key: 'step3', label: t('wizard.location'), component: Step3Location, onComplete: () => handleStepComplete(3), enableEditMode },
         { key: 'step4', label: t('wizard.inverter'), component: Step4TestCalc, onComplete: () => handleStepComplete(4), enableEditMode },
         { key: 'step5', label: t('wizard.batteries'), component: Step5_Batteries, onComplete: () => handleStepComplete(5), enableEditMode },
         { key: 'step6', label: t('wizard.solar_panels'), component: Step6_SolarPanels, onComplete: () => handleStepComplete(6), enableEditMode },
         { key: 'step7', label: t('wizard.controller'), component: Step7_Controller, onComplete: () => handleStepComplete(7), enableEditMode },
-        { key: 'finalStep', label: t('wizard.final_step'), component: FinalStep },  // No POST on the final step
+        { key: 'finalStep', label: t('wizard.final_step'), component: FinalStep },
     ];
 
     const CurrentStepComponent = steps[currentStepIndex].component;
 
     return (
         <div className="wizard-container">
-            {projectLoaded || currentStepIndex === 0 ? (  // Allow navigating step 1 without "Loading" state
+            {projectLoaded || currentStepIndex === 0 ? (
                 <>
                     <div className="wizard-steps">
                         <div className="wizard-steps-container">
@@ -117,14 +119,14 @@ const Wizard = () => {
                                     key={index}
                                     className={`wizard-step 
                                         ${currentStepIndex === index
-                                        ? 'active'  // If the step is currently selected
+                                        ? 'active'
                                         : index < currentStepIndex
-                                            ? 'done'  // If the step is before the current one and was completed
+                                            ? 'done'
                                             : (index === 1 && (selectedProject || projectName.length > 0)) || index <= lastCompletedStep
-                                                ? 'enabled'  // If the step is after the current but available, or Step 2 is enabled by projectName
-                                                : 'disabled'  // If the step is unavailable
+                                                ? 'enabled'
+                                                : 'disabled'
                                     }`}
-                                    onClick={() => handleStepClick(index)}  // Disable click if step is unavailable
+                                    onClick={() => handleStepClick(index)}
                                 >
                                     {step.label}
                                 </div>
@@ -142,9 +144,9 @@ const Wizard = () => {
                             className="next"
                             onClick={handleNext}
                             disabled={!(
-                                (currentStepIndex === 0 && (selectedProject || projectName.length > 0)) ||  //Povolit u Step1
-                                (currentStepIndex > 0 && currentStepIndex < lastCompletedStep)  ||  // povolit v ostatních krocích (je dokončený předchozí krok)
-                                (currentStepIndex === steps.length - 1)  // Povolit na Final Step
+                                (currentStepIndex === 0 && (selectedProject || projectName.length > 0)) ||
+                                (currentStepIndex > 0 && currentStepIndex < lastCompletedStep)  ||
+                                (currentStepIndex === steps.length - 1)
                             )}
                         >
                             {currentStepIndex === steps.length - 1 ? t('wizard.finish') : t('wizard.next')}
@@ -152,7 +154,7 @@ const Wizard = () => {
                     </div>
                 </>
             ) : (
-                <div>Loading...</div>  // "Loading" only displayed for steps after 1
+                <div>Loading...</div>
             )}
         </div>
     );
