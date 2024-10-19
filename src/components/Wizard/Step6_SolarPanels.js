@@ -14,7 +14,7 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
     const [panelOversizeCoefficient, setPanelOversizeCoefficient] = useState(1.2);
     const [batteryEfficiency, setBatteryEfficiency] = useState(0.95);
     const [cableEfficiency, setCableEfficiency] = useState(0.98);
-    const [selectedMonths, setSelectedMonths] = useState([]);
+    const [selectedMonths, setSelectedMonths] = useState(Array.from({ length: 12 }, (_, i) => i + 1)); // Default to all months selected
     const [installationType, setInstallationType] = useState('ground');
     const [manufacturerTolerance, setManufacturerTolerance] = useState(0.98);
     const [agingLoss, setAgingLoss] = useState(0.95);
@@ -91,7 +91,6 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
         dirtLoss
     ]);
 
-    // Trigger POST request when user changes the configuration
     const sendUpdatedConfiguration = async () => {
         const postData = {
             solarPanelId: selectedPanel,
@@ -105,17 +104,10 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
             dirtLoss
         };
 
-        // Log the data that will be sent to the server for debugging
-        console.log("Sending POST with data:", postData);
-
         try {
             const result = await selectSolarPanel(selectedProject, postData);
-            setConfig(result); // Immediately set the config to the result from POST
-
-            // Call the onComplete prop to notify that this step is done
-            if (onComplete) {
-                onComplete();
-            }
+            setConfig(result);
+            onComplete();
         } catch (error) {
             console.error('Error selecting solar panel:', error);
         }
@@ -129,6 +121,7 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
 
     // Handle month selection change
     const handleMonthChange = (month) => {
+        if (!selectedPanel) return; // Prevent changing months if no panel is selected
         setHasChanged(true);
         setSelectedMonths((prev) => prev.includes(month) ? prev.filter((m) => m !== month) : [...prev, month]);
     };
@@ -188,6 +181,7 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
                                 type="checkbox"
                                 checked={selectedMonths.includes(month)}
                                 onChange={() => handleMonthChange(month)}
+                                disabled={!selectedPanel} // Disable if no panel is selected
                             />
                             {month}
                         </label>
@@ -197,7 +191,7 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
 
             <div className="step6-installation-type">
                 <h3>{t('step6.installation_type')}</h3>
-                <select value={installationType} onChange={handleInstallationTypeChange}>
+                <select value={installationType} onChange={handleInstallationTypeChange} disabled={!selectedPanel}>
                     <option value="ground">{t('step6.ground_mounted')}</option>
                     <option value="roof_angle">{t('step6.roof_mounted')}</option>
                     <option value="parallel_greater_150mm">{t('step6.parallel_mounted_greater_150mm')}</option>
@@ -214,6 +208,7 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
                         step="0.1"
                         value={panelOversizeCoefficient}
                         onChange={(e) => handleEfficiencyChange(setPanelOversizeCoefficient, e.target.value)}
+                        disabled={!selectedPanel} // Disable if no panel is selected
                     />
                 </label>
                 <label>
@@ -223,6 +218,7 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
                         step="0.1"
                         value={batteryEfficiency}
                         onChange={(e) => handleEfficiencyChange(setBatteryEfficiency, e.target.value)}
+                        disabled={!selectedPanel} // Disable if no panel is selected
                     />
                 </label>
                 <label>
@@ -232,6 +228,7 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
                         step="0.1"
                         value={manufacturerTolerance}
                         onChange={(e) => handleEfficiencyChange(setManufacturerTolerance, e.target.value)}
+                        disabled={!selectedPanel} // Disable if no panel is selected
                     />
                 </label>
                 <label>
@@ -241,6 +238,7 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
                         step="0.1"
                         value={agingLoss}
                         onChange={(e) => handleEfficiencyChange(setAgingLoss, e.target.value)}
+                        disabled={!selectedPanel} // Disable if no panel is selected
                     />
                 </label>
                 <label>
@@ -250,6 +248,7 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
                         step="0.1"
                         value={dirtLoss}
                         onChange={(e) => handleEfficiencyChange(setDirtLoss, e.target.value)}
+                        disabled={!selectedPanel} // Disable if no panel is selected
                     />
                 </label>
             </div>

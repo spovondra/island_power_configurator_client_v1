@@ -22,6 +22,7 @@ const Step4_Inverter = ({ onComplete }) => {  // Přidáno onComplete prop
             setLoading(true);
             try {
                 const inverters = await getSuitableInverters(selectedProject, systemVoltage, temperature);
+                console.log('GET suitable inverters response:', inverters); // Log the incoming data
                 setSuitableInverters(inverters);
             } catch (error) {
                 console.error('Error fetching suitable inverters:', error);
@@ -40,6 +41,7 @@ const Step4_Inverter = ({ onComplete }) => {  // Přidáno onComplete prop
 
             try {
                 const projectInverter = await getProjectInverter(selectedProject);
+                console.log('GET project inverter details response:', projectInverter); // Log the incoming data
                 setEnergyCalculations({
                     totalAdjustedAcEnergy: projectInverter.totalAdjustedAcEnergy || 0,
                     totalDailyEnergy: projectInverter.totalDailyEnergy || 0,
@@ -71,13 +73,10 @@ const Step4_Inverter = ({ onComplete }) => {  // Přidáno onComplete prop
                 totalAdjustedAcEnergy: result.totalAdjustedAcEnergy || 0,
                 totalDailyEnergy: result.totalDailyEnergy || 0,
             });
-            console.log('Inverter selection updated:', result);
-            if (onComplete) {
-                onComplete();  // Oznámení průvodci, že krok je dokončen
-            }
+            onComplete();
         } catch (error) {
             console.error('Error selecting inverter:', error);
-            setError(t('step4.error_message')); // Use translation for error message
+            setError(t('step4.error_message'));
         } finally {
             setLoading(false);
         }

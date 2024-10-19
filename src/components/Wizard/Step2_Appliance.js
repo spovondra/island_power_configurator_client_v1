@@ -64,7 +64,7 @@ const Step2_Appliance = ({ onComplete }) => {  // Přidáme onComplete jako prop
             });
             setEditMode(false);
             alert(t('step2.save_button'));
-            onComplete();  // Zavoláme onComplete, když je krok dokončen
+            onComplete();
         } catch (error) {
             console.error(t('step2.error_message'), error);
             alert(t('step2.error_message'));

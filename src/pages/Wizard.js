@@ -138,11 +138,15 @@ const Wizard = () => {
                         <button className="previous" onClick={handleBack} disabled={currentStepIndex === 0}>
                             {t('wizard.back')}
                         </button>
-                        <button className="next" onClick={handleNext}
-                                disabled={
-                                    (currentStepIndex === 0 && !selectedProject && projectName.length === 0) ||  // Disable Next if no project name or project ID
-                                    (currentStepIndex > lastCompletedStep && editMode) // Disable Next if current step exceeds completed step in edit mode
-                                }>
+                        <button
+                            className="next"
+                            onClick={handleNext}
+                            disabled={!(
+                                (currentStepIndex === 0 && (selectedProject || projectName.length > 0)) ||  //Povolit u Step1
+                                (currentStepIndex > 0 && currentStepIndex < lastCompletedStep)  ||  // povolit v ostatních krocích (je dokončený předchozí krok)
+                                (currentStepIndex === steps.length - 1)  // Povolit na Final Step
+                            )}
+                        >
                             {currentStepIndex === steps.length - 1 ? t('wizard.finish') : t('wizard.next')}
                         </button>
                     </div>

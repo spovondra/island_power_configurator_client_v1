@@ -67,23 +67,17 @@ const Step5_Batteries = ({ onComplete }) => {
         fetchBatteryConfig();
     }, [selectedProject]);
 
-    // Handle battery selection and perform calculations (POST request happens only when the user selects a new battery)
     const handleBatterySelect = async (batteryId) => {
         setSelectedBattery(batteryId);
 
-        // Trigger the POST request to select the battery and calculate the configuration
         try {
             const result = await selectBattery(selectedProject, {
                 batteryId,
                 autonomyDays,
                 temperature
             });
-            setConfig(result); // Update the configuration after the battery is selected
-
-            // Inform the parent component (Wizard) that this step is complete
-            if (onComplete) {
-                onComplete();
-            }
+            setConfig(result);
+            onComplete();
         } catch (error) {
             console.error('Error selecting battery:', error);
         }

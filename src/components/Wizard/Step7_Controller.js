@@ -92,9 +92,11 @@ const Step7_Controller = ({ onComplete }) => {  // Pass onComplete as a prop
     };
 
     const handleControllerSelect = (controllerId) => {
-        console.log('Controller selected:', controllerId);  // Log the selected controllerId
         setHasChanged(true);
-        setSelectedController(controllerId);  // Set selectedController to the selected controllerId
+        setSelectedController(controllerId);
+
+        sendUpdatedControllerConfig();
+        onComplete();
     };
 
     const handleRegulatorTypeChange = (type) => {
