@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import authService from '../services/authService';
 import './Navbar.css';
@@ -9,6 +9,7 @@ const Navbar = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const { t, i18n } = useTranslation('navigation'); // Use 'navigation' namespace for translations
     const [language, setLanguage] = useState(i18n.language); // Get the current language
+    const dropdownRef = useRef(null); // Ref for the dropdown
 
     const handleLogout = () => {
         authService.logout();
@@ -22,6 +23,20 @@ const Navbar = () => {
         i18n.changeLanguage(lng);
         setLanguage(lng); // Update language state
     };
+
+    const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setDropdownOpen(false); // Close dropdown if clicked outside
+        }
+    };
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <nav className="navbar">
@@ -47,7 +62,7 @@ const Navbar = () => {
                     </button>
                 </div>
                 {user && (
-                    <div className="navbar-user" onClick={toggleDropdown}>
+                    <div className="navbar-user" onClick={toggleDropdown} ref={dropdownRef}>
                         <span className="navbar-username">
                             {user.username}
                         </span>
