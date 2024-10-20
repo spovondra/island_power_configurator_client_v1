@@ -85,7 +85,9 @@ const Step5_Batteries = ({ onComplete }) => {
 
     return (
         <div className="step5-batteries-page-container">
-            <h2>{t('step5.battery_configurator')}</h2> {/* Translated title */}
+            <div className="step5-header">
+                <h2>{t('step5.battery_configurator')}</h2> {/* Translated title */}
+            </div>
 
             <div className="step5-battery-type-section">
                 <label>{t('step5.battery_type')}</label>

@@ -5,7 +5,7 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recha
 import { useTranslation } from 'react-i18next'; // Import translation hook
 import './Step2_Appliance.css';
 
-const Step2_Appliance = ({ onComplete }) => {  // Přidáme onComplete jako prop
+const Step2_Appliance = ({ onComplete }) => {
     const { t } = useTranslation('wizard');
     const { selectedProject } = useContext(ProjectContext);
 
@@ -209,6 +209,30 @@ const Step2_Appliance = ({ onComplete }) => {  // Přidáme onComplete jako prop
                         {editMode ? t('step2.edit_button') : t('step2.save_button')}
                     </button>
                 </form>
+
+                <div className="step2-chart-section">
+                    <h2>{t('step2.energy_chart_title')}</h2>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                            <Pie
+                                data={chartData}
+                                dataKey="totalEnergy"
+                                nameKey="type"
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={100}
+                                fill="#8884d8"
+                                label
+                            >
+                                {chartData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
+                            </Pie>
+                            <Tooltip />
+                            <Legend />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
             </div>
 
             <div className="step2-appliance-list-section">
@@ -240,16 +264,10 @@ const Step2_Appliance = ({ onComplete }) => {  // Přidáme onComplete jako prop
                             <td>{appl.energy}</td>
                             <td>{appl.cost}</td>
                             <td className="step2-button-group">
-                                <button
-                                    className="step2-edit-button"
-                                    onClick={() => handleEdit(appl)}
-                                >
+                                <button className="step2-edit-button" onClick={() => handleEdit(appl)}>
                                     {t('step2.edit_button')}
                                 </button>
-                                <button
-                                    className="step2-delete-button"
-                                    onClick={() => handleDelete(appl.id)}
-                                >
+                                <button className="step2-delete-button" onClick={() => handleDelete(appl.id)}>
                                     {t('step2.delete_button')}
                                 </button>
                             </td>
@@ -257,30 +275,6 @@ const Step2_Appliance = ({ onComplete }) => {  // Přidáme onComplete jako prop
                     ))}
                     </tbody>
                 </table>
-            </div>
-
-            <div className="chart-section">
-                <h2>{t('step2.energy_chart_title')}</h2>
-                <ResponsiveContainer width="100%" height={300}>
-                    <PieChart>
-                        <Pie
-                            data={chartData}
-                            dataKey="totalEnergy"
-                            nameKey="type"
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={100}
-                            fill="#8884d8"
-                            label
-                        >
-                            {chartData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                            ))}
-                        </Pie>
-                        <Tooltip />
-                        <Legend />
-                    </PieChart>
-                </ResponsiveContainer>
             </div>
         </div>
     );

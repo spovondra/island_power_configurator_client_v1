@@ -183,7 +183,7 @@ const Step3_Location = ({ onComplete }) => {
                 <div className="step3-left-column">
                     <div className="step3-search-block">
                         <div className="step3-search-bar">
-                            <input type="text" id="locationSearch" className="form-control" placeholder={t('step3.location_placeholder')} />
+                            <input type="text" id="locationSearch" placeholder={t('step3.location_placeholder')} />
                             <button className="step3-search-button" onClick={searchLocation}>{t('step3.search_button')}</button>
                         </div>
                     </div>
@@ -208,7 +208,7 @@ const Step3_Location = ({ onComplete }) => {
                         <input
                             type="text"
                             id="latitude"
-                            className="form-control"
+                            className="step3-form-control"
                             value={location.latitude}
                             onChange={handleLatitudeChange}
                             onBlur={handleProcessLocationData}
@@ -219,7 +219,7 @@ const Step3_Location = ({ onComplete }) => {
                         <input
                             type="text"
                             id="longitude"
-                            className="form-control"
+                            className="step3-form-control"
                             value={location.longitude}
                             onChange={handleLongitudeChange}
                             onBlur={handleProcessLocationData}
@@ -230,7 +230,7 @@ const Step3_Location = ({ onComplete }) => {
                         <input
                             type="text"
                             id="angle"
-                            className="form-control"
+                            className="step3-form-control"
                             value={angle}
                             onChange={handleAngleChange}
                             onBlur={handleProcessLocationData}
@@ -241,7 +241,7 @@ const Step3_Location = ({ onComplete }) => {
                         <input
                             type="text"
                             id="aspect"
-                            className="form-control"
+                            className="step3-form-control"
                             value={aspect}
                             onChange={handleAspectChange}
                             onBlur={handleProcessLocationData}

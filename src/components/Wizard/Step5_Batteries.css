@@ -1,78 +1,77 @@
-/* Step 5 Batteries Page Container */
+/* Step5_Batteries.css */
 .step5-batteries-page-container {
     display: flex;
     flex-direction: column;
-    padding: 20px;
-    box-sizing: border-box;
-    max-width: 1200px;
-    margin: 0 auto;
     align-items: center;
+    padding: 20px;
 }
 
-/* Battery Type Section */
+.step5-header {
+    margin-bottom: 10px; /* Reduced space for compactness */
+    text-align: center;
+}
+
 .step5-battery-type-section,
 .step5-temperature-section,
-.step5-autonomy-section,
-.step5-select-battery-section {
+.step5-autonomy-section {
     width: 100%;
-    max-width: 600px;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Space between sections */
 }
 
-/* Labels */
 .step5-battery-type-section label,
 .step5-temperature-section label,
 .step5-autonomy-section label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 5px; /* Reduced space for compactness */
     font-weight: bold;
+    color: #555;
 }
 
-/* Select & Input Fields */
 .step5-select,
 .step5-input {
-    width: calc(100% - 20px);
-    padding: 10px;
-    border: 1px solid #dcdcdc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-/* Battery Option Section */
-.step5-battery-option {
-    margin-bottom: 10px;
-}
-
-/* Calculated Configuration Section */
-.step5-calculated-configuration {
     width: 100%;
-    max-width: 600px;
-    background: #ffffff;
+    padding: 8px; /* Reduced padding for compactness */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+}
+
+.step5-select-battery-section {
+    width: 100%;
+    margin-bottom: 15px; /* Space before battery selection */
+}
+
+.step5-battery-option {
+    margin: 5px 0; /* Space between battery options */
+    padding: 8px; /* Padding for battery options */
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.step5-battery-option:hover {
+    background-color: #f0f8ff;
+}
+
+.step5-calculated-configuration {
+    background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px; /* Padding for compactness */
+    margin-top: 15px; /* Space above this section */
+    width: 100%; /* Full width for configuration display */
 }
 
-/* H3 Headings */
 .step5-calculated-configuration h3 {
-    margin-top: 0;
+    margin-bottom: 10px; /* Space below header */
 }
 
+.step5-calculated-configuration p {
+    margin: 5px 0; /* Reduced margin for compactness */
+}
 
-/* Responsive Design */
-@media (min-width: 768px) {
-    .step5-batteries-page-container {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-start;
-    }
-
-    .step5-battery-type-section,
-    .step5-temperature-section,
-    .step5-autonomy-section,
-    .step5-select-battery-section {
-        flex: 1;
-        margin-right: 20px;
-    }
+.step5-error-message {
+    color: red;
+    margin-bottom: 10px; /* Space below error message */
 }

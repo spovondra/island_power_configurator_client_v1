@@ -1,21 +1,18 @@
 /* Appliance Page Container */
 .step2-appliance-page-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* Align the form and appliance list side by side */
     padding: 20px;
     box-sizing: border-box;
-    max-width: 1400px;
+    max-width: 1300px;
     margin: 0 auto;
-    align-items: center;
+    align-items: flex-start; /* Align items to the top */
 }
 
 /* Form Section */
 .step2-form-section {
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 20px; /* Adjusted for more balance with chart */
-    display: flex;
-    flex-direction: column; /* Allow stacking of form and chart */
+    flex: 1; /* Allow left column to take available space */
+    margin-right: 20px; /* Space between columns */
 }
 
 /* Appliance Form */
@@ -24,24 +21,26 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 100%;
-    box-sizing: border-box;
+    margin-bottom: 20px; /* Space below form for the chart */
 }
 
 /* Input Group */
 .step2-input-group {
-    margin-bottom: 15px;
+    display: flex; /* Use flex for side-by-side layout */
+    align-items: center; /* Align items vertically */
+    margin-bottom: 10px; /* Reduce margin for a more compact look */
 }
 
 .step2-input-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-right: 10px; /* Space between label and input */
     font-weight: bold;
 }
 
-.step2-input-group input {
-    width: calc(100% - 22px);
-    padding: 10px;
+.step2-input-group input,
+.step2-input-group select {
+    flex: 1; /* Allow input to take available space */
+    padding: 8px; /* Reduce padding for a compact appearance */
     border: 1px solid #dcdcdc;
     border-radius: 4px;
     box-sizing: border-box;
@@ -57,18 +56,20 @@
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-right: 10px;
+    margin-top: 10px; /* Add space above the button */
+    width: 100%; /* Make the button full width */
+    text-align: center; /* Center text inside button */
 }
 
-.step2-action-button:hover {
-    background-color: #0056b3;
+/* Chart Section */
+.step2-chart-section {
+    margin-top: 20px; /* Space between form and chart */
+    text-align: center; /* Center the chart title */
 }
 
 /* Appliance List Section */
 .step2-appliance-list-section {
-    width: 100%;
-    max-width: 1400px;
-    margin-bottom: 20px; /* Adjusted for balance */
+    flex: 1; /* Allow right column to take available space */
 }
 
 /* Appliance Table */
@@ -81,7 +82,7 @@
 
 .step2-appliance-table th,
 .step2-appliance-table td {
-    padding: 12px;
+    padding: 8px; /* Reduce padding for a more compact look */
     text-align: center;
     border-bottom: 1px solid #dcdcdc;
 }
@@ -99,7 +100,7 @@
 .step2-button-group {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 5px; /* Reduce gap between buttons */
 }
 
 /* Edit Button */
@@ -107,7 +108,7 @@
     background-color: #28a745;
     border: none;
     border-radius: 4px;
-    padding: 8px 12px;
+    padding: 6px 10px; /* Reduce button size */
     font-size: 14px;
     cursor: pointer;
     color: white;
@@ -122,7 +123,7 @@
     background-color: #dc3545;
     border: none;
     border-radius: 4px;
-    padding: 8px 12px;
+    padding: 6px 10px; /* Reduce button size */
     font-size: 14px;
     cursor: pointer;
     color: white;
@@ -132,31 +133,13 @@
     background-color: #c82333;
 }
 
-/* Chart Section */
-.step2-chart-section {
-    width: 100%;
-    max-width: 1200px;
-    margin-top: 20px; /* Space between the form and chart */
-    padding: 20px; /* Optional padding for aesthetic */
-    background: #ffffff; /* Background for chart section */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for depth */
-}
-
 /* Media Query */
-@media (min-width: 768px) {
+@media (max-width: 768px) {
     .step2-appliance-page-container {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-start;
+        flex-direction: column; /* Stack columns on small screens */
     }
 
     .step2-form-section {
-        flex: 1;
-        margin-right: 20px;
-    }
-
-    .step2-appliance-list-section {
-        flex: 2;
+        margin-right: 0; /* Reset margin on smaller screens */
     }
 }
