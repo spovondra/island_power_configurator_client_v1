@@ -5,7 +5,7 @@ import Step2Appliance from '../components/Wizard/Step2_Appliance';
 import Step3Location from '../components/Wizard/Step3_Location';
 import FinalStep from '../components/Wizard/FinalStep';
 import './Wizard.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getProjectById, completeStep } from '../services/ProjectService';
 import Step4TestCalc from '../components/Wizard/Step4_Inverter';
 import Step6_SolarPanels from '../components/Wizard/Step6_SolarPanels';
@@ -14,56 +14,58 @@ import Step7_Controller from '../components/Wizard/Step7_Controller';
 import { useTranslation } from 'react-i18next';
 
 const Wizard = () => {
-    const [currentStepIndex, setCurrentStepIndex] = useState(0);  // Current step
-    const [lastCompletedStep, setLastCompletedStep] = useState(0);  // Last completed step
-    const [projectLoaded, setProjectLoaded] = useState(false);  // Flag for loading project data
-    const [editMode, setEditMode] = useState(false);  // Whether in edit mode or view mode
-    const [projectName, setProjectName] = useState('');  // Track project name for validation
-    const { selectedProject } = useContext(ProjectContext);  // Get the selected project from context
+    const [currentStepIndex, setCurrentStepIndex] = useState(0);
+    const [lastCompletedStep, setLastCompletedStep] = useState(0);
+    const [projectLoaded, setProjectLoaded] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const [projectName, setProjectName] = useState('');
+    const { selectedProject, setSelectedProject } = useContext(ProjectContext);
     const navigate = useNavigate();
+    const location = useLocation(); // Get location object to check for new project state
     const { t } = useTranslation();
 
     useEffect(() => {
-        if (selectedProject) {  // Load project data
+        const isNewProject = location.state?.isNewProject; // Check if a new project is being created
+
+        if (selectedProject) { // Load existing project data
             loadProject(selectedProject);
+        } else if (isNewProject) { // If creating a new project
+            setProjectLoaded(true);
+            setProjectName(''); // Initialize project name
         } else {
-            // Redirect to project list if no project is selected
+            // Redirect to project list if no project is selected and not creating new
             navigate('/projects');
         }
-    }, [selectedProject, navigate]);
+    }, [selectedProject, navigate, location]);
 
     const loadProject = async (projectId) => {
         try {
             const project = await getProjectById(projectId);
             const completedStep = project.lastCompletedStep || 0;
-            setLastCompletedStep(completedStep);  // Set last completed step
-            setProjectName(project.name);  // Set the project name for validation
+            setLastCompletedStep(completedStep);
+            setProjectName(project.name);
             console.log("Loaded lastCompletedStep:", completedStep);
 
-            // Set current step based on last completed step
             setCurrentStepIndex(completedStep > 1 ? completedStep : 0);
             setProjectLoaded(true);
         } catch (error) {
             console.error('Error loading project:', error);
-            // Handle error (e.g., redirect to project list if project loading fails)
             navigate('/projects');
         }
     };
 
-    // Handle step completion
     const handleStepComplete = async (stepIndex) => {
         try {
-            await completeStep(selectedProject, stepIndex);  // Send POST to backend
-            setLastCompletedStep(stepIndex);  // Update the last completed step
+            await completeStep(selectedProject, stepIndex);
+            setLastCompletedStep(stepIndex);
         } catch (error) {
             console.error('Error completing step:', error);
         }
     };
 
-    // Navigate to the next step
     const handleNext = () => {
         if (currentStepIndex === steps.length - 1) {
-            navigate('/projects');  // On the final step, go back to project list
+            navigate('/projects'); // Go back to project list on the final step
         } else if (currentStepIndex === 0) {
             if (selectedProject || projectName.length > 0) {
                 setCurrentStepIndex((prevIndex) => prevIndex + 1);
@@ -77,14 +79,12 @@ const Wizard = () => {
         }
     };
 
-    // Navigate back to the previous step
     const handleBack = () => {
         if (currentStepIndex > 0) {
             setCurrentStepIndex((prevIndex) => prevIndex - 1);
         }
     };
 
-    // Handle clicking on a step
     const handleStepClick = (index) => {
         if (index <= lastCompletedStep || (index === 1 && (selectedProject || projectName.length > 0))) {
             setCurrentStepIndex(index);
@@ -92,7 +92,7 @@ const Wizard = () => {
     };
 
     const enableEditMode = () => {
-        setEditMode(true);  // Enable edit mode
+        setEditMode(true); // Enable edit mode
     };
 
     const steps = [
@@ -145,7 +145,7 @@ const Wizard = () => {
                             onClick={handleNext}
                             disabled={!(
                                 (currentStepIndex === 0 && (selectedProject || projectName.length > 0)) ||
-                                (currentStepIndex > 0 && currentStepIndex < lastCompletedStep)  ||
+                                (currentStepIndex > 0 && currentStepIndex < lastCompletedStep) ||
                                 (currentStepIndex === steps.length - 1)
                             )}
                         >
