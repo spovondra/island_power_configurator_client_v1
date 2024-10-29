@@ -1,7 +1,8 @@
-const BASE_URL = 'http://localhost';
+//const BASE_URL = 'http://localhost';
 //const BASE_URL = 'http://130.61.202.0';
+const BASE_URL = 'https://api.fve.firmisimo.eu';
 
-const PORT = 8082;
+const PORT = 443;
 
 /* API URLs for different services */
 export const API_URL = `${BASE_URL}:${PORT}/api`;
