@@ -187,16 +187,6 @@ const Step2_Appliance = ({ onComplete }) => {
                         />
                     </div>
                     <div className="step2-input-group">
-                        <label htmlFor="energy">{t('step2.energy_label')}:</label>
-                        <input
-                            type="number"
-                            id="energy"
-                            value={appliance.energy}
-                            onChange={(e) => setAppliance({ ...appliance, energy: parseFloat(e.target.value) })}
-                            disabled
-                        />
-                    </div>
-                    <div className="step2-input-group">
                         <label htmlFor="cost">{t('step2.cost_label')}:</label>
                         <input
                             type="number"

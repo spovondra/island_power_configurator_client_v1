@@ -3,11 +3,11 @@ import { getAllComponents, createComponent, updateComponent, deleteComponent, ge
 import Modal from '../Modal/Modal';
 import './ComponentAdminPanel.css';
 import ComponentForm from './ComponentForm';
-import { useTranslation } from 'react-i18next'; // Importing the translation hook
+import { useTranslation } from 'react-i18next';
 
 const initialState = {
     components: [],
-    selectedCategory: 'solar-panels', // Default category
+    selectedCategory: 'solar-panels',
     error: '',
     isLoading: true,
     isModalOpen: false,
@@ -15,6 +15,7 @@ const initialState = {
     modalContent: null,
 };
 
+// Reducer function for managing component state
 const componentReducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_SUCCESS':
@@ -45,11 +46,13 @@ const componentReducer = (state, action) => {
     }
 };
 
+// Main component for managing components in the admin panel
 const ComponentAdminPanel = () => {
     const [state, dispatch] = useReducer(componentReducer, initialState);
     const { components, selectedCategory, isLoading, isModalOpen, selectedComponent, modalContent, error } = state;
-    const { t } = useTranslation('admin'); // Use the componentAdmin namespace for translations
+    const { t } = useTranslation('admin');
 
+    // Function to fetch components based on selected category
     const fetchComponents = async (category) => {
         try {
             const data = await getAllComponents(category);
@@ -63,15 +66,17 @@ const ComponentAdminPanel = () => {
         fetchComponents(selectedCategory);
     }, [selectedCategory]);
 
+    // Function to handle adding a new component
     const handleAddComponent = async (formData) => {
         try {
             const newComponent = await createComponent(selectedCategory, formData);
             dispatch({ type: 'ADD_COMPONENT', payload: newComponent });
         } catch (error) {
-            alert(t('error_message')); // Use translation for error message
+            alert(t('error_message'));
         }
     };
 
+    // Function to handle updating an existing component
     const handleUpdateComponent = async (formData) => {
         if (!selectedComponent || !selectedComponent.id) {
             console.error("No selected component or ID for update.");
@@ -81,30 +86,33 @@ const ComponentAdminPanel = () => {
             const updatedComponent = await updateComponent(selectedCategory, selectedComponent.id, formData);
             dispatch({ type: 'UPDATE_COMPONENT', payload: updatedComponent });
         } catch (error) {
-            alert(t('error_message')); // Use translation for error message
+            alert(t('error_message'));
         }
     };
 
+    // Function to handle deleting a component
     const handleDeleteComponent = async (componentId) => {
         try {
             await deleteComponent(selectedCategory, componentId);
             dispatch({ type: 'DELETE_SUCCESS', payload: componentId });
         } catch (error) {
-            alert(t('error_message')); // Use translation for error message
+            alert(t('error_message'));
         }
     };
 
+    // Function to handle category selection
     const handleCategoryChange = (category) => {
         dispatch({ type: 'SET_CATEGORY', payload: category });
     };
 
+    // Function to handle selecting a component
     const handleSelectComponent = (component) => {
         if (component && component.id) {
             getComponentById(selectedCategory, component.id).then(fetchedComponent => {
                 dispatch({ type: 'SET_SELECTED_COMPONENT', payload: fetchedComponent });
             });
         } else {
-            dispatch({ type: 'SET_SELECTED_COMPONENT', payload: {}}); // New component
+            dispatch({ type: 'SET_SELECTED_COMPONENT', payload: {} });
         }
     };
 
@@ -248,7 +256,7 @@ const ComponentAdminPanel = () => {
                         componentData={selectedComponent}
                         handleSubmit={selectedComponent?.id ? handleUpdateComponent : handleAddComponent}
                         onClose={() => dispatch({ type: 'CLOSE_MODAL' })}
-                        selectedCategory={selectedCategory} // Pass selected category here
+                        selectedCategory={selectedCategory}
                     />
                 )}
                 {modalContent === 'error' && <p>{error}</p>}
