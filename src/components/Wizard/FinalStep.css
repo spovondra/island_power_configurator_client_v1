@@ -32,3 +32,136 @@ h3 {
     padding: 5px;
     border-bottom: 1px solid #ddd;
 }
+
+
+.final-step-flex-container {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.final-step-table-container {
+    flex: 2;
+}
+
+.final-step-chart-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.final-step-chart-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.final-step-chart-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.final-step-chart-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.final-step-battery-info {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.final-step-battery-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.final-step-battery-table th,
+.final-step-battery-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.final-step-battery-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.final-step-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 10px;
+}
+
+.final-step-list li {
+    padding: 5px 0;
+}
+
+.final-step-solar-panel-info {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.final-step-solar-panel-table,
+.final-step-monthly-values-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.final-step-solar-panel-table th,
+.final-step-solar-panel-table td,
+.final-step-monthly-values-table th,
+.final-step-monthly-values-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.final-step-solar-panel-table th,
+.final-step-monthly-values-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.final-step-constants-section {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+}
+
+.final-step-charts-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.final-step-chart {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.final-step-chart:last-child {
+    margin-right: 0;
+}
+
+.final-step-chart-container:last-child {
+    margin-right: 0;
+}
+
+
+
