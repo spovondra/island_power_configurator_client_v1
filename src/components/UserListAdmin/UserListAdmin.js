@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState } from 'react';
-import authService from '../../services/authService';
+import { getAllUsers, updateUser, register, deleteUser } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../Modal/Modal';
 import './UserListAdmin.css';
@@ -63,7 +63,7 @@ const UserListAdmin = () => {
 
     const fetchUsers = async () => {
         try {
-            const data = await authService.getAllUsers();
+            const data = await getAllUsers();
             dispatch({ type: 'FETCH_SUCCESS', payload: data });
         } catch (error) {
             dispatch({ type: 'FETCH_ERROR', payload: error.message });
@@ -81,7 +81,7 @@ const UserListAdmin = () => {
             delete userData.password;
         }
         try {
-            const updatedUser = await authService.updateUser(selectedUser.id, userData);
+            const updatedUser = await updateUser(selectedUser.id, userData);
             dispatch({ type: 'UPDATE_USER', payload: updatedUser });
             alert(t('userListAdmin.user_updated')); // Use translation
             await fetchUsers();
@@ -94,7 +94,7 @@ const UserListAdmin = () => {
         e.preventDefault();
         const { username, password, role, firstName, lastName, email } = formData;
         try {
-            const newUser = await authService.register(username, password, role, firstName, lastName, email);
+            const newUser = await register(username, password, role, firstName, lastName, email);
             dispatch({ type: 'ADD_USER', payload: newUser.data });
             alert(t('userListAdmin.user_added')); // Use translation
             await fetchUsers();
@@ -105,7 +105,7 @@ const UserListAdmin = () => {
 
     const handleDeleteUser = async (userId) => {
         try {
-            await authService.deleteUser(userId);
+            await deleteUser(userId);
             dispatch({ type: 'DELETE_SUCCESS', payload: userId });
         } catch (error) {
             dispatch({ type: 'FETCH_ERROR', payload: error.message });

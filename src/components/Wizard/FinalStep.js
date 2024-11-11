@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
-import { getProjectSummary } from '../../services/ProjectService'; // Import the new service function
+import { getProjectSummary } from '../../services/ProjectService'; // Import the service function
+import { getUserById } from '../../services/authService'; // Import from authService
 import LocationComponent from '../Location/LocationComponent'; // Adjust the path if needed
 
 import {
@@ -24,6 +25,7 @@ const FinalStep = () => {
     const { t } = useTranslation('wizard');
     const { selectedProject } = useContext(ProjectContext);
     const [summaryData, setSummaryData] = useState(null);
+    const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -33,6 +35,12 @@ const FinalStep = () => {
                 try {
                     const data = await getProjectSummary(selectedProject);
                     setSummaryData(data);
+
+                    // Fetch user data using userId from project
+                    if (data?.project?.userId) {
+                        const user = await getUserById(data.project.userId);
+                        setUserData(user);
+                    }
                 } catch (err) {
                     setError(t('final_step.fetch_error'));
                 } finally {
@@ -50,6 +58,11 @@ const FinalStep = () => {
     const site = project?.site || {};
     const appliances = project?.appliances || [];
     const configuration = project?.configurationModel || {};
+
+    const inverter = summaryData?.inverter || {};
+    const battery = summaryData?.battery || {};
+    const solarPanel = summaryData?.solarPanel || {};
+
     const totalEnergyData = [
         { name: t('final_step.total_ac_energy'), value: configuration?.projectAppliance?.totalAcEnergy || 0 },
         { name: t('final_step.total_dc_energy'), value: configuration?.projectAppliance?.totalDcEnergy || 0 },
@@ -79,7 +92,7 @@ const FinalStep = () => {
                 <ul>
                     <li><strong>{t('final_step.project_name')}:</strong> {project?.name || 'N/A'}</li>
                     <li><strong>{t('final_step.project_id')}:</strong> {project?.id || 'N/A'}</li>
-                    <li><strong>{t('final_step.user_name')}:</strong> {project?.userName || 'N/A'}</li>
+                    <li><strong>{t('final_step.user_name')}:</strong> {userData?.username || 'N/A'}</li>
                     <li><strong>{t('final_step.user_id')}:</strong> {project?.userId || 'N/A'}</li>
                 </ul>
             </div>
@@ -180,7 +193,7 @@ const FinalStep = () => {
                             <li><strong>{t('final_step.min_temperature')}:</strong> {site.minTemperature || 'N/A'} °C</li>
                             <li><strong>{t('final_step.max_temperature')}:</strong> {site.maxTemperature || 'N/A'} °C</li>
                             <li><strong>{t('final_step.panel_angle')}:</strong> {site.panelAngle || 'N/A'}°</li>
-                            <li><strong>{t('final_step.panel_aspect')}:</strong> {site.panelAspect || 'N/A'}</li>
+                            <li><strong>{t('final_step.panel_aspect')}:</strong> {site.panelAspect || 'N/A'}°</li>
                             <li><strong>{t('final_step.used_optimal_values')}:</strong> {site.usedOptimalValues ? t('final_step.yes') : t('final_step.no')}</li>
                         </ul>
                     </div>
@@ -251,18 +264,22 @@ const FinalStep = () => {
                     <tr>
                         <th>{t('final_step.inverter_name')}</th>
                         <th>{t('final_step.voltage')}</th>
-                        <th>{t('final_step.continuous_power_25')}</th>
+                        <th>{t('final_step.continuous_power_25C')}</th>
+                        <th>{t('final_step.continuous_power_40C')}</th>
+                        <th>{t('final_step.continuous_power_65C')}</th>
                         <th>{t('final_step.max_power')}</th>
                         <th>{t('final_step.efficiency')}</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td>{configuration?.projectInverter?.inverterName || 'N/A'}</td>
-                        <td>{configuration?.projectInverter?.voltage || 'N/A'} V</td>
-                        <td>{configuration?.projectInverter?.continuousPower25 || 'N/A'} W</td>
-                        <td>{configuration?.projectInverter?.maxPower || 'N/A'} W</td>
-                        <td>{configuration?.projectInverter?.efficiency || 'N/A'} %</td>
+                        <td>{inverter?.name || 'N/A'}</td>
+                        <td>{inverter?.voltage || 'N/A'} V</td>
+                        <td>{inverter?.continuousPower25C || 'N/A'} W</td>
+                        <td>{inverter?.continuousPower40C || 'N/A'} W</td>
+                        <td>{inverter?.continuousPower65C || 'N/A'} W</td>
+                        <td>{inverter?.maxPower || 'N/A'} W</td>
+                        <td>{inverter?.efficiency || 'N/A'} %</td>
                     </tr>
                     </tbody>
                 </table>
@@ -289,18 +306,18 @@ const FinalStep = () => {
                         <th>{t('final_step.capacity')}</th>
                         <th>{t('final_step.dod')}</th>
                         <th>{t('final_step.capacity_including_dod')}</th>
-                        <th>{t('final_step.estimated_autonomy_days')}</th>
+                        <th>{t('final_step.operationalDays')}</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td>{configuration?.projectBattery?.batteryName || 'N/A'}</td>
-                        <td>{configuration?.projectBattery?.type || 'N/A'}</td>
-                        <td>{configuration?.projectBattery?.voltage || 'N/A'} V</td>
-                        <td>{configuration?.projectBattery?.capacity || 'N/A'} Ah</td>
-                        <td>{configuration?.projectBattery?.dod || 'N/A'}</td>
-                        <td>{configuration?.projectBattery?.capacityWithDod || 'N/A'} Ah</td>
-                        <td>{configuration?.projectBattery?.estimatedDaysOfAutonomy || 'N/A'} {t('final_step.days')}</td>
+                        <td>{battery?.name || 'N/A'}</td>
+                        <td>{battery?.type || 'N/A'}</td>
+                        <td>{battery?.voltage || 'N/A'} V</td>
+                        <td>{battery?.capacity || 'N/A'} Ah</td>
+                        <td>{battery?.dod || 'N/A'}</td>
+                        <td>{configuration?.projectBattery?.batteryCapacityDod || 'N/A'} Ah</td>
+                        <td>{configuration?.projectBattery?.operationalDays || 'N/A'} {t('final_step.days')}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -335,15 +352,15 @@ const FinalStep = () => {
                     </thead>
                     <tbody>
                     <tr>
-                        <td>{configuration?.projectSolarPanel?.panelName || 'N/A'}</td>
-                        <td>{configuration?.projectSolarPanel?.nominalPower || 'N/A'} W</td>
-                        <td>{configuration?.projectSolarPanel?.voc || 'N/A'} V</td>
-                        <td>{configuration?.projectSolarPanel?.isc || 'N/A'} A</td>
-                        <td>{configuration?.projectSolarPanel?.vmp || 'N/A'} V</td>
-                        <td>{configuration?.projectSolarPanel?.imp || 'N/A'} A</td>
-                        <td>{configuration?.projectSolarPanel?.tempCoefficientPower || 'N/A'} %/°C</td>
-                        <td>{configuration?.projectSolarPanel?.tempCoefficientVoltage || 'N/A'} %/°C</td>
-                        <td>{configuration?.projectSolarPanel?.tolerance || 'N/A'} %</td>
+                        <td>{solarPanel?.name || 'N/A'}</td>
+                        <td>{solarPanel?.pRated || 'N/A'} W</td>
+                        <td>{solarPanel?.voc || 'N/A'} V</td>
+                        <td>{solarPanel?.isc || 'N/A'} A</td>
+                        <td>{solarPanel?.vmp || 'N/A'} V</td>
+                        <td>{solarPanel?.imp || 'N/A'} A</td>
+                        <td>{solarPanel?.tempCoefficientPMax || 'N/A'} %/°C</td>
+                        <td>{solarPanel?.tempCoefficientVoc || 'N/A'} %/°C</td>
+                        <td>{solarPanel?.tolerance || 'N/A'} %</td>
                     </tr>
                     </tbody>
                 </table>
@@ -405,14 +422,14 @@ const FinalStep = () => {
                     {chartData.map((data, index) => (
                         <tr key={index}>
                             <td>{data.month}</td>
-                            <td>{data.psh || 'N/A'}</td>
-                            <td>{data.ambientTemperature || 'N/A'} °C</td>
-                            <td>{data.requiredEnergy || 'N/A'} Wh</td>
-                            <td>{data.powerRequired || 'N/A'} W</td>
-                            <td>{data.efficiency || 'N/A'}</td>
-                            <td>{data.reducedPower || 'N/A'} W</td>
+                            <td>{data.psh.toFixed(2)  || 'N/A'}</td>
+                            <td>{data.ambientTemperature.toFixed(1)  || 'N/A'} °C</td>
+                            <td>{data.requiredEnergy.toFixed(2)  || 'N/A'} Wh</td>
+                            <td>{data.powerRequired.toFixed(2)  || 'N/A'} W</td>
+                            <td>{data.efficiency.toFixed(2)  || 'N/A'}</td>
+                            <td>{data.reducedPower.toFixed(2)  || 'N/A'} W</td>
                             <td>{data.panelCount || 'N/A'}</td>
-                            <td>{data.estimatedEnergyProduction || 'N/A'} Wh</td>
+                            <td>{data.estimatedEnergyProduction.toFixed(2) || 'N/A'} Wh</td>
                         </tr>
                     ))}
                     </tbody>

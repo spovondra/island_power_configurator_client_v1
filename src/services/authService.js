@@ -1,7 +1,7 @@
 import apiClient from './apiClient';
 import { API_AUTH_URL } from '../config';
 
-const register = async (username, password, role, firstName = '', lastName = '', email = '') => {
+export const register = async (username, password, role, firstName = '', lastName = '', email = '') => {
     return apiClient.post(`${API_AUTH_URL}register`, {
         username,
         password,
@@ -12,7 +12,7 @@ const register = async (username, password, role, firstName = '', lastName = '',
     });
 };
 
-const login = async (username, password) => {
+export const login = async (username, password) => {
     const response = await apiClient.post(`${API_AUTH_URL}login`, null, {
         params: {
             username,
@@ -29,17 +29,17 @@ const login = async (username, password) => {
     }
 };
 
-const logout = () => {
+export const logout = () => {
     localStorage.removeItem('user');
     window.location.replace('/login');
 };
 
-const getCurrentUser = () => {
+export const getCurrentUser = () => {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
 };
 
-const getAllUsers = async () => {
+export const getAllUsers = async () => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
 
@@ -47,14 +47,14 @@ const getAllUsers = async () => {
     return response.data;
 };
 
-const deleteUser = async (userId) => {
+export const deleteUser = async (userId) => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
 
     await apiClient.delete(`${API_AUTH_URL}delete/${userId}`);
 };
 
-const getUserById = async (userId) => {
+export const getUserById = async (userId) => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
 
@@ -62,24 +62,10 @@ const getUserById = async (userId) => {
     return response.data;
 };
 
-const updateUser = async (userId, userDetails) => {
+export const updateUser = async (userId, userDetails) => {
     const user = getCurrentUser();
     if (!user) throw new Error('No user logged in');
 
     const response = await apiClient.put(`${API_AUTH_URL}update/${userId}`, userDetails);
     return response.data;
 };
-
-// Exposing the authentication service functions
-const authService = {
-    register,
-    login,
-    logout,
-    getCurrentUser,
-    getAllUsers,
-    deleteUser,
-    getUserById,
-    updateUser
-};
-
-export default authService;

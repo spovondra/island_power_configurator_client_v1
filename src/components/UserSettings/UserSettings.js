@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
-import authService from '../../services/authService';
+import { getCurrentUser, getUserById, updateUser } from '../../services/authService';
 import './UserSettings.css';
 
 const UserSettings = () => {
@@ -15,10 +15,10 @@ const UserSettings = () => {
     const [userId, setUserId] = useState('');
 
     useEffect(() => {
-        const currentUser = authService.getCurrentUser();
+        const currentUser = getCurrentUser();
         if (currentUser) {
             setUserId(currentUser.userId);
-            authService.getUserById(currentUser.userId).then(userData => {
+            getUserById(currentUser.userId).then(userData => {
                 setUser(userData);
                 setUsername(userData.username);
                 setFirstName(userData.firstName);
@@ -40,7 +40,7 @@ const UserSettings = () => {
             userData.password = password;
         }
         try {
-            await authService.updateUser(userId, userData);
+            await updateUser(userId, userData);
             alert(t('update_success')); // Use translation for success message
         } catch (error) {
             alert(t('update_fail')); // Use translation for error message

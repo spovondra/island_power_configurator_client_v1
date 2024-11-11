@@ -1,9 +1,9 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import authService from '../services/authService';
+import { getCurrentUser } from '../services/authService';
 
 const AuthRoute = ({ role, children }) => {
-    const user = authService.getCurrentUser();
+    const user = getCurrentUser();
 
     console.log('User roles:', user?.roles);
     console.log('Required role:', role);

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import authService from '../../services/authService';
+import { register } from '../../services/authService';
 import './Register.css';
 import { useTranslation } from 'react-i18next'; // Import translation hook
 
@@ -14,7 +14,7 @@ function Register() {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            await authService.register(username, password, 'USER'); // Default role can be USER or provide a role selection
+            await register(username, password, 'USER'); // Call the specific register function
             setMessage(t('register.register_success'));
             navigate('/login');
         } catch (error) {

@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
-import authService from '../services/authService';
+import { getCurrentUser, logout } from '../services/authService';
 import './Navbar.css';
-import { useTranslation } from 'react-i18next'; // Import translation hook
+import { useTranslation } from 'react-i18next';
 
 const Navbar = () => {
-    const user = authService.getCurrentUser();
+    const user = getCurrentUser(); // Use the specific function for getting the current user
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const { t, i18n } = useTranslation('navigation'); // Use 'navigation' namespace for translations
     const [language, setLanguage] = useState(i18n.language); // Get the current language
     const dropdownRef = useRef(null); // Ref for the dropdown
 
     const handleLogout = () => {
-        authService.logout();
+        logout(); // Use the specific function for logging out
     };
 
     const toggleDropdown = () => {

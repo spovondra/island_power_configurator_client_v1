@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import authService from '../../services/authService';
+import { login } from '../../services/authService';
 import './Login.css';
 import { useTranslation } from 'react-i18next'; // Import translation hook
 
@@ -14,7 +14,7 @@ function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const user = await authService.login(username, password);
+            const user = await login(username, password); // Call the specific function
             if (user) {
                 setMessage(t('login.login_success'));
                 navigate('/');
