@@ -167,7 +167,7 @@ const FinalStep = () => {
 
                     {/* Pie Charts */}
                     <div>
-                        <div className="chart-row">
+                        <div className="final-step-chart-row ">
                             <div className="chart-item">
                                 <h3>{t('step2.power_chart_title')}</h3>
                                 <PieChart width={250} height={250}>
@@ -250,7 +250,7 @@ const FinalStep = () => {
                         />
                     </div>
                 </div>
-                <div className="chart-row">
+                <div className="final-step-chart-row ">
                     <div className="chart-item">
                         <h3>{t('final_step.monthly_psh')}</h3>
                         <BarChart width={500} height={300} data={chartData}>
@@ -451,7 +451,7 @@ const FinalStep = () => {
 
                 {/* Monthly Charts Section */}
                 <div>
-                    <div className="chart-row">
+                    <div className="final-step-chart-row ">
                         <div className="chart-item">
                             <h3>{t('final_step.psh_graph')}</h3>
                             <BarChart data={chartData} width={500} height={300}>
