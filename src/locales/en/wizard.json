@@ -51,7 +51,8 @@
     "month_label": "Month",
     "irradiance_label": "Irradiance (kWh/m²)",
     "avg_ambient_temp_label": "Monthly Avg Ambient Temperature",
-    "temperature_label": "Temperature (°C)"
+    "temperature_label": "Temperature (°C)",
+    "apply_current_config_button": "Use Selected Location"
   },
   "step4": {
     "select_inverter_configuration": "Select Inverter Configuration",

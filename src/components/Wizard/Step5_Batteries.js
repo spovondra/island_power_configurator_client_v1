@@ -138,7 +138,11 @@ const Step5_Batteries = ({ onComplete }) => {
                         <p>{t('step5.no_batteries_available')}</p>
                     ) : (
                         batteries.map((battery) => (
-                            <div key={battery.id} className="step5-battery-option">
+                            <div
+                                key={battery.id}
+                                className={`step5-battery-option ${selectedBattery === battery.id ? 'selected' : ''}`}
+                                onClick={() => handleBatterySelect(battery.id)}
+                            >
                                 <label>
                                     <input
                                         type="radio"

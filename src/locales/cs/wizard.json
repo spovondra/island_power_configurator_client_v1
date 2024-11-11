@@ -51,7 +51,8 @@
     "month_label": "Měsíc",
     "irradiance_label": "Záření (kWh/m²)",
     "avg_ambient_temp_label": "Měsíční průměrná teplota okolí",
-    "temperature_label": "Teplota (°C)"
+    "temperature_label": "Teplota (°C)",
+    "apply_current_config_button": "Použít vybranou polohu"
   },
   "step4": {
     "select_inverter_configuration": "Vyberte konfiguraci invertoru",

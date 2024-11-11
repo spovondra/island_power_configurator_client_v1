@@ -1,45 +1,40 @@
-/* Step 6 Solar Panels Configurator */
 .step6-solar-panel-configurator {
     width: 80%;
     margin: 0 auto;
     font-family: 'Arial', sans-serif;
-    background-color: #f9f9f9; /* Light background for contrast */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
 }
 
-/* Title */
 .step6-config-title {
     text-align: center;
     margin-bottom: 20px;
-    font-size: 26px; /* Slightly larger for emphasis */
+    font-size: 26px;
     font-weight: bold;
-    color: #333; /* Dark text for better readability */
+    color: #333;
 }
 
-/* Section Styling */
 .step6-solar-panel-selection,
 .step6-installation-type,
 .step6-constants-input,
 .step6-calculated-config {
     margin-bottom: 20px;
     text-align: center;
-    border: 1px solid #e0e0e0; /* Light border for separation */
-    border-radius: 8px; /* Rounded edges */
-    background: #fff; /* White background for sections */
-    padding: 15px; /* Padding for sections */
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #fff;
+    padding: 15px;
 }
 
-/* Solar Panel Options */
 .step6-solar-panel-options {
     display: flex;
     justify-content: center;
-    gap: 20px; /* Increased gap for modern layout */
+    gap: 20px;
     flex-wrap: wrap;
 }
 
-/* Month Selection */
 .step6-month-selection {
     display: flex;
     justify-content: center;
@@ -47,78 +42,72 @@
     margin-bottom: 20px;
 }
 
-/* Checkbox Styling */
 .step6-month-checkboxes {
     display: flex;
-    gap: 10px; /* Increased gap for modern look */
+    gap: 10px;
 }
 
 .step6-month-checkbox {
     padding: 5px;
 }
 
-/* Constants Input */
 .step6-constants-input label {
     display: block;
     margin-bottom: 10px;
-    font-weight: 500; /* Slightly lighter weight for labels */
+    font-weight: 500;
 }
 
 .step6-constants-input input {
     margin-left: 10px;
-    border-radius: 4px; /* Rounded input fields */
-    border: 1px solid #ccc; /* Light border */
-    padding: 8px; /* Padding for inputs */
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 8px;
 }
 
-/* Charts Container */
 .step6-charts-container {
     display: flex;
     justify-content: space-around;
     margin-top: 30px;
 }
 
-/* Monthly Data Table */
 .step6-monthly-data-table {
     margin: 30px auto;
     width: 100%;
     max-width: 1000px;
     border-collapse: collapse;
-    background: #fff; /* White background for the table */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .step6-monthly-data-table th,
 .step6-monthly-data-table td {
-    padding: 12px; /* More padding for table cells */
-    border: 1px solid #e0e0e0; /* Light border */
+    padding: 12px;
+    border: 1px solid #e0e0e0;
     text-align: center;
 }
 
 .step6-monthly-data-table th {
-    background-color: #f2f2f2; /* Slightly darker header for contrast */
+    background-color: #f2f2f2;
     font-weight: bold;
 }
 
-/* Button Styles */
 .step6-confirm-button {
     display: block;
     margin: 20px auto;
-    background-color: #007bff; /* Primary button color */
+    background-color: #007bff;
     color: white;
     padding: 12px 20px;
     border: none;
-    border-radius: 5px; /* Rounded button */
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .step6-confirm-button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
-    transform: translateY(-2px); /* Subtle lift effect */
+    background-color: #0056b3;
+    transform: translateY(-2px);
 }
 
-/* Responsive Styles */
 @media (min-width: 768px) {
     .step6-solar-panel-configurator {
         display: flex;

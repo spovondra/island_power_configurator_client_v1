@@ -88,7 +88,11 @@ const Step2_Appliance = ({ onComplete }) => {
                 return;
             }
             await deleteAppliance(selectedProject, applianceId);
-            setAppliances(appliances.filter(appl => appl.id !== applianceId));
+
+            const updatedProject = await getProjectById(selectedProject);
+            setAppliances(updatedProject.appliances || []);
+            setConfigurationModel(updatedProject.configurationModel?.projectAppliance || null);
+
         } catch (error) {
             console.error(t('step2.error_message'), error);
             alert(t('step2.error_message'));
@@ -160,7 +164,6 @@ const Step2_Appliance = ({ onComplete }) => {
                                 type="number"
                                 id="power"
                                 min="0"
-                                step="0.01"
                                 value={appliance.power}
                                 onChange={handleInputChange}
                                 required
@@ -208,7 +211,6 @@ const Step2_Appliance = ({ onComplete }) => {
                                 type="number"
                                 id="peakPower"
                                 min="0"
-                                step="0.01"
                                 value={appliance.peakPower}
                                 onChange={handleInputChange}
                             />
@@ -260,44 +262,57 @@ const Step2_Appliance = ({ onComplete }) => {
                 </div>
             </div>
 
-            {/* Chart Section - Placed outside and below the main container */}
             <div className="step2-chart-section">
-                <div className="step2-chart-container">
-                    <h2 className="chart-title">{t('step2.power_chart_title')}</h2>
-                    <PieChart width={300} height={300}>
-                        <Pie data={powerChartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
-                            {powerChartData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={powerChartColors[index % powerChartColors.length]}/>
-                            ))}
-                        </Pie>
-                        <Tooltip/>
-                        <Legend/>
-                    </PieChart>
-                </div>
-                <div className="step2-chart-container">
-                    <h2 className="chart-title">{t('step2.peak_power_chart_title')}</h2>
-                    <PieChart width={300} height={300}>
-                        <Pie data={peakPowerChartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
-                            {peakPowerChartData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={peakPowerChartColors[index % peakPowerChartColors.length]}/>
-                            ))}
-                        </Pie>
-                        <Tooltip/>
-                        <Legend/>
-                    </PieChart>
-                </div>
-                <div className="step2-chart-container">
-                    <h2 className="chart-title">{t('step2.energy_chart_title')}</h2>
-                    <PieChart width={300} height={300}>
-                        <Pie data={energyChartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
-                            {energyChartData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={energyChartColors[index % energyChartColors.length]}/>
-                            ))}
-                        </Pie>
-                        <Tooltip/>
-                        <Legend/>
-                    </PieChart>
-                </div>
+                {powerChartData.some(data => data.value > 0) && (
+                    <div className="step2-chart-container">
+                        <h2 className="chart-title">{t('step2.power_chart_title')}</h2>
+                        <PieChart width={300} height={300}>
+                            <Pie data={powerChartData} dataKey="value" nameKey="name" cx="50%" cy="50%"
+                                 outerRadius={100} label>
+                                {powerChartData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`}
+                                          fill={powerChartColors[index % powerChartColors.length]}/>
+                                ))}
+                            </Pie>
+                            <Tooltip/>
+                            <Legend/>
+                        </PieChart>
+                    </div>
+                )}
+
+                {peakPowerChartData.some(data => data.value > 0) && (
+                    <div className="step2-chart-container">
+                        <h2 className="chart-title">{t('step2.peak_power_chart_title')}</h2>
+                        <PieChart width={300} height={300}>
+                            <Pie data={peakPowerChartData} dataKey="value" nameKey="name" cx="50%" cy="50%"
+                                 outerRadius={100} label>
+                                {peakPowerChartData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`}
+                                          fill={peakPowerChartColors[index % peakPowerChartColors.length]}/>
+                                ))}
+                            </Pie>
+                            <Tooltip/>
+                            <Legend/>
+                        </PieChart>
+                    </div>
+                )}
+
+                {energyChartData.some(data => data.value > 0) && (
+                    <div className="step2-chart-container">
+                        <h2 className="chart-title">{t('step2.energy_chart_title')}</h2>
+                        <PieChart width={300} height={300}>
+                            <Pie data={energyChartData} dataKey="value" nameKey="name" cx="50%" cy="50%"
+                                 outerRadius={100} label>
+                                {energyChartData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`}
+                                          fill={energyChartColors[index % energyChartColors.length]}/>
+                                ))}
+                            </Pie>
+                            <Tooltip/>
+                            <Legend/>
+                        </PieChart>
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -184,7 +184,7 @@ const Step3_Location = ({ onComplete }) => {
                     <div className="step3-search-block">
                         <div className="step3-search-bar">
                             <input type="text" id="locationSearch" placeholder={t('step3.location_placeholder')} />
-                            <button className="step3-search-button" onClick={searchLocation}>{t('step3.search_button')}</button>
+                            <button className="step3-button" onClick={searchLocation}>{t('step3.search_button')}</button>
                         </div>
                     </div>
                     <div className="step3-map-wrapper">
@@ -261,10 +261,11 @@ const Step3_Location = ({ onComplete }) => {
                         <p>{t('step3.min_temperature_label')}: {temperatures.min} °C</p>
                         <p>{t('step3.max_temperature_label')}: {temperatures.max} °C</p>
                     </div>
-                    {/* Renamed Button */}
-                    <button className="step3-apply-config-button" onClick={handleProcessLocationData}>
+
+                    <button className="step3-button" onClick={handleProcessLocationData}>
                         {t('step3.apply_current_config_button')}
                     </button>
+                    
                 </div>
             </div>
             <div className="step3-chart-flex-container">
@@ -275,7 +276,7 @@ const Step3_Location = ({ onComplete }) => {
                         <XAxis dataKey="month" label={{ value: t('step3.month_label'), position: 'insideBottom', offset: -5 }} />
                         <YAxis label={{ value: t('step3.irradiance_label'), angle: -90, position: 'insideLeft' }} />
                         <Tooltip />
-                        <Bar dataKey="irradiance" fill="#8884d8">
+                        <Bar dataKey="irradiance" fill="#82ca9d">
                             <LabelList dataKey="irradiance" position="top" />
                         </Bar>
                     </BarChart>

@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
 import { getSolarPanels, selectSolarPanel, getProjectSolarPanel } from '../../services/ProjectService';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LineChart, Line, Legend } from 'recharts';
-import { useTranslation } from 'react-i18next'; // Import translation hook
+import { useTranslation } from 'react-i18next';
 import './Step6_SolarPanels.css';
 
-const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
-    const { t } = useTranslation('wizard'); // Use translation for the wizard namespace
+const Step6_SolarPanels = ({ onComplete }) => {
+    const { t } = useTranslation('wizard');
     const { selectedProject } = useContext(ProjectContext);
     const [selectedPanel, setSelectedPanel] = useState(null);
     const [solarPanels, setSolarPanels] = useState([]);
@@ -14,7 +14,7 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
     const [panelOversizeCoefficient, setPanelOversizeCoefficient] = useState(1.2);
     const [batteryEfficiency, setBatteryEfficiency] = useState(0.95);
     const [cableEfficiency, setCableEfficiency] = useState(0.98);
-    const [selectedMonths, setSelectedMonths] = useState(Array.from({ length: 12 }, (_, i) => i + 1)); // Default to all months selected
+    const [selectedMonths, setSelectedMonths] = useState(Array.from({ length: 12 }, (_, i) => i + 1));
     const [installationType, setInstallationType] = useState('ground');
     const [manufacturerTolerance, setManufacturerTolerance] = useState(0.98);
     const [agingLoss, setAgingLoss] = useState(0.95);
@@ -26,10 +26,9 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
         monthlyData: []
     });
 
-    const [initialLoad, setInitialLoad] = useState(true); // To track if the component is being loaded initially
-    const [hasChanged, setHasChanged] = useState(false); // To track if the user has made changes
+    const [initialLoad, setInitialLoad] = useState(true);
+    const [hasChanged, setHasChanged] = useState(false);
 
-    // Fetch solar panels and current configuration when component is mounted
     useEffect(() => {
         if (!selectedProject) return;
 
@@ -46,7 +45,6 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
             try {
                 const projectPanel = await getProjectSolarPanel(selectedProject);
                 if (projectPanel) {
-                    // Set all fetched configuration values into state
                     setSelectedPanel(projectPanel.solarPanelId);
                     setNumberOfPanels(projectPanel.numberOfPanels);
                     setPanelOversizeCoefficient(projectPanel.panelOversizeCoefficient || 1.2);
@@ -54,7 +52,6 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
                     setCableEfficiency(projectPanel.cableEfficiency || 0.98);
                     setInstallationType(projectPanel.installationType || 'ground');
 
-                    // Set the selected months from monthlyData
                     const months = projectPanel.monthlyData.map((data) => data.month);
                     setSelectedMonths(months);
 
@@ -66,7 +63,7 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
             } catch (error) {
                 console.error('Error fetching project solar panel configuration:', error);
             } finally {
-                setInitialLoad(false); // Mark the initial load as complete
+                setInitialLoad(false);
             }
         };
 
@@ -74,7 +71,6 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
         fetchPanelConfig();
     }, [selectedProject]);
 
-    // Only trigger POST request after the initial load
     useEffect(() => {
         if (!initialLoad && hasChanged) {
             sendUpdatedConfiguration();
@@ -113,33 +109,32 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
         }
     };
 
-    // Handle user selecting a panel
     const handlePanelSelect = (panelId) => {
-        setHasChanged(true);
+        if (panelId !== selectedPanel) {
+            setHasChanged(true);
+        }
         setSelectedPanel(panelId);
     };
 
-    // Handle month selection change
     const handleMonthChange = (month) => {
-        if (!selectedPanel) return; // Prevent changing months if no panel is selected
+        if (!selectedPanel) return;
         setHasChanged(true);
         setSelectedMonths((prev) => prev.includes(month) ? prev.filter((m) => m !== month) : [...prev, month]);
     };
 
-    // Handle installation type change
     const handleInstallationTypeChange = (e) => {
         setHasChanged(true);
         setInstallationType(e.target.value);
     };
 
-    // Update efficiency settings and prevent negative values, step in increments of 0.1
     const handleEfficiencyChange = (setter, value) => {
         setHasChanged(true);
-        const newValue = Math.max(0, parseFloat(value)); // Prevent negative values
-        setter(parseFloat(newValue.toFixed(1))); // Ensure value is updated in steps of 0.1
+        const newValue = Math.max(0, parseFloat(value));
+        setter(parseFloat(newValue.toFixed(2)));
     };
 
-    const formatValue = (value, decimals = 2) => (value !== undefined && value !== null ? value.toFixed(decimals) : 'N/A');
+    const formatValue = (value, decimals = 2) =>
+        typeof value === 'number' ? value.toFixed(decimals) : 'N/A';
 
     const chartData = config.monthlyData.map((data) => ({
         month: data.month,
@@ -158,15 +153,21 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
                         <p>{t('step6.no_solar_panels_available')}</p>
                     ) : (
                         solarPanels.map((panel) => (
-                            <label key={panel.id} className="step6-panel-option">
-                                <input
-                                    type="radio"
-                                    name="solarPanel"
-                                    checked={selectedPanel === panel.id}
-                                    onChange={() => handlePanelSelect(panel.id)}
-                                />
-                                {`${panel.name} - Pmax: ${panel.pRated}W`}
-                            </label>
+                            <div
+                                key={panel.id}
+                                className={`step6-panel-option ${selectedPanel === panel.id ? 'selected' : ''}`}
+                                onClick={() => handlePanelSelect(panel.id)}
+                            >
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="solarPanel"
+                                        checked={selectedPanel === panel.id}
+                                        onChange={() => handlePanelSelect(panel.id)}
+                                    />
+                                    {`${panel.name} - Pmax: ${panel.pRated}W`}
+                                </label>
+                            </div>
                         ))
                     )}
                 </div>
@@ -181,7 +182,7 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
                                 type="checkbox"
                                 checked={selectedMonths.includes(month)}
                                 onChange={() => handleMonthChange(month)}
-                                disabled={!selectedPanel} // Disable if no panel is selected
+                                disabled={!selectedPanel}
                             />
                             {month}
                         </label>
@@ -205,50 +206,60 @@ const Step6_SolarPanels = ({ onComplete }) => {  // Added onComplete prop
                     {t('step6.panel_oversize_coefficient')}:
                     <input
                         type="number"
-                        step="0.1"
+                        min="1"
+                        max="10"
+                        step="0.01"
                         value={panelOversizeCoefficient}
                         onChange={(e) => handleEfficiencyChange(setPanelOversizeCoefficient, e.target.value)}
-                        disabled={!selectedPanel} // Disable if no panel is selected
+                        disabled={!selectedPanel}
                     />
                 </label>
                 <label>
                     {t('step6.battery_efficiency')}:
                     <input
                         type="number"
-                        step="0.1"
+                        min="0.01"
+                        max="1"
+                        step="0.01"
                         value={batteryEfficiency}
                         onChange={(e) => handleEfficiencyChange(setBatteryEfficiency, e.target.value)}
-                        disabled={!selectedPanel} // Disable if no panel is selected
+                        disabled={!selectedPanel}
                     />
                 </label>
                 <label>
                     {t('step6.manufacturer_tolerance')}:
                     <input
                         type="number"
-                        step="0.1"
+                        min="0.01"
+                        max="1"
+                        step="0.01"
                         value={manufacturerTolerance}
                         onChange={(e) => handleEfficiencyChange(setManufacturerTolerance, e.target.value)}
-                        disabled={!selectedPanel} // Disable if no panel is selected
+                        disabled={!selectedPanel}
                     />
                 </label>
                 <label>
                     {t('step6.aging_loss')}:
                     <input
                         type="number"
-                        step="0.1"
+                        min="0.01"
+                        max="1"
+                        step="0.01"
                         value={agingLoss}
                         onChange={(e) => handleEfficiencyChange(setAgingLoss, e.target.value)}
-                        disabled={!selectedPanel} // Disable if no panel is selected
+                        disabled={!selectedPanel}
                     />
                 </label>
                 <label>
                     {t('step6.dirt_loss')}:
                     <input
                         type="number"
-                        step="0.1"
+                        min="0.01"
+                        max="1"
+                        step="0.01"
                         value={dirtLoss}
                         onChange={(e) => handleEfficiencyChange(setDirtLoss, e.target.value)}
-                        disabled={!selectedPanel} // Disable if no panel is selected
+                        disabled={!selectedPanel}
                     />
                 </label>
             </div>
