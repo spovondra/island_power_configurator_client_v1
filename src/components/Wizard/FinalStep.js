@@ -107,26 +107,35 @@ const FinalStep = () => {
     const exportToPDF = async () => {
         try {
             if (finalStepRef.current) {
-                console.log("Starting PDF export...");
+                setExporting(true);
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pageHeight = pdf.internal.pageSize.height;
+                const pageWidth = pdf.internal.pageSize.width;
+                let currentY = 5;
+
                 const canvas = await html2canvas(finalStepRef.current, {
-                    scale: 2,
+                    scale: 1.5,
                     useCORS: true
                 });
-                const imageData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/jpeg', 0.75); // Set JPEG and reduce quality to 0.75 for smaller size
 
-                // Calculate image width and height for A4 page
-                const imgWidth = 210; // A4 width in mm
+                const imgWidth = pageWidth;
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-                pdf.addImage(imageData, 'PNG', 0, 0, imgWidth, imgHeight);
+                while (currentY < imgHeight) {
+                    pdf.addImage(imgData, 'JPEG', 0, -currentY, imgWidth, imgHeight);
+                    currentY += pageHeight;
+                    if (currentY < imgHeight) pdf.addPage();
+                }
+
                 pdf.save('project_summary.pdf');
-                console.log("PDF export successful.");
+                setExporting(false);
             } else {
                 console.error('Reference to element is not available.');
             }
         } catch (error) {
             console.error("An error occurred during PDF export:", error);
+            setExporting(false);
         }
     };
 

@@ -138,10 +138,6 @@
     transition: background-color 0.3s;
 }
 
-.final-step-button:hover {
-    background-color: #555;
-}
-
 @media print {
     .export-button {
         display: none;
