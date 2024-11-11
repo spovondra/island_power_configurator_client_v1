@@ -107,7 +107,7 @@ const FinalStep = () => {
             {/* Project Information */}
             <div className="final-step-section project-info">
                 <h3>{t('final_step.project_information')}</h3>
-                <ul>
+                <ul className="final-step-list">
                     <li><strong>{t('final_step.project_name')}:</strong> {project?.name || 'N/A'}</li>
                     <li><strong>{t('final_step.project_id')}:</strong> {project?.id || 'N/A'}</li>
                     <li><strong>{t('final_step.user_name')}:</strong> {userData?.username || 'N/A'}</li>
@@ -149,7 +149,7 @@ const FinalStep = () => {
                             ))}
                             </tbody>
                         </table>
-                        <ul>
+                        <ul className="final-step-list">
                             <li>
                                 <strong>{t('final_step.total_ac_energy')}:</strong> {configuration?.projectAppliance?.totalAcEnergy || 'N/A'} Wh
                             </li>
@@ -166,7 +166,7 @@ const FinalStep = () => {
                     </div>
 
                     {/* Pie Charts */}
-                    <div className="final-step-section chart-section">
+                    <div>
                         <div className="chart-row">
                             <div className="chart-item">
                                 <h3>{t('step2.power_chart_title')}</h3>
@@ -221,7 +221,7 @@ const FinalStep = () => {
                 <div className="final-step-site-flex-container">
                     {/* Site Information List */}
                     <div className="final-step-site-details">
-                        <ul>
+                        <ul className="final-step-list">
                             <li><strong>{t('final_step.latitude')}:</strong> {site.latitude || 'N/A'}</li>
                             <li><strong>{t('final_step.longitude')}:</strong> {site.longitude || 'N/A'}</li>
                             <li><strong>{t('final_step.min_temperature')}:</strong> {site.minTemperature || 'N/A'} °C
@@ -250,14 +250,10 @@ const FinalStep = () => {
                         />
                     </div>
                 </div>
-            </div>
-
-            {/* Monthly Charts Section */}
-            <div className="final-step-section final-step-chart-container">
-                <div className="final-step-chart-row">
-                    <div className="final-step-chart-item">
+                <div className="chart-row">
+                    <div className="chart-item">
                         <h3>{t('final_step.monthly_psh')}</h3>
-                        <BarChart width={400} height={250} data={chartData}>
+                        <BarChart width={500} height={300} data={chartData}>
                             <CartesianGrid strokeDasharray="3 3"/>
                             <XAxis dataKey="month"
                                    label={{value: t('final_step.month'), position: 'insideBottom', offset: -5}}/>
@@ -269,9 +265,9 @@ const FinalStep = () => {
                             </Bar>
                         </BarChart>
                     </div>
-                    <div className="final-step-chart-item">
+                    <div className="chart-item">
                         <h3>{t('final_step.monthly_avg_temperature')}</h3>
-                        <BarChart width={400} height={250} data={chartData}>
+                        <BarChart width={500} height={300} data={chartData}>
                             <CartesianGrid strokeDasharray="3 3"/>
                             <XAxis dataKey="month"
                                    label={{value: t('final_step.month'), position: 'insideBottom', offset: -5}}/>
@@ -286,9 +282,9 @@ const FinalStep = () => {
             </div>
 
             {/* System Voltage Configuration */}
-            <div className="final-step-section system-voltage-info">
+            <div className="final-step-section">
                 <h3>{t('final_step.system_voltage_configuration')}</h3>
-                <ul>
+                <ul className="final-step-list">
                     <li><strong>{t('final_step.system_voltage')}:</strong> {configuration.systemVoltage || 'N/A'} V</li>
                     <li>
                         <strong>{t('final_step.recommended_system_voltage')}:</strong> {configuration.recommendedSystemVoltage || 'N/A'} V
@@ -299,7 +295,7 @@ const FinalStep = () => {
             {/* Inverter Configuration */}
             <div className="final-step-section inverter-info">
                 <h3>{t('final_step.inverter_configuration')}</h3>
-                <ul>
+                <ul className="final-step-list">
                     <li>
                         <strong>{t('final_step.inverter_id')}:</strong> {projectInverter?.inverterId || 'N/A'}
                     </li>
@@ -454,11 +450,11 @@ const FinalStep = () => {
                 </div>
 
                 {/* Monthly Charts Section */}
-                <div className="final-step-section final-step-chart-container">
-                    <div className="final-step-chart-row">
-                        <div className="final-step-chart-item">
+                <div>
+                    <div className="chart-row">
+                        <div className="chart-item">
                             <h3>{t('final_step.psh_graph')}</h3>
-                            <BarChart data={chartData} width={600} height={300}>
+                            <BarChart data={chartData} width={500} height={300}>
                                 <CartesianGrid strokeDasharray="3 3"/>
                                 <XAxis dataKey="month"/>
                                 <YAxis/>
@@ -466,9 +462,9 @@ const FinalStep = () => {
                                 <Bar dataKey="psh" fill="#82ca9d"/>
                             </BarChart>
                         </div>
-                        <div className="final-step-chart-item">
+                        <div className="chart-item">
                             <h3>{t('final_step.estimatedEnergyProduction_solar_graph')}</h3>
-                            <LineChart data={chartData} width={600} height={300}>
+                            <LineChart data={chartData} width={500} height={300}>
                                 <CartesianGrid strokeDasharray="3 3"/>
                                 <XAxis dataKey="month"/>
                                 <YAxis/>
@@ -523,16 +519,17 @@ const FinalStep = () => {
                     <li>
                         <strong>{t('final_step.required_power')}:</strong> {projectController.requiredPower?.toFixed(2) || 'N/A'} W
                     </li>
-                    <li><strong>{t('final_step.series_modules')}:</strong> {projectController.seriesModules || 'N/A'}
-                    </li>
-                    <li>
-                        <strong>{t('final_step.parallel_modules')}:</strong> {projectController.parallelModules || 'N/A'}
-                    </li>
                     <li>
                         <strong>{t('final_step.max_modules_in_series')}:</strong> {projectController.maxModulesInSerial || 'N/A'}
                     </li>
                     <li>
                         <strong>{t('final_step.min_modules_in_series')}:</strong> {projectController.minModulesInSerial || 'N/A'}
+                    </li>
+                    <li>
+                        <strong>{t('final_step.series_modules')}:</strong> {projectController.seriesModules || 'N/A'}
+                    </li>
+                    <li>
+                        <strong>{t('final_step.parallel_modules')}:</strong> {projectController.parallelModules || 'N/A'}
                     </li>
                     <li>
                         <strong>{t('final_step.adjusted_voc')}:</strong> {projectController.adjustedOpenCircuitVoltage?.toFixed(2) || 'N/A'} V

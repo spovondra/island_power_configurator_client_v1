@@ -1,4 +1,4 @@
-/* Hlavní Kontejner */
+/* Main Container */
 .final-step-container {
     padding: 20px;
     background-color: #f4f6f8;
@@ -8,14 +8,15 @@
     margin: 0 auto;
 }
 
-/* Nadpisy */
+/* Headers */
 .final-step-container h2,
 .final-step-container h3 {
     color: #005B96;
     margin-bottom: 15px;
+    text-align: center;
 }
 
-/* Kontejner Sekce */
+/* Section Container */
 .final-step-section {
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
@@ -25,7 +26,28 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Stylizace seznamů */
+/* Chart Section */
+.final-step-chart-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.chart-row {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.final-step-chart-item {
+    flex: 1;
+    text-align: center;
+}
+
+/* List Styling */
 .final-step-list {
     list-style-type: none;
     padding: 0;
@@ -37,7 +59,7 @@
     font-size: 14px;
 }
 
-/* Stylizace Tabulek */
+/* Table Styling */
 .final-step-table {
     width: 100%;
     border-collapse: collapse;
@@ -57,52 +79,13 @@
     color: #005B96;
 }
 
+/* Flex Container for Tables */
 .final-step-table-container {
     overflow-x: auto;
     margin-top: 10px;
 }
 
-/* Kontejner pro Grafy */
-.final-step-chart-section {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px 0;
-}
-
-.final-step-chart-item {
-    text-align: center;
-}
-
-.final-step-chart-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-/* Sekce s měsíčními daty */
-.final-step-chart-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.final-step-chart-row {
-    display: flex;
-    justify-content: space-around;
-    gap: 20px;
-}
-
-/* Informace o konfiguraci systému */
-.final-step-voltage-info ul,
-.final-step-inverter-info ul,
-.final-step-battery-info ul,
-.final-step-solar-panel-info ul,
-.final-step-controller-info ul {
-    list-style: none;
-    padding: 0;
-}
-
-/* Stylizace Location Komponenty */
+/* Map Container */
 .final-step-map-container {
     margin-top: 15px;
     border: 1px solid #ddd;
@@ -110,7 +93,7 @@
     overflow: hidden;
 }
 
-/* Sekce Konstant */
+/* Constants Section */
 .final-step-constants-section ul {
     list-style: none;
     padding: 0;
@@ -123,7 +106,7 @@
     font-weight: bold;
 }
 
-/* Tlačítka */
+/* Buttons */
 .final-step-button {
     padding: 10px 20px;
     margin: 10px;
