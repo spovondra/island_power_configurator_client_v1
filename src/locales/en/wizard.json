@@ -9,18 +9,28 @@
     "name_label": "Name",
     "type_label": "Type",
     "power_label": "Power (W)",
-    "quantity_label": "Number of appliances",
+    "quantity_label": "Number of Appliances",
     "hours_label": "Daily Usage Hours",
     "days_label": "Days per Week",
     "peak_power_label": "Peak Power (W)",
     "energy_label": "Energy Consumption",
     "cost_label": "Cost",
-    "energy_chart_title" : "Energy Consumption Chart",
-    "actions" : "Actions",
+    "energy_chart_title": "Energy Consumption Chart",
+    "power_chart_title": "Power Chart",
+    "peak_power_chart_title": "Peak Power Chart",
+    "actions": "Actions",
     "save_button": "Save Appliance",
     "edit_button": "Edit",
     "delete_button": "Delete",
-    "error_message": "Error saving appliance"
+    "error_message": "Error saving appliance",
+    "legend": {
+      "total_ac_power": "Total AC Power",
+      "total_dc_power": "Total DC Power",
+      "total_ac_energy": "Total AC Energy",
+      "total_dc_energy": "Total DC Energy",
+      "total_ac_peak_power": "Total AC Peak Power",
+      "total_dc_peak_power": "Total DC Peak Power"
+    }
   },
   "step3": {
     "select_project_alert": "Please select a project",

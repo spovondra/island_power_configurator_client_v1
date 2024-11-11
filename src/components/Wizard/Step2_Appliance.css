@@ -1,18 +1,51 @@
+/* Container to hold both appliance and chart sections */
+.step2-container {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
 /* Appliance Page Container */
 .step2-appliance-page-container {
     display: flex;
-    flex-direction: row; /* Align the form and appliance list side by side */
+    flex-direction: row;
     padding: 20px;
     box-sizing: border-box;
-    max-width: 1300px;
-    margin: 0 auto;
-    align-items: flex-start; /* Align items to the top */
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+/* Chart Section */
+.step2-chart-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    text-align: center;
+    padding: 0 20px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+/* Chart Container */
+.step2-chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 1 300px; /* Ensures each chart takes up available space with a minimum width */
+    min-width: 250px;
+    max-width: 400px;
+    margin-bottom: 20px;
+}
+
+/* Center chart title above each chart */
+.chart-title {
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 
 /* Form Section */
 .step2-form-section {
-    flex: 1; /* Allow left column to take available space */
-    margin-right: 20px; /* Space between columns */
+    flex: 1;
+    margin-right: 20px;
 }
 
 /* Appliance Form */
@@ -21,26 +54,26 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    margin-bottom: 20px; /* Space below form for the chart */
+    margin-bottom: 20px;
 }
 
 /* Input Group */
 .step2-input-group {
-    display: flex; /* Use flex for side-by-side layout */
-    align-items: center; /* Align items vertically */
-    margin-bottom: 10px; /* Reduce margin for a more compact look */
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .step2-input-group label {
     display: block;
-    margin-right: 10px; /* Space between label and input */
+    margin-right: 10px;
     font-weight: bold;
 }
 
 .step2-input-group input,
 .step2-input-group select {
-    flex: 1; /* Allow input to take available space */
-    padding: 8px; /* Reduce padding for a compact appearance */
+    flex: 1;
+    padding: 8px;
     border: 1px solid #dcdcdc;
     border-radius: 4px;
     box-sizing: border-box;
@@ -55,30 +88,14 @@
     padding: 10px 16px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px; /* Add space above the button */
-    width: 100%; /* Make the button full width */
-    text-align: center; /* Center text inside button */
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
 }
-
-/* Chart Section */
-.step2-chart-section {
-    display: flex; /* Use flex layout for side-by-side display */
-    justify-content: space-between; /* Space between charts */
-    gap: 20px; /* Gap between each chart */
-    margin-top: 20px;
-    text-align: center; /* Center chart titles */
-}
-
-.step2-chart-container {
-    flex: 1; /* Allow each chart to take equal space */
-    min-width: 300px; /* Ensure each chart has a minimum width */
-}
-
 
 /* Appliance List Section */
 .step2-appliance-list-section {
-    flex: 1; /* Allow right column to take available space */
+    flex: 1;
 }
 
 /* Appliance Table */
@@ -91,7 +108,7 @@
 
 .step2-appliance-table th,
 .step2-appliance-table td {
-    padding: 8px; /* Reduce padding for a more compact look */
+    padding: 8px;
     text-align: center;
     border-bottom: 1px solid #dcdcdc;
 }
@@ -109,7 +126,7 @@
 .step2-button-group {
     display: flex;
     justify-content: center;
-    gap: 5px; /* Reduce gap between buttons */
+    gap: 5px;
 }
 
 /* Edit Button */
@@ -117,7 +134,7 @@
     background-color: #28a745;
     border: none;
     border-radius: 4px;
-    padding: 6px 10px; /* Reduce button size */
+    padding: 6px 10px;
     font-size: 14px;
     cursor: pointer;
     color: white;
@@ -132,7 +149,7 @@
     background-color: #dc3545;
     border: none;
     border-radius: 4px;
-    padding: 6px 10px; /* Reduce button size */
+    padding: 6px 10px;
     font-size: 14px;
     cursor: pointer;
     color: white;
@@ -142,13 +159,39 @@
     background-color: #c82333;
 }
 
-/* Media Query */
-@media (max-width: 768px) {
+/* Media Query for responsive adjustments */
+@media (max-width: 1024px) {
     .step2-appliance-page-container {
-        flex-direction: column; /* Stack columns on small screens */
+        flex-direction: column;
     }
 
     .step2-form-section {
-        margin-right: 0; /* Reset margin on smaller screens */
+        margin-right: 0;
+    }
+
+    /* Stack charts vertically on medium screens */
+    .step2-chart-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .step2-chart-container {
+        width: 100%;
+        max-width: 300px;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Further adjust charts on smaller screens */
+    .step2-chart-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .step2-chart-container {
+        width: 100%;
+        max-width: 250px;
+        margin-bottom: 20px;
     }
 }

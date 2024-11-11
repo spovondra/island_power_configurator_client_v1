@@ -15,12 +15,22 @@
     "peak_power_label": "Špičkový výkon (W)",
     "energy_label": "Spotřeba energie",
     "cost_label": "Cena",
-    "energy_chart_title" : "Graf spotřeby",
-    "actions" : "Možnosti",
+    "energy_chart_title": "Graf spotřeby energie",
+    "power_chart_title": "Graf výkonu",
+    "peak_power_chart_title": "Graf špičkového výkonu",
+    "actions": "Možnosti",
     "save_button": "Uložit spotřebič",
     "edit_button": "Upravit",
     "delete_button": "Smazat",
-    "error_message": "Chyba při ukládání spotřebiče"
+    "error_message": "Chyba při ukládání spotřebiče",
+    "legend": {
+      "total_ac_power": "Celkový AC výkon",
+      "total_dc_power": "Celkový DC výkon",
+      "total_ac_energy": "Celková AC energie",
+      "total_dc_energy": "Celková DC energie",
+      "total_ac_peak_power": "Celkový špičkový AC výkon",
+      "total_dc_peak_power": "Celkový špičkový DC výkon"
+    }
   },
   "step3": {
     "select_project_alert": "Prosím, vyberte projekt",

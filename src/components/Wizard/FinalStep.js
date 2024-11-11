@@ -113,7 +113,6 @@ const FinalStep = () => {
                                 <th>{t('final_step.quantity')}</th>
                                 <th>{t('final_step.hours_per_day')}</th>
                                 <th>{t('final_step.days_per_week')}</th>
-                                <th>{t('final_step.cost')}</th>
                                 <th>{t('final_step.energy')}</th>
                             </tr>
                             </thead>
@@ -127,7 +126,6 @@ const FinalStep = () => {
                                     <td>{appliance.quantity}</td>
                                     <td>{appliance.hours}</td>
                                     <td>{appliance.days}</td>
-                                    <td>{appliance.cost} CZK</td>
                                     <td>{appliance.energy} Wh</td>
                                 </tr>
                             ))}
