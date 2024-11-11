@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
-import { getProjectById } from '../../services/ProjectService';
+import { getProjectSummary } from '../../services/ProjectService'; // Import the new service function
 import LocationComponent from '../Location/LocationComponent'; // Adjust the path if needed
 
 import {
@@ -23,20 +23,16 @@ import './FinalStep.css';
 const FinalStep = () => {
     const { t } = useTranslation('wizard');
     const { selectedProject } = useContext(ProjectContext);
-    const [project, setProject] = useState(null);
-    const [pvgisData, setPVGISData] = useState([]);
+    const [summaryData, setSummaryData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchProject = async () => {
+        const fetchSummaryData = async () => {
             if (selectedProject) {
                 try {
-                    const data = await getProjectById(selectedProject);
-                    setProject(data);
-                    if (data?.site?.monthlyDataList) {
-                        setPVGISData(data.site.monthlyDataList);
-                    }
+                    const data = await getProjectSummary(selectedProject);
+                    setSummaryData(data);
                 } catch (err) {
                     setError(t('final_step.fetch_error'));
                 } finally {
@@ -44,12 +40,13 @@ const FinalStep = () => {
                 }
             }
         };
-        fetchProject();
+        fetchSummaryData();
     }, [selectedProject, t]);
 
     if (loading) return <p>{t('final_step.loading')}</p>;
     if (error) return <p>{error}</p>;
 
+    const project = summaryData?.project || {};
     const site = project?.site || {};
     const appliances = project?.appliances || [];
     const configuration = project?.configurationModel || {};
@@ -57,7 +54,7 @@ const FinalStep = () => {
         { name: t('final_step.total_ac_energy'), value: configuration?.projectAppliance?.totalAcEnergy || 0 },
         { name: t('final_step.total_dc_energy'), value: configuration?.projectAppliance?.totalDcEnergy || 0 },
     ];
-    
+
     const solarPanelData = configuration?.projectSolarPanel?.monthlyData || [];
 
     const chartData = solarPanelData.map(item => ({
@@ -304,45 +301,6 @@ const FinalStep = () => {
                         <td>{configuration?.projectBattery?.dod || 'N/A'}</td>
                         <td>{configuration?.projectBattery?.capacityWithDod || 'N/A'} Ah</td>
                         <td>{configuration?.projectBattery?.estimatedDaysOfAutonomy || 'N/A'} {t('final_step.days')}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            {/* Solar Panel Configuration */}
-            <div className="final-step-section solar-panel-info">
-                <h3>{t('final_step.solar_panel_configuration')}</h3>
-                <ul>
-                    <li><strong>{t('final_step.solar_panel_id')}:</strong> {configuration?.projectSolarPanel?.solarPanelId || 'N/A'}</li>
-                    <li><strong>{t('final_step.number_of_panels')}:</strong> {configuration?.projectSolarPanel?.numberOfPanels || 'N/A'}</li>
-                    <li><strong>{t('final_step.total_power_generated')}:</strong> {configuration?.projectSolarPanel?.totalPowerGenerated || 'N/A'} W</li>
-                    <li><strong>{t('final_step.efficiency_loss')}:</strong> {configuration?.projectSolarPanel?.efficiencyLoss || 'N/A'}</li>
-                    <li><strong>{t('final_step.estimated_daily_energy_production')}:</strong> {configuration?.projectSolarPanel?.estimatedDailyEnergyProduction || 'N/A'} Wh</li>
-                    <li><strong>{t('final_step.installation_type')}:</strong> {configuration?.projectSolarPanel?.installationType || 'N/A'}</li>
-                </ul>
-                <table className="final-step-table">
-                    <thead>
-                    <tr>
-                        <th>{t('final_step.panel_name')}</th>
-                        <th>{t('final_step.nominal_power')}</th>
-                        <th>{t('final_step.voc')}</th>
-                        <th>{t('final_step.isc')}</th>
-                        <th>{t('final_step.vmp')}</th>
-                        <th>{t('final_step.imp')}</th>
-                        <th>{t('final_step.temp_coefficient_power')}</th>
-                        <th>{t('final_step.tolerance')}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>{configuration?.projectSolarPanel?.panelName || 'N/A'}</td>
-                        <td>{configuration?.projectSolarPanel?.nominalPower || 'N/A'} W</td>
-                        <td>{configuration?.projectSolarPanel?.voc || 'N/A'} V</td>
-                        <td>{configuration?.projectSolarPanel?.isc || 'N/A'} A</td>
-                        <td>{configuration?.projectSolarPanel?.vmp || 'N/A'} V</td>
-                        <td>{configuration?.projectSolarPanel?.imp || 'N/A'} A</td>
-                        <td>{configuration?.projectSolarPanel?.tempCoefficientPower || 'N/A'} %/°C</td>
-                        <td>{configuration?.projectSolarPanel?.tolerance || 'N/A'} %</td>
                     </tr>
                     </tbody>
                 </table>

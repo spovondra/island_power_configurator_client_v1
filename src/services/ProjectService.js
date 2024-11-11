@@ -270,3 +270,13 @@ export const getProjectController = async (projectId) => {
         throw error;
     }
 };
+
+export const getProjectSummary = async (projectId) => {
+    try {
+        const response = await apiClient.get(`${API_PROJECT_URL}/${projectId}/summary`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching project summary:', error);
+        throw error;
+    }
+};
