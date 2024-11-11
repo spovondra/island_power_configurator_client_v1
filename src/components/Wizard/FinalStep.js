@@ -1,4 +1,6 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import { ProjectContext } from '../../context/ProjectContext';
 import { getProjectSummary } from '../../services/ProjectService';
 import { getUserById } from '../../services/authService';
@@ -27,7 +29,9 @@ const FinalStep = () => {
     const [summaryData, setSummaryData] = useState(null);
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [exporting, setExporting] = useState(false);
     const [error, setError] = useState(null);
+    const finalStepRef = useRef();
 
     useEffect(() => {
         const fetchSummaryData = async () => {
@@ -100,8 +104,34 @@ const FinalStep = () => {
         estimatedEnergyProduction: item.estimatedDailySolarEnergy,
     }));
 
+    const exportToPDF = async () => {
+        try {
+            if (finalStepRef.current) {
+                console.log("Starting PDF export...");
+                const canvas = await html2canvas(finalStepRef.current, {
+                    scale: 2,
+                    useCORS: true
+                });
+                const imageData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+
+                // Calculate image width and height for A4 page
+                const imgWidth = 210; // A4 width in mm
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                pdf.addImage(imageData, 'PNG', 0, 0, imgWidth, imgHeight);
+                pdf.save('project_summary.pdf');
+                console.log("PDF export successful.");
+            } else {
+                console.error('Reference to element is not available.');
+            }
+        } catch (error) {
+            console.error("An error occurred during PDF export:", error);
+        }
+    };
+
     return (
-        <div className="final-step-container">
+        <div ref={finalStepRef} className="final-step-container">
             <h2>{t('final_step.final_system_overview')}</h2>
 
             {/* Project Information */}
@@ -570,6 +600,15 @@ const FinalStep = () => {
                     </tbody>
                 </table>
             </div>
+            <button
+                className="final-step-button export-button"
+                onClick={exportToPDF}
+                disabled={exporting} // Disable button during export
+                style={{display: exporting ? 'none' : 'block'}} // Hide during export
+            >
+                {t('final_step.export_to_pdf')}
+            </button>
+            {exporting && <p>{t('final_step.exporting')}...</p>}
         </div>
     );
 };

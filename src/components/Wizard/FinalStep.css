@@ -141,3 +141,9 @@
 .final-step-button:hover {
     background-color: #555;
 }
+
+@media print {
+    .export-button {
+        display: none;
+    }
+}
