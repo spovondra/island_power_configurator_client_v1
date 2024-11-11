@@ -110,11 +110,11 @@ const Step6_SolarPanels = ({ onComplete }) => {
     };
 
     const handlePanelSelect = (panelId) => {
-        if (panelId !== selectedPanel) {
-            setHasChanged(true);
-        }
+        setHasChanged(true);
         setSelectedPanel(panelId);
+        sendUpdatedConfiguration(); // Trigger configuration update on every click
     };
+
 
     const handleMonthChange = (month) => {
         if (!selectedPanel) return;

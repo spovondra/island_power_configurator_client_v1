@@ -1,27 +1,31 @@
+/* Hlavní Kontejner */
 .final-step-container {
     padding: 20px;
-    max-width: 800px;
-    margin: 20px auto;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #f4f6f8;
+    color: #333;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
+/* Nadpisy */
+.final-step-container h2,
+.final-step-container h3 {
+    color: #005B96;
+    margin-bottom: 15px;
+}
+
+/* Kontejner Sekce */
 .final-step-section {
-    margin-bottom: 30px;
-    padding: 20px;
-    background-color: #fff;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-h3 {
-    font-size: 18px;
-    border-bottom: 2px solid #ddd;
-    margin-bottom: 10px;
-}
-
+/* Stylizace seznamů */
 .final-step-list {
     list-style-type: none;
     padding: 0;
@@ -29,33 +33,44 @@ h3 {
 }
 
 .final-step-list li {
-    padding: 5px;
-    border-bottom: 1px solid #ddd;
+    padding: 8px 0;
+    font-size: 14px;
 }
 
+/* Stylizace Tabulek */
+.final-step-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
 
-.final-step-flex-container {
-    display: flex;
-    gap: 20px;
-    justify-content: space-between;
+.final-step-table th,
+.final-step-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.final-step-table th {
+    background-color: #f0f4f8;
+    font-weight: bold;
+    color: #005B96;
 }
 
 .final-step-table-container {
-    flex: 2;
+    overflow-x: auto;
+    margin-top: 10px;
 }
 
-.final-step-chart-container {
-    flex: 1;
+/* Kontejner pro Grafy */
+.final-step-chart-section {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    justify-content: space-around;
+    padding: 20px 0;
 }
 
-.final-step-chart-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.final-step-chart-item {
+    text-align: center;
 }
 
 .final-step-chart-row {
@@ -64,104 +79,61 @@ h3 {
     gap: 20px;
 }
 
-.final-step-chart-item {
-    flex: 1;
+/* Sekce s měsíčními daty */
+.final-step-chart-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 20px;
 }
 
-.final-step-battery-info {
-    margin-bottom: 30px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.final-step-battery-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-.final-step-battery-table th,
-.final-step-battery-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-}
-
-.final-step-battery-table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-}
-
-.final-step-list {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 10px;
-}
-
-.final-step-list li {
-    padding: 5px 0;
-}
-
-.final-step-solar-panel-info {
-    margin-bottom: 30px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.final-step-solar-panel-table,
-.final-step-monthly-values-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-.final-step-solar-panel-table th,
-.final-step-solar-panel-table td,
-.final-step-monthly-values-table th,
-.final-step-monthly-values-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-}
-
-.final-step-solar-panel-table th,
-.final-step-monthly-values-table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-}
-
-.final-step-constants-section {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f7f7f7;
-    border-radius: 8px;
-}
-
-.final-step-charts-container {
+.final-step-chart-row {
     display: flex;
-    justify-content: space-between;
-    margin: 20px 0;
+    justify-content: space-around;
+    gap: 20px;
 }
 
-.final-step-chart {
-    flex: 1;
-    margin-right: 20px;
+/* Informace o konfiguraci systému */
+.final-step-voltage-info ul,
+.final-step-inverter-info ul,
+.final-step-battery-info ul,
+.final-step-solar-panel-info ul,
+.final-step-controller-info ul {
+    list-style: none;
+    padding: 0;
 }
 
-.final-step-chart:last-child {
-    margin-right: 0;
+/* Stylizace Location Komponenty */
+.final-step-map-container {
+    margin-top: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-.final-step-chart-container:last-child {
-    margin-right: 0;
+/* Sekce Konstant */
+.final-step-constants-section ul {
+    list-style: none;
+    padding: 0;
+    font-size: 14px;
 }
 
+.final-step-constants-section h4 {
+    margin-top: 20px;
+    color: #005B96;
+    font-weight: bold;
+}
 
+/* Tlačítka */
+.final-step-button {
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
+.final-step-button:hover {
+    background-color: #0056b3;
+}

@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
 import { getSuitableControllers, selectController, getProjectController } from '../../services/ProjectService';
-import { useTranslation } from 'react-i18next'; // Import translation hook
-import './Step7_Controller.css'; // Import CSS styles
+import { useTranslation } from 'react-i18next';
+import './Step7_Controller.css';
 
-const Step7_Controller = ({ onComplete }) => {  // Pass onComplete as a prop
-    const { t } = useTranslation('wizard'); // Use translation for the wizard namespace
+const Step7_Controller = ({ onComplete }) => {
+    const { t } = useTranslation('wizard');
     const { selectedProject } = useContext(ProjectContext);
     const [selectedController, setSelectedController] = useState(null);
     const [controllers, setControllers] = useState([]);
-    const [regulatorType, setRegulatorType] = useState('MPPT'); // Default to MPPT
+    const [regulatorType, setRegulatorType] = useState('MPPT');
     const [controllerConfig, setControllerConfig] = useState({
         requiredCurrent: 0,
         requiredPower: 0,
@@ -80,12 +80,10 @@ const Step7_Controller = ({ onComplete }) => {  // Pass onComplete as a prop
             return;
         }
 
-        console.log('Sending controller config with:', { selectedController, regulatorType });
-
         try {
             const result = await selectController(selectedProject, selectedController, regulatorType);
             setControllerConfig(result);
-            onComplete();  // Call onComplete to indicate the step is done
+            onComplete();
         } catch (error) {
             console.error('Error selecting controller:', error);
         }
@@ -94,9 +92,7 @@ const Step7_Controller = ({ onComplete }) => {  // Pass onComplete as a prop
     const handleControllerSelect = (controllerId) => {
         setHasChanged(true);
         setSelectedController(controllerId);
-
         sendUpdatedControllerConfig();
-        onComplete();
     };
 
     const handleRegulatorTypeChange = (type) => {
@@ -139,15 +135,21 @@ const Step7_Controller = ({ onComplete }) => {  // Pass onComplete as a prop
                         <p>{t('step7.no_suitable_controllers')}</p>
                     ) : (
                         controllers.map((controller) => (
-                            <label key={controller.id} className="step7-controller-option">
-                                <input
-                                    type="radio"
-                                    name="controller"
-                                    checked={selectedController === controller.id}
-                                    onChange={() => handleControllerSelect(controller.id)}
-                                />
-                                {`${controller.name} - Rated Power: ${controller.ratedPower}W`}
-                            </label>
+                            <div
+                                key={controller.id}
+                                className={`step7-controller-option ${selectedController === controller.id ? 'selected' : ''}`}
+                                onClick={() => handleControllerSelect(controller.id)}
+                            >
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="controller"
+                                        checked={selectedController === controller.id}
+                                        onChange={() => handleControllerSelect(controller.id)}
+                                    />
+                                    {`${controller.name} - Rated Power: ${controller.ratedPower}W`}
+                                </label>
+                            </div>
                         ))
                     )}
                 </div>
@@ -172,7 +174,6 @@ const Step7_Controller = ({ onComplete }) => {  // Pass onComplete as a prop
                 </p>
 
                 <h3>{t('step7.results')}</h3>
-                {console.log(controllerConfig)}
                 <p><b>{t('step7.adjusted_voc')}:</b> {controllerConfig.adjustedOpenCircuitVoltage}</p>
                 <p><b>{t('step7.adjusted_vmp')}:</b> {controllerConfig.adjustedVoltageAtMaxPower}</p>
                 <p><b>{t('step7.max_modules_in_series')}:</b> {controllerConfig.maxModulesInSerial}</p>

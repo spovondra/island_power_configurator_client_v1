@@ -1,9 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
-import { getProjectSummary } from '../../services/ProjectService'; // Import the service function
-import { getUserById } from '../../services/authService'; // Import from authService
-import LocationComponent from '../Location/LocationComponent'; // Adjust the path if needed
-
+import { getProjectSummary } from '../../services/ProjectService';
+import { getUserById } from '../../services/authService';
+import LocationComponent from '../Location/LocationComponent';
 import {
     BarChart,
     Bar,
@@ -17,6 +16,7 @@ import {
     Cell,
     LineChart,
     Line,
+    Legend
 } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import './FinalStep.css';
@@ -36,7 +36,6 @@ const FinalStep = () => {
                     const data = await getProjectSummary(selectedProject);
                     setSummaryData(data);
 
-                    // Fetch user data using userId from project
                     if (data?.project?.userId) {
                         const user = await getUserById(data.project.userId);
                         setUserData(user);
@@ -60,17 +59,36 @@ const FinalStep = () => {
     const configuration = project?.configurationModel || {};
 
     const inverter = summaryData?.inverter || {};
+    const projectInverter= configuration?.projectInverter || [];
     const battery = summaryData?.battery || {};
+    const projectBattery = configuration?.battery || [];
     const solarPanel = summaryData?.solarPanel || {};
+    const projectSolarPanel = configuration?.projectSolarPanel || [];
+    const controller = summaryData?.controller || {};
+    const projectController = configuration?.projectController || {};
 
-    const totalEnergyData = [
+    // Data for new pie charts
+    const powerChartData = [
+        { name: t('final_step.total_ac_power'), value: configuration?.projectAppliance?.totalAcPower || 0 },
+        { name: t('final_step.total_dc_power'), value: configuration?.projectAppliance?.totalDcPower || 0 },
+    ];
+
+    const peakPowerChartData = [
+        { name: t('final_step.total_ac_peak_power'), value: configuration?.projectAppliance?.totalAcPeakPower || 0 },
+        { name: t('final_step.total_dc_peak_power'), value: configuration?.projectAppliance?.totalDcPeakPower || 0 },
+    ];
+
+    const energyChartData = [
         { name: t('final_step.total_ac_energy'), value: configuration?.projectAppliance?.totalAcEnergy || 0 },
         { name: t('final_step.total_dc_energy'), value: configuration?.projectAppliance?.totalDcEnergy || 0 },
     ];
 
-    const solarPanelData = configuration?.projectSolarPanel?.monthlyData || [];
-
-    const chartData = solarPanelData.map(item => ({
+    // Colors for pie charts
+    const powerChartColors = ['#005B96', '#33A1FD'];
+    const peakPowerChartColors = ['#228B22', '#32CD32'];
+    const energyChartColors = ['#B22222', '#FF4500'];
+    
+    const chartData = projectSolarPanel?.monthlyData.map(item => ({
         month: item.month,
         psh: item.psh,
         ambientTemperature: item.ambientTemperature,
@@ -132,49 +150,67 @@ const FinalStep = () => {
                             </tbody>
                         </table>
                         <ul>
-                            <li><strong>{t('final_step.total_ac_energy')}:</strong> {configuration?.projectAppliance?.totalAcEnergy || 'N/A'} Wh</li>
-                            <li><strong>{t('final_step.total_dc_energy')}:</strong> {configuration?.projectAppliance?.totalDcEnergy || 'N/A'} Wh</li>
-                            <li><strong>{t('final_step.total_ac_peak_power')}:</strong> {configuration?.projectAppliance?.totalAcPeakPower || 'N/A'} W</li>
-                            <li><strong>{t('final_step.total_dc_peak_power')}:</strong> {configuration?.projectAppliance?.totalDcPeakPower || 'N/A'} W</li>
+                            <li>
+                                <strong>{t('final_step.total_ac_energy')}:</strong> {configuration?.projectAppliance?.totalAcEnergy || 'N/A'} Wh
+                            </li>
+                            <li>
+                                <strong>{t('final_step.total_dc_energy')}:</strong> {configuration?.projectAppliance?.totalDcEnergy || 'N/A'} Wh
+                            </li>
+                            <li>
+                                <strong>{t('final_step.total_ac_peak_power')}:</strong> {configuration?.projectAppliance?.totalAcPeakPower || 'N/A'} W
+                            </li>
+                            <li>
+                                <strong>{t('final_step.total_dc_peak_power')}:</strong> {configuration?.projectAppliance?.totalDcPeakPower || 'N/A'} W
+                            </li>
                         </ul>
                     </div>
 
                     {/* Pie Charts */}
-                    <div className="final-step-chart-container">
-                        {/* Total Energy Pie Chart */}
-                        <PieChart width={200} height={200}>
-                            <Pie
-                                data={totalEnergyData}
-                                cx="50%"
-                                cy="50%"
-                                outerRadius={80}
-                                label
-                                dataKey="value"
-                            >
-                                <Cell key="cell-0" fill="#ff7300" />
-                                <Cell key="cell-1" fill="#0088FE" />
-                            </Pie>
-                            <Tooltip />
-                        </PieChart>
-
-                        {/* Peak Power Pie Chart */}
-                        <PieChart width={200} height={200}>
-                            <Pie
-                                data={[
-                                    { name: t('final_step.peak_ac'), value: configuration?.projectAppliance?.totalAcPeakPower || 0 },
-                                    { name: t('final_step.peak_dc'), value: configuration?.projectAppliance?.totalDcPeakPower || 0 },
-                                ]}
-                                cx="50%"
-                                cy="50%"
-                                outerRadius={80}
-                                label
-                                dataKey="value"
-                            >
-                                <Cell key="cell-0" fill="#FFBB28" />
-                                <Cell key="cell-1" fill="#00C49F" />
-                            </Pie>
-                            <Tooltip />
-                        </PieChart>
+                    <div className="final-step-section chart-section">
+                        <div className="chart-row">
+                            <div className="chart-item">
+                                <h3>{t('step2.power_chart_title')}</h3>
+                                <PieChart width={250} height={250}>
+                                    <Pie data={powerChartData} dataKey="value" nameKey="name" cx="50%" cy="50%"
+                                         outerRadius={80} label>
+                                        {powerChartData.map((entry, index) => (
+                                            <Cell key={`cell-${index}`}
+                                                  fill={powerChartColors[index % powerChartColors.length]}/>
+                                        ))}
+                                    </Pie>
+                                    <Tooltip/>
+                                    <Legend/>
+                                </PieChart>
+                            </div>
+                            <div className="chart-item">
+                                <h3>{t('step2.peak_power_chart_title')}</h3>
+                                <PieChart width={250} height={250}>
+                                    <Pie data={peakPowerChartData} dataKey="value" nameKey="name" cx="50%" cy="50%"
+                                         outerRadius={80} label>
+                                        {peakPowerChartData.map((entry, index) => (
+                                            <Cell key={`cell-${index}`}
+                                                  fill={peakPowerChartColors[index % peakPowerChartColors.length]}/>
+                                        ))}
+                                    </Pie>
+                                    <Tooltip/>
+                                    <Legend/>
+                                </PieChart>
+                            </div>
+                            <div className="chart-item">
+                                <h3>{t('step2.energy_chart_title')}</h3>
+                                <PieChart width={250} height={250}>
+                                    <Pie data={energyChartData} dataKey="value" nameKey="name" cx="50%" cy="50%"
+                                         outerRadius={80} label>
+                                        {energyChartData.map((entry, index) => (
+                                            <Cell key={`cell-${index}`}
+                                                  fill={energyChartColors[index % energyChartColors.length]}/>
+                                        ))}
+                                    </Pie>
+                                    <Tooltip/>
+                                    <Legend/>
+                                </PieChart>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -188,11 +224,15 @@ const FinalStep = () => {
                         <ul>
                             <li><strong>{t('final_step.latitude')}:</strong> {site.latitude || 'N/A'}</li>
                             <li><strong>{t('final_step.longitude')}:</strong> {site.longitude || 'N/A'}</li>
-                            <li><strong>{t('final_step.min_temperature')}:</strong> {site.minTemperature || 'N/A'} °C</li>
-                            <li><strong>{t('final_step.max_temperature')}:</strong> {site.maxTemperature || 'N/A'} °C</li>
+                            <li><strong>{t('final_step.min_temperature')}:</strong> {site.minTemperature || 'N/A'} °C
+                            </li>
+                            <li><strong>{t('final_step.max_temperature')}:</strong> {site.maxTemperature || 'N/A'} °C
+                            </li>
                             <li><strong>{t('final_step.panel_angle')}:</strong> {site.panelAngle || '0'}°</li>
                             <li><strong>{t('final_step.panel_aspect')}:</strong> {site.panelAspect || '0'}°</li>
-                            <li><strong>{t('final_step.used_optimal_values')}:</strong> {site.usedOptimalValues ? t('final_step.yes') : t('final_step.no')}</li>
+                            <li>
+                                <strong>{t('final_step.used_optimal_values')}:</strong> {site.usedOptimalValues ? t('final_step.yes') : t('final_step.no')}
+                            </li>
                         </ul>
                     </div>
 
@@ -201,9 +241,12 @@ const FinalStep = () => {
                         <LocationComponent
                             latitude={site.latitude || 0}
                             longitude={site.longitude || 0}
-                            setLatitude={() => {}} // Disable interactivity by passing empty functions
-                            setLongitude={() => {}}
-                            setUseOptimal={() => {}}
+                            setLatitude={() => {
+                            }} // Disable interactivity by passing empty functions
+                            setLongitude={() => {
+                            }}
+                            setUseOptimal={() => {
+                            }}
                         />
                     </div>
                 </div>
@@ -215,24 +258,27 @@ const FinalStep = () => {
                     <div className="final-step-chart-item">
                         <h3>{t('final_step.monthly_psh')}</h3>
                         <BarChart width={400} height={250} data={chartData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="month" label={{ value: t('final_step.month'), position: 'insideBottom', offset: -5 }} />
-                            <YAxis label={{ value: t('final_step.irradiance_kwh_m2'), angle: -90, position: 'insideLeft' }} />
-                            <Tooltip />
+                            <CartesianGrid strokeDasharray="3 3"/>
+                            <XAxis dataKey="month"
+                                   label={{value: t('final_step.month'), position: 'insideBottom', offset: -5}}/>
+                            <YAxis
+                                label={{value: t('final_step.irradiance_kwh_m2'), angle: -90, position: 'insideLeft'}}/>
+                            <Tooltip/>
                             <Bar dataKey="psh" fill="#8884d8">
-                                <LabelList dataKey="psh" position="top" />
+                                <LabelList dataKey="psh" position="top"/>
                             </Bar>
                         </BarChart>
                     </div>
                     <div className="final-step-chart-item">
                         <h3>{t('final_step.monthly_avg_temperature')}</h3>
                         <BarChart width={400} height={250} data={chartData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="month" label={{ value: t('final_step.month'), position: 'insideBottom', offset: -5 }} />
-                            <YAxis label={{ value: t('final_step.temperature_c'), angle: -90, position: 'insideLeft' }} />
-                            <Tooltip />
+                            <CartesianGrid strokeDasharray="3 3"/>
+                            <XAxis dataKey="month"
+                                   label={{value: t('final_step.month'), position: 'insideBottom', offset: -5}}/>
+                            <YAxis label={{value: t('final_step.temperature_c'), angle: -90, position: 'insideLeft'}}/>
+                            <Tooltip/>
                             <Bar dataKey="ambientTemperature" fill="#82ca9d">
-                                <LabelList dataKey="ambientTemperature" position="top" />
+                                <LabelList dataKey="ambientTemperature" position="top"/>
                             </Bar>
                         </BarChart>
                     </div>
@@ -244,7 +290,9 @@ const FinalStep = () => {
                 <h3>{t('final_step.system_voltage_configuration')}</h3>
                 <ul>
                     <li><strong>{t('final_step.system_voltage')}:</strong> {configuration.systemVoltage || 'N/A'} V</li>
-                    <li><strong>{t('final_step.recommended_system_voltage')}:</strong> {configuration.recommendedSystemVoltage || 'N/A'} V</li>
+                    <li>
+                        <strong>{t('final_step.recommended_system_voltage')}:</strong> {configuration.recommendedSystemVoltage || 'N/A'} V
+                    </li>
                 </ul>
             </div>
 
@@ -252,10 +300,18 @@ const FinalStep = () => {
             <div className="final-step-section inverter-info">
                 <h3>{t('final_step.inverter_configuration')}</h3>
                 <ul>
-                    <li><strong>{t('final_step.inverter_id')}:</strong> {configuration?.projectInverter?.inverterId || 'N/A'}</li>
-                    <li><strong>{t('final_step.inverter_temperature')}:</strong> {configuration?.projectInverter?.inverterTemperature || 'N/A'} °C</li>
-                    <li><strong>{t('final_step.total_adjusted_ac_energy')}:</strong> {configuration?.projectInverter?.totalAdjustedAcEnergy || 'N/A'} Wh</li>
-                    <li><strong>{t('final_step.total_daily_energy')}:</strong> {configuration?.projectInverter?.totalDailyEnergy || 'N/A'} Wh</li>
+                    <li>
+                        <strong>{t('final_step.inverter_id')}:</strong> {projectInverter?.inverterId || 'N/A'}
+                    </li>
+                    <li>
+                        <strong>{t('final_step.inverter_temperature')}:</strong> {projectInverter?.inverterTemperature || 'N/A'} °C
+                    </li>
+                    <li>
+                        <strong>{t('final_step.total_adjusted_ac_energy')}:</strong> {projectInverter?.totalAdjustedAcEnergy || 'N/A'} Wh
+                    </li>
+                    <li>
+                        <strong>{t('final_step.total_daily_energy')}:</strong> {projectInverter?.totalDailyEnergy || 'N/A'} Wh
+                    </li>
                 </ul>
                 <table className="final-step-table">
                     <thead>
@@ -287,11 +343,21 @@ const FinalStep = () => {
             <div className="final-step-section final-step-battery-info">
                 <h3>{t('final_step.battery_configuration')}</h3>
                 <ul className="final-step-list">
-                    <li><strong>{t('final_step.battery_id')}:</strong> {configuration?.projectBattery?.batteryId || 'N/A'}</li>
-                    <li><strong>{t('final_step.temperature')}:</strong> {configuration?.projectBattery?.temperature || 'N/A'} °C</li>
-                    <li><strong>{t('final_step.parallel_batteries')}:</strong> {configuration?.projectBattery?.parallelBatteries || 'N/A'}</li>
-                    <li><strong>{t('final_step.series_batteries')}:</strong> {configuration?.projectBattery?.seriesBatteries || 'N/A'}</li>
-                    <li><strong>{t('final_step.total_available_capacity')}:</strong> {configuration?.projectBattery?.totalAvailableCapacity || 'N/A'} Wh</li>
+                    <li>
+                        <strong>{t('final_step.battery_id')}:</strong> {projectBattery?.batteryId || 'N/A'}
+                    </li>
+                    <li>
+                        <strong>{t('final_step.temperature')}:</strong> {projectBattery?.temperature || 'N/A'} °C
+                    </li>
+                    <li>
+                        <strong>{t('final_step.parallel_batteries')}:</strong> {projectBattery?.parallelBatteries || 'N/A'}
+                    </li>
+                    <li>
+                        <strong>{t('final_step.series_batteries')}:</strong> {projectBattery?.seriesBatteries || 'N/A'}
+                    </li>
+                    <li>
+                        <strong>{t('final_step.total_available_capacity')}:</strong> {projectBattery?.totalAvailableCapacity || 'N/A'} Wh
+                    </li>
                 </ul>
 
                 {/* Battery Parameters Table */}
@@ -314,8 +380,8 @@ const FinalStep = () => {
                         <td>{battery?.voltage || 'N/A'} V</td>
                         <td>{battery?.capacity || 'N/A'} Ah</td>
                         <td>{battery?.dod || 'N/A'}</td>
-                        <td>{configuration?.projectBattery?.batteryCapacityDod || 'N/A'} Ah</td>
-                        <td>{configuration?.projectBattery?.operationalDays || 'N/A'} {t('final_step.days')}</td>
+                        <td>{projectBattery?.batteryCapacityDod || 'N/A'} Ah</td>
+                        <td>{projectBattery?.operationalDays || 'N/A'} {t('final_step.days')}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -325,12 +391,24 @@ const FinalStep = () => {
             <div className="final-step-section final-step-solar-panel-info">
                 <h3>{t('final_step.solar_panel_configuration')}</h3>
                 <ul className="final-step-list">
-                    <li><strong>{t('final_step.solar_panel_id')}:</strong> {configuration?.projectSolarPanel?.solarPanelId || 'N/A'}</li>
-                    <li><strong>{t('final_step.number_of_panels')}:</strong> {configuration?.projectSolarPanel?.numberOfPanels || 'N/A'}</li>
-                    <li><strong>{t('final_step.total_power_generated')}:</strong> {configuration?.projectSolarPanel?.totalPowerGenerated || 'N/A'} W</li>
-                    <li><strong>{t('final_step.efficiency_loss')}:</strong> {configuration?.projectSolarPanel?.efficiencyLoss || 'N/A'}</li>
-                    <li><strong>{t('final_step.estimated_daily_energy_production')}:</strong> {configuration?.projectSolarPanel?.estimatedDailyEnergyProduction || 'N/A'} Wh</li>
-                    <li><strong>{t('final_step.installation_type')}:</strong> {configuration?.projectSolarPanel?.installationType || 'N/A'}</li>
+                    <li>
+                        <strong>{t('final_step.solar_panel_id')}:</strong> {projectSolarPanel?.solarPanelId || 'N/A'}
+                    </li>
+                    <li>
+                        <strong>{t('final_step.number_of_panels')}:</strong> {projectSolarPanel?.numberOfPanels || 'N/A'}
+                    </li>
+                    <li>
+                        <strong>{t('final_step.total_power_generated')}:</strong> {projectSolarPanel?.totalPowerGenerated || 'N/A'} W
+                    </li>
+                    <li>
+                        <strong>{t('final_step.efficiency_loss')}:</strong> {projectSolarPanel?.efficiencyLoss || 'N/A'}
+                    </li>
+                    <li>
+                        <strong>{t('final_step.estimated_daily_energy_production')}:</strong> {projectSolarPanel?.estimatedDailyEnergyProduction || 'N/A'} Wh
+                    </li>
+                    <li>
+                        <strong>{t('final_step.installation_type')}:</strong> {projectSolarPanel?.installationType || 'N/A'}
+                    </li>
                 </ul>
 
                 {/* Solar Panel Parameters Table */}
@@ -381,21 +459,22 @@ const FinalStep = () => {
                         <div className="final-step-chart-item">
                             <h3>{t('final_step.psh_graph')}</h3>
                             <BarChart data={chartData} width={600} height={300}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="month" />
-                                <YAxis />
-                                <Tooltip />
-                                <Bar dataKey="psh" fill="#82ca9d" />
+                                <CartesianGrid strokeDasharray="3 3"/>
+                                <XAxis dataKey="month"/>
+                                <YAxis/>
+                                <Tooltip/>
+                                <Bar dataKey="psh" fill="#82ca9d"/>
                             </BarChart>
                         </div>
                         <div className="final-step-chart-item">
                             <h3>{t('final_step.estimatedEnergyProduction_solar_graph')}</h3>
                             <LineChart data={chartData} width={600} height={300}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="month" />
-                                <YAxis />
-                                <Tooltip />
-                                <Line type="monotone" dataKey="estimatedEnergyProduction" stroke="#ff7300" dot={{ r: 4 }} />
+                                <CartesianGrid strokeDasharray="3 3"/>
+                                <XAxis dataKey="month"/>
+                                <YAxis/>
+                                <Tooltip/>
+                                <Line type="monotone" dataKey="estimatedEnergyProduction" stroke="#ff7300"
+                                      dot={{r: 4}}/>
                             </LineChart>
                         </div>
                     </div>
@@ -420,16 +499,77 @@ const FinalStep = () => {
                     {chartData.map((data, index) => (
                         <tr key={index}>
                             <td>{data.month}</td>
-                            <td>{data.psh.toFixed(2)  || 'N/A'}</td>
-                            <td>{data.ambientTemperature.toFixed(1)  || 'N/A'} °C</td>
-                            <td>{data.requiredEnergy.toFixed(2)  || 'N/A'} Wh</td>
-                            <td>{data.powerRequired.toFixed(2)  || 'N/A'} W</td>
-                            <td>{data.efficiency.toFixed(2)  || 'N/A'}</td>
-                            <td>{data.reducedPower.toFixed(2)  || 'N/A'} W</td>
+                            <td>{data.psh.toFixed(2) || 'N/A'}</td>
+                            <td>{data.ambientTemperature.toFixed(1) || 'N/A'} °C</td>
+                            <td>{data.requiredEnergy.toFixed(2) || 'N/A'} Wh</td>
+                            <td>{data.powerRequired.toFixed(2) || 'N/A'} W</td>
+                            <td>{data.efficiency.toFixed(2) || 'N/A'}</td>
+                            <td>{data.reducedPower.toFixed(2) || 'N/A'} W</td>
                             <td>{data.panelCount || 'N/A'}</td>
                             <td>{data.estimatedEnergyProduction.toFixed(2) || 'N/A'} Wh</td>
                         </tr>
                     ))}
+                    </tbody>
+                </table>
+            </div>
+            <div className="final-step-section final-step-controller-info">
+                <h3>{t('final_step.controller_configuration')}</h3>
+                <ul className="final-step-list">
+                    <li><strong>{t('final_step.controller_id')}:</strong> {projectController.controllerId || 'N/A'}</li>
+                    <li><strong>{t('final_step.type')}:</strong> {projectController.type || 'N/A'}</li>
+                    <li>
+                        <strong>{t('final_step.required_current')}:</strong> {projectController.requiredCurrent?.toFixed(2) || 'N/A'} A
+                    </li>
+                    <li>
+                        <strong>{t('final_step.required_power')}:</strong> {projectController.requiredPower?.toFixed(2) || 'N/A'} W
+                    </li>
+                    <li><strong>{t('final_step.series_modules')}:</strong> {projectController.seriesModules || 'N/A'}
+                    </li>
+                    <li>
+                        <strong>{t('final_step.parallel_modules')}:</strong> {projectController.parallelModules || 'N/A'}
+                    </li>
+                    <li>
+                        <strong>{t('final_step.max_modules_in_series')}:</strong> {projectController.maxModulesInSerial || 'N/A'}
+                    </li>
+                    <li>
+                        <strong>{t('final_step.min_modules_in_series')}:</strong> {projectController.minModulesInSerial || 'N/A'}
+                    </li>
+                    <li>
+                        <strong>{t('final_step.adjusted_voc')}:</strong> {projectController.adjustedOpenCircuitVoltage?.toFixed(2) || 'N/A'} V
+                    </li>
+                    <li>
+                        <strong>{t('final_step.adjusted_vmp')}:</strong> {projectController.adjustedVoltageAtMaxPower?.toFixed(2) || 'N/A'} V
+                    </li>
+                    <li>
+                        <strong>{t('final_step.total_efficiency')}:</strong> {projectController.totalControllerEfficiency?.toFixed(2) || 'N/A'} %
+                    </li>
+                    <li>
+                        <strong>{t('final_step.valid_configuration')}:</strong> {projectController.valid ? t('final_step.yes') : t('final_step.no')}
+                    </li>
+                </ul>
+
+                <table className="final-step-table final-step-controller-table">
+                    <thead>
+                    <tr>
+                        <th>{t('final_step.name')}</th>
+                        <th>{t('final_step.rated_power')}</th>
+                        <th>{t('final_step.current_rating')}</th>
+                        <th>{t('final_step.max_voltage')}</th>
+                        <th>{t('final_step.min_voltage')}</th>
+                        <th>{t('final_step.type')}</th>
+                        <th>{t('final_step.efficiency')}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{controller.name || 'N/A'}</td>
+                        <td>{controller.ratedPower ? `${controller.ratedPower} W` : 'N/A'}</td>
+                        <td>{controller.currentRating ? `${controller.currentRating} A` : 'N/A'}</td>
+                        <td>{controller.maxVoltage ? `${controller.maxVoltage} V` : 'N/A'}</td>
+                        <td>{controller.minVoltage ? `${controller.minVoltage} V` : 'N/A'}</td>
+                        <td>{controller.type || 'N/A'}</td>
+                        <td>{controller.efficiency ? `${(controller.efficiency * 100).toFixed(2)} %` : 'N/A'}</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
