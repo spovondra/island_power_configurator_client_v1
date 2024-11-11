@@ -9,7 +9,7 @@
     "name_label": "Name",
     "type_label": "Type",
     "power_label": "Power (W)",
-    "quantity_label": "Quantity",
+    "quantity_label": "Number of appliances",
     "hours_label": "Daily Usage Hours",
     "days_label": "Days per Week",
     "peak_power_label": "Peak Power (W)",

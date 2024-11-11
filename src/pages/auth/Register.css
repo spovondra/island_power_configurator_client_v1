@@ -41,3 +41,7 @@
     text-align: center;
     color: #d9534f;
 }
+
+.register-container button:last-of-type {
+    margin-top: 10px;
+}

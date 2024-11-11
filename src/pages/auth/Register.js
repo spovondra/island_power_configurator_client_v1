@@ -18,7 +18,11 @@ function Register() {
             setMessage(t('register.register_success'));
             navigate('/login');
         } catch (error) {
-            setMessage(t('register.register_failed'));
+            if (error.message === 'Username already exists') {
+                setMessage(t('register.username_exists')); // Display translated error message
+            } else {
+                setMessage(t('register.register_failed'));
+            }
         }
     };
 
@@ -43,6 +47,9 @@ function Register() {
                 <button type="submit">{t('register.register_button')}</button>
             </form>
             <p>{message}</p>
+            <button onClick={() => navigate('/login')}>
+                {t('register.back_to_login')}
+            </button>
         </div>
     );
 }

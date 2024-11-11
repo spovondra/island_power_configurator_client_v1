@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
 import { addOrUpdateAppliance, deleteAppliance, getProjectById } from '../../services/ProjectService';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { useTranslation } from 'react-i18next'; // Import translation hook
+import { useTranslation } from 'react-i18next';
 import './Step2_Appliance.css';
 
 const Step2_Appliance = ({ onComplete }) => {
@@ -13,7 +13,7 @@ const Step2_Appliance = ({ onComplete }) => {
         id: '',
         name: '',
         type: 'AC',
-        quantity: 0,
+        quantity: 1,
         power: 0,
         hours: 0,
         days: 7,
@@ -24,6 +24,7 @@ const Step2_Appliance = ({ onComplete }) => {
 
     const [appliances, setAppliances] = useState([]);
     const [editMode, setEditMode] = useState(false);
+    const [configurationModel, setConfigurationModel] = useState(null);
 
     useEffect(() => {
         const fetchAppliances = async () => {
@@ -31,6 +32,7 @@ const Step2_Appliance = ({ onComplete }) => {
                 try {
                     const project = await getProjectById(selectedProject);
                     setAppliances(project.appliances || []);
+                    setConfigurationModel(project.configurationModel?.projectAppliance || null);
                 } catch (error) {
                     console.error(t('step2.error_message'), error);
                 }
@@ -50,11 +52,12 @@ const Step2_Appliance = ({ onComplete }) => {
             await addOrUpdateAppliance(selectedProject, appliance);
             const updatedProject = await getProjectById(selectedProject);
             setAppliances(updatedProject.appliances);
+            setConfigurationModel(updatedProject.configurationModel?.projectAppliance || null);
             setAppliance({
                 id: '',
                 name: '',
                 type: 'AC',
-                quantity: 0,
+                quantity: 1,
                 power: 0,
                 hours: 0,
                 days: 7,
@@ -63,7 +66,6 @@ const Step2_Appliance = ({ onComplete }) => {
                 cost: 0
             });
             setEditMode(false);
-            alert(t('step2.save_button'));
             onComplete();
         } catch (error) {
             console.error(t('step2.error_message'), error);
@@ -89,27 +91,41 @@ const Step2_Appliance = ({ onComplete }) => {
             }
             await deleteAppliance(selectedProject, applianceId);
             setAppliances(appliances.filter(appl => appl.id !== applianceId));
-            alert(t('step2.delete_button'));
         } catch (error) {
             console.error(t('step2.error_message'), error);
             alert(t('step2.error_message'));
         }
     };
 
-    const chartData = appliances.reduce((acc, appliance) => {
-        const typeIndex = acc.findIndex(item => item.type === appliance.type);
-        if (typeIndex > -1) {
-            acc[typeIndex].totalEnergy += appliance.energy;
-        } else {
-            acc.push({
-                type: appliance.type,
-                totalEnergy: appliance.energy,
-            });
-        }
-        return acc;
-    }, []);
+    const handleInputChange = (e) => {
+        const { id, value, type } = e.target;
+        const parsedValue = type === 'number' ? parseFloat(value) : value;
+
+        setAppliance(prevState => ({
+            ...prevState,
+            [id]: parsedValue
+        }));
+    };
 
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+    // Data for total power chart
+    const powerChartData = [
+        { name: 'Total AC Power', value: configurationModel?.totalAcPower || 0 },
+        { name: 'Total DC Power', value: configurationModel?.totalDcPower || 0 },
+    ];
+
+    // Data for total energy chart
+    const energyChartData = [
+        { name: 'Total AC Energy', value: configurationModel?.totalAcEnergy || 0 },
+        { name: 'Total DC Energy', value: configurationModel?.totalDcEnergy || 0 },
+    ];
+
+    // Data for total peak power chart
+    const peakPowerChartData = [
+        { name: 'Total AC Peak Power', value: configurationModel?.totalAcPeakPower || 0 },
+        { name: 'Total DC Peak Power', value: configurationModel?.totalDcPeakPower || 0 },
+    ];
 
     return (
         <div className="step2-appliance-page-container">
@@ -121,7 +137,7 @@ const Step2_Appliance = ({ onComplete }) => {
                             type="text"
                             id="name"
                             value={appliance.name}
-                            onChange={(e) => setAppliance({ ...appliance, name: e.target.value })}
+                            onChange={handleInputChange}
                             required
                         />
                     </div>
@@ -130,7 +146,7 @@ const Step2_Appliance = ({ onComplete }) => {
                         <select
                             id="type"
                             value={appliance.type}
-                            onChange={(e) => setAppliance({ ...appliance, type: e.target.value })}
+                            onChange={handleInputChange}
                             required
                         >
                             <option value="AC">AC</option>
@@ -142,8 +158,10 @@ const Step2_Appliance = ({ onComplete }) => {
                         <input
                             type="number"
                             id="power"
+                            min="0"
+                            step="0.01"
                             value={appliance.power}
-                            onChange={(e) => setAppliance({ ...appliance, power: parseFloat(e.target.value) })}
+                            onChange={handleInputChange}
                             required
                         />
                     </div>
@@ -152,8 +170,9 @@ const Step2_Appliance = ({ onComplete }) => {
                         <input
                             type="number"
                             id="quantity"
+                            min="1"
                             value={appliance.quantity}
-                            onChange={(e) => setAppliance({ ...appliance, quantity: parseInt(e.target.value, 10) })}
+                            onChange={handleInputChange}
                             required
                         />
                     </div>
@@ -162,8 +181,11 @@ const Step2_Appliance = ({ onComplete }) => {
                         <input
                             type="number"
                             id="hours"
+                            min="0"
+                            max="24"
+                            step="0.1"
                             value={appliance.hours}
-                            onChange={(e) => setAppliance({ ...appliance, hours: parseFloat(e.target.value) })}
+                            onChange={handleInputChange}
                             required
                         />
                     </div>
@@ -172,8 +194,10 @@ const Step2_Appliance = ({ onComplete }) => {
                         <input
                             type="number"
                             id="days"
+                            min="1"
+                            max="7"
                             value={appliance.days}
-                            onChange={(e) => setAppliance({ ...appliance, days: parseFloat(e.target.value) })}
+                            onChange={handleInputChange}
                             required
                         />
                     </div>
@@ -182,8 +206,10 @@ const Step2_Appliance = ({ onComplete }) => {
                         <input
                             type="number"
                             id="peakPower"
+                            min="0"
+                            step="0.01"
                             value={appliance.peakPower}
-                            onChange={(e) => setAppliance({ ...appliance, peakPower: parseFloat(e.target.value) })}
+                            onChange={handleInputChange}
                         />
                     </div>
                     <div className="step2-input-group">
@@ -191,45 +217,23 @@ const Step2_Appliance = ({ onComplete }) => {
                         <input
                             type="number"
                             id="cost"
+                            min="0"
+                            step="0.01"
                             value={appliance.cost}
-                            onChange={(e) => setAppliance({ ...appliance, cost: parseFloat(e.target.value) })}
+                            onChange={handleInputChange}
                         />
                     </div>
                     <button type="submit" className="step2-action-button">
                         {editMode ? t('step2.edit_button') : t('step2.save_button')}
                     </button>
                 </form>
-
-                <div className="step2-chart-section">
-                    <h2>{t('step2.energy_chart_title')}</h2>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <PieChart>
-                            <Pie
-                                data={chartData}
-                                dataKey="totalEnergy"
-                                nameKey="type"
-                                cx="50%"
-                                cy="50%"
-                                outerRadius={100}
-                                fill="#8884d8"
-                                label
-                            >
-                                {chartData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                ))}
-                            </Pie>
-                            <Tooltip />
-                            <Legend />
-                        </PieChart>
-                    </ResponsiveContainer>
-                </div>
             </div>
 
             <div className="step2-appliance-list-section">
                 <table className="step2-appliance-table">
                     <thead>
                     <tr>
-                        <th style={{ minWidth: '200px' }}>{t('step2.name_label')}</th>
+                        <th style={{minWidth: '200px'}}>{t('step2.name_label')}</th>
                         <th>{t('step2.type_label')}</th>
                         <th>{t('step2.power_label')}</th>
                         <th>{t('step2.quantity_label')}</th>
@@ -265,6 +269,63 @@ const Step2_Appliance = ({ onComplete }) => {
                     ))}
                     </tbody>
                 </table>
+            </div>
+            <div className="step2-appliance-page-container">
+                <div className="step2-form-section">
+                    {/* Obsah formuláře */}
+                </div>
+                <div className="step2-appliance-list-section">
+                    {/* Seznam spotřebičů */}
+                </div>
+            </div>
+
+            {/* Sekce grafů umístěná pod vším obsahem */}
+            <div className="step2-chart-section">
+                <div className="step2-chart-container">
+                    <h2>{t('step2.energy_chart_title')}</h2>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                            <Pie data={energyChartData} dataKey="value" nameKey="name" cx="50%" cy="50%"
+                                 outerRadius={100} label>
+                                {energyChartData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]}/>
+                                ))}
+                            </Pie>
+                            <Tooltip/>
+                            <Legend/>
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+                <div className="step2-chart-container">
+                    <h2>{t('step2.power_chart_title')}</h2>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                            <Pie data={powerChartData} dataKey="value" nameKey="name" cx="50%" cy="50%"
+                                 outerRadius={100} label>
+                                {powerChartData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]}/>
+                                ))}
+                            </Pie>
+                            <Tooltip/>
+                            <Legend/>
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+                <div className="step2-chart-container">
+                    <h2>{t('step2.peak_power_chart_title')}</h2>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                            <Pie data={peakPowerChartData} dataKey="value" nameKey="name" cx="50%" cy="50%"
+                                 outerRadius={100} label>
+                                {peakPowerChartData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]}/>
+                                ))}
+                            </Pie>
+                            <Tooltip/>
+                            <Legend/>
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
             </div>
         </div>
     );

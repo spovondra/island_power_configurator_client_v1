@@ -9,7 +9,7 @@
     "name_label": "Název",
     "type_label": "Typ",
     "power_label": "Výkon (W)",
-    "quantity_label": "Množství",
+    "quantity_label": "Počet spotřebičů",
     "hours_label": "Denní využití (hodiny)",
     "days_label": "Dny v týdnu",
     "peak_power_label": "Špičkový výkon (W)",

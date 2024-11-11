@@ -24,20 +24,17 @@ const Step4_Inverter = ({ onComplete }) => {
 
             setLoading(true);
             try {
-                // Fetch the voltage data
                 const { systemVoltage: fetchedVoltage, recommendedSystemVoltage: fetchedRecommendedVoltage } = await getVoltage(selectedProject);
                 console.log('Fetched voltages:', fetchedVoltage, fetchedRecommendedVoltage);
 
-                // If the system voltage is not set, use recommended voltage
                 if (fetchedVoltage) {
                     setSystemVoltage(fetchedVoltage);
                 } else {
                     setSystemVoltage(fetchedRecommendedVoltage);
                     setRecommendedSystemVoltage(fetchedRecommendedVoltage);
-                    setUseRecommendedVoltage(true); // Set flag to true to show recommended voltage initially
+                    setUseRecommendedVoltage(true);
                 }
 
-                // Fetch suitable inverters after setting the voltage
                 const inverters = await getSuitableInverters(selectedProject, fetchedVoltage || fetchedRecommendedVoltage, temperature);
                 console.log('GET suitable inverters response:', inverters);
                 setSuitableInverters(inverters);
@@ -52,7 +49,6 @@ const Step4_Inverter = ({ onComplete }) => {
         fetchVoltageAndInverters();
     }, [selectedProject, temperature, t]);
 
-    // Refetch inverters when the voltage or temperature changes
     useEffect(() => {
         if (!selectedProject || !systemVoltage) return;
 
@@ -73,7 +69,6 @@ const Step4_Inverter = ({ onComplete }) => {
         fetchInverters();
     }, [systemVoltage, temperature, selectedProject]);
 
-    // Fetch the inverter details and load the temperature
     useEffect(() => {
         const fetchProjectInverterDetails = async () => {
             if (!selectedProject) return;
@@ -82,7 +77,6 @@ const Step4_Inverter = ({ onComplete }) => {
                 const projectInverter = await getProjectInverter(selectedProject);
                 console.log('GET project inverter details response:', projectInverter);
 
-                // Set the initial temperature from the fetched inverter details
                 if (projectInverter.inverterTemperature) {
                     setTemperature(projectInverter.inverterTemperature);
                 }
@@ -91,7 +85,7 @@ const Step4_Inverter = ({ onComplete }) => {
                     totalAdjustedAcEnergy: projectInverter.totalAdjustedAcEnergy || 0,
                     totalDailyEnergy: projectInverter.totalDailyEnergy || 0,
                 });
-                setSelectedInverterId(projectInverter.inverterId); // Set the selected inverter ID from the fetched details
+                setSelectedInverterId(projectInverter.inverterId);
             } catch (error) {
                 console.error('Error fetching project inverter details:', error);
                 setError(t('step4.error_message'));
@@ -103,15 +97,15 @@ const Step4_Inverter = ({ onComplete }) => {
 
     const handleSystemVoltageChange = (e) => {
         setSystemVoltage(e.target.value);
-        setUseRecommendedVoltage(false); // User manually changed voltage, stop using recommended
+        setUseRecommendedVoltage(false);
     };
 
     const handleTemperatureChange = (e) => {
-        setTemperature(parseInt(e.target.value)); // Update the temperature selection
+        setTemperature(parseInt(e.target.value));
     };
 
     const handleInverterSelection = async (inverterId) => {
-        setSelectedInverterId(inverterId); // Set selected inverter
+        setSelectedInverterId(inverterId);
         setLoading(true);
 
         try {
@@ -127,6 +121,15 @@ const Step4_Inverter = ({ onComplete }) => {
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleUseSelectedConfiguration = () => {
+        if (!selectedInverterId) {
+            alert(t('step4.select_inverter_alert'));
+            return;
+        }
+
+        handleInverterSelection(selectedInverterId);
     };
 
     const getContinuousPowerByTemperature = (inverter) => {
@@ -205,6 +208,11 @@ const Step4_Inverter = ({ onComplete }) => {
                     <p>{t('step4.total_daily_energy')}: {energyCalculations.totalDailyEnergy.toFixed(2) || t('step4.not_calculated')}</p>
                 </div>
             </div>
+
+            {/* New Submit Button */}
+            <button className="step4-submit-button" onClick={handleUseSelectedConfiguration}>
+                {t('step4.use_selected_configuration')}
+            </button>
         </div>
     );
 };

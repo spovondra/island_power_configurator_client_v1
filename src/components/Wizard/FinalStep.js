@@ -192,8 +192,8 @@ const FinalStep = () => {
                             <li><strong>{t('final_step.longitude')}:</strong> {site.longitude || 'N/A'}</li>
                             <li><strong>{t('final_step.min_temperature')}:</strong> {site.minTemperature || 'N/A'} °C</li>
                             <li><strong>{t('final_step.max_temperature')}:</strong> {site.maxTemperature || 'N/A'} °C</li>
-                            <li><strong>{t('final_step.panel_angle')}:</strong> {site.panelAngle || 'N/A'}°</li>
-                            <li><strong>{t('final_step.panel_aspect')}:</strong> {site.panelAspect || 'N/A'}°</li>
+                            <li><strong>{t('final_step.panel_angle')}:</strong> {site.panelAngle || '0'}°</li>
+                            <li><strong>{t('final_step.panel_aspect')}:</strong> {site.panelAspect || '0'}°</li>
                             <li><strong>{t('final_step.used_optimal_values')}:</strong> {site.usedOptimalValues ? t('final_step.yes') : t('final_step.no')}</li>
                         </ul>
                     </div>

@@ -261,6 +261,10 @@ const Step3_Location = ({ onComplete }) => {
                         <p>{t('step3.min_temperature_label')}: {temperatures.min} °C</p>
                         <p>{t('step3.max_temperature_label')}: {temperatures.max} °C</p>
                     </div>
+                    {/* Renamed Button */}
+                    <button className="step3-apply-config-button" onClick={handleProcessLocationData}>
+                        {t('step3.apply_current_config_button')}
+                    </button>
                 </div>
             </div>
             <div className="step3-chart-flex-container">

@@ -63,9 +63,18 @@
 
 /* Chart Section */
 .step2-chart-section {
-    margin-top: 20px; /* Space between form and chart */
-    text-align: center; /* Center the chart title */
+    display: flex; /* Use flex layout for side-by-side display */
+    justify-content: space-between; /* Space between charts */
+    gap: 20px; /* Gap between each chart */
+    margin-top: 20px;
+    text-align: center; /* Center chart titles */
 }
+
+.step2-chart-container {
+    flex: 1; /* Allow each chart to take equal space */
+    min-width: 300px; /* Ensure each chart has a minimum width */
+}
+
 
 /* Appliance List Section */
 .step2-appliance-list-section {

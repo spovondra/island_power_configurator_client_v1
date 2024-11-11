@@ -2,14 +2,21 @@ import apiClient from './apiClient';
 import { API_AUTH_URL } from '../config';
 
 export const register = async (username, password, role, firstName = '', lastName = '', email = '') => {
-    return apiClient.post(`${API_AUTH_URL}register`, {
-        username,
-        password,
-        role,
-        firstName,
-        lastName,
-        email
-    });
+    try {
+        return await apiClient.post(`${API_AUTH_URL}register`, {
+            username,
+            password,
+            role,
+            firstName,
+            lastName,
+            email
+        });
+    } catch (error) {
+        if (error.response && error.response.status === 409) {
+            throw new Error('Username already exists');
+        }
+        throw new Error('Registration failed');
+    }
 };
 
 export const login = async (username, password) => {
