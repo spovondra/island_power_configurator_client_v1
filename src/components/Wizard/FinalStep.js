@@ -61,7 +61,7 @@ const FinalStep = () => {
     const inverter = summaryData?.inverter || {};
     const projectInverter= configuration?.projectInverter || [];
     const battery = summaryData?.battery || {};
-    const projectBattery = configuration?.battery || [];
+    const projectBattery = configuration?.projectBattery || [];
     const solarPanel = summaryData?.solarPanel || {};
     const projectSolarPanel = configuration?.projectSolarPanel || [];
     const controller = summaryData?.controller || {};
@@ -303,10 +303,10 @@ const FinalStep = () => {
                         <strong>{t('final_step.inverter_temperature')}:</strong> {projectInverter?.inverterTemperature || 'N/A'} °C
                     </li>
                     <li>
-                        <strong>{t('final_step.total_adjusted_ac_energy')}:</strong> {projectInverter?.totalAdjustedAcEnergy || 'N/A'} Wh
+                        <strong>{t('final_step.total_adjusted_ac_energy')}:</strong> {projectInverter?.totalAdjustedAcEnergy.toFixed(2) || 'N/A'} Wh
                     </li>
                     <li>
-                        <strong>{t('final_step.total_daily_energy')}:</strong> {projectInverter?.totalDailyEnergy || 'N/A'} Wh
+                        <strong>{t('final_step.total_daily_energy')}:</strong> {projectInverter?.totalDailyEnergy.toFixed(2) || 'N/A'} Wh
                     </li>
                 </ul>
                 <table className="final-step-table">
@@ -377,7 +377,7 @@ const FinalStep = () => {
                         <td>{battery?.capacity || 'N/A'} Ah</td>
                         <td>{battery?.dod || 'N/A'}</td>
                         <td>{projectBattery?.batteryCapacityDod || 'N/A'} Ah</td>
-                        <td>{projectBattery?.operationalDays || 'N/A'} {t('final_step.days')}</td>
+                        <td>{projectBattery?.operationalDays.toFixed(2) || 'N/A'} {t('final_step.days')}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -397,10 +397,10 @@ const FinalStep = () => {
                         <strong>{t('final_step.total_power_generated')}:</strong> {projectSolarPanel?.totalPowerGenerated || 'N/A'} W
                     </li>
                     <li>
-                        <strong>{t('final_step.efficiency_loss')}:</strong> {projectSolarPanel?.efficiencyLoss || 'N/A'}
+                        <strong>{t('final_step.efficiency_loss')}:</strong> {projectSolarPanel?.efficiencyLoss.toFixed(2) || 'N/A'}
                     </li>
                     <li>
-                        <strong>{t('final_step.estimated_daily_energy_production')}:</strong> {projectSolarPanel?.estimatedDailyEnergyProduction || 'N/A'} Wh
+                        <strong>{t('final_step.estimated_daily_energy_production')}:</strong> {projectSolarPanel?.estimatedDailyEnergyProduction.toFixed(2) || 'N/A'} Wh
                     </li>
                     <li>
                         <strong>{t('final_step.installation_type')}:</strong> {projectSolarPanel?.installationType || 'N/A'}
