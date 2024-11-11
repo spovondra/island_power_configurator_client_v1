@@ -105,7 +105,9 @@ const Step2_Appliance = ({ onComplete }) => {
         }));
     };
 
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+    const powerChartColors = ['#005B96', '#33A1FD'];
+    const peakPowerChartColors = ['#228B22', '#32CD32'];
+    const energyChartColors = ['#B22222', '#FF4500'];
 
     // Data for total power chart
     const powerChartData = [
@@ -265,7 +267,7 @@ const Step2_Appliance = ({ onComplete }) => {
                     <PieChart width={300} height={300}>
                         <Pie data={powerChartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
                             {powerChartData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]}/>
+                                <Cell key={`cell-${index}`} fill={powerChartColors[index % powerChartColors.length]}/>
                             ))}
                         </Pie>
                         <Tooltip/>
@@ -277,7 +279,7 @@ const Step2_Appliance = ({ onComplete }) => {
                     <PieChart width={300} height={300}>
                         <Pie data={peakPowerChartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
                             {peakPowerChartData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]}/>
+                                <Cell key={`cell-${index}`} fill={peakPowerChartColors[index % peakPowerChartColors.length]}/>
                             ))}
                         </Pie>
                         <Tooltip/>
@@ -289,7 +291,7 @@ const Step2_Appliance = ({ onComplete }) => {
                     <PieChart width={300} height={300}>
                         <Pie data={energyChartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
                             {energyChartData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]}/>
+                                <Cell key={`cell-${index}`} fill={energyChartColors[index % energyChartColors.length]}/>
                             ))}
                         </Pie>
                         <Tooltip/>
