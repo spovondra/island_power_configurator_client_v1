@@ -44,6 +44,7 @@ const Step6_SolarPanels = ({ onComplete }) => {
         const fetchPanelConfig = async () => {
             try {
                 const projectPanel = await getProjectSolarPanel(selectedProject);
+                console.log('Fetched project solar panel configuration:', projectPanel); // Log fetched configuration
                 if (projectPanel) {
                     setSelectedPanel(projectPanel.solarPanelId);
                     setNumberOfPanels(projectPanel.numberOfPanels);
@@ -63,7 +64,7 @@ const Step6_SolarPanels = ({ onComplete }) => {
             } catch (error) {
                 console.error('Error fetching project solar panel configuration:', error);
             } finally {
-                setInitialLoad(false);
+                setInitialLoad(false); // Mark initial load as complete
             }
         };
 
@@ -84,10 +85,16 @@ const Step6_SolarPanels = ({ onComplete }) => {
         installationType,
         manufacturerTolerance,
         agingLoss,
-        dirtLoss
+        dirtLoss,
+        initialLoad // Include initialLoad to ensure correct behavior
     ]);
 
     const sendUpdatedConfiguration = async () => {
+        if (!selectedPanel) {
+            console.warn('Cannot send configuration: selectedPanel is null');
+            return; // Skip if selectedPanel is not set
+        }
+
         const postData = {
             solarPanelId: selectedPanel,
             panelOversizeCoefficient,
@@ -100,6 +107,8 @@ const Step6_SolarPanels = ({ onComplete }) => {
             dirtLoss
         };
 
+        console.log('Sending configuration to backend:', postData); // Log the entire payload being sent
+
         try {
             const result = await selectSolarPanel(selectedProject, postData);
             setConfig(result);
@@ -110,6 +119,7 @@ const Step6_SolarPanels = ({ onComplete }) => {
     };
 
     const handlePanelSelect = (panelId) => {
+        console.log('Selected panel ID:', panelId); // Log selected panel ID
         setHasChanged(true);
         setSelectedPanel(panelId);
         sendUpdatedConfiguration(); // Trigger configuration update on every click

@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { getProjectById, updateProject, createProject } from '../../services/ProjectService';
 import { ProjectContext } from '../../context/ProjectContext';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './Step1_Introduction.css';
 
-const Step1Introduction = ({ onComplete }) => { // Add onComplete prop
+const Step1Introduction = ({ onComplete }) => {
     const { t } = useTranslation('wizard');
     const { selectedProject, setSelectedProject } = useContext(ProjectContext);
     const location = useLocation();
@@ -14,10 +14,9 @@ const Step1Introduction = ({ onComplete }) => { // Add onComplete prop
     const [name, setName] = useState('');
     const [error, setError] = useState('');
     const [newProjectId, setNewProjectId] = useState(null);
-    const [isProjectCreated, setIsProjectCreated] = useState(false);
 
-    // Load project name if it exists
     useEffect(() => {
+        // Load existing project name
         if (!isNewProject && selectedProject) {
             const loadProjectName = async () => {
                 try {
@@ -34,48 +33,31 @@ const Step1Introduction = ({ onComplete }) => { // Add onComplete prop
         }
     }, [isNewProject, selectedProject, project, t]);
 
-    // Automatically create a new project when the name is entered for the first time
-    useEffect(() => {
-        if (isNewProject && name.length >= 1 && !isProjectCreated) {
-            const createNewProject = async () => {
-                try {
-                    const newProjectData = { name: name };
-                    const createdProject = await createProject(newProjectData);
-                    setNewProjectId(createdProject.id);
-                    setSelectedProject(createdProject.id);
-                    setIsProjectCreated(true);
-                } catch (error) {
-                    console.error('Error creating new project:', error);
-                    setError(t('step1.error_message'));
-                }
-            };
-
-            createNewProject();
-        }
-    }, [name, isNewProject, isProjectCreated, setSelectedProject, t]);
-
-    // Save the project name when it's updated
-    useEffect(() => {
-        const saveProjectData = async () => {
-            if (!name) return;
-
-            try {
-                if (newProjectId) {
-                    const updatedProjectData = { name: name };
-                    await updateProject(newProjectId, updatedProjectData);
-                } else if (!isNewProject && selectedProject) {
-                    const project = await getProjectById(selectedProject);
-                    const updatedProjectData = { ...project, name: name };
-                    await updateProject(selectedProject, updatedProjectData);
-                }
-            } catch (error) {
-                console.error('Error saving project data:', error);
-                setError(t('step1.error_message'));
+    const handleSaveProject = useCallback(async (projectName) => {
+        try {
+            if (isNewProject && !newProjectId) {
+                // Create a new project
+                const createdProject = await createProject({ name: projectName });
+                setNewProjectId(createdProject.id);
+                setSelectedProject(createdProject.id);
+            } else if (newProjectId || selectedProject) {
+                // Update existing project
+                const projectId = newProjectId || selectedProject;
+                await updateProject(projectId, { name: projectName });
             }
-        };
+        } catch (error) {
+            console.error('Error saving project data:', error);
+            setError(t('step1.error_message'));
+        }
+    }, [isNewProject, newProjectId, selectedProject, setSelectedProject, t]);
 
-        saveProjectData();
-    }, [name, selectedProject, isNewProject, newProjectId, t]);
+    // Debounce saving project to avoid multiple requests
+    useEffect(() => {
+        if (name) {
+            const timeoutId = setTimeout(() => handleSaveProject(name), 500);
+            return () => clearTimeout(timeoutId); // Clear timeout on name change
+        }
+    }, [name, handleSaveProject]);
 
     return (
         <div className="step1-intro-wrapper">
