@@ -6,15 +6,22 @@
     padding: 20px;
 }
 
+/* Home Heading Styling */
+.home-heading {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
 /* Home Content Styling */
 .home-content {
     text-align: center;
-    max-width: 400px;
+    max-width: 600px;
     width: 100%;
 }
 
 /* Projects Button Styling */
-.projects-button {
+.home-projects-button {
     display: inline-block;
     padding: 15px 30px;
     margin: 20px 0;
@@ -27,38 +34,43 @@
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.projects-button:hover {
+.home-projects-button:hover {
     background-color: #0056b3;
     transform: scale(1.05);
 }
 
-/* Old Version Section Styling */
-.old-version {
-    margin-top: 30px;
+/* Program Info Section Styling */
+.home-program-info {
+    margin-top: 50px;
     padding: 20px;
     border: 2px solid #007bff;
     border-radius: 8px;
     background-color: #f8f9fa;
+    text-align: center;
 }
 
-.old-version h2 {
+.home-program-info h2 {
     font-size: 26px;
     margin-bottom: 10px;
-    margin-top: 10px;
-    color: #007bff;
+    color: #000000;
 }
 
-/* Old Version Link Styling */
-.old-version-link {
-    display: flex;
-    flex-direction: column;
+.home-program-info p {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #333;
+}
+
+/* Manual Download Link Styling */
+.home-manual-download-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 18px;
     color: #007bff;
     text-decoration: none;
-    font-size: 18px;
     font-weight: bold;
-    margin-bottom: 4px;
 }
 
-.old-version-link:hover {
+.home-manual-download-link:hover {
     text-decoration: underline;
 }

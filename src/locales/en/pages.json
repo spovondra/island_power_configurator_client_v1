@@ -6,8 +6,9 @@
   "home": {
     "welcome": "Welcome to the IslandPower Configurator",
     "go_to_projects": "Go to Projects",
-    "old_version": "Old Version",
-    "error_page_testing": "ErrorPage testing (error 404)"
+    "description": "Learn more about the program",
+    "program_info": "IslandPower Configurator is an interactive tool for designing and optimizing off-grid systems. The application guides you through all the steps necessary to create a complete system configuration, including appliances, solar panels, batteries, and controllers. We offer intuitive wizards, visual graphs, and system summaries to make decision-making easier, even for less experienced users. For detailed information on using the application and the configuration steps, download our user manual.",
+    "download_manual": "Download the user manual in PDF (Czech)"
   },
   "notFound": {
     "title": "404 - Page Not Found",

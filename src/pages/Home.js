@@ -10,14 +10,20 @@ const Home = () => {
         <div className="home-container">
             <h1 className="home-heading">{t('home.welcome')}</h1>
             <div className="home-content">
-                <Link to="/projects" className="projects-button">
+                <Link to="/projects" className="home-projects-button">
                     {t('home.go_to_projects')}
                 </Link>
-                <div className="old-version">
-                    <h2>{t('home.old_version')}</h2>
-                    <Link to="/random-adress123" className="old-version-link">
-                        {t('home.error_page_testing')}
-                    </Link>
+                <div className="home-program-info">
+                    <h2>{t('home.description')}</h2>
+                    <p>{t('home.program_info')}</p>
+                    <a
+                        href="https://fve.firmisimo.eu/user-manual-cs.pdf"
+                        className="home-manual-download-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {t('home.download_manual')}
+                    </a>
                 </div>
             </div>
         </div>

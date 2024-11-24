@@ -6,8 +6,9 @@
   "home": {
     "welcome": "Vítejte v IslandPower Konfigurátoru",
     "go_to_projects": "Přejít na Projekty",
-    "old_version": "Starší verze",
-    "error_page_testing": "Testování chybové stránky (chyba 404)"
+    "description": "Zjistěte více o programu",
+    "program_info": "IslandPower Konfigurátor je interaktivní nástroj pro návrh a optimalizaci ostrovních systémů. Aplikace vás provede všemi kroky potřebnými k vytvoření kompletní konfigurace systému včetně spotřebičů, solárních panelů, akumulátorů a regulátorů. Nabízíme intuitivní průvodce, vizuální grafy a shrnutí systému, které usnadní rozhodování i méně zkušeným uživatelům. Pro podrobné informace o použití aplikace a jednotlivých krocích konfigurace si stáhněte naši uživatelskou příručku.",
+    "download_manual": "Stáhněte si uživatelskou příručku ve formátu PDF (česky)"
   },
   "notFound": {
     "title": "404 - Stránka nenalezena",
