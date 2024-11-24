@@ -577,9 +577,6 @@ const FinalStep = () => {
                         <strong>{t('final_step.adjusted_vmp')}:</strong> {projectController.adjustedVoltageAtMaxPower?.toFixed(2) || 'N/A'} V
                     </li>
                     <li>
-                        <strong>{t('final_step.total_efficiency')}:</strong> {projectController.totalControllerEfficiency?.toFixed(2) || 'N/A'} %
-                    </li>
-                    <li>
                         <strong>{t('final_step.valid_configuration')}:</strong> {projectController.valid ? t('final_step.yes') : t('final_step.no')}
                     </li>
                 </ul>

@@ -212,8 +212,12 @@ const Step4_Inverter = ({ onComplete }) => {
                 </div>
                 <div className="step4-energy-calculations">
                     <h4>{t('step4.energy_calculations')}</h4>
-                    <p>{t('step4.adjusted_ac_load')}: {energyCalculations.totalAdjustedAcEnergy.toFixed(2) || t('step4.not_calculated')}</p>
-                    <p>{t('step4.total_daily_energy')}: {energyCalculations.totalDailyEnergy.toFixed(2) || t('step4.not_calculated')}</p>
+                    <p>
+                        {t('step4.adjusted_ac_load')}: {energyCalculations.totalAdjustedAcEnergy ? `${energyCalculations.totalAdjustedAcEnergy.toFixed(2)} Wh` : t('step4.not_calculated')}
+                    </p>
+                    <p>
+                        {t('step4.total_daily_energy')}: {energyCalculations.totalDailyEnergy ? `${energyCalculations.totalDailyEnergy.toFixed(2)} Wh` : t('step4.not_calculated')}
+                    </p>
                 </div>
             </div>
         </div>

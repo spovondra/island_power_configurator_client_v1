@@ -23,8 +23,6 @@ const Step7_Controller = ({ onComplete }) => {
         panelsInSeries: 0,
         panelsInParallel: 0,
     });
-    const [initialLoad, setInitialLoad] = useState(true);
-    const [hasChanged, setHasChanged] = useState(false);
 
     useEffect(() => {
         if (!selectedProject) return;
@@ -44,11 +42,11 @@ const Step7_Controller = ({ onComplete }) => {
                 if (projectController) {
                     setSelectedController(projectController.controllerId);
                     setControllerConfig({
-                        requiredCurrent: projectController.requiredCurrent,
-                        requiredPower: projectController.requiredPower,
-                        seriesModules: projectController.seriesModules,
-                        parallelModules: projectController.parallelModules,
-                        valid: projectController.valid,
+                        requiredCurrent: projectController.requiredCurrent || 0,
+                        requiredPower: projectController.requiredPower || 0,
+                        seriesModules: projectController.seriesModules || 0,
+                        parallelModules: projectController.parallelModules || 0,
+                        valid: projectController.valid || false,
                         adjustedVoc: projectController.adjustedOpenCircuitVoltage || 0,
                         adjustedVmp: projectController.adjustedVoltageAtMaxPower || 0,
                         maxModulesInSeries: projectController.maxModulesInSerial || 0,
@@ -59,8 +57,6 @@ const Step7_Controller = ({ onComplete }) => {
                 }
             } catch (error) {
                 console.error('Error fetching project controller configuration:', error);
-            } finally {
-                setInitialLoad(false);
             }
         };
 
@@ -68,44 +64,35 @@ const Step7_Controller = ({ onComplete }) => {
         fetchControllerConfig();
     }, [selectedProject, regulatorType]);
 
-    useEffect(() => {
-        if (!initialLoad && hasChanged && selectedController) {
-            sendUpdatedControllerConfig();
-        }
-    }, [selectedController]);
-
-    const sendUpdatedControllerConfig = async () => {
-        if (!selectedController || !regulatorType) {
-            console.error('Missing controllerId or regulatorType', { selectedController, regulatorType });
-            return;
-        }
-
-        console.log('Sending updated controller configuration:', {
-            selectedProject,
-            selectedController,
-            regulatorType
-        });
+    const handleControllerSelect = async (controllerId) => {
+        setSelectedController(controllerId);
 
         try {
-            const result = await selectController(selectedProject, selectedController, regulatorType);
-            console.log('Response received:', result);
-            setControllerConfig(result);
+            const result = await selectController(selectedProject, controllerId, regulatorType);
+            setControllerConfig({
+                requiredCurrent: result.requiredCurrent || 0,
+                requiredPower: result.requiredPower || 0,
+                seriesModules: result.seriesModules || 0,
+                parallelModules: result.parallelModules || 0,
+                valid: result.valid || false,
+                adjustedVoc: result.adjustedOpenCircuitVoltage || 0,
+                adjustedVmp: result.adjustedVoltageAtMaxPower || 0,
+                maxModulesInSeries: result.maxModulesInSerial || 0,
+                minModulesInSeries: result.minModulesInSerial || 0,
+                panelsInSeries: result.seriesModules || 0,
+                panelsInParallel: result.parallelModules || 0,
+            });
             onComplete();
         } catch (error) {
             console.error('Error selecting controller:', error);
         }
     };
 
-    const handleControllerSelect = (controllerId) => {
-        console.log('Controller selected:', controllerId);
-        setSelectedController(controllerId);
-        setHasChanged(true);
-    };
-
     const handleRegulatorTypeChange = (type) => {
-        setHasChanged(true);
         setRegulatorType(type);
     };
+
+    const selectedControllerDetails = controllers.find(ctrl => ctrl.id === selectedController);
 
     return (
         <div className="step7-controller-configurator">
@@ -165,28 +152,40 @@ const Step7_Controller = ({ onComplete }) => {
             <div className="step7-calculated-config">
                 <h3>{t('step7.selected_regulator_details')}</h3>
                 <p>
-                    <b>{t('step7.name')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.name : 'N/A'}
+                    <b>{t('step7.name')}:</b> {selectedControllerDetails?.name || t('step7.not_calculated')}
                 </p>
                 <p>
-                    <b>{t('step7.rated_power')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.ratedPower : 'N/A'} W
+                    <b>{t('step7.rated_power')}:</b> {selectedControllerDetails?.ratedPower || t('step7.not_calculated')} W
                 </p>
                 <p>
-                    <b>{t('step7.max_voltage')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.maxVoltage : 'N/A'} V
+                    <b>{t('step7.max_voltage')}:</b> {selectedControllerDetails?.maxVoltage || t('step7.not_calculated')} V
                 </p>
                 <p>
-                    <b>{t('step7.min_voltage')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.minVoltage : 'N/A'} V
+                    <b>{t('step7.min_voltage')}:</b> {selectedControllerDetails?.minVoltage || t('step7.not_calculated')} V
                 </p>
                 <p>
-                    <b>{t('step7.current_rating')}:</b> {selectedController ? controllers.find(ctrl => ctrl.id === selectedController)?.currentRating : 'N/A'} A
+                    <b>{t('step7.current_rating')}:</b> {selectedControllerDetails?.currentRating || t('step7.not_calculated')} A
                 </p>
 
                 <h3>{t('step7.results')}</h3>
-                <p><b>{t('step7.adjusted_voc')}:</b> {controllerConfig.adjustedOpenCircuitVoltage}</p>
-                <p><b>{t('step7.adjusted_vmp')}:</b> {controllerConfig.adjustedVoltageAtMaxPower}</p>
-                <p><b>{t('step7.max_modules_in_series')}:</b> {controllerConfig.maxModulesInSerial}</p>
-                <p><b>{t('step7.min_modules_in_series')}:</b> {controllerConfig.minModulesInSerial}</p>
-                <p><b>{t('step7.panels_in_series')}:</b> {controllerConfig.seriesModules}</p>
-                <p><b>{t('step7.panels_in_parallel')}:</b> {controllerConfig.parallelModules}</p>
+                <p>
+                    <b>{t('step7.adjusted_voc')}:</b> {controllerConfig.adjustedVoc ? `${controllerConfig.adjustedVoc.toFixed(2)} V` : t('step7.not_calculated')}
+                </p>
+                <p>
+                    <b>{t('step7.adjusted_vmp')}:</b> {controllerConfig.adjustedVmp ? `${controllerConfig.adjustedVmp.toFixed(2)} V` : t('step7.not_calculated')}
+                </p>
+                <p>
+                    <b>{t('step7.max_modules_in_series')}:</b> {controllerConfig.maxModulesInSeries || t('step7.not_calculated')}
+                </p>
+                <p>
+                    <b>{t('step7.min_modules_in_series')}:</b> {controllerConfig.minModulesInSeries || t('step7.not_calculated')}
+                </p>
+                <p>
+                    <b>{t('step7.panels_in_series')}:</b> {controllerConfig.panelsInSeries || t('step7.not_calculated')}
+                </p>
+                <p>
+                    <b>{t('step7.panels_in_parallel')}:</b> {controllerConfig.panelsInParallel || t('step7.not_calculated')}
+                </p>
                 <p>
                     <b>{t('step7.valid_configuration')}:</b> {controllerConfig.valid ? t('step7.valid') : t('step7.invalid')}
                 </p>

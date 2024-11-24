@@ -291,22 +291,31 @@ const Step6_SolarPanels = ({ onComplete }) => {
                 <div>
                     <h3>{t('step6.psh_graph')}</h3>
                     <BarChart data={chartData} width={600} height={300}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="month" />
-                        <YAxis />
-                        <Tooltip />
-                        <Bar dataKey="psh" fill="#82ca9d" />
+                        <CartesianGrid strokeDasharray="3 3"/>
+                        <XAxis dataKey="month"/>
+                        <YAxis/>
+                        <Tooltip/>
+                        <Bar dataKey="psh" fill="#82ca9d"/>
                     </BarChart>
                 </div>
                 <div>
                     <h3>{t('step6.e_daily_solar_graph')}</h3>
                     <LineChart data={chartData} width={600} height={300}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="month" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Line type="monotone" dataKey="E_daily_solar" stroke="#ff7300" dot={{ r: 4 }} />
+                        <CartesianGrid strokeDasharray="3 3"/>
+                        <XAxis dataKey="month"/>
+                        <YAxis/>
+                        <Tooltip
+                            formatter={(value) => `${value.toFixed(2)} Wh`}
+                            labelFormatter={(label) => `${t('step6.month')}: ${label}`}
+                        />
+                        <Legend/>
+                        <Line
+                            type="monotone"
+                            dataKey="E_daily_solar"
+                            stroke="#ff7300"
+                            dot={{r: 4}}
+                            name={t('step6.e_daily_solar')}
+                        />
                     </LineChart>
                 </div>
             </div>
