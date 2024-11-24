@@ -124,6 +124,10 @@ const Step4_Inverter = ({ onComplete }) => {
                         totalAdjustedAcEnergy: result.totalAdjustedAcEnergy || 0,
                         totalDailyEnergy: result.totalDailyEnergy || 0,
                     });
+                    
+                    setSystemVoltage(result.systemVoltage || systemVoltage);
+                    setTemperature(result.inverterTemperature || temperature);
+
                     onComplete();
                 } catch (error) {
                     console.error('Error selecting inverter:', error);
@@ -131,7 +135,6 @@ const Step4_Inverter = ({ onComplete }) => {
                 } finally {
                     setLoading(false);
                 }
-                setEnergyCalculations({ totalAdjustedAcEnergy: 0, totalDailyEnergy: 0 });
             }
         }
     };

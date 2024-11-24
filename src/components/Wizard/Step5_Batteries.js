@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ProjectContext } from '../../context/ProjectContext';
 import { getBatteries, selectBattery, getProjectBattery } from '../../services/ProjectService';
-import "./Step5_Batteries.css";
+import './Step5_Batteries.css';
 
 const Step5_Batteries = ({ onComplete }) => {
     const { t } = useTranslation('wizard');
@@ -18,7 +18,7 @@ const Step5_Batteries = ({ onComplete }) => {
         seriesBatteries: 1,
         requiredBatteryCapacity: 0,
         totalAvailableCapacity: 0,
-        operationalDays: 0
+        operationalDays: 0,
     });
 
     useEffect(() => {
@@ -53,7 +53,7 @@ const Step5_Batteries = ({ onComplete }) => {
                         seriesBatteries: projectBattery.seriesBatteries,
                         requiredBatteryCapacity: projectBattery.requiredBatteryCapacity,
                         totalAvailableCapacity: projectBattery.totalAvailableCapacity,
-                        operationalDays: projectBattery.operationalDays
+                        operationalDays: projectBattery.operationalDays,
                     });
                 }
             } catch (error) {
@@ -71,7 +71,7 @@ const Step5_Batteries = ({ onComplete }) => {
             const result = await selectBattery(selectedProject, {
                 batteryId,
                 autonomyDays,
-                temperature
+                temperature,
             });
             setConfig(result);
             onComplete();
@@ -163,9 +163,9 @@ const Step5_Batteries = ({ onComplete }) => {
                         <p>{t('step5.battery_capacity_dod')}: {config.batteryCapacityDod} Ah</p>
                         <p>{t('step5.parallel_batteries')}: {config.parallelBatteries}</p>
                         <p>{t('step5.series_batteries')}: {config.seriesBatteries}</p>
-                        <p>{t('step5.required_capacity')}: {config.requiredBatteryCapacity} Ah</p>
-                        <p>{t('step5.total_available_capacity')}: {config.totalAvailableCapacity} Ah</p>
-                        <p>{t('step5.operational_days')}: {config.operationalDays} days</p>
+                        <p>{t('step5.required_capacity')}: {config.requiredBatteryCapacity.toFixed(2)} Ah</p>
+                        <p>{t('step5.total_available_capacity')}: {config.totalAvailableCapacity.toFixed(2)} Ah</p>
+                        <p>{t('step5.operational_days')}: {config.operationalDays.toFixed(1)} days</p>
                     </div>
                 )}
             </div>

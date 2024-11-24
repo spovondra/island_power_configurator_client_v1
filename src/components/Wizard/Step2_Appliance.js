@@ -14,8 +14,8 @@ const Step2_Appliance = ({ onComplete }) => {
         name: '',
         type: 'AC',
         quantity: 1,
-        power: 0,
-        hours: 0,
+        power: 1,
+        hours: 0.1,
         days: 7,
         peakPower: 0,
         energy: 0,
@@ -57,8 +57,8 @@ const Step2_Appliance = ({ onComplete }) => {
                 name: '',
                 type: 'AC',
                 quantity: 1,
-                power: 0,
-                hours: 0,
+                power: 1,
+                hours: 0.1,
                 days: 7,
                 peakPower: 0,
                 energy: 0,
@@ -108,6 +108,23 @@ const Step2_Appliance = ({ onComplete }) => {
             [id]: parsedValue
         }));
     };
+
+    const handleBlur = (e) => {
+        const { id } = e.target;
+
+        if (id === 'peakPower') {
+            setAppliance((prevState) => {
+                if (prevState.peakPower < prevState.power) {
+                    return {
+                        ...prevState,
+                        peakPower: prevState.power,
+                    };
+                }
+                return prevState;
+            });
+        }
+    };
+
 
     const powerChartColors = ['#005B96', '#33A1FD'];
     const peakPowerChartColors = ['#228B22', '#32CD32'];
@@ -163,7 +180,7 @@ const Step2_Appliance = ({ onComplete }) => {
                             <input
                                 type="number"
                                 id="power"
-                                min="0"
+                                min="1"
                                 value={appliance.power}
                                 onChange={handleInputChange}
                                 required
@@ -185,7 +202,7 @@ const Step2_Appliance = ({ onComplete }) => {
                             <input
                                 type="number"
                                 id="hours"
-                                min="0"
+                                min="0.1"
                                 max="24"
                                 step="0.1"
                                 value={appliance.hours}
@@ -210,9 +227,10 @@ const Step2_Appliance = ({ onComplete }) => {
                             <input
                                 type="number"
                                 id="peakPower"
-                                min="0"
+                                min="1"
                                 value={appliance.peakPower}
                                 onChange={handleInputChange}
+                                onBlur={handleBlur}
                             />
                         </div>
                         <button type="submit" className="step2-action-button">

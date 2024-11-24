@@ -44,7 +44,6 @@ const Step6_SolarPanels = ({ onComplete }) => {
         const fetchPanelConfig = async () => {
             try {
                 const projectPanel = await getProjectSolarPanel(selectedProject);
-                console.log('Fetched project solar panel configuration:', projectPanel); // Log fetched configuration
                 if (projectPanel) {
                     setSelectedPanel(projectPanel.solarPanelId);
                     setNumberOfPanels(projectPanel.numberOfPanels);
@@ -64,7 +63,7 @@ const Step6_SolarPanels = ({ onComplete }) => {
             } catch (error) {
                 console.error('Error fetching project solar panel configuration:', error);
             } finally {
-                setInitialLoad(false); // Mark initial load as complete
+                setInitialLoad(false);
             }
         };
 
@@ -73,7 +72,7 @@ const Step6_SolarPanels = ({ onComplete }) => {
     }, [selectedProject]);
 
     useEffect(() => {
-        if (!initialLoad && hasChanged) {
+        if (!initialLoad && hasChanged && selectedPanel) {
             sendUpdatedConfiguration();
         }
     }, [
@@ -85,14 +84,19 @@ const Step6_SolarPanels = ({ onComplete }) => {
         installationType,
         manufacturerTolerance,
         agingLoss,
-        dirtLoss,
-        initialLoad // Include initialLoad to ensure correct behavior
+        dirtLoss
     ]);
+
+    useEffect(() => {
+        if (hasChanged && selectedPanel) {
+            sendUpdatedConfiguration();
+        }
+    }, [selectedPanel]);
 
     const sendUpdatedConfiguration = async () => {
         if (!selectedPanel) {
-            console.warn('Cannot send configuration: selectedPanel is null');
-            return; // Skip if selectedPanel is not set
+            console.error("Cannot send configuration: selectedPanel is null or undefined.");
+            return;
         }
 
         const postData = {
@@ -104,27 +108,29 @@ const Step6_SolarPanels = ({ onComplete }) => {
             installationType,
             manufacturerTolerance,
             agingLoss,
-            dirtLoss
+            dirtLoss,
         };
 
-        console.log('Sending configuration to backend:', postData); // Log the entire payload being sent
+        console.log(`Sending updated configuration with data:`, postData);
 
         try {
             const result = await selectSolarPanel(selectedProject, postData);
+            console.log(`Configuration updated successfully. Response:`, result);
             setConfig(result);
             onComplete();
         } catch (error) {
-            console.error('Error selecting solar panel:', error);
+            console.error(`Error selecting solar panel:`, error);
         }
     };
 
     const handlePanelSelect = (panelId) => {
-        console.log('Selected panel ID:', panelId); // Log selected panel ID
-        setHasChanged(true);
-        setSelectedPanel(panelId);
-        sendUpdatedConfiguration(); // Trigger configuration update on every click
+        if (panelId) {
+            setHasChanged(true);
+            setSelectedPanel(panelId);
+        } else {
+            console.error("Invalid panel ID: Cannot select null or undefined panel.");
+        }
     };
-
 
     const handleMonthChange = (month) => {
         if (!selectedPanel) return;

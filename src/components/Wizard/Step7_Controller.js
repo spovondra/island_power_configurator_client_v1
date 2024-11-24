@@ -69,7 +69,7 @@ const Step7_Controller = ({ onComplete }) => {
     }, [selectedProject, regulatorType]);
 
     useEffect(() => {
-        if (!initialLoad && hasChanged) {
+        if (!initialLoad && hasChanged && selectedController) {
             sendUpdatedControllerConfig();
         }
     }, [selectedController]);
@@ -80,8 +80,15 @@ const Step7_Controller = ({ onComplete }) => {
             return;
         }
 
+        console.log('Sending updated controller configuration:', {
+            selectedProject,
+            selectedController,
+            regulatorType
+        });
+
         try {
             const result = await selectController(selectedProject, selectedController, regulatorType);
+            console.log('Response received:', result);
             setControllerConfig(result);
             onComplete();
         } catch (error) {
@@ -90,9 +97,9 @@ const Step7_Controller = ({ onComplete }) => {
     };
 
     const handleControllerSelect = (controllerId) => {
-        setHasChanged(true);
+        console.log('Controller selected:', controllerId);
         setSelectedController(controllerId);
-        sendUpdatedControllerConfig();
+        setHasChanged(true);
     };
 
     const handleRegulatorTypeChange = (type) => {

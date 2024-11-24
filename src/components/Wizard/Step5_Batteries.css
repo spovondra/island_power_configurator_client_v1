@@ -5,6 +5,7 @@
     padding: 20px;
 }
 
+
 .step5-selection-section {
     display: flex;
     justify-content: space-between;
@@ -18,11 +19,6 @@
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    margin-right: 10px;
-}
-
-.step5-input-group:last-child {
-    margin-right: 0;
 }
 
 .step5-input-group label {
@@ -34,7 +30,6 @@
 
 .step5-select,
 .step5-input {
-    width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -50,7 +45,6 @@
     margin-top: 20px;
     max-height: 400px;
     overflow-y: auto;
-    width: 100%;
 }
 
 .step5-battery-option {
@@ -71,16 +65,5 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     padding: 15px;
     margin-top: 15px;
-    width: 100%;
 }
 
-.step5-calculated-configuration h4 {
-    font-size: 1em;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.step5-calculated-configuration p {
-    font-size: 0.9em;
-    margin: 8px 0;
-}
