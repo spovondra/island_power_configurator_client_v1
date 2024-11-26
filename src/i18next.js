@@ -2,59 +2,45 @@ import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-// Import the translations
+// import translations
 import pagesEN from './locales/en/pages.json';
 import navigationEN from './locales/en/navigation.json';
-import authEN from './locales/en/auth.json'; // Import English auth translations
+import authEN from './locales/en/auth.json';
 import wizardEN from './locales/en/wizard.json';
-import adminEN from './locales/en/admin.json'; // Import English component admin translations
+import adminEN from './locales/en/admin.json';
 import projectEN from './locales/en/project.json';
 import settingsEN from './locales/en/settings.json';
 
 import pagesCS from './locales/cs/pages.json';
 import navigationCS from './locales/cs/navigation.json';
-import authCS from './locales/cs/auth.json'; // Import Czech auth translations
+import authCS from './locales/cs/auth.json';
 import wizardCS from './locales/cs/wizard.json';
-import adminCS from './locales/cs/admin.json'; // Import Czech component admin translations
+import adminCS from './locales/cs/admin.json';
 import projectCS from './locales/cs/project.json';
 import settingsCS from './locales/cs/settings.json';
 
-// Define the resource object with separate namespaces for pages, navigation, auth, and component admin
+/**
+ * configures and initializes i18next for translation management in the application
+ */
 const resources = {
-    en: {
-        pages: pagesEN, // English pages translations
-        navigation: navigationEN, // English navigation translations
-        auth: authEN, // English auth translations
-        wizard: wizardEN,
-        admin: adminEN, // English component admin translations
-        project: projectEN,
-        settings: settingsEN
-    },
-    cs: {
-        pages: pagesCS, // Czech pages translations
-        navigation: navigationCS, // Czech navigation translations
-        auth: authCS, // Czech auth translations
-        wizard: wizardCS,
-        admin: adminCS,
-        project: projectCS,
-        settings: settingsCS
-    }
+    en: { pages: pagesEN, navigation: navigationEN, auth: authEN, wizard: wizardEN, admin: adminEN, project: projectEN, settings: settingsEN },
+    cs: { pages: pagesCS, navigation: navigationCS, auth: authCS, wizard: wizardCS, admin: adminCS, project: projectCS, settings: settingsCS }
 };
 
 i18next
-    .use(LanguageDetector) // Detects language automatically
-    .use(initReactI18next) // Passes i18n down to react-i18next
+    .use(LanguageDetector) // automatically detects the user's language
+    .use(initReactI18next) // integrates i18next with React
     .init({
-        resources, // Load the resources
-        fallbackLng: 'en', // Fallback to English if translation is missing
-        ns: ['pages', 'navigation', 'auth', 'wizard', 'admin', 'project','settings'], // Define namespaces
-        defaultNS: 'pages', // Default namespace
+        resources, // translation resources
+        fallbackLng: 'en', // default to English if no translation is found
+        ns: ['pages', 'navigation', 'auth', 'wizard', 'admin', 'project', 'settings'], // namespaces
+        defaultNS: 'pages', // default namespace for translations
         interpolation: {
-            escapeValue: false // React already handles escaping
+            escapeValue: false // disables escaping as React handles it
         },
         detection: {
-            order: ['querystring', 'cookie', 'localStorage', 'navigator'], // Language detection order
-            caches: ['cookie'] // Save language in cookies
+            order: ['querystring', 'cookie', 'localStorage', 'navigator'], // language detection priority
+            caches: ['cookie'] // caches the detected language in cookies
         }
     });
 
