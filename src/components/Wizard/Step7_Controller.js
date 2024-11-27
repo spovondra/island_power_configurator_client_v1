@@ -39,6 +39,7 @@ const Step7_Controller = ({ onComplete }) => {
         const fetchControllerConfig = async () => {
             try {
                 const projectController = await getProjectController(selectedProject);
+                console.log('Received controller configuration:', projectController);
                 if (projectController) {
                     setSelectedController(projectController.controllerId);
                     setControllerConfig({
