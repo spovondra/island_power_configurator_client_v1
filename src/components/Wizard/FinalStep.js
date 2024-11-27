@@ -402,6 +402,8 @@ const FinalStep = () => {
                         <th>{t('final_step.battery_name')}</th>
                         <th>{t('final_step.technology')}</th>
                         <th>{t('final_step.voltage')}</th>
+                        <th>{t('final_step.optimal_charging_current')}</th>
+                        <th>{t('final_step.max_charging_current')}</th>
                         <th>{t('final_step.capacity')}</th>
                         <th>{t('final_step.dod')}</th>
                         <th>{t('final_step.capacity_including_dod')}</th>
@@ -417,6 +419,8 @@ const FinalStep = () => {
                         <td>{battery?.dod || 'N/A'}</td>
                         <td>{projectBattery?.batteryCapacityDod || 'N/A'} Ah</td>
                         <td>{projectBattery?.operationalDays.toFixed(2) || 'N/A'} {t('final_step.days')}</td>
+                        <td>{battery?.optimalChargingCurrent?.toFixed(2) || 'N/A'} A</td>
+                        <td>{battery?.maxChargingCurrent?.toFixed(2) || 'N/A'} A</td>
                     </tr>
                     </tbody>
                 </table>
