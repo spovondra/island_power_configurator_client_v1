@@ -204,12 +204,17 @@ const Step4_Inverter = ({ onComplete }) => {
                                         checked={selectedInverterId === inverter.id}
                                         onChange={() => handleInverterSelection(inverter.id)}
                                     />
-                                    {inverter.name} - Continuous Power at {temperature}°C: {getContinuousPowerByTemperature(inverter)}W, Max Power: {inverter.maxPower}W, Efficiency: {inverter.efficiency}%, Voltage: {inverter.voltage}V
+                                    <strong>{inverter.name}</strong><br/>
+                                    {t('step4.voltage')}: {inverter.voltage}V,{' '}
+                                    {t('step4.continuous_power', {temperature})}: {getContinuousPowerByTemperature(inverter)}W,{' '}
+                                    {t('step4.max_power')}: {inverter.maxPower}W,{' '}
+                                    {t('step4.efficiency')}: {inverter.efficiency}%
                                 </label>
                             </div>
                         ))
                     )}
                 </div>
+
                 <div className="step4-energy-calculations">
                     <h4>{t('step4.energy_calculations')}</h4>
                     <p>

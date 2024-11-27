@@ -15,43 +15,53 @@ import ProjectAdminPanel from './components/ProjectAdmin/ProjectAdminPanel';
 import Wizard from './pages/Wizard';
 import NotFound from './pages/NotFound';
 import { ProjectProvider } from './context/ProjectContext';
-
-import "./App.css"
+import "./App.css";
 import ComponentAdminPanel from "./components/ComponentAdmin/ComponentAdminPanel";
 
 /**
- * Main application component defining routing and context.
+ * main application component defining routing and context
  *
  * @component
- * @returns {JSX.Element} Main application structure.
+ * @returns {JSX.Element} main application structure
  */
 const App = () => (
-    <BrowserRouter>
+    <BrowserRouter
+        future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true
+        }}
+    >
         <ProjectProvider>
             <Routes>
-                {/* Public routes */}
+                {/* public routes */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
 
-                {/* Protected routes */}
+                {/* protected routes */}
                 <Route path="/" element={<ProtectedRoute><SharedLayout /></ProtectedRoute>}>
                     <Route index element={<Home />} />
                     <Route path="about" element={<About />} />
                     <Route path="settings" element={<UserSettings />} />
                     <Route path="projects" element={<ProjectList />} />
                     <Route path="projects/new" element={<ProjectForm />} />
+
+                    {/**
+                     * route for editing an existing project
+                     *
+                     * @param {string} id - unique identifier of the project to edit
+                     */}
                     <Route path="projects/edit/:id" element={<ProjectForm />} />
 
-                    {/* Admin routes */}
+                    {/* admin routes */}
                     <Route path="/admin/users" element={<AuthRoute role="ADMIN"><UserListAdmin /></AuthRoute>} />
                     <Route path="/admin/projects" element={<AuthRoute role="ADMIN"><ProjectAdminPanel /></AuthRoute>} />
                     <Route path="/admin/components" element={<AuthRoute role="ADMIN"><ComponentAdminPanel /></AuthRoute>} />
 
-                    {/* Wizard guide */}
+                    {/* wizard guide */}
                     <Route path="wizard" element={<Wizard />} />
                 </Route>
 
-                {/* 404 Not Found */}
+                {/* fallback 404 route */}
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </ProjectProvider>

@@ -150,7 +150,12 @@ const Step5_Batteries = ({ onComplete }) => {
                                         checked={selectedBattery === battery.id}
                                         onChange={() => handleBatterySelect(battery.id)}
                                     />
-                                    {battery.name} - Capacity: {battery.capacity}Ah, Voltage: {battery.voltage}V, DOD: {battery.dod}
+                                    <strong>{battery.name}</strong><br/>
+                                    {t('step5.capacity')}: {battery.capacity}Ah,{' '}
+                                    {t('step5.voltage')}: {battery.voltage}V,{' '}
+                                    {t('step5.dod')}: {battery.dod}, {' '}
+                                    {t('step5.optimal_current')}: {battery.optimalChargingCurrent}A, {' '}
+                                    {t('step5.max_current')}: {battery.maxChargingCurrent}A
                                 </label>
                             </div>
                         ))

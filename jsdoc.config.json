@@ -1,11 +1,22 @@
 {
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc"]
+  },
   "source": {
     "include": ["src"],
     "includePattern": ".+\\.jsx?$",
     "excludePattern": "(^|\\/|\\\\)_"
   },
+  "plugins": ["plugins/markdown"],
   "opts": {
     "destination": "./docs",
-    "recurse": true
+    "recurse": true,
+    "readme": "README.md",
+    "template": "templates/default"
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false
   }
 }
