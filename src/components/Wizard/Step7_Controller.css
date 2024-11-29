@@ -1,24 +1,19 @@
-.step7-controller-page-container {
+/* Controller Configurator Styles */
+.step7-controller-configurator {
     width: 80%;
     margin: 0 auto;
-    font-family: 'Arial', sans-serif;
-    line-height: 1.5;
 }
 
 /* Title */
-.step7-header {
+.step7-config-title {
     text-align: center;
     margin-bottom: 20px;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
-    color: #444;
 }
 
-/* Selection Section */
-.step7-selection-section {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
+/* Regulator Type Selection */
+.step7-regulator-type-selection {
     margin-bottom: 15px;
     padding: 8px;
     border: 1px solid #ddd;
@@ -26,41 +21,41 @@
     background-color: #f4f4f4;
 }
 
-.step7-input-group {
-    flex: 1;
-}
-
-.step7-input-group label {
-    display: block;
+.step7-regulator-type-selection h3 {
     margin-bottom: 8px;
-    font-weight: bold;
-    font-size: 14px;
-    color: #555;
+    font-size: 16px;
 }
 
-.step7-select,
-.step7-input {
-    width: 100%;
+.step7-regulator-type-selection label {
+    margin-right: 10px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* Controller Selection */
+.step7-controller-selection {
+    margin-bottom: 15px;
     padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    color: #333;
-}
-
-/* Controller Options Section */
-.step7-controller-options-section {
-    margin-top: 15px;
-    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 6px;
     background-color: #f9f9f9;
-    max-height: 400px;
-    overflow-y: auto;
+}
+
+.step7-controller-selection h3 {
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.step7-controller-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .step7-controller-option {
-    padding: 10px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
     border: 1px solid #ddd;
     border-radius: 6px;
     background-color: #fff;
@@ -80,37 +75,59 @@
 }
 
 /* Calculated Configuration */
-.step7-calculated-configuration {
+.step7-calculated-config {
     margin-top: 20px;
     border: 1px solid #ccc;
     border-radius: 6px;
-    padding: 15px;
+    padding: 10px;
     background-color: #fafafa;
 }
 
-.step7-calculated-configuration h4 {
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #444;
-}
-
-.step7-calculated-configuration p {
+.step7-calculated-config p {
     margin: 4px 0;
     font-size: 14px;
 }
 
+/* Validation Message */
+.step7-valid-message {
+    font-weight: bold;
+    color: green;
+}
+
+.step7-invalid-message {
+    font-weight: bold;
+    color: red;
+}
+
+/* Additional Configuration Fields */
+.step7-configuration-field {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.step7-configuration-field:last-child {
+    border-bottom: none;
+}
+
+.step7-configuration-field label {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.step7-configuration-field span {
+    font-size: 13px;
+    text-align: right;
+}
+
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
-    .step7-controller-page-container {
+    .step7-controller-configurator {
         width: 90%;
     }
 
-    .step7-selection-section {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .step7-controller-options-section {
-        max-height: 300px;
+    .step7-controller-options {
+        gap: 8px;
     }
 }

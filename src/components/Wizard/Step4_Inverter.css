@@ -1,27 +1,15 @@
-/* Page Container */
 .step4-inverter-page-container {
     width: 80%;
     margin: 0 auto;
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
+    line-height: 1.2;
 }
 
-/* Header */
 .step4-header {
     text-align: center;
     margin-bottom: 20px;
-}
-
-.step4-header h2 {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
-    color: #333;
-}
-
-.step4-header .step4-error-message {
-    color: red;
-    font-size: 14px;
-    margin-top: 10px;
+    color: #444;
 }
 
 /* Selection Section */
@@ -68,13 +56,36 @@
     margin-bottom: 20px;
 }
 
-.step4-inverter-list-section h3 {
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #333;
+/* Inverter Options */
+.step4-inverter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Adds space between the options */
 }
 
 /* Inverter Option */
+.step4-inverter-option {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.step4-inverter-option:hover {
+    background-color: #f0f8ff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.step4-inverter-option.selected {
+    border-color: #007bff;
+    background-color: #e6f2ff;
+    font-weight: bold;
+}
+
 .step4-inverter-option {
     display: flex;
     align-items: center;
@@ -105,21 +116,13 @@
     background-color: #f9f9f9;
 }
 
-.step4-energy-calculations h4 {
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #333;
-}
-
 .step4-energy-calculations p {
     margin: 5px 0;
-    font-size: 14px;
-    color: #555;
 }
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
-    .step4-inverter-page-container {
+    .step4-page-container {
         width: 90%;
     }
 

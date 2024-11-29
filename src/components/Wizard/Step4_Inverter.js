@@ -191,32 +191,34 @@ const Step4_Inverter = ({ onComplete }) => {
                     {loading ? (
                         <p>{t('step4.loading')}</p>
                     ) : (
-                        suitableInverters.map((inverter) => (
-                            <div
-                                key={inverter.id}
-                                className={`step4-inverter-option ${selectedInverterId === inverter.id ? 'selected' : ''}`}
-                                onClick={() => handleInverterSelection(inverter.id)}
-                            >
-                                <label>
-                                    <input
-                                        type="radio"
-                                        name="inverter"
-                                        checked={selectedInverterId === inverter.id}
-                                        onChange={() => handleInverterSelection(inverter.id)}
-                                    />
-                                    <strong>{inverter.name}</strong><br/>
-                                    {t('step4.voltage')}: {inverter.voltage}V,{' '}
-                                    {t('step4.continuous_power', {temperature})}: {getContinuousPowerByTemperature(inverter)}W,{' '}
-                                    {t('step4.max_power')}: {inverter.maxPower}W,{' '}
-                                    {t('step4.efficiency')}: {inverter.efficiency}%
-                                </label>
-                            </div>
-                        ))
+                        <div className="step4-inverter-options">
+                            {suitableInverters.map((inverter) => (
+                                <div
+                                    key={inverter.id}
+                                    className={`step4-inverter-option ${selectedInverterId === inverter.id ? 'selected' : ''}`}
+                                    onClick={() => handleInverterSelection(inverter.id)}
+                                >
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            name="inverter"
+                                            checked={selectedInverterId === inverter.id}
+                                            onChange={() => handleInverterSelection(inverter.id)}
+                                        />
+                                        <strong>{inverter.name}</strong><br/>
+                                        {t('step4.voltage')}: {inverter.voltage}V,{' '}
+                                        {t('step4.continuous_power', {temperature})}: {getContinuousPowerByTemperature(inverter)}W,{' '}
+                                        {t('step4.max_power')}: {inverter.maxPower}W,{' '}
+                                        {t('step4.efficiency')}: {inverter.efficiency}%
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
                     )}
                 </div>
 
                 <div className="step4-energy-calculations">
-                    <h4>{t('step4.energy_calculations')}</h4>
+                    <h3>{t('step4.energy_calculations')}</h3>
                     <p>
                         {t('step4.adjusted_ac_load')}: {energyCalculations.totalAdjustedAcEnergy ? `${energyCalculations.totalAdjustedAcEnergy.toFixed(2)} Wh` : t('step4.not_calculated')}
                     </p>

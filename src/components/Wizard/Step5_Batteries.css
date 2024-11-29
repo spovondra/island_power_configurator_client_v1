@@ -1,9 +1,8 @@
-.step5-page-container {
+/* Battery Configurator Styles */
+.step5-batteries-page-container {
     width: 80%;
     margin: 0 auto;
-    font-family: 'Arial', sans-serif;
-    color: #333;
-    line-height: 1.5;
+    line-height: 1.2;
 }
 
 /* Title */
@@ -20,72 +19,81 @@
     display: flex;
     justify-content: space-between;
     gap: 10px;
-    margin-bottom: 15px;
-    padding: 8px;
+    margin-bottom: 20px;
+}
+
+.step5-input-group {
+    flex: 1;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 6px;
     background-color: #f4f4f4;
 }
 
-.step5-input-group {
-    flex: 1;
-}
-
 .step5-input-group label {
     display: block;
-    margin-bottom: 8px;
     font-weight: bold;
+    margin-bottom: 5px;
     font-size: 14px;
     color: #555;
 }
 
-.step5-select,
-.step5-input {
+.step5-input-group select, .step5-input-group input {
     width: 100%;
     padding: 8px;
+    font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 14px;
     color: #333;
 }
 
-/* Battery Options Section */
+/* Battery List Section */
 .step5-select-battery-section {
-    margin-top: 15px;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 6px;
-    background-color: #f9f9f9;
+    background-color: #fafafa;
     max-height: 400px;
     overflow-y: auto;
+    margin-bottom: 20px;
 }
 
+/* Battery Options */
+.step5-battery-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Adds space between the options */
+}
+
+/* Battery Option */
 .step5-battery-option {
+    display: flex;
+    align-items: center;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 6px;
     background-color: #fff;
-    transition: box-shadow 0.2s ease, background-color 0.2s ease;
     cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
 }
 
 .step5-battery-option:hover {
+    background-color: #f0f8ff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #f0f0f0;
 }
 
 .step5-battery-option.selected {
     border-color: #007bff;
-    background-color: #e0f0ff;
+    background-color: #e6f2ff;
     font-weight: bold;
 }
 
 /* Calculated Configuration */
 .step5-calculated-configuration {
     margin-top: 20px;
+    padding: 15px;
     border: 1px solid #ccc;
     border-radius: 6px;
-    padding: 15px;
     background-color: #fafafa;
 }
 
@@ -102,7 +110,7 @@
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
-    .step5-page-container {
+    .step5-batteries-page-container {
         width: 90%;
     }
 
