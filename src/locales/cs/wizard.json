@@ -84,7 +84,12 @@
     "series_batteries": "Akumulátory sériově",
     "required_capacity": "Požadovaná kapacita",
     "total_available_capacity": "Celková dostupná kapacita jednoho akumulátoru",
-    "operational_days": "Odhadované dny provozu"
+    "operational_days": "Odhadované dny provozu",
+    "capacity": "Kapacita",
+    "voltage": "Napětí",
+    "dod": "DOD",
+    "optimal_current": "Optimální nabíjecí proud",
+    "max_current": "Maximální nabíjecí proud"
   },
   "step6": {
     "solar_panel_configurator": "Nastavení solárních panelů",

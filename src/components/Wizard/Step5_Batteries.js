@@ -5,8 +5,8 @@ import { getBatteries, selectBattery, getProjectBattery } from '../../services/P
 import './Step5_Batteries.css';
 
 const Step5_Batteries = ({ onComplete }) => {
-    const { t } = useTranslation('wizard');
-    const { selectedProject } = useContext(ProjectContext);
+    const {t} = useTranslation('wizard');
+    const {selectedProject} = useContext(ProjectContext);
     const [batteryType, setBatteryType] = useState('Li-ion');
     const [temperature, setTemperature] = useState(25);
     const [autonomyDays, setAutonomyDays] = useState(1);
@@ -83,7 +83,7 @@ const Step5_Batteries = ({ onComplete }) => {
     return (
         <div className="step5-batteries-page-container">
             <div className="step5-header">
-                <h2>{t('step5.battery_configurator')}</h2>
+                <h2 className="step7-config-title">{t('step5.battery_configurator')}</h2>
             </div>
 
             <div className="step5-content">
@@ -137,28 +137,30 @@ const Step5_Batteries = ({ onComplete }) => {
                     {batteries.length === 0 ? (
                         <p>{t('step5.no_batteries_available')}</p>
                     ) : (
-                        batteries.map((battery) => (
-                            <div
-                                key={battery.id}
-                                className={`step5-battery-option ${selectedBattery === battery.id ? 'selected' : ''}`}
-                                onClick={() => handleBatterySelect(battery.id)}
-                            >
-                                <label>
-                                    <input
-                                        type="radio"
-                                        name="battery"
-                                        checked={selectedBattery === battery.id}
-                                        onChange={() => handleBatterySelect(battery.id)}
-                                    />
-                                    <strong>{battery.name}</strong><br/>
-                                    {t('step5.capacity')}: {battery.capacity}Ah,{' '}
-                                    {t('step5.voltage')}: {battery.voltage}V,{' '}
-                                    {t('step5.dod')}: {battery.dod}, {' '}
-                                    {t('step5.optimal_current')}: {battery.optimalChargingCurrent}A, {' '}
-                                    {t('step5.max_current')}: {battery.maxChargingCurrent}A
-                                </label>
-                            </div>
-                        ))
+                        <div className="step5-battery-options">
+                            {batteries.map((battery) => (
+                                <div
+                                    key={battery.id}
+                                    className={`step5-battery-option ${selectedBattery === battery.id ? 'selected' : ''}`}
+                                    onClick={() => handleBatterySelect(battery.id)}
+                                >
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            name="battery"
+                                            checked={selectedBattery === battery.id}
+                                            onChange={() => handleBatterySelect(battery.id)}
+                                        />
+                                        <strong>{battery.name}</strong><br/>
+                                        {t('step5.capacity')}: {battery.capacity}Ah,{' '}
+                                        {t('step5.voltage')}: {battery.voltage}V,{' '}
+                                        {t('step5.dod')}: {battery.dod}, {' '}
+                                        {t('step5.optimal_current')}: {battery.optimalChargingCurrent}A, {' '}
+                                        {t('step5.max_current')}: {battery.maxChargingCurrent}A
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
                     )}
                 </div>
 

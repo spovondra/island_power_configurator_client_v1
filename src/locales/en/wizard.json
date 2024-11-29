@@ -79,12 +79,17 @@
     "select_battery": "Select Battery",
     "no_batteries_available": "No suitable batteries available",
     "calculated_configuration": "Calculated Configuration",
-    "battery_capacity_dod": "Battery Capacity DOD",
+    "battery_capacity_dod": "Battery DOD Capacity",
     "parallel_batteries": "Parallel Batteries",
     "series_batteries": "Series Batteries",
     "required_capacity": "Required Capacity",
-    "total_available_capacity": "Total battery available capacity",
-    "operational_days": "Estimated operational Days"
+    "total_available_capacity": "Total Available Capacity of One Battery",
+    "operational_days": "Estimated Operational Days",
+    "capacity": "Capacity",
+    "voltage": "Voltage",
+    "dod": "DOD",
+    "optimal_current": "Optimal Charging Current",
+    "max_current": "Max Charging Current"
   },
   "step6": {
     "solar_panel_configurator": "Solar Panel Configurator",

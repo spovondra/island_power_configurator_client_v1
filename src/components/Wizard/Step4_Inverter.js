@@ -5,8 +5,8 @@ import { getSuitableInverters, selectInverter, getProjectInverter, getVoltage } 
 import './Step4_Inverter.css';
 
 const Step4_Inverter = ({ onComplete }) => {
-    const { t } = useTranslation('wizard');
-    const { selectedProject } = useContext(ProjectContext);
+    const {t} = useTranslation('wizard');
+    const {selectedProject} = useContext(ProjectContext);
     const [systemVoltage, setSystemVoltage] = useState(''); // Default to empty
     const [recommendedSystemVoltage, setRecommendedSystemVoltage] = useState(null);
     const [useRecommendedVoltage, setUseRecommendedVoltage] = useState(true); // Controls initial voltage behavior
@@ -14,7 +14,7 @@ const Step4_Inverter = ({ onComplete }) => {
     const [suitableInverters, setSuitableInverters] = useState([]);
     const [loading, setLoading] = useState(false);
     const [selectedInverterId, setSelectedInverterId] = useState(null);
-    const [energyCalculations, setEnergyCalculations] = useState({ totalAdjustedAcEnergy: 0, totalDailyEnergy: 0 });
+    const [energyCalculations, setEnergyCalculations] = useState({totalAdjustedAcEnergy: 0, totalDailyEnergy: 0});
     const [error, setError] = useState(null);
 
     // Fetch voltage and suitable inverters
@@ -25,7 +25,10 @@ const Step4_Inverter = ({ onComplete }) => {
             setLoading(true);
             try {
                 // Fetch the voltage data
-                const { systemVoltage: fetchedVoltage, recommendedSystemVoltage: fetchedRecommendedVoltage } = await getVoltage(selectedProject);
+                const {
+                    systemVoltage: fetchedVoltage,
+                    recommendedSystemVoltage: fetchedRecommendedVoltage
+                } = await getVoltage(selectedProject);
                 console.log('Fetched voltages:', fetchedVoltage, fetchedRecommendedVoltage);
 
                 // If the system voltage is not set, use recommended voltage
@@ -124,7 +127,7 @@ const Step4_Inverter = ({ onComplete }) => {
                         totalAdjustedAcEnergy: result.totalAdjustedAcEnergy || 0,
                         totalDailyEnergy: result.totalDailyEnergy || 0,
                     });
-                    
+
                     setSystemVoltage(result.systemVoltage || systemVoltage);
                     setTemperature(result.inverterTemperature || temperature);
 
@@ -150,11 +153,11 @@ const Step4_Inverter = ({ onComplete }) => {
                 return inverter.continuousPower25C;
         }
     };
-
+    
     return (
         <div className="step4-inverter-page-container">
             <div className="step4-header">
-                <h2>{t('step4.select_inverter_configuration')}</h2>
+                <h2 className="step7-config-title">{t('step4.select_inverter_configuration')}</h2>
                 {error && <p className="step4-error-message">{error}</p>}
             </div>
 
@@ -228,7 +231,7 @@ const Step4_Inverter = ({ onComplete }) => {
                 </div>
             </div>
         </div>
-    );
-};
+        );
+        };
 
-export default Step4_Inverter;
+        export default Step4_Inverter;
