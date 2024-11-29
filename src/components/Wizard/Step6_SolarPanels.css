@@ -1,7 +1,6 @@
 .step6-solar-panel-configurator {
     width: 80%;
     margin: 0 auto;
-    font-family: 'Arial', sans-serif;
     background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -16,7 +15,6 @@
     color: #333;
 }
 
-.step6-solar-panel-selection,
 .step6-installation-type,
 .step6-constants-input,
 .step6-calculated-config {
@@ -28,11 +26,42 @@
     padding: 15px;
 }
 
-.step6-solar-panel-options {
+.step6-inverter-options {
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.step6-panel-option {
+    display: flex;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.step6-panel-option:hover {
+    background-color: #f0f8ff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.step6-panel-option.selected {
+    border-color: #007bff;
+    background-color: #e6f2ff;
+    font-weight: bold;
+}
+
+.step6-panel-option label {
+    width: 100%;
+    cursor: pointer;
+}
+
+.step6-panel-option input {
+    margin-right: 10px;
+    transform: scale(1.2);
+    cursor: pointer;
 }
 
 .step6-month-selection {

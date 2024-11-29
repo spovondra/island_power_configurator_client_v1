@@ -25,7 +25,6 @@ const Step6_SolarPanels = ({ onComplete }) => {
         estimatedDailyEnergyProduction: 0,
         monthlyData: []
     });
-
     const [initialLoad, setInitialLoad] = useState(true);
     const [hasChanged, setHasChanged] = useState(false);
 
@@ -168,23 +167,37 @@ const Step6_SolarPanels = ({ onComplete }) => {
                     {solarPanels.length === 0 ? (
                         <p>{t('step6.no_solar_panels_available')}</p>
                     ) : (
-                        solarPanels.map((panel) => (
-                            <div
-                                key={panel.id}
-                                className={`step6-panel-option ${selectedPanel === panel.id ? 'selected' : ''}`}
-                                onClick={() => handlePanelSelect(panel.id)}
-                            >
-                                <label>
-                                    <input
-                                        type="radio"
-                                        name="solarPanel"
-                                        checked={selectedPanel === panel.id}
-                                        onChange={() => handlePanelSelect(panel.id)}
-                                    />
-                                    {`${panel.name} - Pmax: ${panel.pRated}W`}
-                                </label>
-                            </div>
-                        ))
+                        <div className="step6-solar-panel-options">
+                            {solarPanels.map((panel) => (
+                                <div
+                                    key={panel.id}
+                                    className={`step6-panel-option ${selectedPanel === panel.id ? 'selected' : ''}`}
+                                    onClick={() => setSelectedPanel(selectedPanel === panel.id ? null : panel.id)} // Toggle selection
+                                >
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            name="solarPanel"
+                                            checked={selectedPanel === panel.id}
+                                            onChange={() => {
+                                            }} // Selection handled by onClick
+                                        />
+                                        <strong>{panel.manufacturer} - {panel.name}</strong><br/>
+                                        {t('step6.total_power')}: {panel.pRated} W,{' '}
+                                        {t('step6.voltage_open_circuit')}: {panel.voc} V,{' '}
+                                        {t('step6.current_short_circuit')}: {panel.isc} A,{' '}
+                                        {t('step6.voltage_max_power')}: {panel.vmp} V,{' '}
+                                        {t('step6.current_max_power')}: {panel.imp} A,{' '}
+                                        {t('step6.temperature_coefficient_pmax')}: {panel.tempCoefficientPMax} %,{' '}
+                                        {t('step6.temperature_coefficient_voc')}: {panel.tempCoefficientVoc} %,{' '}
+                                        {t('step6.tolerance')}: {panel.tolerance} %,{' '}
+                                        {t('step6.degradation_first_year')}: {panel.degradationFirstYear} %,{' '}
+                                        {t('step6.degradation_yearly')}: {panel.degradationYears} %
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
+
                     )}
                 </div>
             </div>
@@ -192,7 +205,7 @@ const Step6_SolarPanels = ({ onComplete }) => {
             <div className="step6-month-selection">
                 <h3>{t('step6.select_months')}</h3>
                 <div className="step6-month-checkboxes">
-                    {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
+                    {Array.from({length: 12}, (_, i) => i + 1).map((month) => (
                         <label key={month} className="step6-month-checkbox">
                             <input
                                 type="checkbox"
