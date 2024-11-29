@@ -1,9 +1,34 @@
+/**
+ * component form module
+ *
+ * @module ComponentForm
+ */
+
 import React, { useState, useEffect } from 'react';
 import './ComponentForm.css';
-import { useTranslation } from 'react-i18next'; // Importing the translation hook
+import { useTranslation } from 'react-i18next';
 
+/**
+ * component form for creating or editing components
+ *
+ * @component
+ * @memberof module:ComponentForm
+ * @param {object} props - properties passed to the component
+ * @param {object} props.componentData - data of the component being edited
+ * @param {function} props.handleSubmit - function to handle form submission
+ * @param {function} props.onClose - function to handle form cancellation
+ * @param {string} props.selectedCategory - currently selected category of components
+ * @returns {JSX.Element} form interface for managing component data
+ */
 const ComponentForm = ({ componentData, handleSubmit, onClose, selectedCategory }) => {
-    const { t } = useTranslation('admin'); // Use the admin namespace for translations
+    const { t } = useTranslation('admin');
+
+    /**
+     * state for managing form data
+     *
+     * @type {object}
+     * @memberof module:ComponentForm
+     */
     const [formData, setFormData] = useState({
         name: '',
         manufacturer: '',
@@ -38,6 +63,13 @@ const ComponentForm = ({ componentData, handleSubmit, onClose, selectedCategory 
         }
     }, [componentData]);
 
+    /**
+     * updates form data state on input change
+     *
+     * @function
+     * @memberof module:ComponentForm
+     * @param {object} e - input change event
+     */
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -46,11 +78,25 @@ const ComponentForm = ({ componentData, handleSubmit, onClose, selectedCategory 
         }));
     };
 
+    /**
+     * submits the form data
+     *
+     * @function
+     * @memberof module:ComponentForm
+     * @param {object} e - form submit event
+     */
     const handleSubmitForm = (e) => {
         e.preventDefault();
         handleSubmit(formData);
     };
 
+    /**
+     * renders category-specific form fields
+     *
+     * @function
+     * @memberof module:ComponentForm
+     * @returns {JSX.Element|null} rendered input fields
+     */
     const renderFields = () => {
         switch (selectedCategory) {
             case 'solar-panels':

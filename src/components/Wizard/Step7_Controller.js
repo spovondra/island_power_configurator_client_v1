@@ -48,6 +48,11 @@ const Step7_Controller = ({ onComplete }) => {
                         seriesModules: projectController.seriesModules || 0,
                         parallelModules: projectController.parallelModules || 0,
                         valid: projectController.valid || false,
+                        statusMessage: projectController.statusMessage || "Ok",
+                        adjustedVoc: projectController.adjustedOpenCircuitVoltage || 0,
+                        adjustedVmp: projectController.adjustedVoltageAtMaxPower || 0,
+                        maxModulesInSeries: projectController.maxModulesInSerial || 0,
+                        minModulesInSeries: projectController.minModulesInSerial || 0,
                         adjustedVoc: projectController.adjustedOpenCircuitVoltage || 0,
                         adjustedVmp: projectController.adjustedVoltageAtMaxPower || 0,
                         maxModulesInSeries: projectController.maxModulesInSerial || 0,
@@ -76,6 +81,7 @@ const Step7_Controller = ({ onComplete }) => {
                 seriesModules: result.seriesModules || 0,
                 parallelModules: result.parallelModules || 0,
                 valid: result.valid || false,
+                statusMessage: result.statusMessage || "Ok",
                 adjustedVoc: result.adjustedOpenCircuitVoltage || 0,
                 adjustedVmp: result.adjustedVoltageAtMaxPower || 0,
                 maxModulesInSeries: result.maxModulesInSerial || 0,
@@ -185,10 +191,16 @@ const Step7_Controller = ({ onComplete }) => {
                     <b>{t('step7.panels_in_series')}:</b> {controllerConfig.panelsInSeries || t('step7.not_calculated')}
                 </p>
                 <p>
-                    <b>{t('step7.panels_in_parallel')}:</b> {controllerConfig.panelsInParallel || t('step7.not_calculated')}
+                    <b>{t('step7.panels_in_parallel')}:</b> {controllerConfig.parallelModules || t('step7.not_calculated')}
+                </p>
+                <p>
+                    <b>{t('step7.required_current')}:</b> {controllerConfig.requiredCurrent.toFixed(2)} A
                 </p>
                 <p>
                     <b>{t('step7.valid_configuration')}:</b> {controllerConfig.valid ? t('step7.valid') : t('step7.invalid')}
+                </p>
+                <p>
+                    <b>{t('step7.status_message')}:</b> {controllerConfig.statusMessage || t('step7.not_calculated')}
                 </p>
             </div>
         </div>

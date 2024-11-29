@@ -13,10 +13,13 @@
     "destination": "./docs",
     "recurse": true,
     "readme": "README.md",
-    "template": "templates/default"
+    "template": "node_modules/docdash"
   },
   "templates": {
-    "cleverLinks": false,
-    "monospaceLinks": false
+    "cleverLinks": true,
+    "monospaceLinks": true,
+    "collapse": true,
+    "navLevel": 2,
+    "footer": "Generováno pomocí JSDoc a Docdash"
   }
 }

@@ -1,3 +1,9 @@
+/**
+ * component admin panel module
+ *
+ * @module ComponentAdminPanel
+ */
+
 import React, { useEffect, useReducer } from 'react';
 import { getAllComponents, createComponent, updateComponent, deleteComponent, getComponentById } from '../../services/ComponentService';
 import Modal from '../Modal/Modal';
@@ -5,6 +11,13 @@ import './ComponentAdminPanel.css';
 import ComponentForm from './ComponentForm';
 import { useTranslation } from 'react-i18next';
 
+/**
+ * initial state for the component admin panel
+ *
+ * @constant
+ * @type {object}
+ * @memberof module:ComponentAdminPanel
+ */
 const initialState = {
     components: [],
     selectedCategory: 'solar-panels',
@@ -15,7 +28,15 @@ const initialState = {
     modalContent: null,
 };
 
-// Reducer function for managing component state
+/**
+ * reducer function for managing component state
+ *
+ * @function
+ * @memberof module:ComponentAdminPanel
+ * @param {object} state - current state
+ * @param {object} action - dispatched action
+ * @returns {object} updated state
+ */
 const componentReducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_SUCCESS':
@@ -46,13 +67,27 @@ const componentReducer = (state, action) => {
     }
 };
 
-// Main component for managing components in the admin panel
+/**
+ * main component for managing components in the admin panel
+ *
+ * @component
+ * @memberof module:ComponentAdminPanel
+ * @returns {JSX.Element} admin panel interface for managing components
+ */
 const ComponentAdminPanel = () => {
     const [state, dispatch] = useReducer(componentReducer, initialState);
     const { components, selectedCategory, isLoading, isModalOpen, selectedComponent, modalContent, error } = state;
     const { t } = useTranslation('admin');
 
-    // Function to fetch components based on selected category
+    /**
+     * fetches components based on the selected category
+     *
+     * @async
+     * @function fetchComponents
+     * @memberof module:ComponentAdminPanel
+     * @param {string} category - the selected category of components
+     * @returns {Promise<void>} resolves when components are successfully fetched
+     */
     const fetchComponents = async (category) => {
         try {
             const data = await getAllComponents(category);
@@ -66,7 +101,15 @@ const ComponentAdminPanel = () => {
         fetchComponents(selectedCategory);
     }, [selectedCategory]);
 
-    // Function to handle adding a new component
+    /**
+     * handles adding a new component
+     *
+     * @async
+     * @function handleAddComponent
+     * @memberof module:ComponentAdminPanel
+     * @param {object} formData - data for the new component
+     * @returns {Promise<void>} resolves when the component is successfully added
+     */
     const handleAddComponent = async (formData) => {
         try {
             const newComponent = await createComponent(selectedCategory, formData);
@@ -76,10 +119,18 @@ const ComponentAdminPanel = () => {
         }
     };
 
-    // Function to handle updating an existing component
+    /**
+     * handles updating an existing component
+     *
+     * @async
+     * @function handleUpdateComponent
+     * @memberof module:ComponentAdminPanel
+     * @param {object} formData - updated data for the component
+     * @returns {Promise<void>} resolves when the component is successfully updated
+     */
     const handleUpdateComponent = async (formData) => {
         if (!selectedComponent || !selectedComponent.id) {
-            console.error("No selected component or ID for update.");
+            console.error('No selected component or ID for update');
             return;
         }
         try {
@@ -90,7 +141,15 @@ const ComponentAdminPanel = () => {
         }
     };
 
-    // Function to handle deleting a component
+    /**
+     * handles deleting a component
+     *
+     * @async
+     * @function handleDeleteComponent
+     * @memberof module:ComponentAdminPanel
+     * @param {string} componentId - ID of the component to delete
+     * @returns {Promise<void>} resolves when the component is successfully deleted
+     */
     const handleDeleteComponent = async (componentId) => {
         try {
             await deleteComponent(selectedCategory, componentId);
@@ -100,12 +159,24 @@ const ComponentAdminPanel = () => {
         }
     };
 
-    // Function to handle category selection
+    /**
+     * sets the selected category for fetching components
+     *
+     * @function handleCategoryChange
+     * @memberof module:ComponentAdminPanel
+     * @param {string} category - the selected category
+     */
     const handleCategoryChange = (category) => {
         dispatch({ type: 'SET_CATEGORY', payload: category });
     };
 
-    // Function to handle selecting a component
+    /**
+     * sets the selected component for editing or adding
+     *
+     * @function handleSelectComponent
+     * @memberof module:ComponentAdminPanel
+     * @param {object} component - the component to select
+     */
     const handleSelectComponent = (component) => {
         if (component && component.id) {
             getComponentById(selectedCategory, component.id).then(fetchedComponent => {

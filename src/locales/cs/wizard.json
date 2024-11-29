@@ -144,7 +144,9 @@
     "panels_in_parallel": "Panely paralelně",
     "valid_configuration": "Platná konfigurace",
     "valid": "Ano,",
-    "invalid": "Ne"
+    "invalid": "Ne",
+    "required_current": "Požadovaný proud",
+    "status_message": "Stavová zpráva"
   },
   "final_step": {
     "fetch_error": "Chyba při načítání údajů o projektu.",
@@ -212,6 +214,8 @@
     "dod": "DOD",
     "capacity_including_dod": "Kapacita včetně DOD",
     "operationalDays": "Provozní dny",
+    "optimal_charging_current": "Optimální nabíjecí proud",
+    "max_charging_current": "Maximální nabíjecí proud",
     "solar_panel_configuration": "Konfigurace solárního panelu",
     "solar_panel_id": "ID solárního panelu",
     "number_of_panels": "Počet panelů",
@@ -236,6 +240,7 @@
     "pollution_loss": "Ztráta znečištěním",
     "psh_graph": "PSH Graf",
     "estimatedEnergyProduction_solar_graph": "Odhadovaná výroba energie (graf)",
+    "estimated_energy": "Odhadovaná výroba energie",
     "psh": "Hodiny špičkového slunečního svitu",
     "ambient_temperature": "Teplota prostředí",
     "required_energy": "Požadovaná energie",
@@ -263,6 +268,9 @@
     "controller_type": "Typ regulátoru",
     "controller_efficiency": "Účinnost",
     "days": "dny",
-    "estimation_production_graph": "Graf odhadované výroby"
+    "estimation_production_graph": "Graf odhadované výroby",
+    "status_message": "Stavová zpráva",
+    "export_to_pdf": "Exportovat do PDF",
+    "exporting": "Exportuji..."
   }
 }

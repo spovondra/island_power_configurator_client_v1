@@ -416,11 +416,11 @@ const FinalStep = () => {
                         <td>{battery?.type || 'N/A'}</td>
                         <td>{battery?.voltage || 'N/A'} V</td>
                         <td>{battery?.capacity || 'N/A'} Ah</td>
+                        <td>{battery?.optimalChargingCurrent.toFixed(2) || 'N/A'} A</td>
+                        <td>{battery?.maxChargingCurrent.toFixed(2) || 'N/A'} A</td>
                         <td>{battery?.dod || 'N/A'}</td>
                         <td>{projectBattery?.batteryCapacityDod || 'N/A'} Ah</td>
                         <td>{projectBattery?.operationalDays.toFixed(2) || 'N/A'} {t('final_step.days')}</td>
-                        <td>{battery?.optimalChargingCurrent?.toFixed(2) || 'N/A'} A</td>
-                        <td>{battery?.maxChargingCurrent?.toFixed(2) || 'N/A'} A</td>
                     </tr>
                     </tbody>
                 </table>
@@ -511,9 +511,16 @@ const FinalStep = () => {
                                 <CartesianGrid strokeDasharray="3 3"/>
                                 <XAxis dataKey="month"/>
                                 <YAxis/>
-                                <Tooltip/>
-                                <Line type="monotone" dataKey="estimatedEnergyProduction" stroke="#ff7300"
-                                      dot={{r: 4}}/>
+                                <Tooltip
+                                    formatter={(value) => value.toFixed(2)} // Zaokrouhlení hodnot na 2 desetinná místa
+                                />
+                                <Line
+                                    type="monotone"
+                                    dataKey="estimatedEnergyProduction"
+                                    stroke="#ff7300"
+                                    dot={{r: 4}}
+                                    name={t('final_step.estimated_energy')} // Přidán vlastní název pro tooltip
+                                />
                             </LineChart>
                         </div>
                     </div>
@@ -583,12 +590,15 @@ const FinalStep = () => {
                     <li>
                         <strong>{t('final_step.valid_configuration')}:</strong> {projectController.valid ? t('final_step.yes') : t('final_step.no')}
                     </li>
+                    <li>
+                        <strong>{t('final_step.status_message')}:</strong> {projectController.statusMessage || t('final_step.not_available')}
+                    </li>
                 </ul>
 
                 <table className="final-step-table final-step-controller-table">
                     <thead>
                     <tr>
-                        <th>{t('final_step.name')}</th>
+                    <th>{t('final_step.name')}</th>
                         <th>{t('final_step.rated_power')}</th>
                         <th>{t('final_step.current_rating')}</th>
                         <th>{t('final_step.max_voltage')}</th>

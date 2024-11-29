@@ -144,7 +144,9 @@
     "panels_in_parallel": "Panels in Parallel",
     "valid_configuration": "Valid Configuration",
     "valid": "Yes,",
-    "invalid": "No"
+    "invalid": "No",
+    "required_current": "Required current",
+    "status_message": "Status message"
   },
   "final_step": {
     "fetch_error": "Failed to fetch project details.",
@@ -212,6 +214,8 @@
     "dod": "DOD",
     "capacity_including_dod": "Capacity Including DOD",
     "operationalDays": "Operational Days",
+    "optimal_charging_current": "Optimal charging current",
+    "max_charging_current": "Max charging current",
     "solar_panel_configuration": "Solar Panel Configuration",
     "solar_panel_id": "Solar Panel ID",
     "number_of_panels": "Number of Panels",
@@ -236,6 +240,7 @@
     "pollution_loss": "Pollution Loss",
     "psh_graph": "PSH Graph",
     "estimatedEnergyProduction_solar_graph": "Estimated Energy Production (Graph)",
+    "estimated_energy": "Estimated Energy Production",
     "psh": "Peak Sun Hours",
     "ambient_temperature": "Ambient Temperature",
     "required_energy": "Required Energy",
@@ -263,6 +268,9 @@
     "controller_type": "Controller Type",
     "controller_efficiency": "Efficiency",
     "days": "days",
-    "estimation_production_graph": "Estimation Production Graph"
+    "estimation_production_graph": "Estimation Production Graph",
+    "status_message": "Status message",
+    "export_to_pdf": "Export to PDF",
+    "exporting": "Exporting..."
   }
 }
