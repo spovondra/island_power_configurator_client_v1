@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getUserProjects, deleteProject } from '../../services/ProjectService';
 import { ProjectContext } from '../../context/ProjectContext';
 import { projectReducer, initialState } from '../../reducers/projectReducer';
-import { useTranslation } from 'react-i18next'; // Import the useTranslation hook
+import { useTranslation } from 'react-i18next';
 import './ProjectList.css';
 
 const ProjectList = () => {

@@ -1,15 +1,15 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ProjectContext } from '../../context/ProjectContext';
 import { getSuitableControllers, selectController, getProjectController } from '../../services/ProjectService';
-import { useTranslation } from 'react-i18next';
 import './Step7_Controller.css';
 
 const Step7_Controller = ({ onComplete }) => {
     const { t } = useTranslation('wizard');
     const { selectedProject } = useContext(ProjectContext);
+    const [regulatorType, setRegulatorType] = useState('MPPT');
     const [selectedController, setSelectedController] = useState(null);
     const [controllers, setControllers] = useState([]);
-    const [regulatorType, setRegulatorType] = useState('MPPT');
     const [controllerConfig, setControllerConfig] = useState({
         requiredCurrent: 0,
         requiredPower: 0,
@@ -24,52 +24,56 @@ const Step7_Controller = ({ onComplete }) => {
         panelsInParallel: 0,
     });
 
+    // Načtení vhodných regulátorů
     useEffect(() => {
-        if (!selectedProject) return;
-
         const fetchControllers = async () => {
+            if (!selectedProject) return;
+
             try {
                 const controllersData = await getSuitableControllers(selectedProject, regulatorType);
                 setControllers(controllersData);
             } catch (error) {
-                console.error('Error fetching suitable controllers:', error);
-            }
-        };
-
-        const fetchControllerConfig = async () => {
-            try {
-                const projectController = await getProjectController(selectedProject);
-                console.log('Received controller configuration:', projectController);
-                if (projectController) {
-                    setSelectedController(projectController.controllerId);
-                    setControllerConfig({
-                        requiredCurrent: projectController.requiredCurrent || 0,
-                        requiredPower: projectController.requiredPower || 0,
-                        seriesModules: projectController.seriesModules || 0,
-                        parallelModules: projectController.parallelModules || 0,
-                        valid: projectController.valid || false,
-                        statusMessage: projectController.statusMessage || "Ok",
-                        adjustedVoc: projectController.adjustedOpenCircuitVoltage || 0,
-                        adjustedVmp: projectController.adjustedVoltageAtMaxPower || 0,
-                        maxModulesInSeries: projectController.maxModulesInSerial || 0,
-                        minModulesInSeries: projectController.minModulesInSerial || 0,
-                        adjustedVoc: projectController.adjustedOpenCircuitVoltage || 0,
-                        adjustedVmp: projectController.adjustedVoltageAtMaxPower || 0,
-                        maxModulesInSeries: projectController.maxModulesInSerial || 0,
-                        minModulesInSeries: projectController.minModulesInSerial || 0,
-                        panelsInSeries: projectController.seriesModules || 0,
-                        panelsInParallel: projectController.parallelModules || 0,
-                    });
-                }
-            } catch (error) {
-                console.error('Error fetching project controller configuration:', error);
+                console.error('Error fetching controllers:', error);
             }
         };
 
         fetchControllers();
-        fetchControllerConfig();
     }, [selectedProject, regulatorType]);
 
+    // Načtení konfigurace regulátoru
+    useEffect(() => {
+        const fetchControllerConfig = async () => {
+            if (!selectedProject) return;
+
+            try {
+                const projectController = await getProjectController(selectedProject);
+                if (projectController) {
+                    setSelectedController(projectController.controllerId);
+                    setRegulatorType(projectController.type || 'MPPT');
+                    setControllerConfig({
+                        requiredCurrent: projectController.requiredCurrent,
+                        requiredPower: projectController.requiredPower,
+                        seriesModules: projectController.seriesModules,
+                        parallelModules: projectController.parallelModules,
+                        valid: projectController.valid,
+                        statusMessage: projectController.statusMessage,
+                        adjustedVoc: projectController.adjustedOpenCircuitVoltage,
+                        adjustedVmp: projectController.adjustedVoltageAtMaxPower,
+                        maxModulesInSeries: projectController.maxModulesInSerial,
+                        minModulesInSeries: projectController.minModulesInSerial,
+                        panelsInSeries: projectController.seriesModules,
+                        panelsInParallel: projectController.parallelModules,
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching controller configuration:', error);
+            }
+        };
+
+        fetchControllerConfig();
+    }, [selectedProject]);
+
+    // Výběr regulátoru
     const handleControllerSelect = async (controllerId) => {
         setSelectedController(controllerId);
 
@@ -95,8 +99,11 @@ const Step7_Controller = ({ onComplete }) => {
         }
     };
 
+    // Změna typu regulátoru
     const handleRegulatorTypeChange = (type) => {
         setRegulatorType(type);
+        setSelectedController(null); // Reset výběru při změně typu regulátoru
+        setControllerConfig(null); // Reset konfigurace
     };
 
     const selectedControllerDetails = controllers.find(ctrl => ctrl.id === selectedController);
@@ -148,7 +155,11 @@ const Step7_Controller = ({ onComplete }) => {
                                         checked={selectedController === controller.id}
                                         onChange={() => handleControllerSelect(controller.id)}
                                     />
-                                    {`${controller.name} - Rated Power: ${controller.ratedPower}W`}
+                                    <strong>{controller.name}</strong><br />
+                                    {t('step7.rated_power')}: {controller.ratedPower}W,{' '}
+                                    {t('step7.max_voltage')}: {controller.maxVoltage}V,{' '}
+                                    {t('step7.min_voltage')}: {controller.minVoltage}V,{' '}
+                                    {t('step7.current_rating')}: {controller.currentRating}A
                                 </label>
                             </div>
                         ))

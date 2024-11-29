@@ -1,88 +1,116 @@
-/* Controller Configurator Styles */
-.step7-controller-configurator {
+.step7-controller-page-container {
     width: 80%;
     margin: 0 auto;
     font-family: 'Arial', sans-serif;
+    line-height: 1.5;
 }
 
-/* Title Styles */
-.step7-config-title {
+/* Title */
+.step7-header {
     text-align: center;
     margin-bottom: 20px;
     font-size: 24px;
     font-weight: bold;
+    color: #444;
 }
 
-/* Regulator Type Selection */
-.step7-regulator-type-selection {
-    margin-bottom: 20px;
-}
-
-.step7-regulator-type-selection h3 {
-    margin-bottom: 10px;
-}
-
-.step7-regulator-type-selection label {
-    margin-right: 15px;
-}
-
-/* Controller Selection */
-.step7-controller-selection {
-    margin-bottom: 20px;
-}
-
-.step7-controller-selection h3 {
-    margin-bottom: 10px;
-}
-
-.step7-controller-options {
+/* Selection Section */
+.step7-selection-section {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     gap: 10px;
+    margin-bottom: 15px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f4f4f4;
 }
 
-/* Controller Option Label */
+.step7-input-group {
+    flex: 1;
+}
+
+.step7-input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #555;
+}
+
+.step7-select,
+.step7-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Controller Options Section */
+.step7-controller-options-section {
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
 .step7-controller-option {
-    display: flex;
-    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fff;
+    transition: box-shadow 0.2s ease, background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.step7-controller-option:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f0f0f0;
+}
+
+.step7-controller-option.selected {
+    border-color: #007bff;
+    background-color: #e0f0ff;
+    font-weight: bold;
 }
 
 /* Calculated Configuration */
-.step7-calculated-config {
-    margin-top: 30px;
+.step7-calculated-configuration {
+    margin-top: 20px;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 6px;
     padding: 15px;
-    background-color: #f9f9f9;
+    background-color: #fafafa;
 }
 
-.step7-calculated-config h3 {
+.step7-calculated-configuration h4 {
     margin-bottom: 10px;
+    font-size: 16px;
+    color: #444;
 }
 
-/* General Styles for Paragraphs */
-.step7-calculated-config p {
-    margin: 5px 0;
-}
-
-/* Validation Message */
-.step7-valid-message {
-    font-weight: bold;
-    color: green; /* Change this to red for invalid */
-}
-
-.step7-invalid-message {
-    font-weight: bold;
-    color: red;
+.step7-calculated-configuration p {
+    margin: 4px 0;
+    font-size: 14px;
 }
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
-    .step7-controller-configurator {
-        width: 95%;
+    .step7-controller-page-container {
+        width: 90%;
     }
 
-    .step7-controller-options {
+    .step7-selection-section {
         flex-direction: column;
+        gap: 10px;
+    }
+
+    .step7-controller-options-section {
+        max-height: 300px;
     }
 }
