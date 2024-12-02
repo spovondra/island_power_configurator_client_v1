@@ -153,16 +153,6 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
                     />
                 </div>
 
-                <div>
-                    <h3>{t('projectForm.solar_components')}</h3>
-                    {Object.keys(localFormData.solarComponents).map(category => (
-                        <div key={category}>
-                            <h4>{category}</h4>
-                            <p>Component details for {category} will be added here later.</p>
-                        </div>
-                    ))}
-                </div>
-
                 <div className="form-actions">
                     <button type="submit" className="btn-submit">{t('projectForm.save')}</button>
                     <button type="button" onClick={onClose} className="btn-cancel">{t('projectForm.cancel')}</button>

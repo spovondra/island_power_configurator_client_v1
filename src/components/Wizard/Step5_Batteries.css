@@ -97,15 +97,8 @@
     background-color: #fafafa;
 }
 
-.step5-calculated-configuration h4 {
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #444;
-}
-
 .step5-calculated-configuration p {
-    margin: 4px 0;
-    font-size: 14px;
+    margin: 5px 0;
 }
 
 /* Media Queries for Responsiveness */

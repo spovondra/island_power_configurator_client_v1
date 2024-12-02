@@ -312,8 +312,8 @@ const ComponentAdminPanel = () => {
                                 </>
                             )}
                             <td>
-                                <button className="component-table-button-edit" onClick={() => handleSelectComponent(component)}>{t('component.edit_button')}</button>
-                                <button className="component-table-button-delete" onClick={() => handleDeleteComponent(component.id)}>{t('component.delete_button')}</button>
+                                <button className="component-table-button component-table-button-edit" onClick={() => handleSelectComponent(component)}>{t('component.edit_button')}</button>
+                                <button className="component-table-button component-table-button-delete" onClick={() => handleDeleteComponent(component.id)}>{t('component.delete_button')}</button>
                             </td>
                         </tr>
                     ))}

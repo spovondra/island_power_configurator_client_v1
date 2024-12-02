@@ -166,7 +166,7 @@ const Step5_Batteries = ({ onComplete }) => {
 
                 {config && (
                     <div className="step5-calculated-configuration">
-                        <h4>{t('step5.calculated_configuration')}</h4>
+                        <h3>{t('step5.calculated_configuration')}</h3>
                         <p>{t('step5.battery_capacity_dod')}: {config.batteryCapacityDod} Ah</p>
                         <p>{t('step5.parallel_batteries')}: {config.parallelBatteries}</p>
                         <p>{t('step5.series_batteries')}: {config.seriesBatteries}</p>
