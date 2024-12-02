@@ -1,3 +1,18 @@
+/*
+ * Index:
+ * - Step 6 Solar Panel Configurator
+ * - Title
+ * - Selection Section
+ * - Panel Options
+ * - Month Selection
+ * - Constants Input
+ * - Chart Containers
+ * - Monthly Data Table
+ * - Confirm Button
+ * - Responsive Styling for Smaller Screens
+ */
+
+/* Step 6 Solar Panel Configurator */
 .step6-solar-panel-configurator {
     width: 80%;
     margin: 0 auto;
@@ -7,12 +22,21 @@
     padding: 20px;
 }
 
+/* Title */
 .step6-config-title {
     text-align: center;
     margin-bottom: 20px;
     font-size: 26px;
     font-weight: bold;
     color: #333;
+}
+
+/* Selection Section */
+.step5-selection-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .step6-installation-type,
@@ -26,6 +50,7 @@
     padding: 15px;
 }
 
+/* Panel Options */
 .step6-inverter-options {
     display: flex;
     flex-direction: column;
@@ -53,17 +78,7 @@
     font-weight: bold;
 }
 
-.step6-panel-option label {
-    width: 100%;
-    cursor: pointer;
-}
-
-.step6-panel-option input {
-    margin-right: 10px;
-    transform: scale(1.2);
-    cursor: pointer;
-}
-
+/* Month Selection */
 .step6-month-selection {
     display: flex;
     justify-content: center;
@@ -80,6 +95,7 @@
     padding: 5px;
 }
 
+/* Constants Input */
 .step6-constants-input label {
     display: block;
     margin-bottom: 10px;
@@ -93,6 +109,7 @@
     padding: 8px;
 }
 
+/* Chart Containers */
 .step6-charts-container {
     display: flex;
     gap: 20px;
@@ -113,6 +130,7 @@
     padding: 10px;
 }
 
+/* Monthly Data Table */
 .step6-monthly-data-table {
     margin: 30px auto;
     width: 100%;
@@ -134,6 +152,7 @@
     font-weight: bold;
 }
 
+/* Confirm Button */
 .step6-confirm-button {
     display: block;
     margin: 20px auto;
@@ -151,6 +170,7 @@
     transform: translateY(-2px);
 }
 
+/* Responsive Styling for Smaller Screens */
 @media (max-width: 768px) {
     .step6-chart-wrapper {
         flex: 1 1 100%;

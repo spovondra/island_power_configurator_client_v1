@@ -1,4 +1,13 @@
-/* Wizard container */
+/*
+ * Index:
+ * - Wizard Container Styling
+ * - Wizard Steps Styling
+ * - Wizard Content Styling
+ * - Wizard Buttons Styling
+ * - Disabled Button Styling
+ */
+
+/* Wizard Container Styling */
 .wizard-container {
     display: flex;
     flex-direction: column;
@@ -12,7 +21,7 @@
     overflow: hidden;
 }
 
-/* Wizard steps */
+/* Wizard Steps Styling */
 .wizard-steps {
     margin-bottom: 15px;
 }
@@ -33,9 +42,8 @@
     font-size: 0.875rem;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
     position: relative;
-    border: 2px solid transparent; /* Default transparent border */
+    border: 2px solid transparent;
 }
 
 .wizard-step:last-child {
@@ -68,6 +76,7 @@
     pointer-events: none;
 }
 
+/* Wizard Content Styling */
 .wizard-content {
     flex: 1;
     padding: 20px;
@@ -79,7 +88,7 @@
     overflow: visible;
 }
 
-/* Wizard buttons */
+/* Wizard Buttons Styling */
 .wizard-buttons {
     display: flex;
     justify-content: space-between;
@@ -97,20 +106,8 @@
     border-radius: 6px;
     color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
     flex: 1;
     min-width: 0;
-}
-
-/* Disabled button styles */
-.wizard-buttons button:disabled {
-    background: #d3d3d3; /* Lighter gray for more visibility */
-    color: #888; /* Dimmed text color for disabled state */
-    cursor: not-allowed; /* Visual indicator that the button is not clickable */
-    opacity: 0.6; /* Make the button appear more faded */
-    border: 1px solid #b0b0b0; /* Optional subtle border for contrast */
-    box-shadow: none; /* Remove any shadow or hover effects */
-    pointer-events: none; /* Ensure the button is unclickable */
 }
 
 .wizard-buttons button.next {
@@ -121,3 +118,13 @@
     background-color: #6c757d;
 }
 
+/* Disabled Button Styling */
+.wizard-buttons button:disabled {
+    background: #d3d3d3;
+    color: #888;
+    cursor: not-allowed;
+    opacity: 0.6;
+    border: 1px solid #b0b0b0;
+    box-shadow: none;
+    pointer-events: none;
+}

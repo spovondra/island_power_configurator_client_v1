@@ -1,3 +1,19 @@
+/*
+ * Index:
+ * - Project List Container
+ * - Header
+ * - Projects Container
+ * - Project Item
+ * - Project Name
+ * - Buttons Container
+ * - Button Styles
+ * - Button Hover Effects
+ * - Create Button
+ * - Edit Button
+ * - Delete Button
+ * - Create New Project Button
+ */
+
 /* Project List Container */
 .project-list {
     max-width: 600px;
@@ -5,7 +21,7 @@
     padding: 2rem;
     border: 1px solid #ddd;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Slightly deeper shadow for better visual depth */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     background-color: #fff;
 }
 
@@ -13,8 +29,8 @@
 .project-list h2 {
     text-align: center;
     margin-bottom: 1.5rem;
-    font-size: 24px; /* Slightly larger font size for emphasis */
-    font-weight: bold; /* Make the title stand out */
+    font-size: 24px;
+    font-weight: bold;
     color: #333;
 }
 
@@ -22,39 +38,39 @@
 .project-list .projects-container {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem; /* Increased gap for more breathing space */
+    gap: 1.5rem;
 }
 
 /* Project Item */
 .project-list .project-item {
     display: flex;
-    justify-content: space-between; /* Spread project name and buttons */
+    justify-content: space-between;
     align-items: center;
     padding: 12px;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    background-color: #f7f7f7; /* Lighter background for a clean look */
-    transition: box-shadow 0.3s, background-color 0.3s; /* Smoother hover effects */
+    background-color: #f7f7f7;
+    transition: box-shadow 0.3s, background-color 0.3s;
 }
 
 .project-list .project-item:hover {
-    background-color: #f1f1f1; /* Subtle change in background color on hover */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+    background-color: #f1f1f1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Project Name */
 .project-list .project-name {
     flex: 1;
-    font-size: 18px; /* Slightly larger font for emphasis */
+    font-size: 18px;
     color: #333;
-    font-weight: 500; /* Added some weight for importance */
+    font-weight: 500;
     margin-left: 10px;
 }
 
 /* Buttons Container */
 .project-list .project-actions {
     display: flex;
-    gap: 0.75rem; /* Add some space between Edit and Delete buttons */
+    gap: 0.75rem;
 }
 
 /* Button Styles */
@@ -64,22 +80,21 @@
     font-weight: bold;
     border: none;
     border-radius: 5px;
-    cursor: pointer; /* Ensures a pointer cursor is shown for all buttons */
+    cursor: pointer;
     transition: background-color 0.3s, transform 0.2s ease-in-out;
-    min-width: 100px; /* Ensures the buttons have the same width */
-    text-align: center; /* Center the text in buttons */
+    min-width: 100px;
+    text-align: center;
 }
 
 /* Button Hover Effects */
 .project-list .project-item button:hover {
-    transform: translateY(-2px); /* Slightly elevate the button on hover */
+    transform: translateY(-2px);
 }
 
 /* Create Button */
 .project-list button.create {
     background-color: #007bff;
     color: #fff;
-    cursor: pointer; /* Add the pointer cursor for the Create button */
 }
 
 .project-list button.create:hover {
@@ -118,11 +133,11 @@
     border: none;
     border-radius: 6px;
     margin-bottom: 1rem;
-    cursor: pointer; /* Ensures the pointer cursor for the Create button */
+    cursor: pointer;
     transition: background-color 0.3s, transform 0.2s ease-in-out;
 }
 
 .project-list .create:hover {
     background-color: #0056b3;
-    transform: translateY(-2px); /* Slight elevation on hover */
+    transform: translateY(-2px);
 }

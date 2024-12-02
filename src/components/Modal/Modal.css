@@ -1,3 +1,15 @@
+/*
+ * Index:
+ * - Modal Overlay
+ * - Content
+ * - Header
+ * - Title
+ * - Close Button
+ * - Body
+ * - Animation
+ */
+
+/* Modal Overlay */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -41,7 +53,7 @@
 /* Close Button */
 .modal-close {
     position: absolute;
-    right: 0px;
+    right: 0;
     background: none;
     border: none;
     font-size: 1.2em;

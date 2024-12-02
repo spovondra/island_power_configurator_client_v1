@@ -1,4 +1,11 @@
-/* Shared layout container */
+/*
+ * Index:
+ * - Shared Layout Container Styling
+ * - Main Content Styling
+ * - Footer Styling
+ */
+
+/* Shared Layout Container Styling */
 .shared-layout {
     display: flex;
     flex-direction: column;
@@ -6,13 +13,13 @@
     background-color: #f0f2f5;
 }
 
-/* Main content */
+/* Main Content Styling */
 main {
     flex: 1;
     padding: 20px;
 }
 
-/* Footer */
+/* Footer Styling */
 footer {
     margin-top: auto;
     background-color: #ffffff;

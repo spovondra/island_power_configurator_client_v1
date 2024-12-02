@@ -1,4 +1,16 @@
-/* Battery Configurator Styles */
+/*
+ * Index:
+ * - Step 5 Batteries Page Container
+ * - Title
+ * - Selection Section
+ * - Battery List Section
+ * - Battery Options
+ * - Battery Option
+ * - Calculated Configuration
+ * - Media Queries for Responsiveness
+ */
+
+/* Step 5 Batteries Page Container */
 .step5-batteries-page-container {
     width: 80%;
     margin: 0 auto;
@@ -62,7 +74,7 @@
 .step5-battery-options {
     display: flex;
     flex-direction: column;
-    gap: 8px; /* Adds space between the options */
+    gap: 8px;
 }
 
 /* Battery Option */
@@ -101,7 +113,7 @@
     margin: 5px 0;
 }
 
-/* Media Queries for Responsiveness */
+/* Responsive Styling for Smaller Screens */
 @media (max-width: 768px) {
     .step5-batteries-page-container {
         width: 90%;

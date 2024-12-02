@@ -1,3 +1,15 @@
+/*
+ * Index:
+ * - Admin Panel Container
+ * - Header
+ * - Add Button
+ * - Table
+ * - Table Buttons
+ * - Edit Button
+ * - Delete Button
+ * - Error Modal
+ */
+
 /* Admin Panel Container */
 .project-admin-panel-container {
     max-width: 1000px;

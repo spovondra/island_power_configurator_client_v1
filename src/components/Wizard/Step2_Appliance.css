@@ -1,4 +1,15 @@
-/* Container to hold both appliance and chart sections */
+/*
+ * Index:
+ * - Wrapper
+ * - Chart Section
+ * - Form Section
+ * - Appliance List Section
+ * - Appliance Table
+ * - Buttons
+ * - Media Queries
+ */
+
+/* Container */
 .step2-container {
     max-width: 1300px;
     margin: 0 auto;
@@ -159,7 +170,7 @@
     background-color: #c82333;
 }
 
-/* Media Query for responsive adjustments */
+/* Responsive Styling for Smaller Screens */
 @media (max-width: 1024px) {
     .step2-appliance-page-container {
         flex-direction: column;
@@ -182,8 +193,8 @@
     }
 }
 
+/* Further adjust charts on even smaller screens */
 @media (max-width: 768px) {
-    /* Further adjust charts on smaller screens */
     .step2-chart-section {
         flex-direction: column;
         align-items: center;

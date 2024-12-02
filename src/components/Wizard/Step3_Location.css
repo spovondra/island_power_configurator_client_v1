@@ -1,3 +1,17 @@
+/*
+ * Index:
+ * - Map Page Container
+ * - Content
+ * - Left Column (Map Section)
+ * - Controls
+ * - Search Block
+ * - Map Wrapper
+ * - Location Info
+ * - Chart Section
+ * - Input Fields
+ * - Media Queries
+ */
+
 /* Map Page Container */
 .step3-map-page-container {
     display: flex;
@@ -11,12 +25,12 @@
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    justify-content: center; /* Center content for better layout on larger screens */
+    justify-content: center;
     width: 100%;
     max-width: 1300px;
     margin: 20px auto;
     gap: 20px;
-    flex-wrap: wrap; /* Allow wrapping for responsiveness */
+    flex-wrap: wrap;
 }
 
 /* Left Column (Map Section) */
@@ -24,7 +38,7 @@
     flex: 3;
     display: flex;
     flex-direction: column;
-    min-width: 600px; /* Minimum width for the map to stay larger */
+    min-width: 600px;
 }
 
 /* Controls */
@@ -36,7 +50,7 @@
     width: 250px;
     min-height: 300px;
     box-sizing: border-box;
-    align-self: flex-start; /* Align controls to the top by default */
+    align-self: flex-start;
 }
 
 /* Search Block */
@@ -103,12 +117,12 @@
 /* Flex Container for Charts */
 .step3-chart-flex-container {
     display: flex;
-    flex-wrap: wrap; /* Wrap charts for responsiveness */
-    justify-content: space-between; /* Space between the charts */
-    width: 100%; /* Take full width of parent */
-    max-width: 1300px; /* Limit maximum width */
-    margin-top: 20px; /* Space between controls and charts */
-    gap: 20px; /* Add spacing between charts */
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1300px;
+    margin-top: 20px;
+    gap: 20px;
 }
 
 /* Chart Container */
@@ -116,69 +130,70 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 48%; /* Adjust width for side-by-side layout on larger screens */
+    width: 48%;
     margin: 10px 0;
-    max-width: 600px; /* Limit max width to avoid overlap */
+    max-width: 600px;
 }
 
 /* Bar Chart Title */
 .step3-chart-container h3 {
-    text-align: center; /* Center chart titles */
-    margin-bottom: 10px; /* Space below titles */
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 /* Input Fields */
 .step3-form-control {
-    width: 100%; /* Make inputs full-width */
+    width: 100%;
     padding: 10px;
     border: 1px solid #dcdcdc;
     border-radius: 4px;
     box-sizing: border-box;
-    margin-bottom: 10px; /* Space between inputs */
+    margin-bottom: 10px;
 }
 
+/* Responsive Styling for Smaller Screens */
 @media (max-width: 1280px) {
     .step3-content {
-        flex-direction: column; /* Stack map and controls vertically */
+        flex-direction: column;
         align-items: center;
     }
 
     .step3-left-column {
-        width: 100%; /* Full width for map container */
-        min-width: 0; /* Allow map container to resize on small screens */
+        width: 100%;
+        min-width: 0;
     }
 
     .step3-controls {
         width: 100%;
         max-width: 400px;
-        align-self: center; /* Center controls below the map */
-        margin-top: 20px; /* Space between map and controls when stacked */
+        align-self: center;
+        margin-top: 20px;
     }
 }
 
 @media (max-width: 1280px) {
     .step3-chart-container {
-        width: 100%; /* Full width for charts on smaller screens */
-        max-width: none; /* Remove max-width constraint */
+        width: 100%;
+        max-width: none;
     }
 }
 
 /* Responsive Styling for Smaller Screens */
 @media (max-width: 1024px) {
     .step3-content {
-        flex-direction: column; /* Stack map and controls vertically */
+        flex-direction: column;
         align-items: center;
     }
 
     .step3-left-column {
-        width: 100%; /* Full width for map container */
-        min-width: 0; /* Allow map container to resize on small screens */
+        width: 100%;
+        min-width: 0;
     }
 
     .step3-controls {
         width: 100%;
         max-width: 400px;
-        align-self: center; /* Center controls below the map */
-        margin-top: 20px; /* Space between map and controls when stacked */
+        align-self: center;
+        margin-top: 20px;
     }
 }

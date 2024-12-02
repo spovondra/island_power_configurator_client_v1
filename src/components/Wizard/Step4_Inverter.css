@@ -1,9 +1,23 @@
+/*
+ * Index:
+ * - Step 4 Inverter Page Container
+ * - Step 7 Config Title
+ * - Selection Section
+ * - Inverter List Section
+ * - Inverter Options
+ * - Inverter Option
+ * - Energy Calculations
+ * - Media Queries for Responsiveness
+ */
+
+/* Step 4 Inverter Page Container */
 .step4-inverter-page-container {
     width: 80%;
     margin: 0 auto;
     line-height: 1.2;
 }
 
+/* Step 7 Config Title */
 .step7-config-title {
     text-align: center;
     margin-bottom: 20px;
@@ -60,32 +74,10 @@
 .step4-inverter-options {
     display: flex;
     flex-direction: column;
-    gap: 8px; /* Adds space between the options */
+    gap: 8px;
 }
 
 /* Inverter Option */
-.step4-inverter-option {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background-color: #fff;
-    cursor: pointer;
-    transition: background-color 0.2s, box-shadow 0.2s;
-}
-
-.step4-inverter-option:hover {
-    background-color: #f0f8ff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.step4-inverter-option.selected {
-    border-color: #007bff;
-    background-color: #e6f2ff;
-    font-weight: bold;
-}
-
 .step4-inverter-option {
     display: flex;
     align-items: center;
@@ -120,7 +112,7 @@
     margin: 5px 0;
 }
 
-/* Media Queries for Responsiveness */
+/* Responsive Styling for Smaller Screens */
 @media (max-width: 768px) {
     .step4-page-container {
         width: 90%;

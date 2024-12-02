@@ -1,3 +1,13 @@
+/*
+ * Index:
+ * - Login Container Styling
+ * - Form Styling
+ * - Input Styling
+ * - Button Styling
+ * - Error Message Styling
+ */
+
+/* Login Container Styling */
 .login-container {
     max-width: 400px;
     margin: auto;
@@ -7,16 +17,19 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Header Styling */
 .login-container h2 {
     margin-bottom: 20px;
     text-align: center;
 }
 
+/* Form Styling */
 .login-container form {
     display: flex;
     flex-direction: column;
 }
 
+/* Input Styling */
 .login-container input {
     margin-bottom: 10px;
     padding: 10px;
@@ -24,6 +37,7 @@
     border-radius: 4px;
 }
 
+/* Button Styling */
 .login-container button {
     padding: 10px;
     border: none;
@@ -37,11 +51,13 @@
     background-color: #0056b3;
 }
 
+/* Error Message Styling */
 .login-container p {
     text-align: center;
     color: #d9534f;
 }
 
+/* Confirmation Button Styling */
 .login-container button:last-of-type {
     margin-top: 10px;
     background-color: #28a745;

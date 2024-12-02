@@ -1,3 +1,14 @@
+/*
+ * Index:
+ * - User Settings Container
+ * - Header
+ * - Form Group
+ * - Labels
+ * - Inputs
+ * - Buttons
+ */
+
+/* User Settings Container */
 .user-settings {
     max-width: 600px;
     margin: 0 auto;
@@ -7,16 +18,19 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Header */
 .user-settings h2 {
     text-align: center;
     margin-bottom: 20px;
     color: #333;
 }
 
+/* Form Group */
 .user-settings .form-group {
     margin-bottom: 15px;
 }
 
+/* Labels */
 .user-settings label {
     display: block;
     margin-bottom: 5px;
@@ -24,6 +38,7 @@
     color: #333;
 }
 
+/* Inputs */
 .user-settings input[type="text"],
 .user-settings input[type="email"],
 .user-settings input[type="password"] {
@@ -38,6 +53,7 @@
     margin-right: 10px;
 }
 
+/* Buttons */
 .user-settings button {
     display: inline-block;
     width: 100%;

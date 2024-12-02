@@ -1,3 +1,14 @@
+/*
+ * Index:
+ * - Register Container Styling
+ * - Header Styling
+ * - Form Styling
+ * - Input Styling
+ * - Button Styling
+ * - Error Message Styling
+ */
+
+/* Register Container Styling */
 .register-container {
     max-width: 400px;
     margin: auto;
@@ -7,16 +18,19 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Header Styling */
 .register-container h2 {
     margin-bottom: 20px;
     text-align: center;
 }
 
+/* Form Styling */
 .register-container form {
     display: flex;
     flex-direction: column;
 }
 
+/* Input Styling */
 .register-container input {
     margin-bottom: 10px;
     padding: 10px;
@@ -24,6 +38,7 @@
     border-radius: 4px;
 }
 
+/* Button Styling */
 .register-container button {
     padding: 10px;
     border: none;
@@ -37,11 +52,13 @@
     background-color: #0056b3;
 }
 
+/* Error Message Styling */
 .register-container p {
     text-align: center;
     color: #d9534f;
 }
 
+/* Additional Button Styling */
 .register-container button:last-of-type {
     margin-top: 10px;
 }

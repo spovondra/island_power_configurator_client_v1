@@ -1,3 +1,17 @@
+/*
+ * Index:
+ * - Main Container
+ * - Headers
+ * - Section Container
+ * - Smaller Titles for Charts
+ * - Chart Row for Side-by-Side Layout
+ * - List Styling
+ * - Table Styling
+ * - Map Container
+ * - Constants Table
+ * - Buttons
+ */
+
 /* Main Container */
 .final-step-container {
     padding: 20px;

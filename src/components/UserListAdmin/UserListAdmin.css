@@ -1,3 +1,15 @@
+/*
+ * Index:
+ * - User List Container
+ * - Header
+ * - Controls
+ * - Add Button
+ * - Search
+ * - Table
+ * - Table Buttons
+ * - Error Modal
+ */
+
 /* User List Container */
 .user-list-container {
     max-width: 1000px;

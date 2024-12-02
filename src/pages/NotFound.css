@@ -1,4 +1,12 @@
-/* Container for the 404 page */
+/*
+ * Index:
+ * - Container Styling
+ * - Title Styling
+ * - Message Styling
+ * - Button Styling
+ */
+
+/* Container Styling */
 .not-found-container {
     display: flex;
     flex-direction: column;
@@ -10,7 +18,7 @@
     margin: 0;
 }
 
-/* Title styling */
+/* Title Styling */
 .not-found-title {
     font-size: 2.5rem;
     font-weight: bold;
@@ -18,14 +26,14 @@
     margin-bottom: 10px;
 }
 
-/* Message styling */
+/* Message Styling */
 .not-found-message {
     font-size: 1.2rem;
     color: #6c757d;
     margin-bottom: 20px;
 }
 
-/* Button styling */
+/* Button Styling */
 .not-found-button {
     display: inline-block;
     padding: 10px 20px;
@@ -39,7 +47,7 @@
     transition: background-color 0.3s ease;
 }
 
-/* Button hover effect */
+/* Button Hover Effect */
 .not-found-button:hover {
     background-color: #0056b3;
 }

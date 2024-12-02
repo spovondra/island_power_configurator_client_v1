@@ -1,4 +1,17 @@
-/* Controller Configurator Styles */
+/*
+ * Index:
+ * - Step 7 Controller Configurator
+ * - Title
+ * - Selection Section
+ * - Controller Selection
+ * - Controller Options
+ * - Calculated Configuration
+ * - Validation Messages
+ * - Additional Configuration Fields
+ * - Responsive Styling for Smaller Screens
+ */
+
+/* Step 7 Controller Configurator */
 .step7-controller-configurator {
     width: 80%;
     margin: 0 auto;
@@ -113,7 +126,7 @@
     text-align: right;
 }
 
-/* Media Queries for Responsiveness */
+/* Responsive Styling for Smaller Screens */
 @media (max-width: 768px) {
     .step7-controller-configurator {
         width: 90%;
