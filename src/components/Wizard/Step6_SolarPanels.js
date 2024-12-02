@@ -173,14 +173,14 @@ const Step6_SolarPanels = ({ onComplete }) => {
                                 <div
                                     key={panel.id}
                                     className={`step6-panel-option ${selectedPanel === panel.id ? 'selected' : ''}`}
-                                    onClick={() => handlePanelSelect(panel.id)} // Always call handlePanelSelect
+                                    onClick={() => handlePanelSelect(panel.id)} 
                                 >
                                     <label>
                                         <input
                                             type="radio"
                                             name="solarPanel"
                                             checked={selectedPanel === panel.id}
-                                            readOnly // Prevent direct toggling
+                                            readOnly
                                         />
                                         <strong>{panel.manufacturer} - {panel.name}</strong><br/>
                                         {t('step6.total_power')}: {panel.pRated} W,{' '}

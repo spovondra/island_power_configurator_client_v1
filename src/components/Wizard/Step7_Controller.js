@@ -78,12 +78,14 @@ const Step7_Controller = ({ onComplete }) => {
 
     // Výběr regulátoru
     const handleControllerSelect = async (controllerId) => {
-        setSelectedController(controllerId);
-
         try {
+            // Zavolat API vždy, když uživatel klikne na regulátor
             const result = await selectController(selectedProject, controllerId, regulatorType);
-            console.log('Received result from selectController:', result);
 
+            // Aktualizace aktuálně vybraného regulátoru
+            setSelectedController(controllerId);
+
+            // Aktualizace konfigurace regulátoru
             setControllerConfig({
                 requiredCurrent: result.requiredCurrent || 0,
                 requiredPower: result.requiredPower || 0,
@@ -97,19 +99,19 @@ const Step7_Controller = ({ onComplete }) => {
                 adjustedVmp: result.adjustedVoltageAtMaxPower || 0,
             });
 
+            // Pokud je konfigurace platná, zavolat onComplete
             if (result.valid) {
-                onComplete(); // Proceed only if valid
+                onComplete();
             }
         } catch (error) {
             console.error('Error selecting controller:', error);
         }
     };
 
-
     // Změna typu regulátoru
     const handleRegulatorTypeChange = (type) => {
         setRegulatorType(type);
-        setSelectedController(null); // Reset výběru při změně typu regulátoru
+        setSelectedController(null); // Reset výběru regulátoru
         setControllerConfig(null); // Reset konfigurace
     };
 
@@ -160,9 +162,9 @@ const Step7_Controller = ({ onComplete }) => {
                                         type="radio"
                                         name="controller"
                                         checked={selectedController === controller.id}
-                                        onChange={() => handleControllerSelect(controller.id)}
+                                        readOnly
                                     />
-                                    <strong>{controller.name}</strong><br />
+                                    <strong>{controller.name}</strong><br/>
                                     {t('step7.rated_power')}: {controller.ratedPower}W,{' '}
                                     {t('step7.max_voltage')}: {controller.maxVoltage}V,{' '}
                                     {t('step7.min_voltage')}: {controller.minVoltage}V,{' '}
@@ -194,31 +196,31 @@ const Step7_Controller = ({ onComplete }) => {
 
                 <h3>{t('step7.results')}</h3>
                 <p>
-                    <b>{t('step7.adjusted_voc')}:</b> {controllerConfig.adjustedVoc ? `${controllerConfig.adjustedVoc.toFixed(2)} V` : t('step7.not_calculated')}
+                    <b>{t('step7.adjusted_voc')}:</b> {controllerConfig?.adjustedVoc ? `${controllerConfig.adjustedVoc.toFixed(2)} V` : t('step7.not_calculated')}
                 </p>
                 <p>
-                    <b>{t('step7.adjusted_vmp')}:</b> {controllerConfig.adjustedVmp ? `${controllerConfig.adjustedVmp.toFixed(2)} V` : t('step7.not_calculated')}
+                    <b>{t('step7.adjusted_vmp')}:</b> {controllerConfig?.adjustedVmp ? `${controllerConfig.adjustedVmp.toFixed(2)} V` : t('step7.not_calculated')}
                 </p>
                 <p>
-                    <b>{t('step7.max_modules_in_series')}:</b> {controllerConfig.maxModulesInSeries || t('step7.not_calculated')}
+                    <b>{t('step7.max_modules_in_series')}:</b> {controllerConfig?.maxModulesInSeries || t('step7.not_calculated')}
                 </p>
                 <p>
-                    <b>{t('step7.min_modules_in_series')}:</b> {controllerConfig.minModulesInSeries || t('step7.not_calculated')}
+                    <b>{t('step7.min_modules_in_series')}:</b> {controllerConfig?.minModulesInSeries || t('step7.not_calculated')}
                 </p>
                 <p>
-                    <b>{t('step7.panels_in_series')}:</b> {controllerConfig.seriesModules || t('step7.not_calculated')}
+                    <b>{t('step7.panels_in_series')}:</b> {controllerConfig?.seriesModules || t('step7.not_calculated')}
                 </p>
                 <p>
-                    <b>{t('step7.panels_in_parallel')}:</b> {controllerConfig.parallelModules || t('step7.not_calculated')}
+                    <b>{t('step7.panels_in_parallel')}:</b> {controllerConfig?.parallelModules || t('step7.not_calculated')}
                 </p>
                 <p>
-                    <b>{t('step7.required_current')}:</b> {controllerConfig.requiredCurrent.toFixed(2)} A
+                    <b>{t('step7.required_current')}:</b> {controllerConfig?.requiredCurrent.toFixed(2)} A
                 </p>
                 <p>
-                    <b>{t('step7.valid_configuration')}:</b> {controllerConfig.valid ? t('step7.valid') : t('step7.invalid')}
+                    <b>{t('step7.valid_configuration')}:</b> {controllerConfig?.valid ? t('step7.valid') : t('step7.invalid')}
                 </p>
                 <p>
-                    <b>{t('step7.status_message')}:</b> {controllerConfig.statusMessage || t('step7.not_calculated')}
+                    <b>{t('step7.status_message')}:</b> {controllerConfig?.statusMessage || t('step7.not_calculated')}
                 </p>
             </div>
         </div>
