@@ -24,7 +24,6 @@ const Step7_Controller = ({ onComplete }) => {
         panelsInParallel: 0,
     });
 
-    // Načtení vhodných regulátorů
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -45,7 +44,6 @@ const Step7_Controller = ({ onComplete }) => {
         fetchControllers();
     }, [selectedProject, regulatorType]);
 
-    // Načtení konfigurace regulátoru
     useEffect(() => {
         const fetchControllerConfig = async () => {
             if (!selectedProject) return;
@@ -76,16 +74,12 @@ const Step7_Controller = ({ onComplete }) => {
         fetchControllerConfig();
     }, [selectedProject]);
 
-    // Výběr regulátoru
     const handleControllerSelect = async (controllerId) => {
         try {
-            // Zavolat API vždy, když uživatel klikne na regulátor
             const result = await selectController(selectedProject, controllerId, regulatorType);
 
-            // Aktualizace aktuálně vybraného regulátoru
             setSelectedController(controllerId);
 
-            // Aktualizace konfigurace regulátoru
             setControllerConfig({
                 requiredCurrent: result.requiredCurrent || 0,
                 requiredPower: result.requiredPower || 0,
@@ -99,7 +93,6 @@ const Step7_Controller = ({ onComplete }) => {
                 adjustedVmp: result.adjustedVoltageAtMaxPower || 0,
             });
 
-            // Pokud je konfigurace platná, zavolat onComplete
             if (result.valid) {
                 onComplete();
             }
@@ -108,11 +101,10 @@ const Step7_Controller = ({ onComplete }) => {
         }
     };
 
-    // Změna typu regulátoru
     const handleRegulatorTypeChange = (type) => {
         setRegulatorType(type);
-        setSelectedController(null); // Reset výběru regulátoru
-        setControllerConfig(null); // Reset konfigurace
+        setSelectedController(null);
+        setControllerConfig(null);
     };
 
     const selectedControllerDetails = controllers.find(ctrl => ctrl.id === selectedController);
