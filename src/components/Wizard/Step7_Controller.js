@@ -79,6 +79,7 @@ const Step7_Controller = ({ onComplete }) => {
 
         try {
             const result = await selectController(selectedProject, controllerId, regulatorType);
+            console.log('Received result from selectController:', result); // Log the result
             setControllerConfig({
                 requiredCurrent: result.requiredCurrent || 0,
                 requiredPower: result.requiredPower || 0,

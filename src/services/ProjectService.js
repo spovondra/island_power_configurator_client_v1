@@ -263,7 +263,7 @@ export const selectInverter = async (projectId, inverterId) => {
  */
 export const getProjectInverter = async (projectId) => {
     try {
-        const response = await apiClient.get(`${API_PROJECT_URL}/${projectId}/inverters`);
+        const response = await apiClient.get(`${API_PROJECT_URL}/${projectId}/inverters/`);
         return response.data;
     } catch (error) {
         console.error('Error fetching project inverter:', error);

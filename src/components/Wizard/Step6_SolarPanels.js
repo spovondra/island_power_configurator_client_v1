@@ -126,6 +126,7 @@ const Step6_SolarPanels = ({ onComplete }) => {
         if (panelId) {
             setHasChanged(true);
             setSelectedPanel(panelId);
+            sendUpdatedConfiguration();
         } else {
             console.error("Invalid panel ID: Cannot select null or undefined panel.");
         }
@@ -172,15 +173,14 @@ const Step6_SolarPanels = ({ onComplete }) => {
                                 <div
                                     key={panel.id}
                                     className={`step6-panel-option ${selectedPanel === panel.id ? 'selected' : ''}`}
-                                    onClick={() => setSelectedPanel(selectedPanel === panel.id ? null : panel.id)} // Toggle selection
+                                    onClick={() => handlePanelSelect(panel.id)} // Always call handlePanelSelect
                                 >
                                     <label>
                                         <input
                                             type="radio"
                                             name="solarPanel"
                                             checked={selectedPanel === panel.id}
-                                            onChange={() => {
-                                            }} // Selection handled by onClick
+                                            readOnly // Prevent direct toggling
                                         />
                                         <strong>{panel.manufacturer} - {panel.name}</strong><br/>
                                         {t('step6.total_power')}: {panel.pRated} W,{' '}
@@ -197,7 +197,6 @@ const Step6_SolarPanels = ({ onComplete }) => {
                                 </div>
                             ))}
                         </div>
-
                     )}
                 </div>
             </div>

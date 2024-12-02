@@ -135,7 +135,7 @@ apiClient.interceptors.response.use(
 
             console.error('Token refresh failed or already retried, logging out.');
             localStorage.removeItem('user');
-            window.location.replace('/login'); //move back to login page
+            window.location.replace('/login'); //move back to login
         }
 
         return Promise.reject(error);
