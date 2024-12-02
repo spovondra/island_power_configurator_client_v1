@@ -4,26 +4,74 @@ import { getCurrentUser, logout } from '../services/authService';
 import './Navbar.css';
 import { useTranslation } from 'react-i18next';
 
+/**
+ * The Navbar component provides navigation links, user authentication handling,
+ * language switching, and user-specific dropdown options.
+ *
+ * @module Navbar
+ */
+
+/**
+ * Navbar component that renders navigation links, user-specific dropdown, and language switcher.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Navbar component.
+ */
 const Navbar = () => {
+    /** @type {object|null} */
     const user = getCurrentUser(); // Use the specific function for getting the current user
+
+    /** @type {boolean} */
     const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    /** @type {function} */
     const { t, i18n } = useTranslation('navigation'); // Use 'navigation' namespace for translations
+
+    /** @type {string} */
     const [language, setLanguage] = useState(i18n.language); // Get the current language
+
+    /** @type {React.RefObject} */
     const dropdownRef = useRef(null); // Ref for the dropdown
 
+    /**
+     * Handles user logout by calling the logout function.
+     *
+     * @function handleLogout
+     * @memberof Navbar
+     */
     const handleLogout = () => {
         logout(); // Use the specific function for logging out
     };
 
+    /**
+     * Toggles the state of the dropdown menu.
+     *
+     * @function toggleDropdown
+     * @memberof Navbar
+     */
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
 
+    /**
+     * Changes the application's language.
+     *
+     * @function changeLanguage
+     * @memberof Navbar
+     * @param {string} lng - The language code (e.g., 'en', 'cs').
+     */
     const changeLanguage = (lng) => {
         i18n.changeLanguage(lng);
         setLanguage(lng); // Update language state
     };
 
+    /**
+     * Handles closing the dropdown when clicking outside of it.
+     *
+     * @function handleClickOutside
+     * @memberof Navbar
+     * @param {Event} event - The event that triggered the action.
+     */
     const handleClickOutside = (event) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
             setDropdownOpen(false); // Close dropdown if clicked outside
@@ -82,6 +130,6 @@ const Navbar = () => {
             </div>
         </nav>
     );
-}
+};
 
 export default Navbar;

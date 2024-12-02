@@ -13,13 +13,19 @@
     "destination": "./docs",
     "recurse": true,
     "readme": "README.md",
-    "template": "node_modules/docdash"
+    "template": "node_modules/docdash",
+    "encoding": "utf8"
   },
   "templates": {
     "cleverLinks": true,
     "monospaceLinks": true,
     "collapse": true,
-    "navLevel": 2,
-    "footer": "Generováno pomocí JSDoc a Docdash"
+    "navLevel": 3,
+    "highlightTutorialCode": true,
+    "footer": "Generováno pomocí JSDoc a Docdash",
+    "systemName": "Island Power Configurator",
+    "default": {
+      "outputSourceFiles": true
+    }
   }
 }
