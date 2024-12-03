@@ -12,7 +12,6 @@ import { API_COMPONENT_URL } from '../config';
  * Fetches all components based on the provided category (e.g., solar-panels, appliances).
  *
  * @function getAllComponents
- * @memberof ComponentService
  * @param {string} category - The category of components to fetch.
  * @returns {Promise<object[]>} A promise that resolves to the list of components in the specified category.
  * @throws {Error} If the request fails, an error is thrown.
@@ -30,7 +29,6 @@ export const getAllComponents = async (category) => {
  * Fetches a component by its ID within a specific category.
  *
  * @function getComponentById
- * @memberof ComponentService
  * @param {string} category - The category of the component (e.g., solar-panels).
  * @param {string} componentId - The ID of the component to fetch.
  * @returns {Promise<object>} A promise that resolves to the component data.
@@ -49,7 +47,6 @@ export const getComponentById = async (category, componentId) => {
  * Creates a new component under a specific category.
  *
  * @function createComponent
- * @memberof ComponentService
  * @param {string} category - The category under which to create the new component.
  * @param {object} component - The component data to create.
  * @returns {Promise<object>} A promise that resolves to the newly created component data.
@@ -68,7 +65,6 @@ export const createComponent = async (category, component) => {
  * Updates an existing component in a specific category.
  *
  * @function updateComponent
- * @memberof ComponentService
  * @param {string} category - The category of the component to update.
  * @param {string} componentId - The ID of the component to update.
  * @param {object} component - The updated component data.
@@ -88,7 +84,6 @@ export const updateComponent = async (category, componentId, component) => {
  * Deletes a component by its ID within a specific category.
  *
  * @function deleteComponent
- * @memberof ComponentService
  * @param {string} category - The category of the component to delete.
  * @param {string} componentId - The ID of the component to delete.
  * @returns {Promise<void>} A promise that resolves when the component is successfully deleted.

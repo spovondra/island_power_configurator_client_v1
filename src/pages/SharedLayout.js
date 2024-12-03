@@ -5,13 +5,12 @@ import './SharedLayout.css';
 /**
  * The SharedLayout module provides a common layout for the application (with a navbar and main content)
  *
- * @module SharedLayout
+ * @component SharedLayout
  */
 
 /**
  * SharedLayout component that renders the Navbar and the current content screen.
  *
- * @component
  * @param {Object} props - Component properties.
  * @param {Function} props.onLogout - Callback function for handling user logout.
  * @returns {JSX.Element} The rendered SharedLayout component.
