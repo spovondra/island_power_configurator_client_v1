@@ -30,11 +30,6 @@ export const initialState = {
  * @param {string} action.type - The type of action being dispatched.
  * @param {object|Array|null} action.payload - The data or error to update the state with.
  * @returns {object} The updated state.
- *
- * @example
- * // Dispatching a fetch start action
- * dispatch({ type: 'FETCH_START' });
- *
  * @throws {Error} If the action type is unrecognized.
  */
 export const projectReducer = (state, action) => {

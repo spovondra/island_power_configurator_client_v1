@@ -2,12 +2,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 /**
- * The About module provides information about the application.
- *
- * @module About
- */
-
-/**
  * About component for displaying application details.
  *
  * @component

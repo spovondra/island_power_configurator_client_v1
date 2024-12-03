@@ -6,6 +6,13 @@ import { useTranslation } from 'react-i18next';
 import './Step6_SolarPanels.css';
 
 /**
+ * Step6_SolarPanels component allows users to select a solar panel, adjust installation parameters, and view monthly energy production data.
+ * It also displays charts and tables to visualize data related to solar panel performance.
+ *
+ * @module Step6_SolarPanels
+ */
+
+/**
  * Step6_SolarPanels component  for selecting a suitable solar panels
  * Handles selecting installation types, and showing monthly energy data.
  *
@@ -171,7 +178,7 @@ const Step6_SolarPanels = ({ onComplete }) => {
      * @param {string} panelId - ID of the selected solar panel.
      */
     const handlePanelSelect = (panelId) => {
-        if (panelId) {
+        if (panelId && selectedPanel) {
             setHasChanged(true);
             setSelectedPanel(panelId);
             sendUpdatedConfiguration();

@@ -3,12 +3,6 @@ import './UserForm.css';
 import { useTranslation } from 'react-i18next';
 
 /**
- * User Form Component
- *
- * @module UserForm
- */
-
-/**
  * Renders a form for creating or editing user information.
  *
  * @component

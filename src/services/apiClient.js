@@ -4,7 +4,7 @@ import { API_URL } from '../config';
 /**
  * This module provides an axios instance for making API requests with token management and automatic token refresh.
  * It includes functions to retrieve authentication and refresh tokens, check token validity, and handle request/response interception for token management.
- * 
+ *
  * @module apiClient
  */
 
@@ -12,7 +12,6 @@ import { API_URL } from '../config';
  * Retrieves the authentication token from localStorage.
  *
  * @function getAuthToken
- * @memberof apiClient
  * @returns {string|null} The authentication token, or null if not available.
  */
 const getAuthToken = () => {
@@ -24,7 +23,6 @@ const getAuthToken = () => {
  * Retrieves the refresh token from localStorage.
  *
  * @function getRefreshToken
- * @memberof apiClient
  * @returns {string|null} The refresh token, or null if not available.
  */
 const getRefreshToken = () => {
@@ -36,7 +34,6 @@ const getRefreshToken = () => {
  * Creates an axios instance configured with default headers.
  *
  * @const apiClient
- * @memberof apiClient
  * @type {AxiosInstance}
  */
 const apiClient = axios.create({
@@ -50,7 +47,6 @@ const apiClient = axios.create({
  * Checks if a given JWT token is valid and not expired.
  *
  * @function isTokenValid
- * @memberof apiClient
  * @param {string} token - The JWT token to be validated.
  * @returns {boolean} True if the token is valid, false otherwise.
  */
@@ -74,7 +70,6 @@ const isTokenValid = (token) => {
  * Axios interceptor for adding Authorization headers with the valid token.
  *
  * @function
- * @memberof apiClient
  * @param {object} config - The request configuration object.
  * @returns {object} The modified request configuration with Authorization header if token is valid.
  */
@@ -90,7 +85,6 @@ apiClient.interceptors.request.use(config => {
  * Axios response interceptor for handling token expiration and refreshing.
  *
  * @function
- * @memberof apiClient
  * @param {object} response - The response object from the API.
  * @returns {object} The response data.
  * @throws {Promise} If an error occurs, the promise will be rejected.
@@ -110,7 +104,7 @@ apiClient.interceptors.response.use(
 
                 if (refreshToken) {
                     try {
-                        // Attempt to refresh the token
+                        /* Attempt to refresh the token */
                         console.log('Attempting to refresh token:', refreshToken);
 
                         const refreshResponse = await axios.post(`${API_URL}/auth/refresh-token`, null, {
@@ -128,7 +122,6 @@ apiClient.interceptors.response.use(
                     } catch (refreshError) {
                         console.error('Token refresh failed:', refreshError);
                         localStorage.removeItem('user');
-                        //window.location.replace('/login');
                     }
                 }
             }

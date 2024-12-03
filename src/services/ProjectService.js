@@ -12,7 +12,6 @@ import { API_PROJECT_URL } from '../config';
  *
  * @async
  * @function getAllProjects
- * @memberof module:ProjectService
  * @returns {Promise<object[]>} list of all projects
  * @throws {Error} if the API request fails
  */
@@ -30,7 +29,6 @@ export const getAllProjects = async () => {
  *
  * @async
  * @function getProjectById
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @returns {Promise<object>} details of the requested project
  * @throws {Error} if the API request fails
@@ -49,7 +47,6 @@ export const getProjectById = async (projectId) => {
  *
  * @async
  * @function completeStep
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @param {number} step - step number to mark as completed
  * @returns {Promise<void>}
@@ -70,7 +67,6 @@ export const completeStep = async (projectId, step) => {
  *
  * @async
  * @function createProject
- * @memberof module:ProjectService
  * @param {object} project - details of the new project
  * @returns {Promise<object>} the newly created project
  * @throws {Error} if the API request fails
@@ -89,7 +85,6 @@ export const createProject = async (project) => {
  *
  * @async
  * @function updateProject
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @param {object} project - updated project details
  * @returns {Promise<object>} the updated project
@@ -109,7 +104,6 @@ export const updateProject = async (projectId, project) => {
  *
  * @async
  * @function deleteProject
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project to delete
  * @returns {Promise<void>}
  * @throws {Error} if the API request fails
@@ -127,7 +121,6 @@ export const deleteProject = async (projectId) => {
  *
  * @async
  * @function getUserProjects
- * @memberof module:ProjectService
  * @returns {Promise<object[]>} list of the user's projects
  * @throws {Error} if the API request fails
  */
@@ -145,7 +138,6 @@ export const getUserProjects = async () => {
  *
  * @async
  * @function addOrUpdateAppliance
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @param {object} appliance - details of the appliance to add or update
  * @returns {Promise<object>} updated project with the appliance changes
@@ -169,7 +161,6 @@ export const addOrUpdateAppliance = async (projectId, appliance) => {
  *
  * @async
  * @function deleteAppliance
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @param {string} applianceId - unique identifier of the appliance to delete
  * @returns {Promise<void>}
@@ -188,7 +179,6 @@ export const deleteAppliance = async (projectId, applianceId) => {
  *
  * @async
  * @function getVoltage
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @returns {Promise<object>} voltage details
  * @throws {Error} if the API request fails
@@ -208,7 +198,6 @@ export const getVoltage = async (projectId) => {
  *
  * @async
  * @function getSuitableInverters
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @param {number} systemVoltage - the system voltage
  * @param {number} temperature - the installation temperature
@@ -235,7 +224,6 @@ export const getSuitableInverters = async (projectId, systemVoltage, temperature
  *
  * @async
  * @function selectInverter
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @param {string} inverterId - unique identifier of the inverter to select
  * @returns {Promise<object>} updated project configuration
@@ -256,7 +244,6 @@ export const selectInverter = async (projectId, inverterId) => {
  *
  * @async
  * @function getProjectInverter
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @returns {Promise<object>} details of the configured inverter
  * @throws {Error} if the API request fails
@@ -276,7 +263,6 @@ export const getProjectInverter = async (projectId) => {
  *
  * @async
  * @function processLocationData
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @param {number} latitude - geographic latitude of the location
  * @param {number} longitude - geographic longitude of the location
@@ -302,7 +288,6 @@ export const processLocationData = async (projectId, latitude, longitude, angle,
  *
  * @async
  * @function loadSiteData
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @returns {Promise<object>} site data
  * @throws {Error} if the API request fails
@@ -322,7 +307,6 @@ export const loadSiteData = async (projectId) => {
  *
  * @async
  * @function getBatteries
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @param {string} technology - type of battery technology (e.g., Li-ion, Lead Acid)
  * @returns {Promise<object[]>} list of suitable batteries
@@ -343,7 +327,6 @@ export const getBatteries = async (projectId, technology) => {
  *
  * @async
  * @function selectBattery
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @param {object} params - configuration parameters
  * @param {string} params.batteryId - unique identifier of the selected battery
@@ -371,7 +354,6 @@ export const selectBattery = async (projectId, params) => {
  *
  * @async
  * @function getProjectBattery
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @returns {Promise<object>} battery configuration details
  * @throws {Error} if the API request fails
@@ -391,7 +373,6 @@ export const getProjectBattery = async (projectId) => {
  *
  * @async
  * @function getSolarPanels
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @returns {Promise<object[]>} list of suitable solar panels
  * @throws {Error} if the API request fails
@@ -411,7 +392,6 @@ export const getSolarPanels = async (projectId) => {
  *
  * @async
  * @function selectSolarPanel
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @param {object} requestBody - configuration data for the solar panel
  * @returns {Promise<object>} solar panel configuration results
@@ -432,7 +412,6 @@ export const selectSolarPanel = async (projectId, requestBody) => {
  *
  * @async
  * @function getProjectSolarPanel
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @returns {Promise<object>} solar panel configuration details
  * @throws {Error} if the API request fails
@@ -452,7 +431,6 @@ export const getProjectSolarPanel = async (projectId) => {
  *
  * @async
  * @function getSuitableControllers
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @param {string} regulatorType - type of regulator (PWM or MPPT)
  * @returns {Promise<object[]>} list of suitable controllers
@@ -475,7 +453,6 @@ export const getSuitableControllers = async (projectId, regulatorType) => {
  *
  * @async
  * @function selectController
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @param {string} controllerId - unique identifier of the controller
  * @param {string} regulatorType - type of regulator (PWM or MPPT)
@@ -499,7 +476,6 @@ export const selectController = async (projectId, controllerId, regulatorType) =
  *
  * @async
  * @function getProjectController
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @returns {Promise<object>} controller configuration details
  * @throws {Error} if the API request fails
@@ -519,7 +495,6 @@ export const getProjectController = async (projectId) => {
  *
  * @async
  * @function getProjectSummary
- * @memberof module:ProjectService
  * @param {string} projectId - unique identifier of the project
  * @returns {Promise<object>} project summary
  * @throws {Error} if the API request fails

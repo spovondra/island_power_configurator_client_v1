@@ -5,12 +5,6 @@ import './Login.css';
 import { useTranslation } from 'react-i18next';
 
 /**
- * The Login module provides a user interface for authentication.
- *
- * @module Login
- */
-
-/**
  * Login component for user authentication.
  *
  * @component

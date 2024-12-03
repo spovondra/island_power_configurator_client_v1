@@ -1,3 +1,14 @@
+/**
+ * @typedef {Object} ProjectState
+ * @property {Array} projects - List of projects.
+ * @property {boolean} loading - Indicates if the data is being loaded.
+ * @property {string} error - Error message, if any.
+ */
+
+/**
+ * @typedef {function} Dispatch - The dispatch function for the reducer.
+ */
+
 import { useReducer, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserProjects, deleteProject } from '../../services/ProjectService';
@@ -12,7 +23,6 @@ import './ProjectList.css';
  * @module ProjectList
  */
 
-
 /**
  * Displays the list of projects for the user with options to edit, delete, or create a new project.
  *
@@ -21,16 +31,9 @@ import './ProjectList.css';
  * @returns {JSX.Element} The rendered project list component.
  */
 const ProjectList = () => {
-    /** @type {[object, function]} State and dispatch for project management */
     const [state, dispatch] = useReducer(projectReducer, initialState);
-
-    /** @type {function} Context method to set the selected project */
     const { setSelectedProject } = useContext(ProjectContext);
-
-    /** @type {function} Hook to navigate between routes */
     const navigate = useNavigate();
-
-    /** @type {function} Translation function from the `project` namespace */
     const { t } = useTranslation('project');
 
     useEffect(() => {

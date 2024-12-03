@@ -5,12 +5,6 @@ import './Register.css';
 import { useTranslation } from 'react-i18next';
 
 /**
- * The Register module provides a user interface for account registration.
- *
- * @module Register
- */
-
-/**
  * Register component for new user account creation.
  *
  * @component

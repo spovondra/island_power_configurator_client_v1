@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { ProjectContext } from '../../context/ProjectContext';
 import { getSuitableControllers, selectController, getProjectController } from '../../services/ProjectService';
 import './Step7_Controller.css';
+
 /**
  * Step7_Controller component handles the selection of the controller in the wizard.
  * Users can select a regulator type (MPPT or PWM), choose a suitable controller,
@@ -13,6 +14,9 @@ import './Step7_Controller.css';
 
 /**
  * Step7_Controller component.
+ *
+ * This component allows users to select a regulator type (MPPT or PWM), choose a suitable controller from a list,
+ * and displays the calculated details for the selected controller such as rated power, voltage, and current ratings.
  *
  * @component
  * @param {Object} props - The component properties.
@@ -37,8 +41,8 @@ const Step7_Controller = ({ onComplete }) => {
         minModulesInSeries: 0,
         panelsInSeries: 0,
         panelsInParallel: 0,
-    }); // Configuration details for the selected controller
-    const [isLoading, setIsLoading] = useState(true); // Loading state for API calls
+    });
+    const [isLoading, setIsLoading] = useState(true);
 
     /**
      * Fetches a list of suitable controllers based on the selected regulator type.

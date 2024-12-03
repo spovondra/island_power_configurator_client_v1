@@ -11,7 +11,6 @@ import { API_AUTH_URL } from '../config';
  * Registers a new user.
  *
  * @function register
- * @memberof AuthService
  * @param {string} username - The username of the new user.
  * @param {string} password - The password of the new user.
  * @param {string} role - The role of the new user (e.g., "ADMIN", "USER").
@@ -43,7 +42,6 @@ export const register = async (username, password, role, firstName = '', lastNam
  * Logs in a user.
  *
  * @function login
- * @memberof AuthService
  * @param {string} username - The username of the user logging in.
  * @param {string} password - The password of the user logging in.
  * @returns {Promise<object>} A promise that resolves to the login data, including JWT and user details.
@@ -70,7 +68,6 @@ export const login = async (username, password) => {
  * Logs out the current user and redirects to the login page.
  *
  * @function logout
- * @memberof AuthService
  */
 export const logout = () => {
     localStorage.removeItem('user');
@@ -81,7 +78,6 @@ export const logout = () => {
  * Retrieves the currently logged-in user from localStorage.
  *
  * @function getCurrentUser
- * @memberof AuthService
  * @returns {object|null} The current user's data, or null if no user is logged in.
  */
 export const getCurrentUser = () => {
@@ -93,7 +89,6 @@ export const getCurrentUser = () => {
  * Fetches all users.
  *
  * @function getAllUsers
- * @memberof AuthService
  * @returns {Promise<object[]>} A promise that resolves to a list of all users.
  * @throws {Error} If no user is logged in.
  */
@@ -109,7 +104,6 @@ export const getAllUsers = async () => {
  * Deletes a user by their ID.
  *
  * @function deleteUser
- * @memberof AuthService
  * @param {string} userId - The ID of the user to delete.
  * @returns {Promise<void>} A promise that resolves when the user is successfully deleted.
  * @throws {Error} If no user is logged in.
@@ -125,7 +119,6 @@ export const deleteUser = async (userId) => {
  * Fetches a user by their ID.
  *
  * @function getUserById
- * @memberof AuthService
  * @param {string} userId - The ID of the user to fetch.
  * @returns {Promise<object>} A promise that resolves to the user data.
  * @throws {Error} If no user is logged in.
@@ -142,7 +135,6 @@ export const getUserById = async (userId) => {
  * Updates a user by their ID.
  *
  * @function updateUser
- * @memberof AuthService
  * @param {string} userId - The ID of the user to update.
  * @param {object} userDetails - The updated user details.
  * @returns {Promise<object>} A promise that resolves to the updated user data.

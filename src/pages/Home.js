@@ -4,12 +4,6 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 /**
- * The Home module provides the main landing page with navigation options and program information.
- *
- * @module Home
- */
-
-/**
  * Home component for displaying the main landing page.
  *
  * @component

@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
  * Wizard component that guides users through a step-by-step project configuration process.
  *
  * @component
- * @returns {JSX.Element} The rendered Wizard component.
+ * @returns {JSX.Element} The rendered Wizard component with a dynamic step navigation.
  */
 const Wizard = () => {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);

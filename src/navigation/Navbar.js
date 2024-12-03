@@ -37,7 +37,6 @@ const Navbar = () => {
      * Handles user logout by calling the logout function.
      *
      * @function handleLogout
-     * @memberof Navbar
      */
     const handleLogout = () => {
         logout(); // Use the specific function for logging out
@@ -47,7 +46,6 @@ const Navbar = () => {
      * Toggles the state of the dropdown menu.
      *
      * @function toggleDropdown
-     * @memberof Navbar
      */
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
@@ -57,7 +55,6 @@ const Navbar = () => {
      * Changes the application's language.
      *
      * @function changeLanguage
-     * @memberof Navbar
      * @param {string} lng - The language code (e.g., 'en', 'cs').
      */
     const changeLanguage = (lng) => {
@@ -69,7 +66,6 @@ const Navbar = () => {
      * Handles closing the dropdown when clicking outside of it.
      *
      * @function handleClickOutside
-     * @memberof Navbar
      * @param {Event} event - The event that triggered the action.
      */
     const handleClickOutside = (event) => {

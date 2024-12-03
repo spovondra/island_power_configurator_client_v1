@@ -6,8 +6,6 @@ import i18next from './i18next';
 
 /**
  * entry point of the application for initializing and rendering the React app
- *
- * @module root
  */
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

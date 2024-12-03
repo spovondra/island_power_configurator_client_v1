@@ -5,8 +5,15 @@ import { getSuitableInverters, selectInverter, getProjectInverter, getVoltage } 
 import './Step4_Inverter.css';
 
 /**
- * Step4_Inverter component for selecting a suitable inverter.
- * Handles system voltage, temperature, and inverter selection with real-time updates.
+ * Step4_Inverter component for selecting a suitable inverter. It handles system voltage, temperature,
+ * and inverter selection with real-time updates based on user input.
+ *
+ * @module Step4_Inverter
+ */
+
+/**
+ * Step4_Inverter component allows users to select an inverter, adjust system voltage and temperature,
+ * and view energy calculations based on the selected inverter.
  *
  * @component
  * @param {object} props - The component properties.

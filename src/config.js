@@ -1,11 +1,8 @@
 /**
  * API endpoint constants
- *
- * @constant
- * @type {string}
  */
-const BASE_URL = 'http://localhost:8082';
-//const BASE_URL = 'https://api.fve.firmisimo.eu:443'
+const BASE_URL = 'http://localhost:8082'; //local
+//const BASE_URL = 'https://api.fve.firmisimo.eu:443' //public
 
 export const API_URL = `${BASE_URL}/api`;
 export const API_AUTH_URL = `${API_URL}/auth/`;

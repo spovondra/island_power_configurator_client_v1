@@ -2,8 +2,6 @@ import './Modal.css';
 
 /**
  * Modal component module
- *
- * @module Modal
  */
 
 /**

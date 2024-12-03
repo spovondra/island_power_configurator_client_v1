@@ -10,7 +10,6 @@ import axios from 'axios';
  * Sends a request to search for a location by query.
  *
  * @function searchLocation
- * @memberof LocationService
  * @param {string} locationQuery - The location query string (e.g., city name, address).
  * @returns {Promise} Axios response containing the location data.
  * @throws {Error} Throws an error if the request fails.

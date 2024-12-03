@@ -5,6 +5,13 @@ import { getBatteries, selectBattery, getProjectBattery } from '../../services/P
 import './Step5_Batteries.css';
 
 /**
+ * Step5_Batteries component allows users to select a battery, select system temperature and autonomy days,
+ * and view the calculated battery configuration.
+ * 
+ * @module Step5_Batteries
+ */
+
+/**
  * Step5_Batteries component is for selecting suitable batteries.
  * It handles fetching available batteries, batteries selection with real-time updates.
  *

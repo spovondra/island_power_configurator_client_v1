@@ -1,7 +1,5 @@
 /**
  * initializes i18next for managing translations in the application
- *
- * @module i18n
  */
 
 import i18next from 'i18next';

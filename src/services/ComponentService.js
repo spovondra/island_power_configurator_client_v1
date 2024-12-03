@@ -4,6 +4,7 @@ import { API_COMPONENT_URL } from '../config';
 /**
  * Service for interacting with components in the application.
  *
+ * 
  * @module ComponentService
  */
 

@@ -13,7 +13,7 @@ import { getCurrentUser } from '../services/authService';
 const AuthRoute = ({ role, children }) => {
     const user = getCurrentUser();
 
-    /* Render children if user has the required role -> otherwise, redirect home */
+    /* Render children if user has the required role otherwise -> redirect home */
     return user && user.roles.includes(role) ? children : <Navigate to="/" />;
 };
 

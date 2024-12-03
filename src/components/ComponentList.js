@@ -3,6 +3,12 @@ import axios from 'axios';
 import { componentReducer, initialState } from '../reducers/componentReducer';
 
 /**
+ * The ComponentList component displays and manages a list of components. It allows users to add, update, and delete components via API calls.
+ *
+ * @module ComponentList
+ */
+
+/**
  * ComponentList component for displaying and managing a list of components.
  *
  * @component
