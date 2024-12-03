@@ -1,7 +1,26 @@
 import React from 'react';
 import './UserForm.css';
-import { useTranslation } from 'react-i18next'; // Import i18next hook
+import { useTranslation } from 'react-i18next';
 
+/**
+ * User Form Component
+ *
+ * @module UserForm
+ */
+
+/**
+ * Renders a form for creating or editing user information.
+ *
+ * @component
+ * @param {object} props - Component properties.
+ * @param {object|null} props.selectedUser - The currently selected user for editing, or null if adding a new user.
+ * @param {object} props.formData - The form data object containing user fields (e.g., username, password, role, etc.).
+ * @param {function} props.handleInputChange - Callback function to handle changes in input fields.
+ * @param {function} props.handleSubmit - Callback function to handle form submission.
+ * @param {boolean} props.updatePassword - Indicates if the password should be updated for an existing user.
+ * @param {function} props.dispatch - Dispatch function for managing password update toggle state.
+ * @returns {JSX.Element} The rendered User Form component.
+ */
 const UserForm = ({
                       selectedUser,
                       formData,
@@ -10,7 +29,7 @@ const UserForm = ({
                       updatePassword,
                       dispatch,
                   }) => {
-    const { t } = useTranslation('admin'); // Add translation hook
+    const { t } = useTranslation('admin');
 
     return (
         <div className="user-form">
@@ -93,7 +112,9 @@ const UserForm = ({
                             onChange={handleInputChange}
                         />
                     </div>
-                    <button type="submit">{selectedUser ? t('userForm.update_user') : t('userForm.add_user')}</button>
+                    <button type="submit">
+                        {selectedUser ? t('userForm.update_user') : t('userForm.add_user')}
+                    </button>
                 </fieldset>
             </form>
         </div>

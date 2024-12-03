@@ -5,6 +5,21 @@ import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import './Step2_Appliance.css';
 
+/**
+ * Step2_Appliance component manages appliances in the wizard.
+ * It allows users to add, update, and delete appliances, and displays charts.
+ *
+ * @module Step2_Appliance
+ */
+
+/**
+ * Step2_Appliance component.
+ *
+ * @component
+ * @param {object} props - The component properties.
+ * @param {function} props.onComplete - Callback function invoked when the step is completed.
+ * @returns {JSX.Element} Renders the Step2_Appliance component.
+ */
 const Step2_Appliance = ({ onComplete }) => {
     const { t } = useTranslation('wizard');
     const { selectedProject } = useContext(ProjectContext);
@@ -25,6 +40,9 @@ const Step2_Appliance = ({ onComplete }) => {
     const [editMode, setEditMode] = useState(false);
     const [configurationModel, setConfigurationModel] = useState(null);
 
+    /**
+     * Fetches appliances and configuration data for the selected project on component mount.
+     */
     useEffect(() => {
         const fetchAppliances = async () => {
             if (selectedProject) {
@@ -41,6 +59,13 @@ const Step2_Appliance = ({ onComplete }) => {
         fetchAppliances();
     }, [selectedProject, t]);
 
+    /**
+     * Saves the current appliance (add or update) and refreshes the appliance list.
+     *
+     * @async
+     * @function handleSave
+     * @param {Event} e - The form submission event.
+     */
     const handleSave = useCallback(async (e) => {
         e.preventDefault();
         try {
@@ -71,11 +96,24 @@ const Step2_Appliance = ({ onComplete }) => {
         }
     }, [selectedProject, appliance, t, onComplete]);
 
+    /**
+     * Prepares the appliance data for editing.
+     *
+     * @function handleEdit
+     * @param {object} appl - The appliance to be edited.
+     */
     const handleEdit = (appl) => {
         setAppliance(appl);
         setEditMode(true);
     };
 
+    /**
+     * Deletes the selected appliance and updates the appliance list.
+     *
+     * @async
+     * @function handleDelete
+     * @param {string} applianceId - The ID of the appliance to delete.
+     */
     const handleDelete = async (applianceId) => {
         if (!applianceId) {
             alert(t('step2.error_message'));
@@ -92,23 +130,34 @@ const Step2_Appliance = ({ onComplete }) => {
             const updatedProject = await getProjectById(selectedProject);
             setAppliances(updatedProject.appliances || []);
             setConfigurationModel(updatedProject.configurationModel?.projectAppliance || null);
-
         } catch (error) {
             console.error(t('step2.error_message'), error);
             alert(t('step2.error_message'));
         }
     };
 
+    /**
+     * Updates the appliance state on input field change.
+     *
+     * @function handleInputChange
+     * @param {Event} e - The input change event.
+     */
     const handleInputChange = (e) => {
         const { id, value, type } = e.target;
         const parsedValue = type === 'number' ? parseFloat(value) : value;
 
-        setAppliance(prevState => ({
+        setAppliance((prevState) => ({
             ...prevState,
-            [id]: parsedValue
+            [id]: parsedValue,
         }));
     };
 
+    /**
+     * Adjusts the peak power value to ensure it's at least equal to the power value.
+     *
+     * @function handleBlur
+     * @param {Event} e - The blur event.
+     */
     const handleBlur = (e) => {
         const { id } = e.target;
 
@@ -125,24 +174,23 @@ const Step2_Appliance = ({ onComplete }) => {
         }
     };
 
-
+    /* Chart colors */
     const powerChartColors = ['#005B96', '#33A1FD'];
     const peakPowerChartColors = ['#228B22', '#32CD32'];
     const energyChartColors = ['#B22222', '#FF4500'];
 
-    // Data for total power chart
+
+    /* Charts data */
     const powerChartData = [
         { name: t('step2.legend.total_ac_power'), value: configurationModel?.totalAcPower || 0 },
         { name: t('step2.legend.total_dc_power'), value: configurationModel?.totalDcPower || 0 },
     ];
 
-    // Data for total energy chart
     const energyChartData = [
         { name: t('step2.legend.total_ac_energy'), value: configurationModel?.totalAcEnergy || 0 },
         { name: t('step2.legend.total_dc_energy'), value: configurationModel?.totalDcEnergy || 0 },
     ];
 
-    // Data for total peak power chart
     const peakPowerChartData = [
         { name: t('step2.legend.total_ac_peak_power'), value: configurationModel?.totalAcPeakPower || 0 },
         { name: t('step2.legend.total_dc_peak_power'), value: configurationModel?.totalDcPeakPower || 0 },

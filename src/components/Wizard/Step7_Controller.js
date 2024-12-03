@@ -3,7 +3,22 @@ import { useTranslation } from 'react-i18next';
 import { ProjectContext } from '../../context/ProjectContext';
 import { getSuitableControllers, selectController, getProjectController } from '../../services/ProjectService';
 import './Step7_Controller.css';
+/**
+ * Step7_Controller component handles the selection of the controller in the wizard.
+ * Users can select a regulator type (MPPT or PWM), choose a suitable controller,
+ * and view calculated details.
+ *
+ * @module Step7_Controller
+ */
 
+/**
+ * Step7_Controller component.
+ *
+ * @component
+ * @param {Object} props - The component properties.
+ * @param {Function} props.onComplete - Callback function invoked when the step is successfully completed.
+ * @returns {JSX.Element} The Step7_Controller component.
+ */
 const Step7_Controller = ({ onComplete }) => {
     const { t } = useTranslation('wizard');
     const { selectedProject } = useContext(ProjectContext);
@@ -22,10 +37,16 @@ const Step7_Controller = ({ onComplete }) => {
         minModulesInSeries: 0,
         panelsInSeries: 0,
         panelsInParallel: 0,
-    });
+    }); // Configuration details for the selected controller
+    const [isLoading, setIsLoading] = useState(true); // Loading state for API calls
 
-    const [isLoading, setIsLoading] = useState(true);
-
+    /**
+     * Fetches a list of suitable controllers based on the selected regulator type.
+     * Invoked when `selectedProject` or `regulatorType` changes.
+     *
+     * @async
+     * @function fetchControllers
+     */
     useEffect(() => {
         const fetchControllers = async () => {
             if (!selectedProject) return;
@@ -44,6 +65,13 @@ const Step7_Controller = ({ onComplete }) => {
         fetchControllers();
     }, [selectedProject, regulatorType]);
 
+    /**
+     * Fetches the controller configuration for the selected project.
+     * Invoked when `selectedProject` changes.
+     *
+     * @async
+     * @function fetchControllerConfig
+     */
     useEffect(() => {
         const fetchControllerConfig = async () => {
             if (!selectedProject) return;
@@ -74,6 +102,14 @@ const Step7_Controller = ({ onComplete }) => {
         fetchControllerConfig();
     }, [selectedProject]);
 
+    /**
+     * Handles the selection of a controller.
+     * Updates the controller configuration details and invokes the `onComplete` callback if valid.
+     *
+     * @async
+     * @function handleControllerSelect
+     * @param {string} controllerId - The ID of the selected controller.
+     */
     const handleControllerSelect = async (controllerId) => {
         try {
             const result = await selectController(selectedProject, controllerId, regulatorType);
@@ -101,6 +137,13 @@ const Step7_Controller = ({ onComplete }) => {
         }
     };
 
+    /**
+     * Handles changes to the regulator type (MPPT or PWM).
+     * Resets the selected controller and configuration details.
+     *
+     * @function handleRegulatorTypeChange
+     * @param {string} type - The new regulator type.
+     */
     const handleRegulatorTypeChange = (type) => {
         setRegulatorType(type);
         setSelectedController(null);

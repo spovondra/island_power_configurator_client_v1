@@ -5,12 +5,26 @@ import LocationService from '../../services/LocationService';
 import { processLocationData, loadSiteData } from '../../services/ProjectService';
 import './Step3_Location.css';
 import { Bar, BarChart, CartesianGrid, LabelList, Tooltip, XAxis, YAxis } from 'recharts';
-import { useTranslation } from 'react-i18next'; // Import translation hook
+import { useTranslation } from 'react-i18next';
 
+/**
+ * Step3_Location component handles the location in the wizard.
+ * Users can set the location, panel angle, aspect, and view irradiance and temperature data
+ *
+ * @module Step3_Location
+ */
+
+/**
+ * Step3_Location component.
+ *
+ * @component
+ * @param {object} props - The component properties.
+ * @param {function} props.onComplete - Callback function invoked when the step is completed.
+ * @returns {JSX.Element} Renders the Step3_Location component.
+ */
 const Step3_Location = ({ onComplete }) => {
     const { selectedProject } = useContext(ProjectContext);
-    const { t } = useTranslation('wizard'); // Use translation hook for 'wizard' namespace
-
+    const { t } = useTranslation('wizard');
     const [location, setLocation] = useState({ latitude: 49.744, longitude: 15.339 });
     const [angle, setAngle] = useState(35);
     const [aspect, setAspect] = useState(0);
@@ -19,32 +33,32 @@ const Step3_Location = ({ onComplete }) => {
     const [dataFetched, setDataFetched] = useState(false);
     const [useOptimal, setUseOptimal] = useState(false);
     const [hasUserInteracted, setHasUserInteracted] = useState(false);
-    const [isStepComplete, setIsStepComplete] = useState(false); // Track if the step is complete
+    const [isStepComplete, setIsStepComplete] = useState(false);
 
-    // Load site data when the project is selected
+    /**
+     * Loads site data from the backend when a project is selected.
+     *
+     * @async
+     * @function loadProjectSiteData
+     */
     useEffect(() => {
         const loadProjectSiteData = async () => {
             if (selectedProject) {
                 try {
                     const siteData = await loadSiteData(selectedProject);
-                    console.log('Loaded Site Data:', siteData);
 
-                    if (!siteData || !siteData.latitude || !siteData.longitude) {
-                        setLocation({ latitude: 49.744, longitude: 15.339 });
-                    } else {
-                        setLocation({
-                            latitude: siteData.latitude,
-                            longitude: siteData.longitude,
-                        });
-                    }
+                    setLocation({
+                        latitude: siteData.latitude || 49.744,
+                        longitude: siteData.longitude || 15.339,
+                    });
                     setAngle(siteData.panelAngle || 35);
                     setAspect(siteData.panelAspect || 0);
                     setTemperatures({
                         min: siteData.minTemperature ? Number(siteData.minTemperature).toFixed(2) : 'N/A',
                         max: siteData.maxTemperature ? Number(siteData.maxTemperature).toFixed(2) : 'N/A',
                     });
-                    setPVGISData(siteData.monthlyDataList || []); // Set irradiance data
-                    setDataFetched(true); // Set fetched data to true after loading site data
+                    setPVGISData(siteData.monthlyDataList || []);
+                    setDataFetched(true);
                 } catch (error) {
                     console.error('Error loading site data:', error);
                 }
@@ -54,51 +68,48 @@ const Step3_Location = ({ onComplete }) => {
         loadProjectSiteData();
     }, [selectedProject]);
 
+    /**
+     * Processes location data to retrieve calculated values (e.g., irradiance, temperatures).
+     *
+     * @async
+     * @function handleProcessLocationData
+     */
     const handleProcessLocationData = useCallback(async () => {
         if (!selectedProject) {
-            alert(t('step3.select_project_alert')); // Translated alert message
+            alert(t('step3.select_project_alert'));
             return;
         }
 
         try {
             const processedData = await processLocationData(selectedProject, location.latitude, location.longitude, angle, aspect, useOptimal);
-            console.log('Processed Data:', processedData);
 
-            const { minTemperature, maxTemperature, monthlyDataList, panelAngle: newAngle, panelAspect: newAspect } = processedData;
-
-            // Set temperatures
             setTemperatures({
-                min: minTemperature ? Number(minTemperature).toFixed(2) : 'Error',
-                max: maxTemperature ? Number(maxTemperature).toFixed(2) : 'Error',
+                min: processedData.minTemperature ? Number(processedData.minTemperature).toFixed(2) : 'Error',
+                max: processedData.maxTemperature ? Number(processedData.maxTemperature).toFixed(2) : 'Error',
             });
-
-            // Update monthly irradiance data
-            setPVGISData(monthlyDataList || []);
+            setPVGISData(processedData.monthlyDataList || []);
+            setAngle(processedData.panelAngle || angle);
+            setAspect(processedData.panelAspect || aspect);
             setDataFetched(true);
-
-            // Update angle and aspect from processed data
-            if (newAngle !== undefined) {
-                setAngle(newAngle); // Update angle from processed data
-            }
-            if (newAspect !== undefined) {
-                setAspect(newAspect); // Update aspect from processed data
-            }
-
-            // Mark step as complete
             setIsStepComplete(true);
-            onComplete();  // Notify Wizard that the step is complete
-
+            onComplete();
         } catch (error) {
             console.error('Error processing location data:', error);
             setTemperatures({ min: 'Error', max: 'Error' });
             setDataFetched(false);
         }
-    }, [selectedProject, location.latitude, location.longitude, angle, aspect, useOptimal, t, onComplete]);
+    }, [selectedProject, location, angle, aspect, useOptimal, t, onComplete]);
 
+    /**
+     * Searches for a location based on a user query and updates latitude and longitude.
+     *
+     * @async
+     * @function searchLocation
+     */
     const searchLocation = async () => {
         const locationQuery = document.getElementById('locationSearch').value;
         if (!locationQuery.trim()) {
-            alert(t('step3.empty_query_alert')); // Translated alert message
+            alert(t('step3.empty_query_alert'));
             return;
         }
 
@@ -106,48 +117,65 @@ const Step3_Location = ({ onComplete }) => {
             const response = await LocationService.searchLocation(locationQuery);
             if (response.data.length > 0) {
                 const { lat, lon } = response.data[0];
-                const formattedLat = parseFloat(lat).toFixed(3);
-                const formattedLon = parseFloat(lon).toFixed(3);
-
-                // Set new coordinates
-                setLocation({ latitude: formattedLat, longitude: formattedLon });
-                setHasUserInteracted(true); // Flag for calling handleProcessLocationData
-
+                setLocation({ latitude: parseFloat(lat).toFixed(3), longitude: parseFloat(lon).toFixed(3) });
+                setHasUserInteracted(true);
             } else {
-                alert(t('step3.location_not_found')); // Translated alert message
+                alert(t('step3.location_not_found'));
             }
         } catch (error) {
             console.error('Error searching location:', error);
-            alert(t('step3.fetch_error_alert')); // Translated alert message
+            alert(t('step3.fetch_error_alert'));
         }
     };
 
+    /**
+     * Toggles the use of optimal values for angle and aspect.
+     *
+     * @function handleOptimalValuesToggle
+     */
     const handleOptimalValuesToggle = () => {
-        setUseOptimal(prev => !prev); // Toggle checkbox state
-        setHasUserInteracted(true); // Set interaction flag
-
+        setUseOptimal((prev) => !prev);
         if (useOptimal) {
             setAngle(35);
             setAspect(0);
         }
+        setHasUserInteracted(true);
     };
 
+    /**
+     * Handles changes to the latitude input field.
+     * Updates the latitude in the location state and sets the interaction flag.
+     *
+     * @param {Object} event - The event object from the input field.
+     */
     const handleLatitudeChange = (event) => {
         const newLat = parseFloat(event.target.value);
         if (!isNaN(newLat)) {
             setLocation(loc => ({ ...loc, latitude: newLat }));
-            setHasUserInteracted(true); // Set interaction flag
+            setHasUserInteracted(true);
         }
     };
 
+    /**
+     * Handles changes to the longitude input field.
+     * Updates the longitude in the location state and sets the interaction flag.
+     *
+     * @param {Object} event - The event object from the input field.
+     */
     const handleLongitudeChange = (event) => {
         const newLon = parseFloat(event.target.value);
         if (!isNaN(newLon)) {
             setLocation(loc => ({ ...loc, longitude: newLon }));
-            setHasUserInteracted(true); // Set interaction flag
+            setHasUserInteracted(true);
         }
     };
 
+    /**
+     * Handles changes to the panel angle input field.
+     * Updates the panel angle state and sets the interaction flag.
+     *
+     * @param {Object} event - The event object from the input field.
+     */
     const handleAngleChange = (event) => {
         const newAngle = parseFloat(event.target.value);
         if (!isNaN(newAngle)) {
@@ -156,6 +184,12 @@ const Step3_Location = ({ onComplete }) => {
         }
     };
 
+    /**
+     * Handles changes to the panel aspect input field.
+     * Updates the panel aspect state and sets the interaction flag.
+     *
+     * @param {Object} event - The event object from the input field.
+     */
     const handleAspectChange = (event) => {
         const newAspect = parseFloat(event.target.value);
         if (!isNaN(newAspect)) {
@@ -164,17 +198,18 @@ const Step3_Location = ({ onComplete }) => {
         }
     };
 
-    // Call data processing when user interacts with inputs or map
+    /* Trigger data processing when user interaction in map is detected */
     useEffect(() => {
         if (hasUserInteracted) {
             handleProcessLocationData();
         }
-    }, [location, angle, aspect, useOptimal, hasUserInteracted]);
+    }, [location, angle, aspect, useOptimal, hasUserInteracted, handleProcessLocationData]);
 
-    const chartData = pvgisData.map(item => ({
+    /* Chart data for irradiance and temperature */
+    const chartData = pvgisData.map((item) => ({
         month: item.month,
         irradiance: item.irradiance,
-        ambientTemperature: item.ambientTemperature
+        ambientTemperature: item.ambientTemperature,
     }));
 
     return (

@@ -3,17 +3,45 @@ import { useState, useEffect } from 'react';
 import { getCurrentUser, getUserById, updateUser } from '../../services/authService';
 import './UserSettings.css';
 
-const UserSettings = () => {
-    const { t } = useTranslation('settings'); // Load the 'settings' namespace
-    const [user, setUser] = useState(null);
-    const [username, setUsername] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [updatePassword, setUpdatePassword] = useState(false);
-    const [userId, setUserId] = useState('');
+/**
+ * UserSettings component allows the logged-in user to update their personal details and password.
+ *
+ * @module UserSettings
+ */
 
+/**
+ * UserSettings component.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered UserSettings component.
+ */
+const UserSettings = () => {
+    const { t } = useTranslation('settings');
+
+    /** @type {object|null} user - The current user data. */
+    const [user, setUser] = useState(null);
+
+    /** @type {string} username - The user's username. */
+    const [username, setUsername] = useState('');
+
+    /** @type {string} firstName - The user's first name. */
+    const [firstName, setFirstName] = useState('');
+
+    /** @type {string} lastName - The user's last name. */
+    const [lastName, setLastName] = useState('');
+
+    /** @type {string} email - The user's email address. */
+    const [email, setEmail] = useState('');
+
+    /** @type {string} password - The user's password (used for updates). */
+    const [password, setPassword] = useState('');
+
+    /** @type {boolean} updatePassword - Whether the user wants to update their password. */
+    const [updatePassword, setUpdatePassword] = useState(false);
+
+    /** @type {string} userId - The ID of the logged-in user. */
+    const [userId, setUserId] = useState('');
+    
     useEffect(() => {
         const currentUser = getCurrentUser();
         if (currentUser) {
@@ -28,6 +56,13 @@ const UserSettings = () => {
         }
     }, []);
 
+    /**
+     * Handles updating the user's details.
+     *
+     * @function handleUpdate
+     * @memberof UserSettings
+     * @param {Event} e - The form submission event.
+     */
     const handleUpdate = async (e) => {
         e.preventDefault();
         const userData = {
@@ -41,14 +76,15 @@ const UserSettings = () => {
         }
         try {
             await updateUser(userId, userData);
-            alert(t('update_success')); // Use translation for success message
+            alert(t('update_success'));
         } catch (error) {
-            alert(t('update_fail')); // Use translation for error message
+            alert(t('update_fail'));
         }
     };
 
+    /* Display loading if user data is not loaded */
     if (!user) {
-        return <div>{t('loading')}</div>; // Use translation for loading text
+        return <div>{t('loading')}</div>;
     }
 
     return (

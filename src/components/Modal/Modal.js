@@ -1,6 +1,24 @@
 import './Modal.css';
 
-const Modal = ({ isOpen, onClose, title, children}) => {
+/**
+ * Modal component module
+ *
+ * @module Modal
+ */
+
+/**
+ * Renders a modal dialog box.
+ *
+ * @component
+ * @memberof module:Modal
+ * @param {object} props - Props passed to the Modal component
+ * @param {boolean} props.isOpen - Whether the modal is visible
+ * @param {function} props.onClose - Function to call when the modal is closed
+ * @param {string} [props.title] - Optional title for the modal
+ * @param {React.ReactNode} props.children - Content to display inside the modal
+ * @returns {JSX.Element|null} The rendered modal component or `null` if not open
+ */
+const Modal = ({ isOpen, onClose, title, children }) => {
     if (!isOpen) return null;
 
     return (

@@ -2,9 +2,22 @@ import React, { useReducer, useEffect } from 'react';
 import axios from 'axios';
 import { componentReducer, initialState } from '../reducers/componentReducer';
 
+/**
+ * ComponentList component for displaying and managing a list of components.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered component list with add, update, and delete functionality.
+ */
 const ComponentList = () => {
     const [state, dispatch] = useReducer(componentReducer, initialState);
 
+    /**
+     * Fetches components from the API and updates the state.
+     *
+     * @async
+     * @function fetchComponents
+     * @returns {Promise<void>}
+     */
     useEffect(() => {
         const fetchComponents = async () => {
             dispatch({ type: 'FETCH_START' });
@@ -19,6 +32,13 @@ const ComponentList = () => {
         fetchComponents();
     }, []);
 
+    /**
+     * Adds a new component by sending a POST request to the API.
+     *
+     * @async
+     * @function addComponent
+     * @returns {Promise<void>}
+     */
     const addComponent = async () => {
         try {
             const response = await axios.post('/api/components', { name: 'New Component' });
@@ -28,6 +48,14 @@ const ComponentList = () => {
         }
     };
 
+    /**
+     * Deletes a component by ID by sending a DELETE request to the API.
+     *
+     * @async
+     * @function deleteComponent
+     * @param {string} id - The ID of the component to delete.
+     * @returns {Promise<void>}
+     */
     const deleteComponent = async (id) => {
         try {
             await axios.delete(`/api/components/${id}`);
@@ -37,6 +65,15 @@ const ComponentList = () => {
         }
     };
 
+    /**
+     * Updates a component by ID by sending a PUT request to the API.
+     *
+     * @async
+     * @function updateComponent
+     * @param {string} id - The ID of the component to update.
+     * @param {object} updatedData - The updated data for the component.
+     * @returns {Promise<void>}
+     */
     const updateComponent = async (id, updatedData) => {
         try {
             const response = await axios.put(`/api/components/${id}`, updatedData);

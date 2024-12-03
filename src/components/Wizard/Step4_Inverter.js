@@ -1,48 +1,61 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next'; // Import translation hook
+import { useTranslation } from 'react-i18next';
 import { ProjectContext } from '../../context/ProjectContext';
-import { getSuitableInverters, selectInverter, getProjectInverter, getVoltage } from '../../services/ProjectService'; // Import getVoltage
+import { getSuitableInverters, selectInverter, getProjectInverter, getVoltage } from '../../services/ProjectService';
 import './Step4_Inverter.css';
 
+/**
+ * Step4_Inverter component for selecting a suitable inverter.
+ * Handles system voltage, temperature, and inverter selection with real-time updates.
+ *
+ * @component
+ * @param {object} props - The component properties.
+ * @param {function} props.onComplete - Callback function triggered when the step is completed.
+ * @returns {JSX.Element} Step4_Inverter component.
+ */
 const Step4_Inverter = ({ onComplete }) => {
-    const {t} = useTranslation('wizard');
-    const {selectedProject} = useContext(ProjectContext);
-    const [systemVoltage, setSystemVoltage] = useState(''); // Default to empty
+    const { t } = useTranslation('wizard');
+    const { selectedProject } = useContext(ProjectContext);
+    const [systemVoltage, setSystemVoltage] = useState('');
     const [recommendedSystemVoltage, setRecommendedSystemVoltage] = useState(null);
-    const [useRecommendedVoltage, setUseRecommendedVoltage] = useState(true); // Controls initial voltage behavior
-    const [temperature, setTemperature] = useState(25); // Default temperature
+    const [useRecommendedVoltage, setUseRecommendedVoltage] = useState(true);
+    const [temperature, setTemperature] = useState(25);
     const [suitableInverters, setSuitableInverters] = useState([]);
     const [loading, setLoading] = useState(false);
     const [selectedInverterId, setSelectedInverterId] = useState(null);
-    const [energyCalculations, setEnergyCalculations] = useState({totalAdjustedAcEnergy: 0, totalDailyEnergy: 0});
+    const [energyCalculations, setEnergyCalculations] = useState({ totalAdjustedAcEnergy: 0, totalDailyEnergy: 0 });
     const [error, setError] = useState(null);
 
-    // Fetch voltage and suitable inverters
+    /**
+     * Fetches system voltage and suitable inverters when the component loads.
+     * Uses the recommended voltage if system voltage is not set.
+     *
+     * @async
+     * @function fetchVoltageAndInverters
+     */
     useEffect(() => {
         const fetchVoltageAndInverters = async () => {
             if (!selectedProject) return;
 
             setLoading(true);
+            setError(null);
             try {
-                // Fetch the voltage data
-                const {
-                    systemVoltage: fetchedVoltage,
-                    recommendedSystemVoltage: fetchedRecommendedVoltage
-                } = await getVoltage(selectedProject);
-                console.log('Fetched voltages:', fetchedVoltage, fetchedRecommendedVoltage);
+                const { systemVoltage: fetchedVoltage, recommendedSystemVoltage: fetchedRecommendedVoltage } =
+                    await getVoltage(selectedProject);
 
-                // If the system voltage is not set, use recommended voltage
                 if (fetchedVoltage) {
                     setSystemVoltage(fetchedVoltage);
                 } else {
                     setSystemVoltage(fetchedRecommendedVoltage);
                     setRecommendedSystemVoltage(fetchedRecommendedVoltage);
-                    setUseRecommendedVoltage(true); // Set flag to true to show recommended voltage initially
+                    setUseRecommendedVoltage(true);
                 }
 
-                // Fetch suitable inverters after setting the voltage
-                const inverters = await getSuitableInverters(selectedProject, fetchedVoltage || fetchedRecommendedVoltage, temperature);
-                console.log('GET suitable inverters response:', inverters);
+                const inverters = await getSuitableInverters(
+                    selectedProject,
+                    fetchedVoltage || fetchedRecommendedVoltage,
+                    temperature
+                );
                 setSuitableInverters(inverters);
             } catch (error) {
                 console.error('Error fetching suitable inverters or voltage:', error);
@@ -55,15 +68,20 @@ const Step4_Inverter = ({ onComplete }) => {
         fetchVoltageAndInverters();
     }, [selectedProject, temperature, t]);
 
-    // Refetch inverters when the voltage or temperature changes
+    /**
+     * Refetches suitable inverters when the system voltage or temperature changes.
+     *
+     * @async
+     * @function fetchInverters
+     */
     useEffect(() => {
         if (!selectedProject || !systemVoltage) return;
 
         const fetchInverters = async () => {
             setLoading(true);
+            setError(null);
             try {
                 const inverters = await getSuitableInverters(selectedProject, systemVoltage, temperature);
-                console.log('GET suitable inverters response:', inverters);
                 setSuitableInverters(inverters);
             } catch (error) {
                 console.error('Error fetching suitable inverters:', error);
@@ -74,27 +92,31 @@ const Step4_Inverter = ({ onComplete }) => {
         };
 
         fetchInverters();
-    }, [systemVoltage, temperature, selectedProject]);
+    }, [systemVoltage, temperature, selectedProject, t]);
 
-    // Fetch the inverter details and load the temperature
+    /**
+     * Fetches details of the currently selected project inverter.
+     * Updates energy calculations and temperature settings.
+     *
+     * @async
+     * @function fetchProjectInverterDetails
+     */
     useEffect(() => {
         const fetchProjectInverterDetails = async () => {
             if (!selectedProject) return;
 
             try {
                 const projectInverter = await getProjectInverter(selectedProject);
-                console.log('GET project inverter details response:', projectInverter);
 
-                // Set the initial temperature from the fetched inverter details
-                if (projectInverter.inverterTemperature) {
+                if (projectInverter?.inverterTemperature) {
                     setTemperature(projectInverter.inverterTemperature);
                 }
 
                 setEnergyCalculations({
-                    totalAdjustedAcEnergy: projectInverter.totalAdjustedAcEnergy || 0,
-                    totalDailyEnergy: projectInverter.totalDailyEnergy || 0,
+                    totalAdjustedAcEnergy: projectInverter?.totalAdjustedAcEnergy || 0,
+                    totalDailyEnergy: projectInverter?.totalDailyEnergy || 0,
                 });
-                setSelectedInverterId(projectInverter.inverterId); // Set the selected inverter ID from the fetched details
+                setSelectedInverterId(projectInverter?.inverterId || null);
             } catch (error) {
                 console.error('Error fetching project inverter details:', error);
                 setError(t('step4.error_message'));
@@ -104,15 +126,34 @@ const Step4_Inverter = ({ onComplete }) => {
         fetchProjectInverterDetails();
     }, [selectedProject, t]);
 
+    /**
+     * Handles changes to the system voltage dropdown.
+     * Stops using the recommended voltage if manually changed.
+     *
+     * @param {object} e - Event object from the dropdown change.
+     */
     const handleSystemVoltageChange = (e) => {
         setSystemVoltage(e.target.value);
-        setUseRecommendedVoltage(false); // User manually changed voltage, stop using recommended
+        setUseRecommendedVoltage(false);
     };
 
+    /**
+     * Handles changes to the temperature dropdown.
+     *
+     * @param {object} e - Event object from the dropdown change.
+     */
     const handleTemperatureChange = (e) => {
-        setTemperature(parseInt(e.target.value)); // Update the temperature selection
+        setTemperature(parseInt(e.target.value, 10));
     };
 
+    /**
+     * Handles the selection of an inverter.
+     * Updates energy calculations and project inverter details.
+     *
+     * @async
+     * @function handleInverterSelection
+     * @param {string} inverterId - ID of the selected inverter.
+     */
     const handleInverterSelection = async (inverterId) => {
         const newSelectedInverterId = selectedInverterId === inverterId && suitableInverters.length > 1 ? null : inverterId;
 
@@ -124,12 +165,12 @@ const Step4_Inverter = ({ onComplete }) => {
                 try {
                     const result = await selectInverter(selectedProject, newSelectedInverterId);
                     setEnergyCalculations({
-                        totalAdjustedAcEnergy: result.totalAdjustedAcEnergy || 0,
-                        totalDailyEnergy: result.totalDailyEnergy || 0,
+                        totalAdjustedAcEnergy: result?.totalAdjustedAcEnergy || 0,
+                        totalDailyEnergy: result?.totalDailyEnergy || 0,
                     });
 
-                    setSystemVoltage(result.systemVoltage || systemVoltage);
-                    setTemperature(result.inverterTemperature || temperature);
+                    setSystemVoltage(result?.systemVoltage || systemVoltage);
+                    setTemperature(result?.inverterTemperature || temperature);
 
                     onComplete();
                 } catch (error) {
@@ -142,6 +183,12 @@ const Step4_Inverter = ({ onComplete }) => {
         }
     };
 
+    /**
+     * Determines the continuous power of an inverter based on the selected temperature.
+     *
+     * @param {object} inverter - The inverter object.
+     * @returns {number} The continuous power value at the selected temperature.
+     */
     const getContinuousPowerByTemperature = (inverter) => {
         switch (temperature) {
             case 40:
@@ -153,11 +200,11 @@ const Step4_Inverter = ({ onComplete }) => {
                 return inverter.continuousPower25C;
         }
     };
-    
+
     return (
         <div className="step4-inverter-page-container">
             <div className="step4-header">
-                <h2 className="step7-config-title">{t('step4.select_inverter_configuration')}</h2>
+                <h2 className="step4-config-title">{t('step4.select_inverter_configuration')}</h2>
                 {error && <p className="step4-error-message">{error}</p>}
             </div>
 
@@ -165,11 +212,7 @@ const Step4_Inverter = ({ onComplete }) => {
                 <div className="step4-selection-section">
                     <div className="step4-input-group">
                         <label htmlFor="systemVoltage">{t('step4.system_voltage_label')}</label>
-                        <select
-                            id="systemVoltage"
-                            value={systemVoltage}
-                            onChange={handleSystemVoltageChange}
-                        >
+                        <select id="systemVoltage" value={systemVoltage} onChange={handleSystemVoltageChange}>
                             <option value="12">12V</option>
                             <option value="24">24V</option>
                             <option value="48">48V</option>
@@ -177,11 +220,7 @@ const Step4_Inverter = ({ onComplete }) => {
                     </div>
                     <div className="step4-input-group">
                         <label htmlFor="temperature">{t('step4.select_temperature_label')}</label>
-                        <select
-                            id="temperature"
-                            value={temperature}
-                            onChange={handleTemperatureChange}
-                        >
+                        <select id="temperature" value={temperature} onChange={handleTemperatureChange}>
                             <option value="25">25°C</option>
                             <option value="40">40°C</option>
                             <option value="65">65°C</option>
@@ -208,9 +247,9 @@ const Step4_Inverter = ({ onComplete }) => {
                                             checked={selectedInverterId === inverter.id}
                                             onChange={() => handleInverterSelection(inverter.id)}
                                         />
-                                        <strong>{inverter.name}</strong><br/>
+                                        <strong>{inverter.name}</strong><br />
                                         {t('step4.voltage')}: {inverter.voltage}V,{' '}
-                                        {t('step4.continuous_power', {temperature})}: {getContinuousPowerByTemperature(inverter)}W,{' '}
+                                        {t('step4.continuous_power', { temperature })}: {getContinuousPowerByTemperature(inverter)}W,{' '}
                                         {t('step4.max_power')}: {inverter.maxPower}W,{' '}
                                         {t('step4.efficiency')}: {inverter.efficiency}%
                                     </label>
@@ -231,7 +270,7 @@ const Step4_Inverter = ({ onComplete }) => {
                 </div>
             </div>
         </div>
-        );
-        };
+    );
+};
 
-        export default Step4_Inverter;
+export default Step4_Inverter;

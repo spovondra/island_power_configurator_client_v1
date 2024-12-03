@@ -1,11 +1,22 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { createProject, deleteProject, getAllProjects, updateProject } from '../../services/ProjectService';
-import { useNavigate } from 'react-router-dom';
-import ProjectForm from './ProjectForm';
 import Modal from '../Modal/Modal';
+import ProjectForm from './ProjectForm';
 import './ProjectAdminPanel.css';
-import { useTranslation } from 'react-i18next'; // Import translation hook
+import { useTranslation } from 'react-i18next';
 
+/**
+ * Project Admin Panel Module
+ *
+ * @module ProjectAdminPanel
+ */
+
+/**
+ * Initial state for the project admin panel.
+ *
+ * @constant
+ * @type {object}
+ */
 const initialState = {
     projects: [],
     error: '',
@@ -15,190 +26,253 @@ const initialState = {
     modalContent: null,
 };
 
+/**
+ * Reducer function to manage the project admin panel state.
+ *
+ * @function projectReducer
+ * @param {object} state - The current state.
+ * @param {object} action - The dispatched action.
+ * @returns {object} The updated state.
+ */
 const projectReducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_SUCCESS':
             return { ...state, projects: action.payload, isLoading: false };
         case 'FETCH_ERROR':
-            return { ...state, error: action.payload, isLoading: false, isModalOpen: true, modalContent: 'error' };
-        case 'SET_SELECTED_PROJECT':
-            return { ...state, selectedProject: action.payload, isModalOpen: true, modalContent: 'form' };
+            return { ...state, error: action.payload, isLoading: false };
         case 'ADD_PROJECT':
             return { ...state, projects: [...state.projects, action.payload], selectedProject: null, isModalOpen: false };
         case 'UPDATE_PROJECT':
             return {
                 ...state,
-                projects: state.projects.map(project =>
+                projects: state.projects.map((project) =>
                     project.id === action.payload.id ? action.payload : project
                 ),
                 selectedProject: null,
                 isModalOpen: false,
             };
         case 'DELETE_SUCCESS':
-            return { ...state, projects: state.projects.filter(project => project.id !== action.payload) };
+            return { ...state, projects: state.projects.filter((project) => project.id !== action.payload) };
+        case 'SET_SELECTED_PROJECT':
+            return { ...state, selectedProject: action.payload, isModalOpen: true, modalContent: 'form' };
         case 'CLOSE_MODAL':
-            return { ...state, isModalOpen: false };
+            return { ...state, isModalOpen: false, selectedProject: null };
         default:
             return state;
     }
 };
 
+/**
+ * ProjectAdminPanel component for managing projects in an admin interface.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered project admin panel.
+ */
 const ProjectAdminPanel = () => {
     const [state, dispatch] = useReducer(projectReducer, initialState);
-    const { projects, error, isLoading, isModalOpen, selectedProject, modalContent } = state;
+    const { projects, error, isLoading, isModalOpen, selectedProject } = state;
     const { t } = useTranslation('admin'); // Translation hook
-    const [formData, setFormData] = useState({
-        name: '',
-        site: {
-            latitude: '',
-            longitude: '',
-            minTemperature: '',
-            maxTemperature: '',
-            panelAngle: '',
-            panelAspect: '',
-            usedOptimalValues: false,
-            monthlyIrradianceList: []
-        },
-        solarComponents: {
-            appliances: [],
-            solarPanels: [],
-            controllers: [],
-            batteries: [],
-            inverters: [],
-            accessories: []
-        }
-    });
-    const navigate = useNavigate();
+    const [formData, setFormData] = useState({}); // State for form data
 
-    const fetchProjects = async () => {
-        try {
-            const data = await getAllProjects();
-            dispatch({ type: 'FETCH_SUCCESS', payload: data });
-        } catch (error) {
-            dispatch({ type: 'FETCH_ERROR', payload: error.message });
-        }
-    };
-
+    /**
+     * Fetches the list of projects.
+     *
+     * @async
+     * @function fetchProjects
+     * @returns {Promise<void>} Resolves when projects are fetched.
+     */
     useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const data = await getAllProjects();
+                dispatch({ type: 'FETCH_SUCCESS', payload: data });
+            } catch (error) {
+                dispatch({ type: 'FETCH_ERROR', payload: error.message });
+            }
+        };
+
         fetchProjects();
     }, []);
 
-    const handleUpdateProject = async (formData) => {
-        try {
-            const updatedProject = await updateProject(selectedProject.id, formData);
-            dispatch({ type: 'UPDATE_PROJECT', payload: updatedProject });
-            alert(t('projectAdminPanel.project_updated'));
-            await fetchProjects();
-        } catch (error) {
-            alert(t('projectAdminPanel.failed_to_update'));
-        }
-    };
-
+    /**
+     * Adds a new project.
+     *
+     * @async
+     * @function handleAddProject
+     * @param {object} formData - The project data to add.
+     * @returns {Promise<void>} Resolves when the project is added.
+     */
     const handleAddProject = async (formData) => {
         try {
             const newProject = await createProject(formData);
             dispatch({ type: 'ADD_PROJECT', payload: newProject });
             alert(t('projectAdminPanel.project_added'));
-            await fetchProjects();
         } catch (error) {
+            console.error('Error adding project:', error);
             alert(t('projectAdminPanel.failed_to_add'));
         }
     };
 
+    /**
+     * Updates an existing project.
+     *
+     * @async
+     * @function handleUpdateProject
+     * @param {object} formData - The updated project data.
+     * @returns {Promise<void>} Resolves when the project is updated.
+     */
+    const handleUpdateProject = async (formData) => {
+        try {
+            const existingProject = projects.find((project) => project.id === selectedProject.id);
+
+            const updatedData = {
+                ...existingProject,
+                ...formData,
+                site: {
+                    ...existingProject.site,
+                    ...formData.site,
+                },
+                solarComponents: {
+                    ...existingProject.solarComponents,
+                    ...formData.solarComponents,
+                },
+            };
+
+            const updatedProject = await updateProject(selectedProject.id, updatedData);
+            dispatch({ type: 'UPDATE_PROJECT', payload: updatedProject });
+            alert(t('projectAdminPanel.project_updated'));
+        } catch (error) {
+            console.error('Error updating project:', error);
+            alert(t('projectAdminPanel.failed_to_update'));
+        }
+    };
+
+    /**
+     * Deletes a project.
+     *
+     * @async
+     * @function handleDeleteProject
+     * @param {string} projectId - The ID of the project to delete.
+     * @returns {Promise<void>} Resolves when the project is deleted.
+     */
     const handleDeleteProject = async (projectId) => {
         try {
             await deleteProject(projectId);
             dispatch({ type: 'DELETE_SUCCESS', payload: projectId });
+            alert(t('projectAdminPanel.project_deleted'));
         } catch (error) {
-            dispatch({ type: 'FETCH_ERROR', payload: error.message });
+            console.error('Error deleting project:', error);
+            alert(t('projectAdminPanel.failed_to_delete'));
         }
     };
 
+    /**
+     * Selects a project for editing.
+     *
+     * @function handleSelectProject
+     * @param {object} project - The selected project.
+     */
     const handleSelectProject = (project) => {
         setFormData({
             name: project.name || '',
-            site: {
-                latitude: project.site?.latitude || '',
-                longitude: project.site?.longitude || '',
-                minTemperature: project.site?.minTemperature || '',
-                maxTemperature: project.site?.maxTemperature || '',
-                panelAngle: project.site?.panelAngle || '',
-                panelAspect: project.site?.panelAspect || '',
-                usedOptimalValues: project.site?.usedOptimalValues || false,
-                monthlyIrradianceList: project.site?.monthlyIrradianceList || []
-            },
-            solarComponents: {
-                appliances: project.solarComponents?.appliances || [],
-                solarPanels: project.solarComponents?.solarPanels || [],
-                controllers: project.solarComponents?.controllers || [],
-                batteries: project.solarComponents?.batteries || [],
-                inverters: project.solarComponents?.inverters || [],
-                accessories: project.solarComponents?.accessories || []
-            }
+            site: project.site || {},
+            solarComponents: project.solarComponents || {},
         });
         dispatch({ type: 'SET_SELECTED_PROJECT', payload: project });
     };
 
+    /**
+     * Initializes a new project for creation.
+     *
+     * @function handleCreateProject
+     */
+    const handleCreateProject = () => {
+        setFormData({
+            name: '',
+            site: {
+                latitude: '',
+                longitude: '',
+            },
+            solarComponents: {},
+        });
+        dispatch({ type: 'SET_SELECTED_PROJECT', payload: null });
+    };
+
+    /**
+     * Closes the modal and resets the form.
+     *
+     * @function handleCloseModal
+     */
     const handleCloseModal = () => {
         dispatch({ type: 'CLOSE_MODAL' });
+        setFormData({});
     };
 
     return (
         <div className="project-admin-panel-container">
             <h2>{t('projectAdminPanel.title')}</h2>
-            <button className="project-add-button" onClick={() => handleSelectProject({})}>
+            <button className="project-add-button" onClick={handleCreateProject}>
                 {t('projectAdminPanel.add_project')}
             </button>
             {isLoading ? (
                 <p>{t('projectAdminPanel.loading')}</p>
             ) : (
-                <div>
-                    <table className="project-table">
-                        <thead>
-                        <tr>
-                            <th>{t('projectAdminPanel.id')}</th>
-                            <th>{t('projectAdminPanel.name')}</th>
-                            <th>{t('projectAdminPanel.location')}</th>
-                            <th>{t('projectAdminPanel.temperature')}</th>
-                            <th>{t('projectAdminPanel.actions')}</th>
+                <table className="project-table">
+                    <thead>
+                    <tr>
+                        <th>{t('projectAdminPanel.id')}</th>
+                        <th>{t('projectAdminPanel.name')}</th>
+                        <th>{t('projectAdminPanel.location')}</th>
+                        <th>{t('projectAdminPanel.actions')}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {projects.map((project) => (
+                        <tr key={project.id}>
+                            <td>{project.id}</td>
+                            <td>{project.name}</td>
+                            <td>
+                                {project.site?.latitude && project.site?.longitude
+                                    ? `${project.site.latitude}, ${project.site.longitude}`
+                                    : t('projectAdminPanel.location_unavailable')}
+                            </td>
+                            <td>
+                                <button
+                                    className="project-table-button project-table-button-edit"
+                                    onClick={() => handleSelectProject(project)}
+                                >
+                                    {t('projectAdminPanel.edit_button')}
+                                </button>
+                                <button
+                                    className="project-table-button project-table-button-delete"
+                                    onClick={() => handleDeleteProject(project.id)}
+                                >
+                                    {t('projectAdminPanel.delete_button')}
+                                </button>
+                            </td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        {projects.map(project => (
-                            <tr key={project.id}>
-                                <td>{project.id}</td>
-                                <td>{project.name}</td>
-                                <td>{project.site ? `${project.site.latitude}, ${project.site.longitude}` : 'N/A'}</td>
-                                <td>{project.site ? `${project.site.minTemperature} to ${project.site.maxTemperature}` : 'N/A'}</td>
-                                <td>
-                                    <button className="project-table-button project-table-button-edit" onClick={() => handleSelectProject(project)}>
-                                        {t('projectAdminPanel.edit_button')}
-                                    </button>
-                                    <button className="project-table-button project-table-button-delete" onClick={() => handleDeleteProject(project.id)}>
-                                        {t('projectAdminPanel.delete_button')}
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                    <Modal
-                        isOpen={isModalOpen}
-                        onClose={handleCloseModal}
-                        title={modalContent === 'form' ? (selectedProject ? t('projectAdminPanel.edit_project') : t('projectAdminPanel.add_project_modal')) : t('projectAdminPanel.error')}
-                    >
-                        {modalContent === 'form' ? (
-                            <ProjectForm
-                                formData={formData}
-                                handleSubmit={selectedProject ? handleUpdateProject : handleAddProject}
-                                onClose={handleCloseModal}
-                            />
-                        ) : (
-                            <p>{error}</p>
-                        )}
-                    </Modal>
-                </div>
+                    ))}
+                    </tbody>
+                </table>
             )}
+            {isModalOpen && (
+                <Modal
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    title={
+                        selectedProject
+                            ? t('projectAdminPanel.edit_project')
+                            : t('projectAdminPanel.add_project_modal')
+                    }
+                >
+                    <ProjectForm
+                        formData={formData}
+                        handleSubmit={selectedProject ? handleUpdateProject : handleAddProject}
+                        onClose={handleCloseModal}
+                    />
+                </Modal>
+            )}
+            {error && <p className="error-message">{t('projectAdminPanel.error')}: {error}</p>}
         </div>
     );
 };

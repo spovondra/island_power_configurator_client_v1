@@ -1,4 +1,9 @@
 /**
+ * @module ProjectReducer
+ *
+ */
+
+/**
  * The initial state for the project reducer.
  *
  * @constant
@@ -16,13 +21,19 @@ export const initialState = {
 /**
  * Reducer function to manage the state of projects.
  *
+ * Handles actions to start fetching, set projects on success, handle errors, and delete a project.
+ *
  * @function projectReducer
- * @memberof module:ProjectService
+ * @memberof module:ProjectReducer
  * @param {object} state - The current state of the reducer.
  * @param {object} action - The action dispatched to update the state.
  * @param {string} action.type - The type of action being dispatched.
  * @param {object|Array|null} action.payload - The data or error to update the state with.
  * @returns {object} The updated state.
+ *
+ * @example
+ * // Dispatching a fetch start action
+ * dispatch({ type: 'FETCH_START' });
  *
  * @throws {Error} If the action type is unrecognized.
  */
@@ -40,6 +51,6 @@ export const projectReducer = (state, action) => {
                 projects: state.projects.filter(project => project.id !== action.payload)
             };
         default:
-            return state;
+            throw new Error(`Unhandled action type: ${action.type}`);
     }
 };

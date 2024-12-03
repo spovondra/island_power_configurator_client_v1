@@ -1,7 +1,20 @@
 import { useState, useEffect } from 'react';
 import './ProjectForm.css';
-import { useTranslation } from 'react-i18next'; // Import translation hook
+import { useTranslation } from 'react-i18next';
 
+/**
+ * Project form module
+ *
+ * @module ProjectForm
+ */
+
+/**
+ * Initializes solar components with default empty arrays.
+ *
+ * @function initializeComponents
+ * @memberof ProjectForm
+ * @returns {object} An object containing default empty arrays for solar components.
+ */
 const initializeComponents = () => ({
     appliances: [],
     solarPanels: [],
@@ -10,8 +23,26 @@ const initializeComponents = () => ({
     inverters: []
 });
 
+/**
+ * ProjectForm component for creating or editing project details.
+ *
+ * @component
+ * @memberof module:ProjectForm
+ * @param {object} props - The component properties.
+ * @param {object} props.formData - The initial project data.
+ * @param {function} props.handleSubmit - Callback to handle form submission.
+ * @param {function} props.onClose - Callback to handle form cancellation.
+ * @returns {JSX.Element} The rendered project form component.
+ */
 const ProjectForm = ({ formData, handleSubmit, onClose }) => {
     const { t } = useTranslation('admin'); // Translation hook
+
+    /**
+     * Local state for managing form data.
+     *
+     * @type {object}
+     * @memberof ProjectForm
+     */
     const [localFormData, setLocalFormData] = useState({
         name: '',
         site: {
@@ -27,6 +58,9 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
         solarComponents: initializeComponents()
     });
 
+    /**
+     * Updates local form data when `formData` prop changes.
+     */
     useEffect(() => {
         if (formData) {
             setLocalFormData({
@@ -52,6 +86,13 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
         }
     }, [formData]);
 
+    /**
+     * Handles changes to text inputs and updates local form data.
+     *
+     * @function handleChange
+     * @memberof ProjectForm
+     * @param {object} e - The input change event.
+     */
     const handleChange = (e) => {
         const { name, value } = e.target;
         setLocalFormData(prevData => ({
@@ -60,6 +101,13 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
         }));
     };
 
+    /**
+     * Handles changes to the site information section of the form.
+     *
+     * @function handleSiteChange
+     * @memberof ProjectForm
+     * @param {object} e - The input change event.
+     */
     const handleSiteChange = (e) => {
         const { name, value, type, checked } = e.target;
         setLocalFormData(prevData => ({
@@ -71,6 +119,13 @@ const ProjectForm = ({ formData, handleSubmit, onClose }) => {
         }));
     };
 
+    /**
+     * Submits the form data by invoking the `handleSubmit` prop.
+     *
+     * @function handleSubmitClick
+     * @memberof ProjectForm
+     * @param {object} e - The form submission event.
+     */
     const handleSubmitClick = (e) => {
         e.preventDefault();
         handleSubmit(localFormData);

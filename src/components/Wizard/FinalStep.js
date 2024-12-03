@@ -23,6 +23,20 @@ import {
 import { useTranslation } from 'react-i18next';
 import './FinalStep.css';
 
+/**
+ * FinalStep component displays the summary of the project configuration.
+ * It includes project details, system configuration, site data, and visualizations.
+ * Users can export the data as a PDF
+ *
+ * @module FinalStep
+ */
+
+/**
+ * FinalStep component.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered FinalStep component.
+ */
 const FinalStep = () => {
     const { t } = useTranslation('wizard');
     const { selectedProject } = useContext(ProjectContext);
@@ -33,6 +47,9 @@ const FinalStep = () => {
     const [error, setError] = useState(null);
     const finalStepRef = useRef();
 
+    /**
+     * Fetches project summary data and user information on component mount.
+     */
     useEffect(() => {
         const fetchSummaryData = async () => {
             if (selectedProject) {
@@ -54,9 +71,11 @@ const FinalStep = () => {
         fetchSummaryData();
     }, [selectedProject, t]);
 
+    /* Return a loading or error */
     if (loading) return <p>{t('final_step.loading')}</p>;
     if (error) return <p>{error}</p>;
 
+    /* Destructure required data from summaryData */
     const project = summaryData?.project || {};
     const site = project?.site || {};
     const appliances = project?.appliances || [];
@@ -70,8 +89,7 @@ const FinalStep = () => {
     const projectSolarPanel = configuration?.projectSolarPanel || [];
     const controller = summaryData?.controller || {};
     const projectController = configuration?.projectController || {};
-
-    // Data for new pie charts
+    
     const powerChartData = [
         { name: t('final_step.total_ac_power'), value: configuration?.projectAppliance?.totalAcPower || 0 },
         { name: t('final_step.total_dc_power'), value: configuration?.projectAppliance?.totalDcPower || 0 },
@@ -87,11 +105,12 @@ const FinalStep = () => {
         { name: t('final_step.total_dc_energy'), value: configuration?.projectAppliance?.totalDcEnergy || 0 },
     ];
 
-    // Colors for pie charts
+    /* Colors for the pie chart */
     const powerChartColors = ['#005B96', '#33A1FD'];
     const peakPowerChartColors = ['#228B22', '#32CD32'];
     const energyChartColors = ['#B22222', '#FF4500'];
-    
+
+    /* Solar panels monthly data */
     const chartData = projectSolarPanel?.monthlyData.map(item => ({
         month: item.month,
         psh: item.psh,
@@ -104,6 +123,11 @@ const FinalStep = () => {
         estimatedEnergyProduction: item.estimatedDailySolarEnergy,
     }));
 
+    /**
+     * Exports the current component view as a PDF.
+     *
+     * @function exportToPDF
+     */
     const exportToPDF = async () => {
         try {
             if (finalStepRef.current) {
@@ -111,17 +135,17 @@ const FinalStep = () => {
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 const pageHeight = pdf.internal.pageSize.height;
                 const pageWidth = pdf.internal.pageSize.width;
-                let currentY = 5;
 
                 const canvas = await html2canvas(finalStepRef.current, {
                     scale: 1.5,
                     useCORS: true
                 });
-                const imgData = canvas.toDataURL('image/jpeg', 0.75); // Set JPEG and reduce quality to 0.75 for smaller size
+                const imgData = canvas.toDataURL('image/jpeg', 0.75);
 
                 const imgWidth = pageWidth;
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
+                let currentY = 5;
                 while (currentY < imgHeight) {
                     pdf.addImage(imgData, 'JPEG', 0, -currentY, imgWidth, imgHeight);
                     currentY += pageHeight;
@@ -130,8 +154,6 @@ const FinalStep = () => {
 
                 pdf.save('project_summary.pdf');
                 setExporting(false);
-            } else {
-                console.error('Reference to element is not available.');
             }
         } catch (error) {
             console.error("An error occurred during PDF export:", error);

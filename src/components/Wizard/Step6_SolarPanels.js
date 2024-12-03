@@ -1,13 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
 import { getSolarPanels, selectSolarPanel, getProjectSolarPanel } from '../../services/ProjectService';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LineChart, Line, Legend } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import './Step6_SolarPanels.css';
 
+/**
+ * Step6_SolarPanels component  for selecting a suitable solar panels
+ * Handles selecting installation types, and showing monthly energy data.
+ *
+ * @component
+ * @param {Object} props - Component properties.
+ * @param {Function} props.onComplete - Callback invoked when the step is completed.
+ * @returns {JSX.Element} Step6_SolarPanels component.
+ */
 const Step6_SolarPanels = ({ onComplete }) => {
     const { t } = useTranslation('wizard');
     const { selectedProject } = useContext(ProjectContext);
+
     const [selectedPanel, setSelectedPanel] = useState(null);
     const [solarPanels, setSolarPanels] = useState([]);
     const [numberOfPanels, setNumberOfPanels] = useState(0);
@@ -28,6 +38,12 @@ const Step6_SolarPanels = ({ onComplete }) => {
     const [initialLoad, setInitialLoad] = useState(true);
     const [hasChanged, setHasChanged] = useState(false);
 
+    /**
+     * Fetches available solar panels for the selected project.
+     *
+     * @async
+     * @function fetchSolarPanels
+     */
     useEffect(() => {
         if (!selectedProject) return;
 
@@ -70,31 +86,15 @@ const Step6_SolarPanels = ({ onComplete }) => {
         fetchPanelConfig();
     }, [selectedProject]);
 
-    useEffect(() => {
-        if (!initialLoad && hasChanged && selectedPanel) {
-            sendUpdatedConfiguration();
-        }
-    }, [
-        selectedPanel,
-        panelOversizeCoefficient,
-        batteryEfficiency,
-        cableEfficiency,
-        selectedMonths,
-        installationType,
-        manufacturerTolerance,
-        agingLoss,
-        dirtLoss
-    ]);
-
-    useEffect(() => {
-        if (hasChanged && selectedPanel) {
-            sendUpdatedConfiguration();
-        }
-    }, [selectedPanel]);
-
-    const sendUpdatedConfiguration = async () => {
+    /**
+     * Sends updated solar panel configuration to the backend.
+     *
+     * @async
+     * @function sendUpdatedConfiguration
+     */
+    const sendUpdatedConfiguration = useCallback(async () => {
         if (!selectedPanel) {
-            console.error("Cannot send configuration: selectedPanel is null or undefined.");
+            console.error('Cannot send configuration: selectedPanel is null or undefined.');
             return;
         }
 
@@ -110,18 +110,66 @@ const Step6_SolarPanels = ({ onComplete }) => {
             dirtLoss,
         };
 
-        console.log(`Sending updated configuration with data:`, postData);
-
         try {
             const result = await selectSolarPanel(selectedProject, postData);
-            console.log(`Configuration updated successfully. Response:`, result);
             setConfig(result);
             onComplete();
         } catch (error) {
-            console.error(`Error selecting solar panel:`, error);
+            console.error('Error selecting solar panel:', error);
         }
-    };
+    }, [
+        selectedPanel,
+        panelOversizeCoefficient,
+        batteryEfficiency,
+        cableEfficiency,
+        selectedMonths,
+        installationType,
+        manufacturerTolerance,
+        agingLoss,
+        dirtLoss,
+        selectedProject,
+        onComplete,
+    ]);
+    
+    /**
+     * useEffect hook triggers an update to the configuration whenever relevant dependencies
+     * change, as long as the component is notin its initial load state and a panel is selected.
+     */
+    useEffect(() => {
+        if (!initialLoad && hasChanged && selectedPanel) {
+            sendUpdatedConfiguration();
+        }
+    }, [
+        selectedPanel,
+        panelOversizeCoefficient,
+        batteryEfficiency,
+        cableEfficiency,
+        selectedMonths,
+        installationType,
+        manufacturerTolerance,
+        agingLoss,
+        dirtLoss,
+        initialLoad,
+        hasChanged,
+        sendUpdatedConfiguration
+    ]);
 
+    /**
+     * useEffect hook ensures that the configuration is updated specifically when
+     * the selected panel changes, provided there are changes to commit.
+     */
+    useEffect(() => {
+        if (hasChanged && selectedPanel) {
+            sendUpdatedConfiguration();
+        }
+    }, [selectedPanel, hasChanged, sendUpdatedConfiguration]);
+
+    /**
+     * Handles the selection of a solar panel.
+     *
+     * @function handlePanelSelect
+     * @param {string} panelId - ID of the selected solar panel.
+     */
     const handlePanelSelect = (panelId) => {
         if (panelId) {
             setHasChanged(true);
@@ -132,23 +180,50 @@ const Step6_SolarPanels = ({ onComplete }) => {
         }
     };
 
+    /**
+     * Toggles the inclusion of a month in the selected months array.
+     *
+     * @function handleMonthChange
+     * @param {number} month - Month to toggle selection for (1-12).
+     */
     const handleMonthChange = (month) => {
         if (!selectedPanel) return;
         setHasChanged(true);
         setSelectedMonths((prev) => prev.includes(month) ? prev.filter((m) => m !== month) : [...prev, month]);
     };
 
+    /**
+     * Handles the change in installation type.
+     *
+     * @function handleInstallationTypeChange
+     * @param {Object} e - Change event for the installation type input.
+     */
     const handleInstallationTypeChange = (e) => {
         setHasChanged(true);
         setInstallationType(e.target.value);
     };
 
+    /**
+     * Handles efficiency-related input changes with validation.
+     *
+     * @function handleEfficiencyChange
+     * @param {Function} setter - Setter function for the efficiency value.
+     * @param {string} value - New value for the efficiency.
+     */
     const handleEfficiencyChange = (setter, value) => {
         setHasChanged(true);
         const newValue = Math.max(0, parseFloat(value));
         setter(parseFloat(newValue.toFixed(2)));
     };
 
+    /**
+     * Formats a numerical value to a fixed decimal precision or returns "N/A" if invalid.
+     *
+     * @function formatValue
+     * @param {number} value - Value to format.
+     * @param {number} decimals - Number of decimal places (default: 2).
+     * @returns {string} Formatted value or "N/A".
+     */
     const formatValue = (value, decimals = 2) =>
         typeof value === 'number' ? value.toFixed(decimals) : 'N/A';
 

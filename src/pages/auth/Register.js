@@ -2,24 +2,44 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../../services/authService';
 import './Register.css';
-import { useTranslation } from 'react-i18next'; // Import translation hook
+import { useTranslation } from 'react-i18next';
 
+/**
+ * The Register module provides a user interface for account registration.
+ *
+ * @module Register
+ */
+
+/**
+ * Register component for new user account creation.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Register component.
+ */
 function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    const { t } = useTranslation('auth'); // Use 'auth' namespace
+    const { t } = useTranslation('auth');
     const navigate = useNavigate();
 
+    /**
+     * Handles user registration.
+     *
+     * @async
+     * @function handleRegister
+     * @memberof Register
+     * @param {Object} e - The event object from the form submission.
+     */
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            await register(username, password, 'USER'); // Call the specific register function
+            await register(username, password, 'USER');
             setMessage(t('register.register_success'));
-            navigate('/login');
+            navigate('/login'); // redirect to login page
         } catch (error) {
             if (error.message === 'Username already exists') {
-                setMessage(t('register.username_exists')); // Display translated error message
+                setMessage(t('register.username_exists'));
             } else {
                 setMessage(t('register.register_failed'));
             }

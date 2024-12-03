@@ -4,9 +4,19 @@ import { ProjectContext } from '../../context/ProjectContext';
 import { getBatteries, selectBattery, getProjectBattery } from '../../services/ProjectService';
 import './Step5_Batteries.css';
 
+/**
+ * Step5_Batteries component is for selecting suitable batteries.
+ * It handles fetching available batteries, batteries selection with real-time updates.
+ *
+ * @component
+ * @param {Object} props - Component properties.
+ * @param {function} props.onComplete - Callback invoked when the step is completed.
+ * @returns {JSX.Element} Step5_Batteries component.
+ */
 const Step5_Batteries = ({ onComplete }) => {
-    const {t} = useTranslation('wizard');
-    const {selectedProject} = useContext(ProjectContext);
+    const { t } = useTranslation('wizard');
+    const { selectedProject } = useContext(ProjectContext);
+
     const [batteryType, setBatteryType] = useState('Li-ion');
     const [temperature, setTemperature] = useState(25);
     const [autonomyDays, setAutonomyDays] = useState(1);
@@ -21,6 +31,12 @@ const Step5_Batteries = ({ onComplete }) => {
         operationalDays: 0,
     });
 
+    /**
+     * Fetches the available batteries based on the selected project and battery type.
+     *
+     * @async
+     * @function fetchBatteries
+     */
     useEffect(() => {
         const fetchBatteries = async () => {
             if (!selectedProject) return;
@@ -36,6 +52,12 @@ const Step5_Batteries = ({ onComplete }) => {
         fetchBatteries();
     }, [selectedProject, batteryType]);
 
+    /**
+     * Fetches the current battery configuration for the selected project.
+     *
+     * @async
+     * @function fetchBatteryConfig
+     */
     useEffect(() => {
         const fetchBatteryConfig = async () => {
             if (!selectedProject) return;
@@ -64,6 +86,14 @@ const Step5_Batteries = ({ onComplete }) => {
         fetchBatteryConfig();
     }, [selectedProject]);
 
+    /**
+     * Handles the selection of a battery.
+     * Sends the selected battery, autonomy days, and temperature to the backend and updates the configuration.
+     *
+     * @async
+     * @function handleBatterySelect
+     * @param {string} batteryId - ID of the selected battery.
+     */
     const handleBatterySelect = async (batteryId) => {
         setSelectedBattery(batteryId);
 
@@ -83,7 +113,7 @@ const Step5_Batteries = ({ onComplete }) => {
     return (
         <div className="step5-batteries-page-container">
             <div className="step5-header">
-                <h2 className="step7-config-title">{t('step5.battery_configurator')}</h2>
+                <h2 className="step5-config-title">{t('step5.battery_configurator')}</h2>
             </div>
 
             <div className="step5-content">
@@ -151,7 +181,7 @@ const Step5_Batteries = ({ onComplete }) => {
                                             checked={selectedBattery === battery.id}
                                             onChange={() => handleBatterySelect(battery.id)}
                                         />
-                                        <strong>{battery.name}</strong><br/>
+                                        <strong>{battery.name}</strong><br />
                                         {t('step5.capacity')}: {battery.capacity}Ah,{' '}
                                         {t('step5.voltage')}: {battery.voltage}V,{' '}
                                         {t('step5.dod')}: {battery.dod}, {' '}

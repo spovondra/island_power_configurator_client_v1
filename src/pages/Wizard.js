@@ -13,6 +13,12 @@ import Step5_Batteries from '../components/Wizard/Step5_Batteries';
 import Step7_Controller from '../components/Wizard/Step7_Controller';
 import { useTranslation } from 'react-i18next';
 
+/**
+ * Wizard component that guides users through a step-by-step project configuration process.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Wizard component.
+ */
 const Wizard = () => {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const [lastCompletedStep, setLastCompletedStep] = useState(0);
@@ -21,31 +27,37 @@ const Wizard = () => {
     const [projectName, setProjectName] = useState('');
     const { selectedProject, setSelectedProject } = useContext(ProjectContext);
     const navigate = useNavigate();
-    const location = useLocation(); // Get location object to check for new project state
+    const location = useLocation();
     const { t } = useTranslation();
 
+    /**
+     * Loads the selected project or initializes a new project if indicated.
+     */
     useEffect(() => {
-        const isNewProject = location.state?.isNewProject; // Check if a new project is being created
+        const isNewProject = location.state?.isNewProject;
 
-        if (selectedProject) { // Load existing project data
+        if (selectedProject) {
             loadProject(selectedProject);
-        } else if (isNewProject) { // If creating a new project
+        } else if (isNewProject) {
             setProjectLoaded(true);
-            setProjectName(''); // Initialize project name
+            setProjectName('');
         } else {
-            // Redirect to project list if no project is selected and not creating new
-            navigate('/projects');
+            navigate('/projects'); // Redirect if no project is selected
         }
     }, [selectedProject, navigate, location]);
 
+    /**
+     * Fetches project data and sets up the wizard.
+     *
+     * @param {string} projectId - The ID of the project to load.
+     */
     const loadProject = async (projectId) => {
         try {
             const project = await getProjectById(projectId);
             const completedStep = project.lastCompletedStep || 0;
+
             setLastCompletedStep(completedStep);
             setProjectName(project.name);
-            console.log("Loaded lastCompletedStep:", completedStep);
-
             setCurrentStepIndex(completedStep > 1 ? completedStep : 0);
             setProjectLoaded(true);
         } catch (error) {
@@ -54,6 +66,11 @@ const Wizard = () => {
         }
     };
 
+    /**
+     * Marks the current step as complete and updates the backend.
+     *
+     * @param {number} stepIndex - The index of the step to mark as complete.
+     */
     const handleStepComplete = async (stepIndex) => {
         try {
             await completeStep(selectedProject, stepIndex);
@@ -63,6 +80,9 @@ const Wizard = () => {
         }
     };
 
+    /**
+     * Advances to the next step in the wizard.
+     */
     const handleNext = () => {
         if (currentStepIndex === steps.length - 1) {
             navigate('/projects'); // Go back to project list on the final step
@@ -79,20 +99,31 @@ const Wizard = () => {
         }
     };
 
+    /**
+     * Returns to the previous step in the wizard.
+     */
     const handleBack = () => {
         if (currentStepIndex > 0) {
             setCurrentStepIndex((prevIndex) => prevIndex - 1);
         }
     };
 
+    /**
+     * Navigates to the specified step if it is accessible.
+     *
+     * @param {number} index - The index of the step to navigate to.
+     */
     const handleStepClick = (index) => {
         if (index <= lastCompletedStep || (index === 1 && (selectedProject || projectName.length > 0))) {
             setCurrentStepIndex(index);
         }
     };
 
+    /**
+     * Enables edit mode for the wizard.
+     */
     const enableEditMode = () => {
-        setEditMode(true); // Enable edit mode
+        setEditMode(true);
     };
 
     const steps = [

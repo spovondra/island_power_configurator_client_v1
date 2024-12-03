@@ -5,6 +5,20 @@ import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './Step1_Introduction.css';
 
+/**
+ * Step1Introduction component handles the initialization or editing of a project name in the wizard.
+ *
+ * @module Step1Introduction
+ */
+
+/**
+ * Step1Introduction component.
+ *
+ * @component
+ * @param {object} props - The component properties.
+ * @param {function} props.onComplete - Callback function invoked when the step is completed.
+ * @returns {JSX.Element} Renders the Step1Introduction component.
+ */
 const Step1Introduction = ({ onComplete }) => {
     const { t } = useTranslation('wizard');
     const { selectedProject, setSelectedProject } = useContext(ProjectContext);
@@ -15,8 +29,11 @@ const Step1Introduction = ({ onComplete }) => {
     const [error, setError] = useState('');
     const [newProjectId, setNewProjectId] = useState(null);
 
+    /**
+     * Loads the project name if editing an existing project.
+     * Updates the name state with the project name if found.
+     */
     useEffect(() => {
-        // Load existing project name
         if (!isNewProject && selectedProject) {
             const loadProjectName = async () => {
                 try {
@@ -33,15 +50,19 @@ const Step1Introduction = ({ onComplete }) => {
         }
     }, [isNewProject, selectedProject, project, t]);
 
+    /**
+     * Saves the project name either by creating a new project or updating an existing one.
+     *
+     * @function handleSaveProject
+     * @param {string} projectName - The name of the project to save.
+     */
     const handleSaveProject = useCallback(async (projectName) => {
         try {
             if (isNewProject && !newProjectId) {
-                // Create a new project
                 const createdProject = await createProject({ name: projectName });
                 setNewProjectId(createdProject.id);
                 setSelectedProject(createdProject.id);
             } else if (newProjectId || selectedProject) {
-                // Update existing project
                 const projectId = newProjectId || selectedProject;
                 await updateProject(projectId, { name: projectName });
             }
@@ -51,11 +72,13 @@ const Step1Introduction = ({ onComplete }) => {
         }
     }, [isNewProject, newProjectId, selectedProject, setSelectedProject, t]);
 
-    // Debounce saving project to avoid multiple requests
+    /**
+     * Debounces the save operation to avoid multiple requests when the project name changes.
+     */
     useEffect(() => {
         if (name) {
             const timeoutId = setTimeout(() => handleSaveProject(name), 500);
-            return () => clearTimeout(timeoutId); // Clear timeout on name change
+            return () => clearTimeout(timeoutId); //clear the timeout on name change
         }
     }, [name, handleSaveProject]);
 

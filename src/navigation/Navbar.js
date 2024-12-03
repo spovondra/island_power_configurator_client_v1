@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
  */
 
 /**
- * Navbar component that renders navigation links, user-specific dropdown, and language switcher.
+ * Navbar component for navigation, language switching, and user options.
  *
  * @component
  * @returns {JSX.Element} The rendered Navbar component.

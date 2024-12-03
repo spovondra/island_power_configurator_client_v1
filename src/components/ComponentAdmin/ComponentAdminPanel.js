@@ -1,15 +1,15 @@
-/**
- * Component admin panel module
- *
- * @module ComponentAdminPanel
- */
-
 import React, { useEffect, useReducer } from 'react';
 import { getAllComponents, createComponent, updateComponent, deleteComponent, getComponentById } from '../../services/ComponentService';
 import Modal from '../Modal/Modal';
 import './ComponentAdminPanel.css';
 import ComponentForm from './ComponentForm';
 import { useTranslation } from 'react-i18next';
+
+/**
+ * Component admin panel module
+ *
+ * @module ComponentAdminPanel
+ */
 
 /**
  * Initial state for the component admin panel.

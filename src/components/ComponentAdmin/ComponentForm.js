@@ -1,12 +1,12 @@
+import React, { useState, useEffect } from 'react';
+import './ComponentForm.css';
+import { useTranslation } from 'react-i18next';
+
 /**
  * Component form module for creating or editing components.
  *
  * @module ComponentForm
  */
-
-import React, { useState, useEffect } from 'react';
-import './ComponentForm.css';
-import { useTranslation } from 'react-i18next';
 
 /**
  * Component form for creating or editing components.

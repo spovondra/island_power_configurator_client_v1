@@ -2,22 +2,42 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../services/authService';
 import './Login.css';
-import { useTranslation } from 'react-i18next'; // Import translation hook
+import { useTranslation } from 'react-i18next';
 
+/**
+ * The Login module provides a user interface for authentication.
+ *
+ * @module Login
+ */
+
+/**
+ * Login component for user authentication.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Login component.
+ */
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    const { t } = useTranslation('auth'); // Use 'auth' namespace
+    const { t } = useTranslation('auth');
     const navigate = useNavigate();
 
+    /**
+     * Handles user login.
+     *
+     * @async
+     * @function handleLogin
+     * @memberof Login
+     * @param {Object} e - The event object.
+     */
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const user = await login(username, password); // Call the specific function
+            const user = await login(username, password);
             if (user) {
                 setMessage(t('login.login_success'));
-                navigate('/');
+                navigate('/'); // redirect to the home page
             } else {
                 setMessage(t('login.login_failed'));
             }
