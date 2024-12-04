@@ -22,7 +22,7 @@
     "collapse": true,
     "navLevel": 3,
     "highlightTutorialCode": true,
-    "footer": "Generováno pomocí JSDoc a Docdash",
+    "footer": "Generated using JSDoc with Docdash",
     "systemName": "Island Power Configurator",
     "default": {
       "outputSourceFiles": true

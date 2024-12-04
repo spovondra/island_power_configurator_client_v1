@@ -54,7 +54,7 @@ const isTokenValid = (token) => {
     if (!token) return false;
 
     const parts = token.split('.');
-    if (parts.length !== 3) return false; // JWT has 3 parts
+    if (parts.length !== 3) return false; // JWT has 3 parts!
 
     try {
         const payload = JSON.parse(atob(parts[1]));

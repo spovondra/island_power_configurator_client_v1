@@ -198,14 +198,14 @@ const Step3_Location = ({ onComplete }) => {
         }
     };
 
-    /* Trigger data processing when user interaction in map is detected */
+    /*trigger data processing when user interact in the map */
     useEffect(() => {
         if (hasUserInteracted) {
             handleProcessLocationData();
         }
     }, [location, angle, aspect, useOptimal, hasUserInteracted, handleProcessLocationData]);
 
-    /* Chart data for irradiance and temperature */
+    /* chart data for irradiance and temperature */
     const chartData = pvgisData.map((item) => ({
         month: item.month,
         irradiance: item.irradiance,

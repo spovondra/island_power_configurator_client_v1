@@ -60,7 +60,7 @@ const LocationMarker = ({ position, setLatitude, setLongitude, setUseOptimal }) 
         click(e) {
             const { lat, lng } = e.latlng;
 
-            /* Check if clicked position is within bounds */
+            /* check if clicked position is within bounds */
             if (!bounds.contains([lat, lng])) {
                 alert('Click is outside the valid map bounds!');
                 return;
@@ -104,9 +104,9 @@ const LocationComponent = ({ latitude, longitude, setLatitude, setLongitude, set
                 center={position}
                 zoom={7}
                 className="map"
-                maxBounds={bounds} // Set global map bounds
-                maxBoundsViscosity={1.0} // Prevent panning outside of bounds
-                minZoom={2} // Prevent too much zoom out
+                maxBounds={bounds} //set global map bounds
+                maxBoundsViscosity={1.0} //prevent panning outside of bounds
+                minZoom={2} // prevent too much zoom out
             >
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -77,7 +77,7 @@ const Step1Introduction = ({ onComplete }) => {
      */
     useEffect(() => {
         if (name) {
-            const timeoutId = setTimeout(() => handleSaveProject(name), 500);
+            const timeoutId = setTimeout(() => handleSaveProject(name), 500); //timeout 500ms to avoid multiple requests when the project name changes
             return () => clearTimeout(timeoutId); //clear the timeout on name change
         }
     }, [name, handleSaveProject]);

@@ -60,7 +60,7 @@ const UserSettings = () => {
         }
     };
 
-    /* Display loading if user data is not loaded */
+    /* display loading if user data is not loaded */
     if (!user) {
         return <div>{t('loading')}</div>;
     }

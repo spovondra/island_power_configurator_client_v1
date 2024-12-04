@@ -35,7 +35,7 @@ const initializeComponents = () => ({
  * @returns {JSX.Element} The rendered project form component.
  */
 const ProjectForm = ({ formData, handleSubmit, onClose }) => {
-    const { t } = useTranslation('admin'); // Translation hook
+    const { t } = useTranslation('admin');
 
     /**
      * Local state for managing form data.

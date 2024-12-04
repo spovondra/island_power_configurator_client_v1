@@ -19,19 +19,19 @@ import { useTranslation } from 'react-i18next';
  */
 const Navbar = () => {
     /** @type {object|null} */
-    const user = getCurrentUser(); // Use the specific function for getting the current user
+    const user = getCurrentUser();
 
     /** @type {boolean} */
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     /** @type {function} */
-    const { t, i18n } = useTranslation('navigation'); // Use 'navigation' namespace for translations
+    const { t, i18n } = useTranslation('navigation');
 
     /** @type {string} */
-    const [language, setLanguage] = useState(i18n.language); // Get the current language
+    const [language, setLanguage] = useState(i18n.language); // get the current language
 
     /** @type {React.RefObject} */
-    const dropdownRef = useRef(null); // Ref for the dropdown
+    const dropdownRef = useRef(null); // ref for the dropdown
 
     /**
      * Handles user logout by calling the logout function.
@@ -39,7 +39,7 @@ const Navbar = () => {
      * @function handleLogout
      */
     const handleLogout = () => {
-        logout(); // Use the specific function for logging out
+        logout();
     };
 
     /**
@@ -70,11 +70,11 @@ const Navbar = () => {
      */
     const handleClickOutside = (event) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-            setDropdownOpen(false); // Close dropdown if clicked outside
+            setDropdownOpen(false); //close dropdown if clicked outside
         }
     };
 
-    // Close dropdown when clicking outside
+    /* close dropdown when clicking outside th dropdown*/
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {

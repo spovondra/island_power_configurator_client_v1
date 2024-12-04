@@ -15,7 +15,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ### `npm run build`
 
-Builds the app for production to the build folder. It optimizes the build for the best performance.
+Builds the app for production.
 
 ---
 
@@ -33,6 +33,5 @@ const BASE_URL = 'https://api.fve.firmisimo.eu:443'; // Public server
 
 ## User Manual
 
-Access the user manual for detailed guidance on using the IslandPower Configurator:
-
+Access the user manual for guidance on using the IslandPower Configurator:
 [User Manual (Czech)](https://fve.firmisimo.eu/user-manual-cs.pdf)

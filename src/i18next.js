@@ -41,14 +41,14 @@ i18next
     .init({
         resources, // translation data
         fallbackLng: 'en', // default language
-        ns: ['pages', 'navigation', 'auth', 'wizard', 'admin', 'project', 'settings'], // namespaces for translations
+        ns: ['pages', 'navigation', 'auth', 'wizard', 'admin', 'project', 'settings'], //namespaces for translations
         defaultNS: 'pages', // default namespace
         interpolation: {
             escapeValue: false // disables escaping for React
         },
         detection: {
             order: ['querystring', 'cookie', 'localStorage', 'navigator'], // language detection priority
-            caches: ['cookie'] // caches the detected language
+            caches: ['cookie'] // aches the detected language (to cookie)
         }
     });
 

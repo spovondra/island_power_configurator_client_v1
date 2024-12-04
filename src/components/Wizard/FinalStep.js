@@ -71,11 +71,11 @@ const FinalStep = () => {
         fetchSummaryData();
     }, [selectedProject, t]);
 
-    /* Return a loading or error */
+    /* return a loading or error */
     if (loading) return <p>{t('final_step.loading')}</p>;
     if (error) return <p>{error}</p>;
 
-    /* Destructure required data from summaryData */
+    /* destructure required data from summaryData */
     const project = summaryData?.project || {};
     const site = project?.site || {};
     const appliances = project?.appliances || [];
@@ -303,7 +303,7 @@ const FinalStep = () => {
                             latitude={site.latitude || 0}
                             longitude={site.longitude || 0}
                             setLatitude={() => {
-                            }} // Disable interactivity by passing empty functions
+                            }}
                             setLongitude={() => {
                             }}
                             setUseOptimal={() => {
@@ -534,14 +534,14 @@ const FinalStep = () => {
                                 <XAxis dataKey="month"/>
                                 <YAxis/>
                                 <Tooltip
-                                    formatter={(value) => value.toFixed(2)} // Zaokrouhlení hodnot na 2 desetinná místa
+                                    formatter={(value) => value.toFixed(2)}
                                 />
                                 <Line
                                     type="monotone"
                                     dataKey="estimatedEnergyProduction"
                                     stroke="#ff7300"
                                     dot={{r: 4}}
-                                    name={t('final_step.estimated_energy')} // Přidán vlastní název pro tooltip
+                                    name={t('final_step.estimated_energy')}
                                 />
                             </LineChart>
                         </div>
@@ -645,8 +645,8 @@ const FinalStep = () => {
             <button
                 className="final-step-button export-button"
                 onClick={exportToPDF}
-                disabled={exporting} // Disable button during export
-                style={{display: exporting ? 'none' : 'block'}} // Hide during export
+                disabled={exporting}
+                style={{display: exporting ? 'none' : 'block'}}
             >
                 {t('final_step.export_to_pdf')}
             </button>

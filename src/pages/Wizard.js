@@ -1,17 +1,18 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { ProjectContext } from '../context/ProjectContext';
-import Step1Introduction from '../components/Wizard/Step1_Introduction';
-import Step2Appliance from '../components/Wizard/Step2_Appliance';
-import Step3Location from '../components/Wizard/Step3_Location';
-import FinalStep from '../components/Wizard/FinalStep';
 import './Wizard.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getProjectById, completeStep } from '../services/ProjectService';
+import { useTranslation } from 'react-i18next';
+
+import Step1Introduction from '../components/Wizard/Step1_Introduction';
+import Step2Appliance from '../components/Wizard/Step2_Appliance';
+import Step3Location from '../components/Wizard/Step3_Location';
 import Step4TestCalc from '../components/Wizard/Step4_Inverter';
 import Step6_SolarPanels from '../components/Wizard/Step6_SolarPanels';
 import Step5_Batteries from '../components/Wizard/Step5_Batteries';
 import Step7_Controller from '../components/Wizard/Step7_Controller';
-import { useTranslation } from 'react-i18next';
+import FinalStep from '../components/Wizard/FinalStep';
 
 /**
  * Wizard component that guides users through a step-by-step project configuration process.
@@ -42,7 +43,7 @@ const Wizard = () => {
             setProjectLoaded(true);
             setProjectName('');
         } else {
-            navigate('/projects'); // Redirect if no project is selected
+            navigate('/projects'); //redirect if no project is selected
         }
     }, [selectedProject, navigate, location]);
 
@@ -85,7 +86,7 @@ const Wizard = () => {
      */
     const handleNext = () => {
         if (currentStepIndex === steps.length - 1) {
-            navigate('/projects'); // Go back to project list on the final step
+            navigate('/projects'); //go back to project list from the final step
         } else if (currentStepIndex === 0) {
             if (selectedProject || projectName.length > 0) {
                 setCurrentStepIndex((prevIndex) => prevIndex + 1);
