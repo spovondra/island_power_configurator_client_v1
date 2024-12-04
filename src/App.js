@@ -33,42 +33,38 @@ const App = () => (
     >
         <ProjectProvider>
             <Routes>
-                {/** public routes */}
+                {/* public routes */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
 
-                {/** protected routes */}
+                {/* protected routes */}
                 <Route path="/" element={<ProtectedRoute><SharedLayout /></ProtectedRoute>}>
                     {/** default home route */}
                     <Route index element={<Home />} />
-                    {/** about page */}
+                    {/* about page */}
                     <Route path="about" element={<About />} />
-                    {/** user settings page */}
+                    {/* user settings page */}
                     <Route path="settings" element={<UserSettings />} />
-                    {/** project list page */}
+                    {/* project list page */}
                     <Route path="projects" element={<ProjectList />} />
-                    {/** new project form */}
+                    {/* new project form */}
                     <Route path="projects/new" element={<ProjectForm />} />
-                    {/**
-                     * project edit form
-                     *
-                     * @param {string} id unique identifier of the project to edit
-                     */}
+                    {/* project edit form */}
                     <Route path="projects/edit/:id" element={<ProjectForm />} />
 
-                    {/** admin routes */}
-                    {/** user management page */}
+                    {/* admin routes */}
+                    {/* user management page */}
                     <Route path="/admin/users" element={<AuthRoute role="ADMIN"><UserListAdmin /></AuthRoute>} />
-                    {/** project admin panel */}
+                    {/* project admin panel */}
                     <Route path="/admin/projects" element={<AuthRoute role="ADMIN"><ProjectAdminPanel /></AuthRoute>} />
-                    {/** component admin panel */}
+                    {/* component admin panel */}
                     <Route path="/admin/components" element={<AuthRoute role="ADMIN"><ComponentAdminPanel /></AuthRoute>} />
 
-                    {/** wizard guide */}
+                    {/* wizard guide */}
                     <Route path="wizard" element={<Wizard />} />
                 </Route>
 
-                {/** fallback 404 page */}
+                {/* 404 page */}
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </ProjectProvider>
