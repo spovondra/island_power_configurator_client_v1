@@ -438,11 +438,11 @@ const FinalStep = () => {
                         <td>{battery?.type || 'N/A'}</td>
                         <td>{battery?.voltage || 'N/A'} V</td>
                         <td>{battery?.capacity || 'N/A'} Ah</td>
-                        <td>{battery?.optimalChargingCurrent.toFixed(2) || 'N/A'} A</td>
-                        <td>{battery?.maxChargingCurrent.toFixed(2) || 'N/A'} A</td>
+                        <td>{(battery?.optimalChargingCurrent ?? 0).toFixed(2)} A</td>
+                        <td>{(battery?.maxChargingCurrent ?? 0).toFixed(2)} A</td>
                         <td>{battery?.dod || 'N/A'}</td>
                         <td>{projectBattery?.batteryCapacityDod || 'N/A'} Ah</td>
-                        <td>{projectBattery?.operationalDays.toFixed(2) || 'N/A'} {t('final_step.days')}</td>
+                        <td>{(projectBattery?.operationalDays ?? 0).toFixed(2)} {t('final_step.days')}</td>
                     </tr>
                     </tbody>
                 </table>

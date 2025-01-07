@@ -178,7 +178,7 @@ const Step6_SolarPanels = ({ onComplete }) => {
      * @param {string} panelId - ID of the selected solar panel.
      */
     const handlePanelSelect = (panelId) => {
-        if (panelId && selectedPanel) {
+        if (panelId) {
             setHasChanged(true);
             setSelectedPanel(panelId);
             sendUpdatedConfiguration();
